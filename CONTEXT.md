@@ -43,3 +43,11 @@ _Avoid_: Player, cursor
 **Field Station**:
 A discoverable destination in the ocean that presents one chapter of the fictional commission's story.
 _Avoid_: Section, slide, checkpoint
+
+**Scientific Spine**:
+The real evidence chain anchoring the Expedition: a retrospective composite journey through the documented 2019 marine heatwave at Abrolhos Bank and the uneven bleaching and mortality responses of its corals.
+_Avoid_: Fictional science, generic ocean theme
+
+**Evidence Boundary**:
+The separation between sourced scientific content and the Expedition's invented narrative wrapper. Geography, organisms, instruments, historical observations, and scientific relationships remain factual and source-traceable; the institute, vessel, personnel, Field Station names, and composite itinerary may be fictional.
+_Avoid_: Science-inspired fiction, unlabeled synthetic evidence
