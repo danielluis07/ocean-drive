@@ -2,7 +2,7 @@
 
 Decision ticket: [Validate the core ocean-and-vessel experience](https://github.com/danielluis07/ocean-drive/issues/10).
 
-Status: awaiting human review. This is a primary-source prototype for a planning decision, not production implementation or an approved architecture.
+Status: camera review completed. The authoritative [core-experience resolution](https://github.com/danielluis07/ocean-drive/issues/10#issuecomment-5555148842) is recorded on the decision ticket. This branch preserves the comparison study as a primary source, not production implementation or an approved architecture.
 
 ## Run
 
@@ -81,13 +81,13 @@ Exportar observação downloads the current parameters, latest window, viewport,
 - R3F 9.7.0 with Three.js 0.185.1 emits an upstream `THREE.Clock` deprecation warning. The prototype does not use Clock directly or modify dependency internals. Review that compatibility detail before locking the production stack.
 - The three evidence station summaries paraphrase already accepted narrative decisions. They are explicitly provisional, contain no invented measurements, and link the selected [Duarte et al. paper](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00179/full). The institute, vessel, station names, positions, and route are fictional. Coordinates are not Abrolhos geography.
 
-## Human review and physical devices
+## Review criteria and remaining device work
 
 Judge A/B/C on the ease of seeing the Research Vessel, anticipating a turn, finding the next buoy, and choosing between the two middle stations. Report whether the helm feels too slow, too sensitive, or hard to recover, and whether the ocean retains the desired scale. On mobile, also check one-handed touch, rotation, label readability, and browser-edge gestures.
 
-A human verdict and physical target-device runs are still required. At minimum, record device model, OS, browser, viewport/orientation, renderer, tier transitions, performance after five minutes, and any thermal or control deterioration. A desktop browser at a phone viewport cannot establish touch comfort, phone GPU throughput, or thermal stability.
+The camera review is complete; physical target-device runs remain required through [Validate the Expedition on physical target devices](https://github.com/danielluis07/ocean-drive/issues/17). At minimum, record device model, OS, browser, viewport/orientation, renderer, tier transitions, performance after five minutes, and any thermal or control deterioration. A desktop browser at a phone viewport cannot establish touch comfort, phone GPU throughput, or thermal stability.
 
-No decision is recorded on the map until the live review resolves this ticket. The prototype branch remains outside main; nothing here is approved for production promotion.
+The decision lives in the linked resolution comment, and the map indexes it. The physical-device task supplies the remaining observations before architecture and budgets can be locked. The prototype branch remains outside main; nothing here is approved for production promotion.
 
 ## Captured views and verification
 
