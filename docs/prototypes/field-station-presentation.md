@@ -2,7 +2,7 @@
 
 Decision ticket: [Validate information presentation at Field Stations](https://github.com/danielluis07/ocean-drive/issues/11).
 
-Status: ready for human review. No presentation has been selected and no resolution has been recorded. This branch extends the approved Mar aberto navigation prototype solely to compare information presentation. Production implementation remains outside the Wayfinder map.
+Status: human review completed. The authoritative [presentation resolution](https://github.com/danielluis07/ocean-drive/issues/11#issuecomment-5555261767) is recorded on the decision ticket. This branch extends the approved Mar aberto navigation prototype solely to compare information presentation. Production implementation remains outside the Wayfinder map.
 
 ## Run
 
@@ -11,9 +11,9 @@ bun install
 bun run prototype
 ```
 
-Open http://localhost:3003/?variant=A. From the original checkout, run `bun --cwd .prototypes/field-station-presentation run prototype`.
+Open http://localhost:3003/?variant=C. From the original checkout, run `bun --cwd .prototypes/field-station-presentation run prototype`.
 
-The default opens at Pulso de Calor, with the vessel stationary beside its buoy. Switch A/B/C with the floating arrows, or keyboard arrows while the comparison bar has focus. The URL preserves the layout across reloads; expedition progress stays in memory only. Use `?variant=A&sail=1` to start with the inherited sailing experience. During sailing, arrows still steer.
+The default opens at Pulso de Calor, with the vessel stationary beside its buoy. Switch A/B/C with the floating arrows, or keyboard arrows while the comparison bar has focus. The URL preserves the layout across reloads; expedition progress stays in memory only. Use `?variant=C&sail=1` to start with the inherited sailing experience. During sailing, arrows still steer.
 
 After leaving a reader, **Inspecionar** contains clearly marked review shortcuts for all four stations. These position the vessel and establish the selected station's prerequisites for comparison; they are developer tools, not proposed visitor navigation. The shortcuts retain passage bookmarks. The production navigation contract still requires actual arrival and deliberate Convergence completion.
 
@@ -31,7 +31,7 @@ All variants inherit the approved palette: petroleum `#093b48`, jade `#348c91`, 
 | B — Convés de leitura | Wide lower reading deck; context and conceptual relationship occupy a separate column | Context compacts above the passage; taller inset sheet | More horizontal editorial space, but less vertical ocean and a smaller vessel |
 | C — Voz da estação | Short, large passages directly over the ocean with a directional dark scrim; actions follow the passage; no separate relation diagram | Dark lower reading area continues the ocean palette; compact sea view above | Closest connection between text and scene; contrast and denser future content need more care |
 
-Recommendation for discussion: A offers the clearest balance of stable text contrast, discoverable sources, and continuous vessel/buoy visibility. This is the agent's assessment, not a human verdict. A hybrid remains possible.
+The human's selection is recorded in the linked [presentation resolution](https://github.com/danielluis07/ocean-drive/issues/11#issuecomment-5555261767). All three variants remain here as archived comparison material.
 
 The first composition pass exposed two issues: the mobile debug state label overlapped the departure note, and the initial C read too similarly to A. The debug label moved to the top; C now uses a continuous ocean composition and flowing passage/actions. Existing art-direction tokens and navigation semantics were retained.
 
@@ -74,8 +74,8 @@ Observed behaviors: changing layout with passage two and sources open preserved 
 
 Small-screen checks at 320 × 568 and landscape at 844 × 390 found no horizontal page overflow and reachable primary buttons. Rotation preserved the passage, keyboard layout changes survived reload, and Escape returned focus to the steering surface. Reduced-motion and deliberately unavailable-WebGL walkthroughs each exposed four HTML station sections with twelve source links. Internal scroll areas handle overflowing text and source detail.
 
-No production build, deployment, automated test suite, physical-phone comfort test, screen-reader certification, thermal measurement, final editorial signoff, or complete three-to-five-minute human journey is claimed. The scene remains the disposable navigation implementation, not an architecture choice. The human's presentation selection and feedback are required before resolving the ticket.
+No production build, deployment, automated test suite, physical-phone comfort test, screen-reader certification, thermal measurement, final editorial signoff, or complete three-to-five-minute human journey is claimed. The scene remains the disposable navigation implementation, not an architecture choice. Presentation selection is complete; the linked resolution assigns remaining content, interaction, and physical-device detail to their existing tickets.
 
-## Review prompt
+## Archived review prompt
 
 Compare the amount of ocean and the vessel size in each layout, read two passages, open the source record, leave early, and use the review shortcut to reopen the station. Select a base presentation or a specific combination. Then settle whether the short-passage structure/source expansion and the final-passage exit distinction match the intended reading experience.
