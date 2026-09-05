@@ -214,6 +214,7 @@ export function createWorld(
   });
   let lastTier = "",
     firstCamera = true,
+    lastReading: number | null = null,
     lastVariant = "",
     width = 0,
     height = 0;
@@ -236,6 +237,10 @@ export function createWorld(
         firstCamera = true;
       }
       step(s, delta, portrait);
+      if (s.reading !== lastReading) {
+        firstCamera = true;
+        lastReading = s.reading;
+      }
       measure(s, delta);
       const routeChoice =
         s.completed.includes(0) &&

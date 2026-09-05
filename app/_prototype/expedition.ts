@@ -75,6 +75,8 @@ export function createExpedition() {
     completed: [] as number[],
     reading: null as number | null,
     page: 0,
+    readingPages: [0, 0, 0, 0],
+    coreReached: [] as number[],
     paused: false,
     connected: false,
     grace: 0,
@@ -215,7 +217,7 @@ export function step(s: Expedition, delta: number, portrait: boolean) {
         s.heading += angleDifference(target, s.heading) * dt * 0.65;
       if (d < approach) {
         s.reading = i;
-        s.page = 0;
+        s.page = s.readingPages[i];
         s.input = 0;
         s.turn = 0;
         event(s, `Chegada: ${p.name}.`);

@@ -3,7 +3,7 @@ import "./globals.css";
 import { geistMono, geistSans } from "@/fonts";
 
 export const metadata: Metadata = {
-  title: "Mar aberto — estudo de navegação",
+  title: "Mar aberto — leitura nas estações",
   description:
     "Protótipo descartável da expedição do Observatório Atlântico Vivo.",
 };

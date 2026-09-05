@@ -7,18 +7,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   available,
-  continueExpedition,
   createExpedition,
   event,
   reorient,
   sourceUrl,
   stations,
   tiers,
-  variants,
   type Tier,
   type Variant,
 } from "@/app/_prototype/expedition";
 import "@/app/_prototype/prototype.css";
+import StationReader from "@/app/_prototype/station-reader";
+import { readingVariants, stationContent } from "@/app/_prototype/station-content";
 
 const OceanRenderer = dynamic(() => import("@/app/_prototype/ocean-renderer"), {
   ssr: false,
@@ -35,7 +35,13 @@ export default function ExpeditionPrototype() {
         ? "C"
         : "A";
   const engine = params.get("engine") === "three" ? "three" : "r3f";
-  const [s] = useState(createExpedition);
+  const [s] = useState(() => {
+    const initial = createExpedition();
+    if (params.get("sail") !== "1") {
+      initial.z = -26; initial.elapsed = 20; initial.reading = 0;
+    }
+    return initial;
+  });
   const [labels] = useState<(HTMLDivElement | null)[]>([
     null,
     null,
@@ -51,7 +57,6 @@ export default function ExpeditionPrototype() {
   const [celebrationDismissed, setCelebrationDismissed] = useState(false);
   const fallbackActive = Boolean(s.fallback);
   const surface = useRef<HTMLDivElement>(null),
-    stationDialog = useRef<HTMLDialogElement>(null),
     controlDialog = useRef<HTMLDialogElement>(null);
   const clearInput = useRef<() => void>(() => {});
   const draw = () => refresh((n) => n + 1);
@@ -82,7 +87,7 @@ export default function ExpeditionPrototype() {
       reduced.removeEventListener("change", respectMotion);
     };
   }, [s]);
-  useEffect(() => { s.variant = variant; }, [s, variant]);
+  useEffect(() => { s.variant = "A"; }, [s]);
   useEffect(() => {
     const element = surface.current;
     if (!element) return;
@@ -194,13 +199,7 @@ export default function ExpeditionPrototype() {
     };
   }, [s, mounted, editorial, controls, fallbackActive]);
   const reading = s.reading;
-  useEffect(() => {
-    const dialog = stationDialog.current;
-    if (reading !== null && !editorial && !s.fallback) {
-      clearInput.current();
-      if (!dialog?.open) dialog?.showModal();
-    } else if (dialog?.open) dialog.close();
-  }, [reading, editorial, s, fallbackActive]);
+  useEffect(() => { if (reading !== null) clearInput.current(); }, [reading]);
   useEffect(() => {
     if (controls) {
       clearInput.current();
@@ -214,8 +213,8 @@ export default function ExpeditionPrototype() {
     const next = new URLSearchParams(params.toString());
     next.set("variant", value);
     router.replace(`?${next}`, { scroll: false });
-    s.variant = value;
-    console.info("Ocean experience prototype", {
+    s.variant = "A";
+    console.info("Field Station presentation prototype", {
       variant: value,
       engine,
       position: { x: s.x, z: s.z },
@@ -275,7 +274,7 @@ export default function ExpeditionPrototype() {
     URL.revokeObjectURL(url);
   };
   return (
-    <main className="expedition" data-variant={variant}>
+    <main className="expedition" data-variant={variant} data-reading={reading !== null && !showEditorial}>
       {!showEditorial ? (
         <>
           <div className="ocean" aria-hidden="true">
@@ -369,15 +368,14 @@ export default function ExpeditionPrototype() {
           </h1>
           <p>{s.fallback || "A mesma história, no seu ritmo."}</p>
           <p>
-            Estudo de navegação. O texto abaixo é um resumo provisório das
-            decisões narrativas, não a apresentação científica final.
+            Estudo de apresentação. Os mesmos trechos e fontes das estações,
+            em uma leitura independente do oceano. Texto em revisão.
           </p>
           {stations.map((station, i) => (
             <section key={station.name}>
               <p className="eyebrow">{station.name}</p>
               <h2>{station.heading}</h2>
-              <p>{station.pages[0]}</p>
-              <p>{station.pages[1]}</p>
+              {stationContent[i].paragraphs.map((paragraph, j) => <p key={paragraph}>{paragraph} <a href={sourceUrl} target="_blank" rel="noreferrer">Fonte do trecho {j + 1}</a></p>)}
               {s.completed.includes(i) ? (
                 <small>Visitada na expedição</small>
               ) : null}
@@ -536,54 +534,7 @@ export default function ExpeditionPrototype() {
           </span>
         </>
       )}
-      <dialog
-        ref={stationDialog}
-        className="station-dialog"
-        aria-labelledby="station-title"
-        onCancel={(e) => e.preventDefault()}
-      >
-        {reading !== null ? (
-          <>
-            <p className="eyebrow">
-              {stations[reading].name} · {s.page + 1} / 2
-            </p>
-            <h2 id="station-title">{stations[reading].heading}</h2>
-            <p>{stations[reading].pages[s.page]}</p>
-            <small>
-              Texto provisório para testar chegada, leitura e saída.
-            </small>
-            <div className="reading-actions">
-              <a href={sourceUrl} target="_blank" rel="noreferrer">
-                Consultar fonte ↗
-              </a>
-              {s.page === 0 ? (
-                <button
-                  className="primary"
-                  onClick={() => {
-                    s.page = 1;
-                    draw();
-                  }}
-                >
-                  Seguir leitura →
-                </button>
-              ) : (
-                <button
-                  className="primary"
-                  onClick={() => {
-                    continueExpedition(s);
-                    stationDialog.current?.close();
-                    surface.current?.focus();
-                    draw();
-                  }}
-                >
-                  {reading === 3 ? "Conectar expedição" : "Continuar expedição"}{" "}
-                  ↗
-                </button>
-              )}
-            </div>
-          </>
-        ) : null}
-      </dialog>
+      {reading !== null && !showEditorial ? <StationReader key={reading} s={s} variant={variant} onChange={changeVariant} onClose={() => { clearInput.current(); surface.current?.focus(); draw(); }} /> : null}
       <dialog
         ref={controlDialog}
         className="controls-dialog"
@@ -625,17 +576,17 @@ export default function ExpeditionPrototype() {
             }}
           >
             <button
-              aria-label="Câmera anterior"
+              aria-label="Apresentação anterior"
               onClick={() => changeVariant(-1)}
             >
               ←
             </button>
             <span>
-              <small>PROTÓTIPO · CÂMERA {variant}</small>
-              {variants[variant].name}
+              <small>PROTÓTIPO · LEITURA {variant}</small>
+              {readingVariants[variant]}
             </span>
             <button
-              aria-label="Próxima câmera"
+              aria-label="Próxima apresentação"
               onClick={() => changeVariant(1)}
             >
               →
@@ -759,6 +710,14 @@ export default function ExpeditionPrototype() {
               >
                 {s.paused ? "Retomar" : "Pausar"}
               </button>
+              <p>Atalhos de revisão: posicionam a embarcação na estação e preparam seus pré-requisitos. Não são navegação do visitante.</p>
+              {stations.map((station, i) => <button key={station.name} onClick={() => {
+                clearInput.current();
+                s.completed = i === 0 ? s.completed : i === 3 ? [0, 1, 2] : [...new Set([...s.completed, 0])];
+                s.x = station.x; s.z = station.z + 6; s.heading = 0; s.cameraHeading = 0;
+                s.elapsed = 20; s.reading = i; s.page = s.readingPages[i]; s.paused = false;
+                setInspector(false); draw();
+              }}>Revisar {station.name}</button>)}
               <button onClick={exportSession}>Exportar observação</button>
               <button onClick={restart}>Recomeçar estudo</button>
               <p>
