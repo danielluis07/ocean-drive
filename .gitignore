@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+
+# Local throwaway checkouts and their tooling caches
+/.prototypes/
 /.pnp
 .pnp.*
 .yarn/*
