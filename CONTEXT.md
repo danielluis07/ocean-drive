@@ -12,12 +12,28 @@ _Avoid_: Agency website, portfolio website
 The believable invented client brief that gives the Showcase Project a real communication purpose.
 _Avoid_: Real client project, technology demo
 
+**Instituto Maré Aberta**:
+The fictional, Brazil-rooted independent marine research institute that commissions the Live Experience. It connects scientists, coastal communities, and open ocean data for public understanding.
+_Avoid_: Government agency, advocacy campaign, real-world organization
+
+**Observatório Atlântico Vivo**:
+The fictional ongoing ocean-observation program operated by Instituto Maré Aberta. Its network of Field Stations connects separate scientific observations into a legible account of ocean change.
+_Avoid_: The commissioning organization, one-off voyage, public-awareness campaign
+
 **Live Experience**:
 The publicly accessible, interactive form of the Showcase Project that visitors experience directly.
 _Avoid_: Case-study video, prerecorded walkthrough
 
+**Visitor**:
+A curious Brazilian adult without specialist marine-science knowledge. The Visitor is invited to understand connected evidence, not treated as a researcher, donor, or campaign supporter.
+_Avoid_: Player, scientist, policy professional
+
+**Core Promise**:
+“Conduza a expedição e conecte os sinais de um oceano em mudança.” The poetic-scientific invitation that frames the Visitor's meaningful role in the Live Experience.
+_Avoid_: Campaign slogan, learning objective, claim of scientific contribution
+
 **Expedition**:
-The visitor's complete three-to-five-minute journey through the fictional marine research initiative.
+The visitor's complete three-to-five-minute representative journey through Observatório Atlântico Vivo. The visitor retraces a research route and connects existing evidence rather than producing new scientific data.
 _Avoid_: Page visit, level
 
 **Research Vessel**:
