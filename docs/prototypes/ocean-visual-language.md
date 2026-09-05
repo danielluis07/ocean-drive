@@ -2,7 +2,7 @@
 
 Decision ticket: [Choose the ocean-world visual language](https://github.com/danielluis07/ocean-drive/issues/6).
 
-Status: awaiting live human review. No visual direction is approved by this artifact.
+Status: review completed. The authoritative [visual-direction resolution](https://github.com/danielluis07/ocean-drive/issues/6#issuecomment-5553432694) is recorded on the decision ticket. This branch preserves the comparison studies as primary-source material.
 
 ## Run and compare
 
@@ -70,4 +70,4 @@ These captures use reduced motion for a stable frame. Open the development proto
 - Which type and information hierarchy should survive into the specification?
 - If combining studies, name the base direction and the specific elements to borrow.
 
-Keep the decision ticket open until the human supplies this judgment. Record the approved combination and its tradeoffs in the resolution comment, then update the map and graduate the asset-inventory fog if the choice makes that question precise.
+These prompts were used for the completed review. The decision and its boundaries live in the linked resolution comment; the map indexes that decision. The asset-inventory question continues in [Define the visual asset inventory and sourcing strategy](https://github.com/danielluis07/ocean-drive/issues/14).
