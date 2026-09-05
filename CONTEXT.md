@@ -44,6 +44,10 @@ _Avoid_: Player, cursor
 A discoverable destination in the ocean that presents one chapter of the fictional commission's story.
 _Avoid_: Section, slide, checkpoint
 
+**Convergence Station**:
+The Expedition's final destination, unlocked after the three evidence Field Stations are complete. It connects their observations into one account without introducing a new scientific claim.
+_Avoid_: Finish line, final level, fourth evidence station
+
 **Scientific Spine**:
 The real evidence chain anchoring the Expedition: a retrospective composite journey through the documented 2019 marine heatwave at Abrolhos Bank and the uneven bleaching and mortality responses of its corals.
 _Avoid_: Fictional science, generic ocean theme
