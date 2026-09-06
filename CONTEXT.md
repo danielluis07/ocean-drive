@@ -68,6 +68,10 @@ _Avoid_: Failure state, forced reset, invisible wall
 A discoverable destination in the ocean that presents one chapter of the fictional commission's story.
 _Avoid_: Section, slide, checkpoint
 
+**Field Station Beacon**:
+The coherent physical landmark that identifies a Field Station through its form, light, and spatial label within Expedition Waters.
+_Avoid_: Marker, waypoint, map pin, collectible
+
 **Completed Field Station**:
 A Field Station whose required core narrative has been reached and explicitly confirmed by the Visitor through “Continuar expedição”; Escape and “Voltar ao mar” preserve reading progress without completing it, and optional sources and supplementary detail do not gate this state.
 _Avoid_: Collected checkpoint, fully read content
@@ -87,3 +91,15 @@ _Avoid_: Fictional science, generic ocean theme
 **Evidence Boundary**:
 The separation between sourced scientific content and the Expedition's invented narrative wrapper. Geography, organisms, instruments, historical observations, and scientific relationships remain factual and source-traceable; the institute, vessel, personnel, Field Station names, and composite itinerary may be fictional.
 _Avoid_: Science-inspired fiction, unlabeled synthetic evidence
+
+**Validation Result**:
+The recorded outcome of evaluating one production Acceptance Criterion: Pass, Fail, or Unvalidated. Missing evidence is Unvalidated and never counts as a pass.
+_Avoid_: Assumed pass, not tested
+
+**Production Acceptance Matrix**:
+The implementation-ready set of observable criteria, target states, test methods, required evidence, and pass thresholds for the exact release candidate. Mandatory criteria cannot be waived; only cosmetic differences without effects on meaning, legibility, interaction, accessibility, or performance may receive a recorded waiver.
+_Avoid_: General QA checklist, design wish list
+
+**Release Dossier**:
+The authoritative validation record tied to one exact release-candidate commit. It contains the completed acceptance matrix, automated reports, manual walkthrough records, source and copy review, physical-device evidence, approved waivers, and the final release verdict.
+_Avoid_: Informal QA notes, evidence from an unspecified build
