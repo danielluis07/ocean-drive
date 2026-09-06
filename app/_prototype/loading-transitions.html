@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ocean Drive · Laboratório de transições</title>
+<style>
+  :root { color-scheme: light; --paper:#edf3f1; --ink:#133e43; --muted:#46656a; --line:#b8cdca; --ocean:#123d45; --accent:#906721; --white:#fff; font-family:system-ui,sans-serif; }
+  * { box-sizing:border-box; } body { margin:0; padding-bottom:140px; background:var(--paper); color:var(--ink); line-height:1.55; }
+  header, main { max-width:1320px; margin:auto; padding:24px 32px; } header { padding-bottom:8px; }
+  h1,h2,h3,p { margin:0 0 14px; } h1 { font:normal clamp(2rem,4vw,3.6rem)/1.1 Georgia,serif; max-width:900px; }
+  h2 { font-size:1.2rem; } h3 { font-size:1rem; } .eyebrow { font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .muted, small { color:var(--muted); } .layout { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr); gap:24px; align-items:start; }
+  .panel { padding:24px; border:1px solid var(--line); border-radius:8px; background:var(--white); margin-bottom:24px; }
+  .visitor { border-top:5px solid var(--accent); } .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  button, select, .button { font:inherit; min-height:44px; padding:9px 13px; border:1px solid var(--line); border-radius:4px; background:var(--white); color:var(--ink); cursor:pointer; text-decoration:none; }
+  button:hover, .button:hover { border-color:var(--ink); } button:disabled { opacity:.5; cursor:default; }
+  button.primary { background:var(--ink); color:white; border-color:var(--ink); }
+  :focus-visible { outline:3px solid var(--accent); outline-offset:4px; } [tabindex="-1"]:focus { outline:3px solid var(--accent); outline-offset:4px; }
+  .skip { position:absolute; left:-9999px; } .skip:focus { left:20px; top:10px; background:white; padding:10px; z-index:5; }
+  .brand { display:flex; gap:16px; justify-content:space-between; align-items:start; margin-bottom:24px; }
+  .brand strong { display:block; } .brand small { display:block; } .status { margin:18px 0; padding:12px 0; border-block:1px solid var(--line); }
+  .sea { background:var(--ocean); color:#edf3f1; min-height:170px; padding:24px; border-radius:4px; margin:16px 0; }
+  .sea small { color:#c4d8d6; } .sea h3 { font:italic 1.7rem Georgia,serif; }
+  .reader { border-left:3px solid var(--accent); padding-left:18px; margin:22px 0; }
+  .reader h3 { font:normal 1.5rem Georgia,serif; } .read-actions { margin-top:16px; }
+  dl { margin:0; } .fact { display:grid; grid-template-columns:1fr 1.2fr; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:.88rem; }
+  dt { color:var(--muted); } dd { margin:0; overflow-wrap:anywhere; }
+  .milestones { padding-left:22px; font-size:.88rem; } .milestones li { margin-bottom:7px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; } [aria-selected="true"] { background:var(--ink); color:white; }
+  .steps { display:grid; gap:8px; } .steps button { text-align:left; } .steps button[aria-current="step"] { border:2px solid var(--accent); }
+  .tools { display:flex; flex-wrap:wrap; gap:6px; } .tools button { font-size:.8rem; }
+  details { margin-top:16px; } summary { cursor:pointer; padding:10px 0; } #event-log { font-size:.85rem; padding-left:22px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  [hidden] { display:none !important; } .question { max-width:920px; } label { display:block; margin:12px 0 6px; }
+  .guide-dock { position:fixed; bottom:0; left:0; right:0; z-index:2; background:var(--paper); border-top:2px solid var(--accent); padding:14px max(16px,calc((100vw - 1256px)/2)); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .guide-dock small { display:block; } .guide-dock a { color:var(--ink); }
+  @media(max-width:850px) { .layout { grid-template-columns:1fr; } header,main { padding:20px 16px; } .panel { padding:18px; } .brand { flex-direction:column; } select { width:100%; } }
+</style>
+<a class="skip" href="#visitor-heading">Ir para a experiência</a>
+<header>
+  <p class="eyebrow">Ocean Drive / protótipo descartável / decisão em aberto</p>
+  <h1>O que acontece enquanto o mar fica pronto?</h1>
+  <p class="question">Explore quando a expedição muda de apresentação, o que continua disponível e como a leitura sobrevive a uma falha. Os botões do laboratório simulam eventos; não há downloads, cronômetros, 3D real ou dados salvos.</p>
+  <p class="muted">O texto das estações é ilustrativo. Este ensaio decide comportamento; a redação científica e a direção visual já aprovadas continuam em suas fontes originais.</p>
+</header>
+<main>
+  <div class="layout">
+    <section class="panel visitor" aria-label="Prévia da experiência">
+      <div class="brand"><div><strong>Instituto Maré Aberta</strong><small>Observatório Atlântico Vivo</small></div><a id="text-route" class="button" href="#visitor-heading">Versão em texto</a></div>
+      <h2 id="visitor-heading" tabindex="-1">Conduza a expedição e conecte os sinais de um oceano em mudança.</h2>
+      <p>Uma expedição por Pulso de Calor, Corais sob Estresse, Respostas Desiguais e Convergência.</p>
+      <div id="visitor-status" class="status" role="status" aria-live="polite" aria-atomic="true">A história já está disponível para leitura.</div>
+      <div id="presentation-actions" class="row"></div>
+      <div id="ocean" class="sea" hidden><small>Representação estática do oceano · sem simulação</small><h3>Mar aberto</h3><p id="sailing-state"></p><div id="helm" class="row"></div></div>
+      <div id="reader" class="reader" hidden></div>
+      <nav id="stations" aria-label="Estações da expedição"></nav>
+      <details id="disclosure"><summary>Pesquisa histórica · expedição fictícia</summary><p>Esta experiência é uma composição retrospectiva criada a partir de pesquisas sobre Abrolhos em 2019. O Instituto Maré Aberta, a embarcação, as estações e o percurso são fictícios. Lugares, datas, organismos, medições e observações vêm das fontes indicadas. A experiência não mostra as condições atuais dos recifes.</p></details>
+      <noscript><p>O laboratório precisa de JavaScript para simular mudanças. Na produção, a história completa e suas fontes estarão neste HTML.</p></noscript>
+    </section>
+    <aside class="panel" aria-label="Estado da simulação">
+      <p class="eyebrow">Somente no laboratório</p><h2>Estado após cada ação</h2><dl id="state"></dl>
+      <h3 style="margin-top:20px">Marcos de preparação</h3><ol id="milestones" class="milestones"></ol>
+      <p class="muted"><small>Marcos concluídos não equivalem a uma porcentagem. A interface comunica a etapa atual; este painel expõe os detalhes só para revisão.</small></p>
+    </aside>
+  </div>
+  <section class="panel" aria-labelledby="guide-heading">
+    <p class="eyebrow">Percursos guiados</p><h2 id="guide-heading">Experimente os casos difíceis</h2>
+    <label for="entry-policy">Comparar a primeira aparição do oceano</label>
+    <select id="entry-policy"><option value="automatic">A · Mostrar assim que estiver pronto, se ninguém começou a ler</option><option value="explicit">B · Sempre esperar “Explorar em 3D”</option></select>
+    <p class="muted"><small>Ambas preservam uma leitura iniciada e deixam a navegação parada até uma ação explícita. Trocar a opção reinicia o percurso.</small></p>
+    <div id="tabs" class="tabs" role="tablist" aria-label="Percursos guiados"></div>
+    <div id="walkthrough" role="tabpanel" tabindex="0"><h3 id="scenario-title"></h3><p id="scenario-description"></p><div id="steps" class="steps"></div></div>
+  </section>
+  <section class="panel"><h2>Exploração livre</h2><p class="muted">Acione eventos em qualquer ordem. Um evento impossível mantém o estado e explica por quê. “Reiniciar laboratório” começa outra visita; “Recomeçar expedição” só limpa o progresso.</p><div id="free-play" class="tools"></div><details><summary>Registro das últimas ações</summary><ol id="event-log"></ol></details></section>
+</main>
+<div id="guide-dock" class="guide-dock" aria-label="Próximo passo do percurso"></div>
+<script>
+// Throwaway decision model. No rendering, timers, storage, or browser APIs here.
+const stationNames = ['Pulso de Calor', 'Corais sob Estresse', 'Respostas Desiguais', 'Convergência'];
+const milestoneNames = ['Compatibilidade verificada', 'Recursos de navegação recebidos', 'Embarcação recebida', 'Oceano, leme e primeira estação preparados', 'Primeiro quadro válido e controles prontos'];
+function initialState(policy = 'automatic') {
+  return { policy, phase:0, presentation:'text', intent:'undecided', reduced:false, override:false,
+    locked:false, recovery:false, losses:0, deferred:'pending', fonts:'pending', hidden:false,
+    paused:true, started:false, station:null, bookmarks:[0,0,0,0], completed:[], order:[], connected:false,
+    pose:{x:0,z:0,heading:0}, sources:false, focus:'visitor-heading', focusRequest:null,
+    notice:'A história já está disponível. Verificando a navegação em 3D.', reason:'' };
+}
+function available(s, index) { return index === 0 || (index < 3 ? s.completed.includes(0) : [0,1,2].every(i => s.completed.includes(i))); }
+function reduce(previous, action) {
+  const s = structuredClone(previous);
+  s.focusRequest = null;
+  const focus = id => { s.focus = id; s.focusRequest = id; };
+  const passageFocus = () => s.station === null ? 'visitor-heading' : 'passage-heading';
+  const reject = message => { s.notice = message; return s; };
+  const switchText = message => { s.presentation='text'; s.paused=true; s.sources=false; s.notice=message; focus(passageFocus()); };
+  const switchOcean = () => { s.presentation='ocean'; s.paused=true; s.sources=false; s.intent='ocean'; s.notice='O oceano está pronto. A navegação está pausada.'; focus(s.station === null ? 'resume' : 'passage-heading'); };
+  if (action.type === 'reset') return initialState(s.policy);
+  switch(action.type) {
+    case 'milestone':
+      if (s.locked || s.recovery || (s.reduced && !s.override)) return reject('A preparação em 3D está suspensa. A leitura continua disponível.');
+      if (s.phase === 5) return reject('O oceano já está pronto.');
+      s.phase++;
+      s.notice=['','Preparando a navegação em 3D. A história já está disponível.','Carregando a embarcação. Você pode continuar lendo.','Preparando o oceano e os controles.','Conferindo a primeira imagem e os controles.','O oceano está pronto. Explore em 3D quando quiser.'][s.phase];
+      if(s.phase===5 && !s.hidden && s.intent==='undecided' && s.policy==='automatic' && !s.reduced) switchOcean();
+      break;
+    case 'text': s.intent='text'; switchText('Versão em texto. Seu lugar na expedição foi preservado.'); break;
+    case 'enter':
+      if(s.locked || s.recovery || s.hidden || s.phase !== 5) return reject('O oceano ainda não está disponível. A leitura continua.');
+      switchOcean(); break;
+    case 'read': {
+      if(!available(s,action.index)) return reject('Conclua as estações anteriores para abrir esta estação.');
+      s.station=action.index; s.paused=true; s.sources=false;
+      if(s.presentation==='text') s.intent='text';
+      if([1,2].includes(action.index) && !s.order.includes(action.index)) s.order.push(action.index);
+      s.notice='Leitura aberta. A navegação está pausada.'; focus('passage-heading'); break;
+    }
+    case 'next': case 'previous':
+      if(s.station===null || s.sources) return reject('Abra um sinal da estação para mudar a passagem.');
+      s.bookmarks[s.station]=Math.max(0,Math.min(2,s.bookmarks[s.station]+(action.type==='next'?1:-1)));
+      s.notice='Sinal '+(s.bookmarks[s.station]+1)+' de 3. A estação ainda exige confirmação para ser concluída.'; focus('passage-heading'); break;
+    case 'sources':
+      if(s.station===null) return reject('Abra uma estação para consultar seu caderno.');
+      s.sources=!s.sources; s.notice=s.sources?'Caderno de bordo aberto. Seu sinal foi preservado.':'De volta ao mesmo sinal.'; focus(s.sources?'source-heading':'source-button'); break;
+    case 'complete':
+      if(s.station===null || s.bookmarks[s.station]!==2 || s.sources) return reject('Chegue ao último sinal e confirme para concluir a estação.');
+      if(!s.completed.includes(s.station)) s.completed.push(s.station);
+      if(s.station===3) s.connected=true;
+      s.station=null; s.sources=false; s.paused=true;
+      s.notice=s.connected?'Expedição conectada. Você pode revisitar as estações.':([0,1,2].every(i=>s.completed.includes(i))?'Estação concluída. Convergência está disponível.':'Estação concluída. Escolha a próxima estação.');
+      focus('visitor-heading'); break;
+    case 'back':
+      if(s.sources) { s.sources=false; focus('source-button'); s.notice='De volta ao mesmo sinal.'; }
+      else { s.station=null; s.paused=true; s.notice='Leitura guardada, sem concluir a estação.'; focus(s.presentation==='ocean'?'resume':'visitor-heading'); }
+      break;
+    case 'resume':
+      if(s.presentation!=='ocean' || s.station!==null || s.hidden || s.locked || s.phase!==5) return reject('Retome a navegação no oceano, fora da leitura de uma estação.');
+      s.paused=false; s.started=true; s.notice='Expedição em movimento.'; focus('pause'); break;
+    case 'pause': s.paused=true; s.notice='Navegação pausada.'; focus(s.presentation==='ocean' && s.station===null?'resume':passageFocus()); break;
+    case 'sail':
+      if(s.paused || s.presentation!=='ocean' || s.hidden) return reject('A embarcação não se move enquanto a expedição está pausada.');
+      s.pose.x+=4; s.pose.z+=2; s.pose.heading=(s.pose.heading+15)%360; s.notice='Posição e direção atualizadas neste passo simulado.'; break;
+    case 'hide': s.hidden=true; s.paused=true; s.notice='Aba oculta. Navegação e renderização pausadas.'; break;
+    case 'show': s.hidden=false; s.notice='Você voltou. A expedição continua pausada.'; focus(s.presentation==='ocean' && s.station===null?'resume':passageFocus()); break;
+    case 'restore':
+      s.hidden=false; s.paused=true; s.sources=false; s.phase=0;
+      switchText('Seu lugar foi restaurado. Leia agora ou prepare o oceano para retomar.');
+      s.intent='text'; break;
+    case 'reduced':
+      s.reduced=true; s.override=false; s.intent='text'; s.phase=0;
+      switchText('A versão em texto respeita sua preferência por menos movimento.'); break;
+    case 'override':
+      if(!s.reduced || s.locked) return reject('A opção de movimento reduzido depende da preferência e da disponibilidade do 3D.');
+      s.override=true; s.notice=s.phase===5?'O 3D com movimento reduzido está pronto.':'Preparando 3D com movimento reduzido. Sua leitura continua.'; break;
+    case 'unavailable': case 'essential': case 'performance':
+      s.locked=true; s.phase=0; s.recovery=false;
+      s.reason={unavailable:'Este navegador não conseguiu iniciar o oceano.',essential:'Não foi possível preparar a navegação em 3D.',performance:'A navegação ficou lenta demais neste dispositivo.'}[action.type];
+      switchText(s.reason+' Continue a mesma expedição em texto.'); break;
+    case 'loss':
+      if(s.presentation!=='ocean' || s.locked) return reject('Não há um oceano ativo para interromper.');
+      s.losses++; s.phase=0; s.recovery=s.losses===1; s.locked=s.losses>1;
+      s.reason=s.locked?'O oceano foi interrompido novamente. O 3D está indisponível nesta visita.':'O oceano foi interrompido. Tentando recuperá-lo uma vez.';
+      switchText(s.reason+' Seu lugar foi preservado.'); break;
+    case 'recovered':
+      if(!s.recovery) return reject('Não há recuperação em andamento.');
+      s.recovery=false; s.phase=5; s.reason=''; s.notice='O oceano foi recuperado. Volte ao 3D quando quiser.'; break;
+    case 'recovery-failed':
+      if(!s.recovery) return reject('Não há recuperação em andamento.');
+      s.recovery=false; s.locked=true; s.reason='Não foi possível recuperar o oceano nesta visita.'; s.notice=s.reason+' A expedição continua em texto.'; break;
+    case 'deferred-ready': s.deferred='ready'; s.notice='Detalhes das próximas estações disponíveis. Seu lugar foi preservado.'; break;
+    case 'deferred-failed': s.deferred='failed'; s.notice=''; break;
+    case 'font-failed': s.fonts='fallback'; s.notice=''; break;
+    case 'restart': {
+      const fresh=initialState(s.policy);
+      Object.assign(s,{station:null,bookmarks:fresh.bookmarks,completed:[],order:[],connected:false,pose:fresh.pose,paused:true,started:false,sources:false});
+      s.notice='Expedição reiniciada. A disponibilidade do 3D nesta visita foi mantida.'; focus('visitor-heading'); break;
+    }
+    default: return reject('Ação desconhecida.');
+  }
+  return s;
+}
+</script>
+<script>
+// Thin demo shell: all events are manual; no artificial loading duration.
+let state=initialState();
+let selectedScenario=0;
+let stepIndex=0;
+let log=[];
+const $=id=>document.getElementById(id);
+const event=(type,index)=>({type,index});
+const prepare=Array.from({length:5},(_,i)=>[milestoneNames[i],event('milestone')]);
+const openFirst=['Abrir Pulso de Calor',event('read',0)];
+const scenarios=[
+  {name:'Primeira chegada',description:'O texto fica disponível desde o início. O oceano só aparece após a primeira imagem válida e controles prontos. Compare A e B no seletor.',steps:[...prepare,['Explorar em 3D (se necessário)',event('enter')],['Iniciar expedição',event('resume')],['Avançar a embarcação',event('sail')]]},
+  {name:'Leitura durante a espera',description:'Comece a ler antes de o oceano ficar pronto. A prontidão não interrompe a leitura; voltar ao 3D preserva o sinal e fecha o caderno.',steps:[openFirst,['Próximo sinal',event('next')],['Abrir caderno',event('sources')],...prepare,['Escolher 3D',event('enter')],['Voltar à versão em texto',event('text')]]},
+  {name:'Detalhes atrasados',description:'As estações usam conteúdo já entregue e marcos simplificados. Uma fonte personalizada ou detalhe visual atrasado não bloqueia navegação nem narrativa.',steps:[['Falha da fonte personalizada',event('font-failed')],...prepare,['Explorar em 3D',event('enter')],['Falha dos detalhes posteriores',event('deferred-failed')],openFirst,['Próximo sinal',event('next')],['Detalhes ficam prontos durante a leitura',event('deferred-ready')]]},
+  {name:'Falha essencial',description:'Uma embarcação ou oceano inutilizável abre o texto. Não há repetição automática nem botão que tente de novo indefinidamente na mesma visita.',steps:[openFirst,['Próximo sinal',event('next')],['Falha ao preparar o oceano',event('essential')],['Tentar entrar no 3D indisponível',event('enter')],['Recomeçar a expedição',event('restart')],['Tentar carregar novamente na mesma visita',event('milestone')]]},
+  {name:'Recuperar o oceano',description:'A primeira interrupção tenta recuperar o oceano uma vez enquanto a pessoa lê. O sucesso oferece retorno explícito. Uma segunda interrupção encerra o 3D nesta visita.',steps:[...prepare,['Explorar em 3D',event('enter')],['Iniciar',event('resume')],['Mover embarcação',event('sail')],['Interromper o oceano',event('loss')],openFirst,['Próximo sinal',event('next')],['Recuperação concluída',event('recovered')],['Retornar ao 3D',event('enter')],['Interromper pela segunda vez',event('loss')]]},
+  {name:'Retorno e restauração',description:'Ocultar a aba e restaurar a visita preservam posição, direção e leitura. O modelo simula uma restauração em memória; não grava no navegador.',steps:[...prepare,['Explorar em 3D',event('enter')],['Iniciar',event('resume')],['Mover embarcação',event('sail')],['Ocultar aba',event('hide')],['Voltar à aba',event('show')],['Tentar mover sem retomar',event('sail')],['Restaurar visita',event('restore')],...prepare,['Voltar ao 3D',event('enter')],['Retomar expedição',event('resume')]]},
+  {name:'Menos movimento',description:'A preferência abre o texto e impede a preparação automática. A pessoa pode pedir 3D com movimento reduzido; isso nunca anula uma falha definitiva.',steps:[['Preferir menos movimento',event('reduced')],['Tentar carregar sem escolha explícita',event('milestone')],openFirst,['Pedir 3D com movimento reduzido',event('override')],...prepare,['Entrar no 3D reduzido',event('enter')],['Falha essencial',event('essential')],['Tentar sobrepor a falha',event('override')]]},
+  {name:'Progresso compartilhado',description:'Concluir depende da ação explícita no último sinal. Trocas de apresentação, fontes e detalhes visuais nunca concluem uma estação.',steps:[openFirst,['Segundo sinal',event('next')],['Terceiro sinal',event('next')],['Sair sem concluir',event('back')],openFirst,['Continuar expedição',event('complete')],['Escolher Respostas Desiguais primeiro',event('read',2)],['Próximo sinal',event('next')],...prepare,['Ver o mesmo sinal em 3D',event('enter')],['Retornar ao texto',event('text')],['Tentar abrir Convergência antes da hora',event('read',3)]]}
+];
+function button(label, action, id='', primary=false) {
+  const el=document.createElement('button'); el.type='button'; el.textContent=label;
+  if(id) el.id=id; if(primary) el.className='primary'; el.onclick=()=>dispatch(action); return el;
+}
+function dispatch(action, guided=false) {
+  const activeId=document.activeElement?.id;
+  state=reduce(state,action);
+  log.unshift(state.notice || (action.type==='font-failed'?'Fonte do sistema aplicada, sem aviso ao visitante.':'Detalhes simplificados aplicados, sem aviso ao visitante.'));
+  log=log.slice(0,16);
+  if(guided) stepIndex++;
+  render();
+  const requested=state.focusRequest;
+  if(requested && !state.hidden) $(requested)?.focus({preventScroll:true});
+  else if(activeId) $(activeId)?.focus({preventScroll:true});
+  if(guided) renderSteps();
+}
+function render() {
+  const ocean=state.presentation==='ocean';
+  if(state.notice) $('visitor-status').textContent=state.notice;
+  $('ocean').hidden=!ocean;
+  $('sailing-state').textContent=state.station!==null?'Leitura em andamento · embarcação parada':(state.paused?'Navegação pausada':'Navegação em movimento (simulada)');
+  $('presentation-actions').replaceChildren();
+  if(!ocean && !state.locked) {
+    if(state.reduced && !state.override) $('presentation-actions').append(button('Preparar 3D com movimento reduzido',event('override'),'reduced-choice'));
+    else if(state.phase===5 && !state.hidden) $('presentation-actions').append(button(state.losses?'Voltar ao 3D':'Explorar em 3D',event('enter'),'enter',true));
+  }
+  if(state.locked) { const note=document.createElement('p'); note.textContent='3D indisponível nesta visita. A história e as fontes continuam disponíveis.'; $('presentation-actions').append(note); }
+  $('helm').replaceChildren();
+  if(ocean && state.station===null) $('helm').append(state.paused?button(state.started?'Retomar expedição':'Iniciar expedição',event('resume'),'resume'):button('Pausar navegação',event('pause'),'pause'));
+  $('reader').hidden=state.station===null;
+  $('reader').replaceChildren();
+  if(state.station!==null) {
+    const heading=document.createElement('h3'); heading.id=state.sources?'source-heading':'passage-heading'; heading.tabIndex=-1;
+    heading.textContent=state.sources?'Fontes e limites':stationNames[state.station]+' · sinal '+(state.bookmarks[state.station]+1)+' de 3';
+    const copy=document.createElement('p'); copy.textContent=state.sources?'Espaço ilustrativo para os registros já aprovados do Caderno de bordo. Consultar fontes não altera o progresso.':'Passagem ilustrativa para testar a continuidade da leitura. Na produção, este espaço usa o sinal científico já aprovado para esta estação.';
+    $('reader').append(heading,copy);
+    const actions=document.createElement('div'); actions.className='row read-actions';
+    if(state.sources) actions.append(button('Voltar ao sinal',event('sources'),'source-back'));
+    else {
+      const previous=button('Sinal anterior',event('previous'),'previous'); previous.disabled=state.bookmarks[state.station]===0;
+      const next=button('Próximo sinal',event('next'),'next'); next.disabled=state.bookmarks[state.station]===2;
+      actions.append(previous,next,button('Caderno de bordo',event('sources'),'source-button'));
+      if(state.bookmarks[state.station]===2) actions.append(button(state.station===3?'Conectar expedição':'Continuar expedição',event('complete'),'complete',true));
+      actions.append(button(ocean?'Voltar ao mar':'Voltar às estações',event('back'),'back'));
+    }
+    $('reader').append(actions);
+  }
+  $('stations').replaceChildren();
+  const routeLabel=document.createElement('p'); routeLabel.textContent=state.connected?'Expedição conectada · revisitar estações':'Estações da expedição'; $('stations').append(routeLabel);
+  const stationButtons=document.createElement('div'); stationButtons.className='row';
+  stationNames.forEach((name,index)=> {
+    const suffix=state.completed.includes(index)?' · concluída':state.station===index?' · atual':available(state,index)?' · disponível':' · indisponível';
+    const el=button(name+suffix,event('read',index),'station-'+index); el.disabled=!available(state,index); stationButtons.append(el);
+  });
+  $('stations').append(stationButtons);
+  const facts=[
+    ['Apresentação',ocean?'Oceano':'Texto'],['Navegação',state.hidden?'Aba oculta · pausada':state.paused?'Pausada':'Em movimento'],
+    ['Escolha de apresentação',{undecided:'Ainda não escolhida',text:'Texto / leitura iniciada',ocean:'Oceano'}[state.intent]],
+    ['Prontidão',state.locked?'Indisponível nesta visita':state.recovery?'Uma recuperação em andamento':state.phase===5?'Pronto':'Etapa '+(state.phase+1)+' pendente'],
+    ['Menos movimento',state.reduced?(state.override?'3D reduzido escolhido':'Texto por preferência'):'Não solicitado'],
+    ['Estação atual',state.station===null?'Nenhuma aberta':stationNames[state.station]],
+    ['Sinais guardados',state.bookmarks.map((n,i)=>stationNames[i]+': '+(n+1)).join(' / ')],
+    ['Estações concluídas',state.completed.map(i=>stationNames[i]).join(', ')||'Nenhuma'],
+    ['Ordem intermediária',state.order.map(i=>stationNames[i]).join(' → ')||'Ainda não escolhida'],
+    ['Expedição conectada',state.connected?'Sim':'Não'],['Embarcação','x '+state.pose.x+' / z '+state.pose.z+' / direção '+state.pose.heading+'°'],
+    ['Caderno',state.sources?'Aberto':'Fechado'],['Destino de foco',{'visitor-heading':'Título da apresentação','passage-heading':'Mesmo sinal','source-heading':'Fontes e limites','source-button':'Caderno de bordo',resume:'Iniciar / retomar',pause:'Pausar navegação'}[state.focus]||state.focus],
+    ['Interrupções do oceano',String(state.losses)],['Detalhes posteriores',{pending:'Aguardando · base utilizável',ready:'Disponíveis',failed:'Simplificados · sem bloquear'}[state.deferred]],
+    ['Tipografia',state.fonts==='fallback'?'Fonte do sistema':'Fonte do sistema até a fonte personalizada chegar'],['Motivo de fallback',state.reason||'Nenhum']
+  ];
+  $('state').replaceChildren(...facts.map(([key,value])=> { const div=document.createElement('div'); div.className='fact'; const dt=document.createElement('dt'); dt.textContent=key; const dd=document.createElement('dd'); dd.textContent=value; div.append(dt,dd); return div; }));
+  $('milestones').replaceChildren(...milestoneNames.map((name,i)=> {const li=document.createElement('li'); li.textContent=(state.phase>i?'Concluído · ':'Pendente · ')+name; return li;}));
+  $('event-log').replaceChildren(...log.map(item=> {const li=document.createElement('li'); li.textContent=item; return li;}));
+}
+function renderSteps() {
+  const scenario=scenarios[selectedScenario];
+  const dockLabel=document.createElement('div'); const dockTitle=document.createElement('strong'); dockTitle.textContent=scenario.name;
+  const dockLink=document.createElement('a'); dockLink.href='#guide-heading'; dockLink.textContent='Escolher outro percurso'; const dockSmall=document.createElement('small'); dockSmall.append(dockLink); dockLabel.append(dockTitle,dockSmall); $('guide-dock').replaceChildren(dockLabel);
+  if(stepIndex<scenario.steps.length) {const [label,action]=scenario.steps[stepIndex]; const next=button((stepIndex+1)+' / '+scenario.steps.length+' · '+label,action,'dock-next',true); next.onclick=()=>dispatch(action,true); $('guide-dock').append(next);}
+  else {const done=document.createElement('span'); done.textContent='Percurso concluído'; $('guide-dock').append(done);}
+  $('steps').replaceChildren(...scenario.steps.map(([label,action],i)=> {const el=button((i<stepIndex?'Feito · ': (i+1)+'. ')+label,action); el.id='step-'+i; el.disabled=i!==stepIndex; if(i===stepIndex) el.setAttribute('aria-current','step'); el.onclick=()=>dispatch(action,true); return el;}));
+  if(stepIndex===scenario.steps.length) {const p=document.createElement('p'); p.textContent='Percurso concluído. Compare o estado ou continue na exploração livre.'; $('steps').append(p);}
+}
+function selectScenario(index) {
+  selectedScenario=index; stepIndex=0; state=initialState($('entry-policy').value); log=[];
+  $('tabs').replaceChildren(...scenarios.map((scenario,i)=> {const el=document.createElement('button'); el.id='tab-'+i; el.type='button'; el.setAttribute('role','tab'); el.setAttribute('aria-selected',String(i===index)); el.setAttribute('aria-controls','walkthrough'); el.tabIndex=i===index?0:-1; el.textContent=scenario.name; el.onclick=()=>{selectScenario(i); $('tab-'+i).focus();}; el.onkeydown=e=>{let next=i; if(e.key==='ArrowRight') next=(i+1)%scenarios.length; else if(e.key==='ArrowLeft') next=(i-1+scenarios.length)%scenarios.length; else if(e.key==='Home') next=0; else if(e.key==='End') next=scenarios.length-1; else return; e.preventDefault(); selectScenario(next); $('tab-'+next).focus();}; return el;}));
+  $('walkthrough').setAttribute('aria-labelledby','tab-'+index);
+  $('scenario-title').textContent=scenarios[index].name;
+  $('scenario-description').textContent=scenarios[index].description;
+  render(); renderSteps();
+}
+const freeActions=[['Concluir próximo marco','milestone'],['Explorar em 3D','enter'],['Versão em texto','text'],['Iniciar / retomar','resume'],['Pausar','pause'],['Mover embarcação','sail'],['Próximo sinal','next'],['Sinal anterior','previous'],['Caderno de bordo','sources'],['Sair da leitura / caderno','back'],['Confirmar conclusão','complete'],['Ocultar aba','hide'],['Voltar à aba','show'],['Restaurar visita','restore'],['Preferir menos movimento','reduced'],['Pedir 3D reduzido','override'],['Navegador sem 3D','unavailable'],['Falha essencial','essential'],['Desempenho insuficiente no mínimo','performance'],['Interromper oceano','loss'],['Recuperação concluída','recovered'],['Recuperação falhou','recovery-failed'],['Detalhes prontos','deferred-ready'],['Falha dos detalhes','deferred-failed'],['Falha da fonte','font-failed'],['Recomeçar expedição','restart']];
+$('free-play').append(...freeActions.map(([label,type],i)=>button(label,event(type),'free-'+i)),...stationNames.map((name,i)=>button('Abrir '+name,event('read',i),'free-station-'+i)));
+const resetButton=document.createElement('button'); resetButton.textContent='Reiniciar laboratório'; resetButton.onclick=()=>selectScenario(selectedScenario); $('free-play').append(resetButton);
+$('text-route').onclick=e=>{e.preventDefault(); dispatch(event('text'));};
+$('entry-policy').onchange=()=>selectScenario(selectedScenario);
+document.addEventListener('keydown',e=>{if(e.key==='Escape' && state.station!==null) {e.preventDefault(); dispatch(event('back'));}});
+selectScenario(0);
+</script>
+</html>
