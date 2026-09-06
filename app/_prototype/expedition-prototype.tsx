@@ -18,7 +18,12 @@ import {
 } from "@/app/_prototype/expedition";
 import "@/app/_prototype/prototype.css";
 import StationReader from "@/app/_prototype/station-reader";
-import { readingVariants, stationContent } from "@/app/_prototype/station-content";
+import {
+  readingVariants,
+  sourceRecords,
+  stationContent,
+  wrapperDisclosure,
+} from "@/app/_prototype/station-content";
 
 const OceanRenderer = dynamic(() => import("@/app/_prototype/ocean-renderer"), {
   ssr: false,
@@ -368,14 +373,43 @@ export default function ExpeditionPrototype() {
           </h1>
           <p>{s.fallback || "A mesma história, no seu ritmo."}</p>
           <p>
-            Estudo de apresentação. Os mesmos trechos e fontes das estações,
-            em uma leitura independente do oceano. Texto em revisão.
+            A mesma expedição em uma leitura sem movimento, com os mesmos
+            sinais, fontes e limites da evidência.
           </p>
+          <p className="boundary-copy">{wrapperDisclosure}</p>
           {stations.map((station, i) => (
             <section key={station.name}>
               <p className="eyebrow">{station.name}</p>
               <h2>{station.heading}</h2>
-              {stationContent[i].paragraphs.map((paragraph, j) => <p key={paragraph}>{paragraph} <a href={sourceUrl} target="_blank" rel="noreferrer">Fonte do trecho {j + 1}</a></p>)}
+              {stationContent[i].passages.map((passage, passageIndex) => {
+                const sourceIds = Array.from(
+                  new Set(passage.claims.flatMap((claim) => claim.sources)),
+                );
+
+                return (
+                  <div key={passage.title}>
+                    <h3>{passage.title}</h3>
+                    <p>
+                      {passage.claims.map((claim) => claim.text).join(" ")}
+                    </p>
+                    <p>
+                      Fontes do sinal {passageIndex + 1}:{" "}
+                      {sourceIds.map((id, sourceIndex) => (
+                        <span key={id}>
+                          {sourceIndex > 0 ? " · " : null}
+                          <a
+                            href={sourceRecords[id].href}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {sourceRecords[id].credit} ↗
+                          </a>
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                );
+              })}
               {s.completed.includes(i) ? (
                 <small>Visitada na expedição</small>
               ) : null}
@@ -384,10 +418,7 @@ export default function ExpeditionPrototype() {
           <a href={sourceUrl} target="_blank" rel="noreferrer">
             Consultar a pesquisa de Duarte e colaboradores ↗
           </a>
-          <p className="boundary-copy">
-            O Instituto Maré Aberta e o percurso são fictícios. O episódio
-            científico é real. Posições ilustrativas, sem escala geográfica.
-          </p>
+          <p className="boundary-copy">{wrapperDisclosure}</p>
           {!s.reduced ? (
             <button
               className="primary"
@@ -421,7 +452,8 @@ export default function ExpeditionPrototype() {
                 <br className="desktop-break" /> de um oceano em mudança.
               </p>
               <small>
-                Instituto e percurso fictícios. Episódio científico real.
+                Instituto, embarcação e percurso fictícios. Evidências
+                históricas de 2019.
               </small>
             </section>
           ) : null}

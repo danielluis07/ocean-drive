@@ -5,6 +5,8 @@
 
 # Local throwaway checkouts and their tooling caches
 /.prototypes/
+/.bun-cache/
+/.tmp/
 /.pnp
 .pnp.*
 .yarn/*
