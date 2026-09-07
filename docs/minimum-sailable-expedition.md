@@ -16,9 +16,9 @@ requested. Hidden tabs pause movement; restoration opens text and requires expli
 3D entry and resume. Essential startup failures and context loss lock 3D for the
 visit while preserving editorial reading and Expedition State.
 
-The initial scene includes the first Field Station and its semantic reading action.
-The existing editorial story remains the reading surface. The complete spatial
-station journey belongs to #25; assisted navigation and bounded waters to #26;
+The initial scene included the first Field Station and its semantic reading action.
+The [complete spatial station journey](field-station-journey.md) extends it in #25
+with arrival-based reading and all four destinations. Assisted navigation and bounded waters belong to #26;
 adaptive quality and one-attempt context restoration to #27. This implementation
 uses a conservative initial Balanced/Low selection, not the adaptive controller.
 

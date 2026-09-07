@@ -9,6 +9,8 @@ import Opening from "@/components/expedition/opening";
 import RouteNavigation from "@/components/expedition/route-navigation";
 import StationList from "@/components/expedition/station-list";
 import OceanPresentation from "@/components/ocean/ocean-presentation";
+import StationReader from "@/components/ocean/station-reader";
+import { closeDisclosures, focusOceanTarget } from "@/lib/reader-interactions";
 import { stations, type Station, type StationId } from "@/content/editorial";
 import {
   createInitialExpeditionState,
@@ -47,6 +49,7 @@ function ExpeditionContent() {
   } = useExpedition();
   const [announcement, setAnnouncement] = useState("");
   const [showAllSources, setShowAllSources] = useState(false);
+  const threeD = expedition.presentation === "three-dimensional";
   const availableStationIds = getAvailableStationIds(
     expedition,
     stations,
@@ -126,6 +129,7 @@ function ExpeditionContent() {
   function changeSignal(station: Station, signalIndex: number) {
     if (signalIndex < 0 || signalIndex >= station.signals.length) return;
     setReaderOpen(true);
+    closeDisclosures();
     setExpedition((current) =>
       transitionExpedition(current, {
         type: "set-bookmark",
@@ -136,7 +140,7 @@ function ExpeditionContent() {
     setAnnouncement(
       `${station.name}. Sinal ${signalIndex + 1} de ${station.signals.length}: ${station.signals[signalIndex].title}`,
     );
-    focusAndScrollToElement(`${station.id}-signal-${signalIndex + 1}`);
+    (threeD ? focusOceanTarget : focusAndScrollToElement)(`${station.id}-signal-${signalIndex + 1}`);
   }
 
   function completeStation(station: Station) {
@@ -161,6 +165,16 @@ function ExpeditionContent() {
       (id) => !nextState.completedStations.includes(id),
     );
     setExpedition(nextState);
+
+    if (threeD) {
+      closeReader();
+      setAnnouncement(isEvidenceComplete(nextState)
+        ? "Três estações concluídas. Conduza até Convergência para conectar a expedição."
+        : station.id === "pulso-de-calor"
+          ? "Pulso de Calor concluída. Corais sob Estresse e Respostas Desiguais estão iluminadas; escolha seu percurso."
+          : `${station.name} concluída. Continue até a outra estação iluminada.`);
+      return;
+    }
 
     if (station.id === "pulso-de-calor") {
       setAnnouncement(
@@ -188,10 +202,18 @@ function ExpeditionContent() {
       transitionExpedition(current, { type: "restart-expedition" }),
     );
     setShowAllSources(false);
+    if (threeD) closeReader();
     setAnnouncement(
       "Expedição reiniciada. Pulso de Calor é a única estação disponível.",
     );
-    focusAndScrollToElement("pulso-de-calor-title");
+    if (!threeD) focusAndScrollToElement("pulso-de-calor-title");
+  }
+
+  function closeReader() {
+    closeDisclosures();
+    setReaderOpen(false);
+    setShowAllSources(false);
+    focusOceanTarget("expedition-movement");
   }
 
   function showSources() {
@@ -200,10 +222,31 @@ function ExpeditionContent() {
     focusAndScrollToElement("fontes-da-expedicao-title");
   }
 
+  const stationContent = (
+    <>
+      <StationList
+        availableStationIds={availableStationIds}
+        enhanced={enhanced}
+        expedition={expedition}
+        onChangeSignal={changeSignal}
+        onComplete={completeStation}
+      />
+      <Connected
+        connected={expedition.connected}
+        onRestart={restartExpedition}
+        onReviewStations={() => threeD ? closeReader() : focusAndScrollToElement("route-title")}
+        onShowSources={showSources}
+      />
+      <AllSources visible={showAllSources} />
+    </>
+  );
+
   return (
     <div
       className="expedition"
       data-enhanced={enhanced}
+      data-presentation={expedition.presentation}
+      data-reading={readerOpen}
       data-connected={expedition.connected}>
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo
@@ -213,10 +256,9 @@ function ExpeditionContent() {
       </p>
       <main id="conteudo-principal">
         <OceanPresentation configuration={oceanConfiguration} />
-        <div
-          hidden={
-            expedition.presentation === "three-dimensional" && !readerOpen
-          }>
+        {threeD ? (
+          readerOpen ? <StationReader onClose={closeReader}>{stationContent}</StationReader> : null
+        ) : <div>
           <Opening />
           <EditorialIntro />
           <RouteNavigation
@@ -225,22 +267,9 @@ function ExpeditionContent() {
             expedition={expedition}
             onOpenStation={openStation}
           />
-          <StationList
-            availableStationIds={availableStationIds}
-            enhanced={enhanced}
-            expedition={expedition}
-            onChangeSignal={changeSignal}
-            onComplete={completeStation}
-          />
-          <Connected
-            connected={expedition.connected}
-            onRestart={restartExpedition}
-            onReviewStations={() => focusAndScrollToElement("route-title")}
-            onShowSources={showSources}
-          />
-          <AllSources visible={showAllSources} />
+          {stationContent}
           <Closing />
-        </div>
+        </div>}
       </main>
     </div>
   );

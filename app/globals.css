@@ -60,7 +60,7 @@
   pointer-events: none;
   z-index: -1;
 }
-.ocean-world[data-reading="true"] { height: 48svh; min-height: 360px; }
+.ocean-world[data-reading="true"] { grid-template-rows: minmax(0, 1fr); }
 .ocean-world canvas { touch-action: none; }
 .ocean-world > div:first-child { min-height: 0; }
 .ocean-caption { position: absolute; top: 2rem; left: 3rem; color: var(--petroleum-deep); pointer-events: none; }
@@ -99,6 +99,10 @@
 .beacon-label span, .beacon-label small { font-size: 0.7rem; font-weight: 400; }
 .beacon-label small { color: var(--ochre); text-decoration: underline; text-underline-offset: 0.2em; }
 .beacon-label:hover { background: var(--petroleum); }
+.beacon-label:disabled { cursor: default; }
+.beacon-label[data-reading="true"] { min-height: 0; padding: 0.45rem 0.65rem; font-size: 0.85rem; }
+.beacon-label[data-reading="true"] span,
+.beacon-label[data-reading="true"] small { display: none; }
 
 @media (max-width: 700px) {
   .presentation-bar { flex-wrap: wrap; padding: 0.7rem 1rem; gap: 0.4rem; }
@@ -111,6 +115,8 @@
   .helm-controls { gap: 0.5rem; padding-inline: 0.75rem; }
   .helm-controls button { padding-inline: 0.6rem; font-size: 0.78rem; }
   .ocean-world[data-reading="true"] .ocean-caption { display: none; }
+  .beacon-label { width: 8rem; max-width: 8rem; padding: 0.5rem; font-size: 0.85rem; }
+  .beacon-label span, .beacon-label small { font-size: 0.65rem; }
 }
 
 @media (max-height: 550px) and (orientation: landscape) {
@@ -1409,4 +1415,93 @@ button:focus-visible,
   .signal__marker::after {
     background: CanvasText;
   }
+}
+
+/* The station reader extends Mar aberto: protected ink and salt beside persistent water. */
+.expedition[data-presentation="three-dimensional"][data-reading="true"] main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(26rem, 44%);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100svh;
+}
+.expedition[data-presentation="three-dimensional"][data-reading="true"] .presentation-bar {
+  grid-column: 1 / -1;
+}
+.expedition[data-presentation="three-dimensional"][data-reading="true"] .ocean-world {
+  height: 100%;
+  min-height: 0;
+}
+.station-reader {
+  --ink-muted: var(--mist);
+  --rule: #47676d;
+  --jade: #a8d2c9;
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-color: var(--ochre) var(--petroleum-deep);
+  color: var(--salt);
+  background: var(--petroleum-deep);
+}
+.station-reader__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.station-reader__bar p { margin: 0; font-family: var(--font-editorial); font-size: 1.25rem; }
+.station-reader__bar button,
+.logbook__return {
+  min-height: 44px;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+}
+.station-reader :focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+.station-reader .page-shell { width: auto; margin-inline: 0; padding-inline: clamp(1.25rem, 3vw, 2.5rem); }
+.station-reader .station { padding-top: 2rem; background: transparent; color: inherit; }
+.station-reader .station__header { display: block; margin-bottom: 0; padding-bottom: 1.5rem; }
+.station-reader .station__number,
+.station-reader .signal__marker,
+.station-reader .signals::before,
+.station-reader .station__introduction,
+.station-reader .station__footer button { display: none; }
+.station-reader .station__identity h2 { color: var(--salt); font-size: 1.5rem; line-height: 1.2; }
+.station-reader .station__identity > p { margin-top: 0.5rem; font-size: 0.85rem; }
+.station-reader .station__state { color: var(--ochre); }
+.station-reader .signal { min-height: 0; padding-block: 2rem; }
+.station-reader .signal h3 { max-width: 22ch; margin-bottom: 1.5rem; color: var(--salt); font-size: clamp(2rem, 3vw, 3rem); line-height: 1.12; }
+.station-reader .signal__claims { grid-template-columns: 1fr; gap: 1rem; }
+.station-reader .signal__claims p { max-width: 65ch; font-size: 1rem; }
+.station-reader .logbook { margin-top: 2rem; }
+.station-reader .signal__body:has(> .logbook[open]) > :not(.logbook) { display: none; }
+.station-reader .logbook[open] { margin-top: 0; }
+.station-reader .logbook summary { flex-wrap: wrap; gap: 0.5rem; }
+.station-reader .source-card { padding: 1.5rem 0; background: var(--petroleum-deep); }
+.station-reader .source-card__heading { flex-wrap: wrap; gap: 0.5rem; }
+.station-reader .source-card dl { grid-template-columns: 1fr; gap: 1.25rem; }
+.station-reader .source-card > a { min-height: 44px; color: var(--ochre); }
+.station-reader .logbook__return { background: var(--petroleum-deep); }
+.station-reader .station__completion { align-items: stretch; flex-direction: column; gap: 1rem; }
+.station-reader .station__footer { margin-top: 0; padding-block: 1.5rem; }
+.station-reader .station__footer p { color: var(--mist); }
+.station-reader .connected { grid-template-columns: 1fr; gap: 2rem; padding-block: 3rem; }
+.station-reader .connected h2 { font-size: 2.5rem; }
+.station-reader .all-sources { padding-block: 2rem; }
+.station-reader .all-sources h2 { font-size: 2.5rem; }
+
+@media (max-width: 800px) {
+  .expedition[data-presentation="three-dimensional"][data-reading="true"] main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 28svh minmax(0, 1fr);
+  }
+  .station-reader__bar { padding: 0.75rem 1.25rem; }
+  .station-reader .station { padding-top: 1.5rem; }
+  .station-reader .signal__controls { gap: 0.4rem; }
+  .station-reader .signal__controls button { padding-inline: 0.55rem; }
 }

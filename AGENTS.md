@@ -22,3 +22,7 @@ User-facing copy is in Brazilian Portuguese.
 Prefer the @ alias for imports (see docs/CONVENTIONS.md)
 
 See docs/PROJECT_STRUCTURE.md for the folder layout and file placement guidance.
+
+# Impeccable
+
+Do NOT use impeccable

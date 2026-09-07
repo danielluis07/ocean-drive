@@ -213,7 +213,7 @@ export function transitionExpedition(state: ExpeditionState, action: ExpeditionA
       }
       const completedStations = [...state.completedStations, action.station];
       const nextMiddle = state.middleOrder.find((station) => !completedStations.includes(station));
-      const currentStation = action.station === "pulso-de-calor"
+      const currentStation = state.presentation === "three-dimensional" || action.station === "pulso-de-calor"
         ? state.currentStation
         : nextMiddle ?? "convergencia";
       return { ...state, completedStations, currentStation, pauseState: "paused" };

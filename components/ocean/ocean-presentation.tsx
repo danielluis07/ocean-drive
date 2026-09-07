@@ -12,10 +12,13 @@ import {
 import { useExpedition } from "@/providers/expedition-provider";
 import { dragSteering } from "@/lib/guided-helm";
 import {
+  isStationAvailable,
   transitionExpedition,
   type ThreeDUnavailableReason,
 } from "@/lib/expedition-state";
-import type { OceanConfiguration } from "@/lib/ocean-config";
+import type { OceanConfiguration, OceanStation } from "@/lib/ocean-config";
+import { ARRIVAL_RADIUS, stationDistance } from "@/lib/station-approach";
+import { closeDisclosures, focusOceanTarget as focusTarget } from "@/lib/reader-interactions";
 import type { PreparationStage } from "@/components/ocean/ocean-runtime";
 
 // The only runtime import. Editorial code and the state model never import Three.
@@ -56,22 +59,6 @@ class RuntimeErrorBoundary extends Component<
   render() {
     return this.state.failed ? null : this.props.children;
   }
-}
-
-function focusTarget(id: string) {
-  requestAnimationFrame(() => {
-    const element = document.getElementById(id);
-    element?.focus({ preventScroll: true });
-    element?.scrollIntoView({ block: "nearest", behavior: "instant" });
-  });
-}
-
-function closeDisclosures() {
-  document
-    .querySelectorAll<HTMLDetailsElement>("main details[open]")
-    .forEach((details) => {
-      details.open = false;
-    });
 }
 
 export default function OceanPresentation({
@@ -355,19 +342,20 @@ export default function OceanPresentation({
       livePose.current.heading + (direction * Math.PI) / 18;
   }
 
-  function openFirstStation() {
-    checkpoint();
+  function openStation(station: OceanStation) {
+    if (!active || readerOpen || !isStationAvailable(expedition, station.id)
+      || stationDistance(livePose.current, station) > ARRIVAL_RADIUS + 0.2) return;
+    steering.current = 0;
+    targetHeading.current = null;
+    const arrivalPose = livePose.current;
     setReaderOpen(true);
-    setExpedition((current) =>
-      transitionExpedition(current, {
-        type: "open-station",
-        station: "pulso-de-calor",
-      }),
-    );
+    setExpedition((current) => {
+      const checkpointed = transitionExpedition(current, { type: "checkpoint-vessel", checkpoint: "current", pose: arrivalPose });
+      const arrived = transitionExpedition(checkpointed, { type: "checkpoint-vessel", checkpoint: station.id, pose: arrivalPose });
+      return transitionExpedition(arrived, { type: "open-station", station: station.id });
+    });
     closeDisclosures();
-    focusTarget(
-      `pulso-de-calor-signal-${expedition.bookmarks["pulso-de-calor"] + 1}`,
-    );
+    focusTarget(`${station.id}-signal-${expedition.bookmarks[station.id] + 1}`);
   }
 
   const resumed =
@@ -438,6 +426,9 @@ export default function OceanPresentation({
               reducedMotion={reducedMotion}
               active={active}
               sailing={sailing}
+              reading={readerOpen}
+              availableStations={configuration.stations.filter((station) => isStationAvailable(expedition, station.id)).map((station) => station.id)}
+              completedStations={expedition.connected ? [...expedition.completedStations, "convergencia"] : expedition.completedStations}
               livePose={livePose}
               steering={steering}
               targetHeading={targetHeading}
@@ -445,7 +436,7 @@ export default function OceanPresentation({
               onStage={setStage}
               onFailure={failAsset}
               onCanvas={setCanvas}
-              onStation={openFirstStation}
+              onStation={openStation}
             />
           </RuntimeErrorBoundary>
           <div className="ocean-caption">
@@ -454,18 +445,7 @@ export default function OceanPresentation({
               Mar <em>aberto</em>
             </h1>
           </div>
-          <div className="helm-controls" aria-label="Controles da embarcação">
-            {readerOpen ? (
-              <button
-                id="expedition-movement"
-                type="button"
-                onClick={() => {
-                  setReaderOpen(false);
-                  focusTarget("expedition-movement");
-                }}>
-                Voltar ao mar
-              </button>
-            ) : (
+          <div className="helm-controls" aria-label="Controles da embarcação" hidden={readerOpen}>
               <button
                 id="expedition-movement"
                 type="button"
@@ -476,7 +456,6 @@ export default function OceanPresentation({
                     ? "Retomar expedição"
                     : "Iniciar expedição"}
               </button>
-            )}
             <button type="button" onClick={() => steer(-1)} disabled={!sailing}>
               Virar à esquerda
             </button>

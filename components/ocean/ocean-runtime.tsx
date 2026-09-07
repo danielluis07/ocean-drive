@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/immutability -- Three owns mutable GPU objects; frame updates and ref writes deliberately bypass React rendering. */
 import { Suspense, useEffect, useMemo, useRef, type RefObject } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { Html } from "@react-three/drei/web/Html";
 import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { advanceHelm } from "@/lib/guided-helm";
 import type { VesselPose } from "@/lib/expedition-state";
-import type { OceanConfiguration } from "@/lib/ocean-config";
+import type { StationId } from "@/content/editorial";
+import type { OceanConfiguration, OceanStation } from "@/lib/ocean-config";
+import FieldStationBeacon from "@/components/ocean/field-station-beacon";
+import { advanceStationJourney, type StationNavigation } from "@/lib/station-approach";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
 
@@ -17,6 +18,9 @@ type RuntimeProps = {
   reducedMotion: boolean;
   active: boolean;
   sailing: boolean;
+  reading: boolean;
+  availableStations: StationId[];
+  completedStations: StationId[];
   livePose: RefObject<VesselPose>;
   steering: RefObject<number>;
   targetHeading: RefObject<number | null>;
@@ -24,7 +28,7 @@ type RuntimeProps = {
   onStage: (stage: PreparationStage) => void;
   onFailure: () => void;
   onCanvas: (canvas: HTMLCanvasElement) => void;
-  onStation: () => void;
+  onStation: (station: OceanStation) => void;
 };
 
 const vertexShader = `
@@ -82,6 +86,7 @@ function SailableScene(props: RuntimeProps) {
   const announced = useRef(false);
   const failed = useRef(false);
   const elapsed = useRef(0);
+  const navigation = useRef<StationNavigation>({ departedStation: null, arrivalPending: false });
   const desiredCamera = useMemo(() => new Vector3(), []);
   const lookTarget = useMemo(() => new Vector3(), []);
   const material = useMemo(() => new ShaderMaterial({
@@ -112,9 +117,18 @@ function SailableScene(props: RuntimeProps) {
   useFrame((_, delta) => {
     if (failed.current || document.hidden) return;
     try {
-      const sailing = props.active && props.sailing;
-      props.livePose.current = advanceHelm(props.livePose.current, props.steering.current, delta, sailing, props.targetHeading.current);
-      const pose = props.livePose.current;
+      const journey = advanceStationJourney(props.livePose.current, navigation.current, {
+        stations: props.configuration.stations,
+        availableStations: props.availableStations,
+        sailing: props.active && props.sailing,
+        steering: props.steering.current,
+        targetHeading: props.targetHeading.current,
+        seconds: delta,
+      });
+      props.livePose.current = journey.pose;
+      navigation.current = journey.navigation;
+      if (journey.arrived) props.onStation(journey.arrived);
+      const { pose, sailing } = journey;
       if (sailing && !props.reducedMotion) elapsed.current += Math.min(delta, 0.05);
       material.uniforms.time.value = elapsed.current;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
@@ -125,11 +139,17 @@ function SailableScene(props: RuntimeProps) {
         vesselGroup.current.rotation.y = -pose.heading;
       }
       const portrait = size.width < size.height;
-      const distance = portrait ? 29 : 31;
-      desiredCamera.set(pose.position.x - Math.sin(pose.heading) * distance, portrait ? 53 : 36, pose.position.z + Math.cos(pose.heading) * distance);
-      if (!announced.current || props.reducedMotion) camera.position.copy(desiredCamera);
-      else camera.position.lerp(desiredCamera, 1 - Math.exp(-Math.min(delta, 0.05) * 3));
-      lookTarget.set(pose.position.x + Math.sin(pose.heading) * 17, 0, pose.position.z - Math.cos(pose.heading) * 17);
+      const choosingMiddle = props.completedStations.length === 1 && props.availableStations.length === 3;
+      const distance = props.reading ? 24 : portrait ? 29 : 31;
+      const cameraHeight = props.reading ? 32 : portrait ? choosingMiddle ? 78 : 68 : 36;
+      desiredCamera.set(pose.position.x - Math.sin(pose.heading) * distance, cameraHeight, pose.position.z + Math.cos(pose.heading) * distance);
+      if (!announced.current || props.reducedMotion || props.reading || !sailing) {
+        // Demand rendering needs one more projection pass after a layout change.
+        if (camera.position.distanceToSquared(desiredCamera) > 0.001) invalidate();
+        camera.position.copy(desiredCamera);
+      } else camera.position.lerp(desiredCamera, 1 - Math.exp(-Math.min(delta, 0.05) * 3));
+      const lookAhead = props.reading ? 5 : 17;
+      lookTarget.set(pose.position.x + Math.sin(pose.heading) * lookAhead, 0, pose.position.z - Math.cos(pose.heading) * lookAhead);
       camera.lookAt(lookTarget);
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       gl.render(scene, camera);
@@ -161,31 +181,19 @@ function SailableScene(props: RuntimeProps) {
         <planeGeometry args={[2400, 2400, props.low ? 80 : 160, props.low ? 80 : 160]} />
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
-      <group position={props.configuration.firstStation.position}>
-        <mesh position={[0, 0.6, 0]}>
-          <cylinderGeometry args={[0.7, 1.25, 1.3, 12]} />
-          <meshStandardMaterial color="#dbaa59" roughness={0.8} />
-        </mesh>
-        <mesh position={[0, 2.1, 0]}>
-          <cylinderGeometry args={[0.1, 0.14, 2.5, 8]} />
-          <meshStandardMaterial color="#f0ead6" />
-        </mesh>
-        <mesh position={[0, 3.5, 0]}>
-          <sphereGeometry args={[0.28, 8, 6]} />
-          <meshBasicMaterial color="#ffdda2" />
-        </mesh>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.26, 0]}>
-          <ringGeometry args={[5.7, 5.82, 64]} />
-          <meshBasicMaterial color="#9cbeb0" />
-        </mesh>
-        <Html position={[0, 5.5, 0]} center zIndexRange={[5, 0]}>
-          <button ref={(label) => { stationLabel.current = label; if (label) invalidate(); }} className="beacon-label" type="button" onClick={props.onStation} tabIndex={props.active ? 0 : -1}>
-            <span>Primeira estação</span>
-            {props.configuration.firstStation.name}
-            <small>Ler estação</small>
-          </button>
-        </Html>
-      </group>
+      {props.configuration.stations.map((station, index) => (
+        <FieldStationBeacon
+          key={station.id}
+          station={station}
+          available={props.availableStations.includes(station.id)}
+          completed={props.completedStations.includes(station.id)}
+          active={props.active}
+          reading={props.reading}
+          livePose={props.livePose}
+          onStation={(selected) => { navigation.current.departedStation = selected.id; props.onStation(selected); }}
+          onLabel={index === 0 ? (label) => { stationLabel.current = label; if (label) invalidate(); } : undefined}
+        />
+      ))}
     </>
   );
 }

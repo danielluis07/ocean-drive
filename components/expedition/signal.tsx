@@ -2,6 +2,7 @@ import ScientificNames from "@/components/expedition/scientific-names";
 import SourceCard from "@/components/expedition/source-card";
 import type { Signal as SignalRecord, Station } from "@/content/editorial";
 import { uniqueSources } from "@/lib/expedition-view";
+import { returnToSignal } from "@/lib/reader-interactions";
 
 type SignalProps = {
   active: boolean;
@@ -69,6 +70,9 @@ export default function Signal({
             {sources.map((sourceId) => (
               <SourceCard key={sourceId} sourceId={sourceId} />
             ))}
+            <button className="logbook__return" type="button" onClick={(event) => returnToSignal(event.currentTarget)}>
+              Voltar ao sinal
+            </button>
           </div>
         </details>
         <div

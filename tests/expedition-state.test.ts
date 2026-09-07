@@ -122,6 +122,27 @@ describe("Expedition transitions", () => {
     ).toBe(initial);
   });
 
+  test("3D evidence completion unlocks destinations without opening them or moving the vessel", () => {
+    let state = transitionExpedition(createInitialExpeditionState(), {
+      type: "set-presentation", presentation: "three-dimensional",
+    });
+    for (const station of ["pulso-de-calor", "respostas-desiguais", "corais-sob-estresse"] as const) {
+      state = transitionExpedition(state, { type: "open-station", station });
+      state = transitionExpedition(state, { type: "set-bookmark", station, passage: 2 });
+      const before = state;
+      state = transitionExpedition(state, { type: "complete-station", station });
+      expect(state.currentStation).toBe(station);
+      expect(state.vesselCheckpoints).toEqual(before.vesselCheckpoints);
+      expect(state.pauseState).toBe("paused");
+    }
+    expect(state.completedStations).toEqual(["pulso-de-calor", "respostas-desiguais", "corais-sob-estresse"]);
+    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(false);
+    state = transitionExpedition(state, { type: "open-station", station: "convergencia" });
+    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(false);
+    state = transitionExpedition(state, { type: "set-bookmark", station: "convergencia", passage: 2 });
+    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(true);
+  });
+
   test("rejects completion until the current station's final passage and explicit action", () => {
     const initial = createInitialExpeditionState();
     const afterReading = transitionExpedition(initial, {

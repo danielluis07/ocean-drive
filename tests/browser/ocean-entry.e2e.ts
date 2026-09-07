@@ -83,12 +83,14 @@ test("the complete scientific story is readable without JavaScript", async ({ br
 });
 
 test("context loss returns to the matching editorial passage with sailing paused", async ({ page }) => {
+  test.setTimeout(90_000);
   await page.goto("/");
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-  await page.getByRole("button", { name: /Primeira estação Pulso de Calor/ }).click();
+  await page.getByRole("button", { name: "Iniciar expedição", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Voz da estação" })).toBeVisible({ timeout: 60_000 });
   await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
   await page.getByRole("button", { name: "Voltar ao mar", exact: true }).click();
-  await page.getByRole("button", { name: "Iniciar expedição", exact: true }).click();
+  await page.getByRole("button", { name: "Retomar expedição", exact: true }).click();
   await page.locator("canvas").evaluate((canvas) => {
     (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
   });
