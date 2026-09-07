@@ -19,4 +19,6 @@ User-facing copy is in Brazilian Portuguese.
 
 # Conventions
 
-Prefer the @ alias for imports
+Prefer the @ alias for imports (see docs/CONVENTIONS.md)
+
+See docs/PROJECT_STRUCTURE.md for the folder layout and file placement guidance.

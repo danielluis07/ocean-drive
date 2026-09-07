@@ -1,5 +1,123 @@
 @import "tailwindcss";
 
+[hidden] { display: none !important; }
+
+.presentation-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 0.85rem max(1.5rem, calc((100vw - 78rem) / 2));
+  background: var(--petroleum-deep);
+  color: var(--salt);
+  font-size: 0.85rem;
+}
+
+.presentation-bar p { margin: 0; max-width: 65ch; }
+.presentation-bar > div { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+.presentation-bar button,
+.helm-controls button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--mist);
+  border-radius: 3px;
+  color: var(--salt);
+  background: var(--petroleum-deep);
+  cursor: pointer;
+  font: inherit;
+}
+.presentation-bar button:disabled,
+.helm-controls button:disabled { opacity: 0.5; cursor: default; }
+.presentation-bar button:not(:disabled):hover,
+.helm-controls button:not(:disabled):hover { background: var(--petroleum); }
+.presentation-bar a { padding-block: 0.8rem; white-space: nowrap; }
+.presentation-bar button:focus-visible,
+.helm-controls button:focus-visible,
+.beacon-label:focus-visible,
+.ocean-world canvas:focus-visible { outline: 3px solid var(--ochre); outline-offset: -4px; }
+
+.ocean-world {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: calc(100svh - 5rem);
+  min-height: 560px;
+  isolation: isolate;
+  background: var(--petroleum);
+  color: var(--salt);
+  overflow: hidden;
+}
+.ocean-world[data-active="false"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+.ocean-world[data-reading="true"] { height: 48svh; min-height: 360px; }
+.ocean-world canvas { touch-action: none; }
+.ocean-world > div:first-child { min-height: 0; }
+.ocean-caption { position: absolute; top: 2rem; left: 3rem; color: var(--petroleum-deep); pointer-events: none; }
+.ocean-caption p { margin: 0; font-size: 0.85rem; }
+.ocean-caption h1 { margin: 0.4rem 0 0; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -0.03em; }
+.ocean-caption em { font-family: var(--font-editorial); }
+.helm-controls {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 1rem 1.5rem max(1rem, env(safe-area-inset-bottom));
+  background: var(--petroleum-deep);
+  font-size: 0.85rem;
+}
+.helm-controls #expedition-movement { color: var(--petroleum-deep); background: var(--ochre); border-color: var(--ochre); }
+.helm-controls p { width: 100%; max-width: 65ch; text-align: center; margin: 0.25rem 0; }
+.helm-controls .ocean-disclosure { max-width: none; font-size: 0.75rem; }
+.beacon-label {
+  display: grid;
+  gap: 0.3rem;
+  width: max-content;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ochre);
+  border-radius: 3px;
+  color: var(--salt);
+  background: var(--petroleum-deep);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+}
+.beacon-label span, .beacon-label small { font-size: 0.7rem; font-weight: 400; }
+.beacon-label small { color: var(--ochre); text-decoration: underline; text-underline-offset: 0.2em; }
+.beacon-label:hover { background: var(--petroleum); }
+
+@media (max-width: 700px) {
+  .presentation-bar { flex-wrap: wrap; padding: 0.7rem 1rem; gap: 0.4rem; }
+  .presentation-bar > div { flex-wrap: wrap; gap: 0.65rem; flex-shrink: 1; }
+  .presentation-bar p { font-size: 0.75rem; }
+  .ocean-world { height: calc(100svh - 4.25rem); min-height: 600px; }
+  .ocean-caption { top: 0.5rem; left: 1.25rem; }
+  .ocean-caption h1 { font-size: 1.35rem; }
+  .ocean-caption p { display: none; }
+  .helm-controls { gap: 0.5rem; padding-inline: 0.75rem; }
+  .helm-controls button { padding-inline: 0.6rem; font-size: 0.78rem; }
+  .ocean-world[data-reading="true"] .ocean-caption { display: none; }
+}
+
+@media (max-height: 550px) and (orientation: landscape) {
+  .ocean-world { min-height: 460px; }
+  .ocean-caption h1 { font-size: 2.5rem; }
+}
+
 :root {
   --petroleum: #093b48;
   --petroleum-deep: #052a34;
