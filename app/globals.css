@@ -943,3 +943,352 @@ summary:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Interactive Expedition enhancement */
+button {
+  color: inherit;
+  font: inherit;
+}
+
+button:focus-visible,
+[tabindex="-1"]:focus-visible {
+  outline: 3px solid var(--ochre);
+  outline-offset: 5px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.route__heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.route__heading p,
+.route__order {
+  margin: 0.75rem 0 0;
+  color: var(--ink-muted);
+  font-family: var(--font-utility);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.route progress {
+  width: min(17rem, 34vw);
+  height: 0.55rem;
+  border: 0;
+  background: var(--mist);
+  accent-color: var(--jade);
+}
+
+.route progress::-webkit-progress-bar {
+  background: var(--mist);
+}
+
+.route progress::-webkit-progress-value {
+  background: var(--jade);
+}
+
+.route progress::-moz-progress-bar {
+  background: var(--jade);
+}
+
+.route button {
+  display: grid;
+  width: 100%;
+  min-height: 10.5rem;
+  align-content: space-between;
+  padding: 1.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: color 160ms ease-out, background-color 160ms ease-out;
+}
+
+.route button:hover:not(:disabled),
+.route button[aria-current="step"] {
+  color: var(--salt);
+  background: var(--petroleum);
+}
+
+.route button > span {
+  color: var(--jade);
+  font-family: var(--font-utility);
+  font-size: 0.7rem;
+}
+
+.route button:hover:not(:disabled) > span,
+.route button[aria-current="step"] > span {
+  color: var(--ochre);
+}
+
+.route button small,
+.route button em {
+  margin-top: 0.45rem;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.route button em {
+  margin-top: 1rem;
+  font-family: var(--font-utility);
+  font-size: 0.6rem;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.route button:hover:not(:disabled) small,
+.route button:hover:not(:disabled) em,
+.route button[aria-current="step"] small,
+.route button[aria-current="step"] em {
+  color: var(--mist);
+}
+
+.route button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.route li[data-status="completed"] button:not([aria-current="step"]) em {
+  color: var(--petroleum);
+  font-weight: 700;
+}
+
+.route__order {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.station__state,
+.signal__position {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--petroleum);
+  font-family: var(--font-utility);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.signal__position {
+  margin: 0 0 0.9rem;
+  color: var(--jade);
+}
+
+.station__footer button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-utility);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-transform: uppercase;
+}
+
+.station--convergence .station__state,
+.station--convergence .signal__position {
+  color: var(--ochre);
+}
+
+.signal__controls {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.signal__controls p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-family: var(--font-utility);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal__controls button,
+.station__completion button,
+.connected__actions button {
+  min-height: 2.9rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: color 160ms ease-out, background-color 160ms ease-out;
+}
+
+.signal__controls button:first-child {
+  justify-self: start;
+}
+
+.signal__controls button:last-child {
+  justify-self: end;
+}
+
+.signal__controls button:hover:not(:disabled),
+.station__completion button:hover,
+.connected__actions button:hover {
+  color: var(--salt);
+  background: var(--petroleum);
+}
+
+.signal__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.station__completion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  border-block: 1px solid var(--ochre);
+}
+
+.station__completion p {
+  max-width: 42rem;
+  margin: 0;
+  font-family: var(--font-editorial);
+  line-height: 1.55;
+}
+
+.station__completion button {
+  flex: none;
+  color: var(--petroleum-deep);
+  background: var(--ochre);
+}
+
+.station--convergence .signal__controls p {
+  color: var(--mist);
+}
+
+.station--convergence .signal__controls button:hover:not(:disabled) {
+  color: var(--petroleum-deep);
+  background: var(--ochre);
+}
+
+.expedition[data-enhanced="true"] .station:not([data-current="true"]),
+.expedition[data-enhanced="true"] .signal:not([data-active="true"]) {
+  display: none;
+}
+
+.expedition:not([data-enhanced="true"]) .signal__controls,
+.expedition:not([data-enhanced="true"]) .station__completion,
+.expedition:not([data-enhanced="true"]) .station__footer button,
+.expedition:not([data-enhanced="true"]) .signal__position {
+  display: none;
+}
+
+.connected,
+.all-sources {
+  padding-block: clamp(5rem, 10vw, 8rem);
+}
+
+.connected {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.7fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: end;
+}
+
+.connected h2,
+.all-sources h2 {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.connected p,
+.all-sources header p {
+  max-width: 42rem;
+  margin: 1.5rem 0 0;
+  color: var(--ink-muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.connected__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.connected__actions button {
+  width: 100%;
+}
+
+.connected__actions button:last-child {
+  color: var(--salt);
+  background: var(--petroleum);
+}
+
+.all-sources {
+  border-top: 1px solid var(--rule);
+}
+
+.all-sources header {
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 800px) {
+  .route__heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .route progress {
+    width: 100%;
+  }
+
+  .connected {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 470px) {
+  .signal__controls,
+  .station__completion {
+    align-items: stretch;
+  }
+
+  .station__completion {
+    flex-direction: column;
+  }
+
+  .station__completion button {
+    width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .route button[aria-current="step"],
+  .route li[data-status="completed"] button {
+    outline: 2px solid CanvasText;
+    outline-offset: -4px;
+  }
+
+  .signal__marker::after {
+    background: CanvasText;
+  }
+}
