@@ -2,6 +2,10 @@ import type { VesselPose } from "@/lib/expedition-state";
 import type { OceanStation } from "@/lib/ocean-config";
 import type { StationId } from "@/content/editorial";
 import { advanceHelm } from "@/lib/guided-helm";
+import { getAssistanceDestinations, observeProgress, type AssistanceObservation } from "@/lib/assisted-return";
+import { stationBearing, headingDifference, stationDistance } from "@/lib/navigation-geometry";
+import { curveBoundaryHeading, inBoundaryCurrent } from "@/lib/boundary-current";
+export { stationDistance } from "@/lib/navigation-geometry";
 
 // Scene distances are compressed for the fictional route, not geographic measurements.
 export const APPROACH_RADIUS = 10;
@@ -10,28 +14,19 @@ export const ARRIVAL_RADIUS = 6;
 export type StationNavigation = {
   departedStation: StationId | null;
   arrivalPending: boolean;
+  assistance?: AssistanceObservation;
+  boundaryReturning?: boolean;
 };
 
 type JourneyFrame = {
   stations: OceanStation[];
   availableStations: StationId[];
+  completedStations?: StationId[];
   sailing: boolean;
   steering: number;
   targetHeading: number | null;
   seconds: number;
 };
-
-function stationBearing(pose: VesselPose, station: OceanStation): number {
-  return Math.atan2(station.position[0] - pose.position.x, pose.position.z - station.position[2]);
-}
-
-function headingDifference(bearing: number, heading: number): number {
-  return Math.atan2(Math.sin(bearing - heading), Math.cos(bearing - heading));
-}
-
-export function stationDistance(pose: VesselPose, station: OceanStation): number {
-  return Math.hypot(station.position[0] - pose.position.x, station.position[2] - pose.position.z);
-}
 
 export function approachStation(pose: VesselPose, station: OceanStation, seconds: number): VesselPose {
   const delta = Math.max(0, Math.min(seconds, 0.05));
@@ -62,9 +57,12 @@ export function advanceStationJourney(pose: VesselPose, previous: StationNavigat
     && station.id !== navigation.departedStation
     && stationDistance(pose, station) <= APPROACH_RADIUS,
   ) : undefined;
+  if (sailing) navigation.boundaryReturning = inBoundaryCurrent(pose, previous.boundaryReturning ?? false);
+  const helmPose = sailing && navigation.boundaryReturning
+    ? { ...pose, heading: curveBoundaryHeading(pose, frame.steering, frame.seconds) } : pose;
   const nextPose = approaching
     ? approachStation(pose, approaching, frame.seconds)
-    : advanceHelm(pose, frame.steering, frame.seconds, sailing, frame.targetHeading);
+    : advanceHelm(helmPose, navigation.boundaryReturning ? 0 : frame.steering, frame.seconds, sailing, navigation.boundaryReturning ? null : frame.targetHeading);
   const arrived = approaching
     && stationDistance(nextPose, approaching) <= ARRIVAL_RADIUS + 0.01
     && Math.abs(headingDifference(stationBearing(nextPose, approaching), nextPose.heading)) < 0.04
@@ -72,6 +70,10 @@ export function advanceStationJourney(pose: VesselPose, previous: StationNavigat
   if (arrived) {
     navigation.arrivalPending = true;
     navigation.departedStation = arrived.id;
+  }
+  if (sailing) {
+    const destinations = getAssistanceDestinations(frame.stations, frame.availableStations, frame.completedStations ?? [], navigation.departedStation);
+    navigation.assistance = approaching ? undefined : observeProgress(previous.assistance, nextPose, destinations, frame.seconds);
   }
   return { pose: nextPose, navigation, arrived, sailing };
 }

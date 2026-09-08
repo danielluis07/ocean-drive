@@ -85,6 +85,14 @@ test("one-handed touch steering works in portrait and landscape", async ({ brows
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 100, y }] });
   await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 220, y }] });
   await page.waitForTimeout(500);
+  expect(await page.evaluate(() => scrollY)).toBe(0);
+  // Rotate with the finger still down, then keep sending the old gesture.
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(1200);
+  const rotated = await pose(page);
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 300, y: 200 }] });
+  await page.waitForTimeout(1200);
+  expect((await pose(page)).heading).toBe(rotated.heading);
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await page.getByRole("button", { name: "Pausar expedição" }).click();
   const turned = await pose(page);
@@ -96,4 +104,82 @@ test("one-handed touch steering works in portrait and landscape", async ({ brows
   expect((await pose(page)).heading).toBe(turned.heading);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await context.close();
+});
+
+test("pointer capture survives leaving the ocean, keyboard takes over, and late pointer release preserves that key", async ({ page }) => {
+  await start(page);
+  const canvas = page.getByRole("group", { name: /Navegação da embarcação/ });
+  const box = (await canvas.boundingBox())!;
+  await page.mouse.move(box.x + 50, box.y + 50);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width + 20, box.y + 50);
+  await page.waitForTimeout(1200);
+  const dragged = await pose(page);
+  expect(dragged.heading).toBeGreaterThan(0);
+  await page.keyboard.down("a");
+  await page.mouse.up();
+  await expect.poll(async () => (await pose(page)).heading).toBeLessThan(dragged.heading);
+  await page.keyboard.up("a");
+  await page.getByRole("button", { name: "Pausar expedição" }).click();
+  const released = await pose(page);
+  await page.getByRole("button", { name: "Retomar expedição" }).click();
+  await page.waitForTimeout(1200);
+  expect((await pose(page)).heading).toBe(released.heading);
+});
+
+test("losing the app pauses navigation and releases gestures until explicit resume", async ({ page }) => {
+  await start(page);
+  const canvas = page.getByRole("group", { name: /Navegação da embarcação/ });
+  await canvas.focus();
+  await page.keyboard.down("ArrowRight");
+  await page.waitForTimeout(350);
+  // Deliver the OS window-focus boundary; background-tab throttling varies in headless engines.
+  await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+  await expect(page.getByRole("button", { name: "Retomar expedição" })).toBeVisible();
+  const suspended = await pose(page);
+  await page.waitForTimeout(1200);
+  expect(await pose(page)).toEqual(suspended);
+  await page.keyboard.up("ArrowRight");
+  await page.getByRole("button", { name: "Retomar expedição" }).click();
+  await page.waitForTimeout(1200);
+  expect((await pose(page)).heading).toBe(suspended.heading);
+});
+
+test("reduced-motion 3D stays still after steering and after a portrait-to-landscape reframe", async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Preparar 3D com movimento reduzido" }).click();
+  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+  await page.getByRole("button", { name: "Iniciar expedição", exact: true }).click();
+  const canvas = page.getByRole("group", { name: /Navegação da embarcação/ });
+  await canvas.focus();
+  await page.keyboard.down("d");
+  await page.waitForTimeout(500);
+  await page.keyboard.up("d");
+  await page.getByRole("button", { name: "Pausar expedição" }).click();
+  const still = await canvas.screenshot();
+  await page.waitForTimeout(600);
+  expect(await canvas.screenshot()).toEqual(still);
+  await page.setViewportSize({ width: 844, height: 390 });
+  const landscape = await canvas.screenshot({ path: testInfo.outputPath("reduced-motion-landscape.png") });
+  await page.waitForTimeout(600);
+  expect(await canvas.screenshot()).toEqual(landscape);
+});
+
+test("switching from a held key to a pointer releases the previous steering input", async ({ page }) => {
+  await start(page);
+  const canvas = page.getByRole("group", { name: /Navegação da embarcação/ });
+  await canvas.focus();
+  await page.keyboard.down("d");
+  await page.waitForTimeout(350);
+  const box = (await canvas.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.5);
+  await page.mouse.down();
+  await page.waitForTimeout(1200);
+  const heldPointer = await pose(page);
+  await page.waitForTimeout(1200);
+  expect((await pose(page)).heading).toBe(heldPointer.heading);
+  await page.mouse.up();
+  await page.keyboard.up("d");
 });

@@ -11,12 +11,13 @@ type BeaconProps = {
   completed: boolean;
   active: boolean;
   reading: boolean;
+  assisted: boolean;
   livePose: RefObject<VesselPose>;
   onStation: (station: OceanStation) => void;
   onLabel?: (label: HTMLButtonElement | null) => void;
 };
 
-export default function FieldStationBeacon({ station, available, completed, active, reading, livePose, onStation, onLabel }: BeaconProps) {
+export default function FieldStationBeacon({ station, available, completed, active, reading, assisted, livePose, onStation, onLabel }: BeaconProps) {
   const [near, setNear] = useState(false);
   useFrame(() => {
     const withinReadingDistance = stationDistance(livePose.current, station) <= ARRIVAL_RADIUS + 0.2;
@@ -39,16 +40,16 @@ export default function FieldStationBeacon({ station, available, completed, acti
       {available ? (
         <>
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.3, 0]}>
-            <ringGeometry args={[APPROACH_RADIUS - 0.15, APPROACH_RADIUS, 64]} />
+            <ringGeometry args={[APPROACH_RADIUS - (assisted ? 0.6 : 0.15), APPROACH_RADIUS, 64]} />
             <meshBasicMaterial color={station.color} transparent opacity={0.75} />
           </mesh>
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.27, 0]}>
             <circleGeometry args={[APPROACH_RADIUS, 48]} />
-            <meshBasicMaterial color={station.color} transparent opacity={completed ? 0.07 : 0.16} depthWrite={false} />
+            <meshBasicMaterial color={station.color} transparent opacity={assisted ? 0.3 : completed ? 0.07 : 0.16} depthWrite={false} />
           </mesh>
           <mesh position={[0, 8, 0]}>
             <cylinderGeometry args={[0.12, 0.55, 9, 8, 1, true]} />
-            <meshBasicMaterial color={station.color} transparent opacity={completed ? 0.12 : 0.3} depthWrite={false} />
+            <meshBasicMaterial color={station.color} transparent opacity={assisted ? 0.7 : completed ? 0.12 : 0.3} depthWrite={false} />
           </mesh>
           {!reading || near ? <Html position={[0, reading ? 8 : 13, 0]} center zIndexRange={[5, 0]}>
             <button
@@ -56,6 +57,7 @@ export default function FieldStationBeacon({ station, available, completed, acti
               className="beacon-label"
               data-station={station.id}
               data-reading={reading}
+              data-assisted={assisted}
               type="button"
               disabled={!near || reading || !active}
               onClick={() => onStation(station)}

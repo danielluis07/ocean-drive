@@ -51,4 +51,5 @@ publisher uptime.
 Chromium software WebGL verifies behavior. Physical-device performance, touch
 comfort, cross-browser certification, and unaided three-to-five-minute completion
 remain part of the parent issue's Release Dossier. Assisted Return and boundary
-currents belong to #26; adaptive quality and restoration belong to #27.
+currents are described in [assisted-return.md](assisted-return.md); adaptive
+quality and restoration belong to #27.

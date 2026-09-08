@@ -10,7 +10,8 @@ import {
   type ReactNode,
 } from "react";
 import { useExpedition } from "@/providers/expedition-provider";
-import { dragSteering } from "@/lib/guided-helm";
+import { connectHelmInput } from "@/lib/helm-input";
+import { getAssistanceDestinations, reorientVessel, type AssistanceStage } from "@/lib/assisted-return";
 import {
   isStationAvailable,
   transitionExpedition,
@@ -75,6 +76,8 @@ export default function OceanPresentation({
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [started, setStarted] = useState(false);
   const [showControls, setShowControls] = useState(false);
+  const [assistance, setAssistance] = useState<{ stage: AssistanceStage; boundaryReturning: boolean }>({ stage: "none", boundaryReturning: false });
+  const reorientation = useRef(false);
   const livePose = useRef(expedition.vesselCheckpoints.current);
   const steering = useRef(0);
   const targetHeading = useRef<number | null>(null);
@@ -84,6 +87,7 @@ export default function OceanPresentation({
   const unavailable = expedition.threeDAvailability.status === "unavailable";
   const passageId = `${expedition.currentStation}-signal-${expedition.bookmarks[expedition.currentStation] + 1}`;
   const savedPose = expedition.vesselCheckpoints.current;
+  const availableStations = configuration.stations.filter((station) => isStationAvailable(expedition, station.id)).map((station) => station.id);
   const previouslyActive = useRef(false);
 
   useEffect(() => {
@@ -211,95 +215,20 @@ export default function OceanPresentation({
 
   useEffect(() => {
     if (!canvas) return;
-    let pointer: { id: number; startX: number } | null = null;
-    const keys = new Set<string>();
-    const reset = () => {
-      const captured = pointer;
-      pointer = null;
-      if (captured && canvas.hasPointerCapture(captured.id))
-        canvas.releasePointerCapture(captured.id);
-      keys.clear();
-      steering.current = 0;
-      targetHeading.current = null;
-    };
-    const down = (event: PointerEvent) => {
-      if (!sailing || event.button !== 0 || pointer) return;
-      targetHeading.current = null;
-      pointer = { id: event.pointerId, startX: event.clientX };
-      canvas.setPointerCapture(event.pointerId);
-      canvas.focus({ preventScroll: true });
-      event.preventDefault();
-    };
-    const move = (event: PointerEvent) => {
-      if (!pointer || pointer.id !== event.pointerId || !sailing) return;
-      steering.current = dragSteering(event.clientX - pointer.startX);
-      event.preventDefault();
-    };
-    const key = (event: KeyboardEvent) => {
-      const name = event.key.toLowerCase();
-      if (
-        !["a", "d", "arrowleft", "arrowright"].includes(name) ||
-        !sailing ||
-        event.altKey ||
-        event.ctrlKey ||
-        event.metaKey
-      )
-        return;
-      event.preventDefault();
-      if (event.type === "keydown") keys.add(name);
-      else keys.delete(name);
-      targetHeading.current = null;
-      steering.current =
-        Number(keys.has("d") || keys.has("arrowright")) -
-        Number(keys.has("a") || keys.has("arrowleft"));
-    };
-    const lost = (event: Event) => {
-      event.preventDefault();
-      reset();
-      fail("context-loss");
-    };
-    const hidden = () => {
-      if (document.hidden) {
-        reset();
-        checkpoint();
-      }
-    };
     canvas.setAttribute("tabindex", active ? "0" : "-1");
-    canvas.setAttribute(
-      "aria-label",
-      "Navegação da embarcação. Use A e D, setas ou arraste na horizontal.",
-    );
+    canvas.setAttribute("aria-label", "Navegação da embarcação. Use A e D, setas ou arraste na horizontal.");
     canvas.setAttribute("role", "group");
-    canvas.addEventListener("pointerdown", down);
-    canvas.addEventListener("pointermove", move);
-    canvas.addEventListener("pointerup", reset);
-    canvas.addEventListener("pointercancel", reset);
-    canvas.addEventListener("lostpointercapture", reset);
-    canvas.addEventListener("keydown", key);
-    canvas.addEventListener("keyup", key);
-    canvas.addEventListener("blur", reset);
-    canvas.addEventListener("webglcontextlost", lost);
-    window.addEventListener("blur", reset);
-    window.addEventListener("pagehide", hidden);
-    document.addEventListener("visibilitychange", hidden);
+    const disconnect = connectHelmInput(canvas, {
+      sailing, steering, targetHeading,
+      onSuspend: () => {
+        checkpoint();
+        setExpedition((current) => transitionExpedition(current, { type: "set-pause-state", pauseState: "paused" }));
+      },
+      onContextLoss: () => fail("context-loss"),
+    });
     controlsConnected.current = true;
-    return () => {
-      controlsConnected.current = false;
-      reset();
-      canvas.removeEventListener("pointerdown", down);
-      canvas.removeEventListener("pointermove", move);
-      canvas.removeEventListener("pointerup", reset);
-      canvas.removeEventListener("pointercancel", reset);
-      canvas.removeEventListener("lostpointercapture", reset);
-      canvas.removeEventListener("keydown", key);
-      canvas.removeEventListener("keyup", key);
-      canvas.removeEventListener("blur", reset);
-      canvas.removeEventListener("webglcontextlost", lost);
-      window.removeEventListener("blur", reset);
-      window.removeEventListener("pagehide", hidden);
-      document.removeEventListener("visibilitychange", hidden);
-    };
-  }, [canvas, active, sailing, fail, checkpoint]);
+    return () => { controlsConnected.current = false; disconnect(); };
+  }, [canvas, active, sailing, fail, checkpoint, setExpedition]);
 
   function switchPresentation(threeD: boolean) {
     if (threeD && (stage !== "ready" || unavailable)) return;
@@ -340,6 +269,17 @@ export default function OceanPresentation({
     steering.current = 0;
     targetHeading.current =
       livePose.current.heading + (direction * Math.PI) / 18;
+  }
+
+  function reorient() {
+    if (!sailing || assistance.stage !== "reorient") return;
+    const destinations = getAssistanceDestinations(configuration.stations, availableStations, expedition.completedStations);
+    steering.current = 0;
+    targetHeading.current = null;
+    livePose.current = reorientVessel(livePose.current, destinations);
+    reorientation.current = true;
+    checkpoint();
+    canvas?.focus({ preventScroll: true });
   }
 
   function openStation(station: OceanStation) {
@@ -427,11 +367,14 @@ export default function OceanPresentation({
               active={active}
               sailing={sailing}
               reading={readerOpen}
-              availableStations={configuration.stations.filter((station) => isStationAvailable(expedition, station.id)).map((station) => station.id)}
+              availableStations={availableStations}
               completedStations={expedition.connected ? [...expedition.completedStations, "convergencia"] : expedition.completedStations}
               livePose={livePose}
               steering={steering}
               targetHeading={targetHeading}
+              reorientation={reorientation}
+              assistance={assistance}
+              onAssistance={setAssistance}
               controlsConnected={controlsConnected}
               onStage={setStage}
               onFailure={failAsset}
@@ -469,6 +412,16 @@ export default function OceanPresentation({
               onClick={() => setShowControls(!showControls)}>
               Controles
             </button>
+            {assistance.stage === "reorient" ? (
+              <button type="button" onClick={reorient} disabled={!sailing}>Reorientar rota</button>
+            ) : null}
+            <p role="status" aria-live="polite" aria-atomic="true" hidden={assistance.stage === "none" && !assistance.boundaryReturning}>
+              {assistance.boundaryReturning
+                ? "A corrente na borda curva a embarcação de volta às águas da expedição."
+                : assistance.stage === "reorient"
+                  ? "Se precisar, reoriente a direção para uma estação. Você continua no comando."
+                  : "A luz das estações está mais forte para ajudar a reconhecer o caminho."}
+            </p>
             <p id="helm-guidance" hidden={!showControls}>
               Arraste na horizontal sobre o oceano, ou focalize a navegação e
               use A/D ou as setas. Ao soltar, a direção é mantida. Os botões de
