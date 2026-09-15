@@ -1,0 +1,113 @@
+diff --git a/dist/events-156d8d12.esm.js b/dist/events-156d8d12.esm.js
+index 9681d0c62238d67f2d5ad389307dfd45ee8ba7ba..8425ea81bab6ce5bc17b5ac1383b6af5ec742dcf 100644
+--- a/dist/events-156d8d12.esm.js
++++ b/dist/events-156d8d12.esm.js
+@@ -945,6 +945,8 @@ function createEvents(store) {
+ 
+ const isRenderer = def => !!(def != null && def.render);
+ const context = /* @__PURE__ */React.createContext(null);
++import { createTimerClock } from './timer-clock.cjs';
++
+ const createStore = (invalidate, advance) => {
+   const rootStore = createWithEqualityFn((set, get) => {
+     const position = new THREE.Vector3();
+@@ -1013,7 +1015,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE.Clock(),
++      clock: createTimerClock(THREE.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/dist/events-4c71f21f.cjs.prod.js b/dist/events-4c71f21f.cjs.prod.js
+index 65e702ef67d954387307b168529752690a586fd0..025301ed4a1ff1544d9fcd5168a3b2306b8d351c 100644
+--- a/dist/events-4c71f21f.cjs.prod.js
++++ b/dist/events-4c71f21f.cjs.prod.js
+@@ -970,6 +970,8 @@ function createEvents(store) {
+ 
+ const isRenderer = def => !!(def != null && def.render);
+ const context = /* @__PURE__ */React__namespace.createContext(null);
++const { createTimerClock } = require('./timer-clock.cjs');
++
+ const createStore = (invalidate, advance) => {
+   const rootStore = traditional.createWithEqualityFn((set, get) => {
+     const position = new THREE__namespace.Vector3();
+@@ -1038,7 +1040,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE__namespace.Clock(),
++      clock: createTimerClock(THREE__namespace.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/dist/events-b1bdeb1a.cjs.dev.js b/dist/events-b1bdeb1a.cjs.dev.js
+index 7785529f79299cdefe706c0df1d5c756817ca274..0a6ad9fdae5a0163405a93c8ffd6ce846faf6ad3 100644
+--- a/dist/events-b1bdeb1a.cjs.dev.js
++++ b/dist/events-b1bdeb1a.cjs.dev.js
+@@ -970,6 +970,8 @@ function createEvents(store) {
+ 
+ const isRenderer = def => !!(def != null && def.render);
+ const context = /* @__PURE__ */React__namespace.createContext(null);
++const { createTimerClock } = require('./timer-clock.cjs');
++
+ const createStore = (invalidate, advance) => {
+   const rootStore = traditional.createWithEqualityFn((set, get) => {
+     const position = new THREE__namespace.Vector3();
+@@ -1038,7 +1040,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE__namespace.Clock(),
++      clock: createTimerClock(THREE__namespace.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/node_modules/@react-three/fiber/dist/timer-clock.cjs b/dist/timer-clock.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..93572506bd028120db119fcf482b3ee37651218a
+--- /dev/null
++++ b/dist/timer-clock.cjs
+@@ -0,0 +1,41 @@
++// Keep Fiber 9's public clock contract while using Three's supported timer.
++// The application owns visibility handling; no document listeners are attached.
++exports.createTimerClock = function createTimerClock(Timer) {
++  const timer = new Timer();
++  return {
++    autoStart: true,
++    startTime: 0,
++    oldTime: 0,
++    elapsedTime: 0,
++    running: false,
++    start() {
++      this.startTime = performance.now();
++      this.oldTime = this.startTime;
++      this.elapsedTime = 0;
++      timer.reset();
++      this.running = true;
++    },
++    stop() {
++      this.getElapsedTime();
++      this.running = false;
++      this.autoStart = false;
++    },
++    getElapsedTime() {
++      this.getDelta();
++      return this.elapsedTime;
++    },
++    getDelta() {
++      if (this.autoStart && !this.running) {
++        this.start();
++        return 0;
++      }
++      if (!this.running) return 0;
++      const now = performance.now();
++      timer.update(now);
++      this.oldTime = now;
++      const delta = timer.getDelta();
++      this.elapsedTime += delta;
++      return delta;
++    }
++  };
++};

@@ -2,8 +2,11 @@ import { expect } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 
 test("a ready ocean still requires explicit entry and first movement", async ({ page }) => {
+  const warnings: string[] = [];
+  page.on("console", (message) => { if (message.type() === "warning") warnings.push(message.text()); });
   await page.goto("/");
   await expect(page.getByRole("status")).toContainText("O oceano está pronto");
+  expect(warnings.join("\n")).not.toContain("THREE.Clock");
   await expect(page.getByRole("heading", { name: /Conduza a expedição/ })).toBeVisible();
   await expect(page.getByRole("button", { name: "Iniciar expedição", exact: true })).toBeHidden();
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();

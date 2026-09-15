@@ -68,11 +68,11 @@ export const oceanFragmentShader = `
   float noise(vec2 p) {
     return noiseGradient(p).x;
   }
-  void windWave(vec2 p, float frequency, float amplitude, float speed, inout vec2 slope) {
+  void windWave(vec2 p, vec2 direction, float frequency, float amplitude, float speed, inout vec2 slope) {
     // Anisotropic noise forms broken wind crests; analytic derivatives avoid
     // both a visible sine-wave grid and extra texture/height samples.
-    mat2 wind = mat2(.8, -.6, .6, .8);
-    vec2 stretch = vec2(.72, 1.65) * frequency;
+    mat2 wind = mat2(direction.x, -direction.y, direction.y, direction.x);
+    vec2 stretch = vec2(.84, 1.3) * frequency;
     vec3 sampleValue = noiseGradient((wind * p) * stretch + vec2(time * speed, time * speed * -.7));
     vec2 gradient = sampleValue.yz * stretch;
     slope += vec2(dot(wind[0], gradient), dot(wind[1], gradient)) * amplitude;
@@ -86,13 +86,14 @@ export const oceanFragmentShader = `
     // Pixel-sized waves fade before they alias into glitter or moire.
     float footprint = max(length(dFdx(p)), length(dFdy(p)));
     float detail = 1. - smoothstep(.18, 1.6, footprint);
-    windWave(p, .48, .29, .18, slope);
-    windWave(p + vec2(17.2, -9.4), 1.1, .13 * detail, -.24, slope);
+    // Cross the secondary ripples to break the uniform brushed-metal grain.
+    windWave(p, vec2(.8, .6), .48, .29, .18, slope);
+    windWave(p + vec2(17.2, -9.4), vec2(-.119615, .992820), 1.1, .13 * detail, -.24, slope);
     #ifndef LOW_QUALITY
-    windWave(p + vec2(-8.3, 21.7), 2.6, .057 * detail, .31, slope);
-    windWave(p + vec2(31.8, 4.1), 5.8, .019 * detail * detail, -.43, slope);
+    windWave(p + vec2(-8.3, 21.7), vec2(.919615, -.392820), 2.6, .057 * detail, .31, slope);
+    windWave(p + vec2(31.8, 4.1), vec2(.8, .6), 5.8, .019 * detail * detail, -.43, slope);
     #ifdef HIGH_QUALITY
-    windWave(p + vec2(7.1, 13.2), 11.5, .007 * detail * detail, .52, slope);
+    windWave(p + vec2(7.1, 13.2), vec2(-.119615, .992820), 11.5, .007 * detail * detail, .52, slope);
     #endif
     #endif
 
@@ -108,22 +109,28 @@ export const oceanFragmentShader = `
 
     vec3 normal = normalize(vec3(-slope.x, 1., -slope.y));
     vec3 view = normalize(cameraPosition - world);
-    vec3 reflected = reflect(-view, normal);
-    vec3 sky = mix(vec3(.24, .34, .47), vec3(.065, .13, .24), pow(max(reflected.y, 0.), .45));
+    // Unresolved ripples roughen the reflection; mirroring them at full strength
+    // turns grazing Fresnel into high-contrast brushed-metal streaks.
+    vec3 reflectionNormal = normalize(vec3(-slope.x * .6, 1., -slope.y * .6));
+    vec3 reflected = reflect(-view, reflectionNormal);
+    vec3 sky = mix(vec3(.15, .23, .34), vec3(.045, .1, .19), pow(max(reflected.y, 0.), .45));
     #ifndef LOW_QUALITY
     float cloud = smoothstep(.46, .77, noise(reflected.xz / max(.22, reflected.y) * 3.2));
-    sky = mix(sky, vec3(.38, .46, .56), cloud * .25);
+    sky = mix(sky, vec3(.3, .38, .48), cloud * .2);
     #endif
-    float fresnel = .0204 + .9796 * pow(1. - max(dot(normal, view), 0.), 5.);
+    float fresnel = .0204 + .9796 * pow(1. - max(dot(reflectionNormal, view), 0.), 5.);
     float depth = noise(p * .018);
-    vec3 water = mix(vec3(.002, .008, .019), vec3(.005, .016, .034), depth);
-    water += vec3(.001, .002, .004) * (height + .4);
-    water = mix(water, sky, fresnel);
+    vec3 water = mix(vec3(.003, .012, .03), vec3(.006, .021, .046), depth);
+    // Light scattered back out of the water body keeps the surface from reading
+    // as a pure mirror; it gathers on swell crests and viewer-facing slopes.
+    float crest = smoothstep(-.3, .35, height);
+    water += vec3(.003, .022, .034) * crest * max(dot(normal, view), 0.);
+    water = mix(water, sky, fresnel * .88);
     vec3 sun = normalize(vec3(-.25, .78, -.57));
     vec3 halfway = normalize(sun + view);
-    float specular = pow(max(dot(normal, halfway), 0.), 480.);
-    float windPatch = smoothstep(.38, .72, noise(p * vec2(.36, .22) + time * .018));
-    water += vec3(.72, .86, 1.) * specular * windPatch * 3.8;
+    float specular = pow(max(dot(normal, halfway), 0.), 260.);
+    float windPatch = smoothstep(.3, .8, noise(p * vec2(.36, .22) + time * .018));
+    water += vec3(.62, .72, .8) * specular * mix(.25, 1., windPatch) * .9;
     water += vec3(.06, .1, .17) * pow(max(dot(reflected, sun), 0.), 18.) * .12;
 
     // A soft contact shadow and broken foam seat the hull in the water.

@@ -21,8 +21,8 @@ and omit shadow maps, live scene reflections, and post-processing. A small local
 sky texture is prefiltered once into an environment render target for the vessel's
 paint, glass, and metal, and rebuilt after context restoration. Its GPU handles
 are released during context loss so cleanup cannot invalidate the restored frame.
-Water uses analytic wind-wave normals, deep navy absorption, Fresnel sky shading,
-patches of silver sun highlights, and a soft hull contact shadow
+Water uses analytic wind-wave normals, deep navy absorption with crest scattering,
+roughened Fresnel sky shading, restrained patches of sun highlights, and a soft hull contact shadow
 in a single surface pass. Low runs at the browser's cadence;
 the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop or
 Low for coarse pointers/small screens once; subsequent changes use measurements.
@@ -70,3 +70,26 @@ time and disables pitch and roll. No new external textures or asset services are
 required. Regenerate both vessel detail levels with `bun run assets:vessels`.
 These are behavioral checks in Chromium with software rendering;
 physical-device performance and release acceptance remain unvalidated.
+
+## Surface detail and renderer timing
+
+Secondary normal layers cross the dominant wind direction at ±60 degrees to
+break up the brushed-metal grain. Reflections and Fresnel use a softened normal,
+the water body scatters a little light, and sun glints stay below clipping, so the
+surface does not read as a mirror of the sky. Wave scales, strengths, distance fading, and
+lighting follow the original OceanX-inspired treatment. Validate the appearance
+using matching camera, viewport, and wave time, including the upper/right water
+and the reduced-quality mobile view.
+
+Fiber 9.7.0 still constructs the deprecated `THREE.Clock` in its root store
+([upstream issue](https://github.com/pmndrs/react-three-fiber/issues/3741)). A
+version-pinned Bun patch replaces that construction with a `THREE.Timer` adapter
+in the development, production, and ESM entry points. It preserves Fiber 9's
+mutable `elapsedTime`, seconds-based deltas, and start/stop behavior. The existing
+application lifecycle remains responsible for visibility and pausing. No console
+warnings are suppressed. Bun reapplies the patch on installation; review/remove
+it when upgrading Fiber to a release with native Timer support.
+
+`bun test tests/fiber-clock.test.ts` checks actual root creation and frame-mode
+timing. The browser entry test checks the warning through the bundled Canvas;
+the resilience suite checks pause, resume, context restoration, and fallback.
