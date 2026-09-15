@@ -1,28 +1,17 @@
-import { expect, type Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import { expectNoAxeViolations } from "@/tests/browser/accessibility-scan";
-import { settleScroll } from "@/tests/browser/scroll";
+import { evidenceRoute, holdVesselAssets, openEditorialStation, readEditorialStation } from "@/tests/browser/editorial-route";
 
-async function readEditorialStation(page: Page, name: string, confirm: "Continuar expedição" | "Conectar expedição" | null) {
-  await page.locator("#rota").getByRole("button", { name: new RegExp(`^0\\d ${name}`) }).click();
-  const station = page.getByRole("article", { name, exact: true });
-  for (const next of [2, 3]) {
-    await settleScroll(page);
-    await station.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-    await expect(station.getByText(`Sinal ${next} de 3`, { exact: true })).toBeVisible();
-  }
-  if (confirm) await station.getByRole("button", { name: confirm, exact: true }).click();
-}
+const [pulso, corais, respostas, convergencia] = evidenceRoute;
 
 test("editorial entry and loading states have no automated WCAG violations", { tag: "@critical" }, async ({ page }, testInfo) => {
   test.setTimeout(90_000);
-  let release!: () => void;
-  const blocked = new Promise<void>((resolve) => { release = resolve; });
-  await page.route("**/models/*.glb", async (route) => { await blocked; await route.continue(); });
+  const releaseVessel = await holdVesselAssets(page);
   await page.goto("/");
   await expect(page.locator(".presentation-bar")).toContainText("Carregando");
   await expectNoAxeViolations(page, testInfo, "loading");
-  release();
+  releaseVessel();
   await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
   await expectNoAxeViolations(page, testInfo, "entry");
 });
@@ -30,15 +19,15 @@ test("editorial entry and loading states have no automated WCAG violations", { t
 test("editorial station, Caderno, Convergência, completion, and sources have no automated WCAG violations", { tag: "@critical" }, async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   await page.goto("/");
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+  await openEditorialStation(page, pulso);
   await expectNoAxeViolations(page, testInfo, "editorial-station");
   await page.locator("#pulso-de-calor summary:visible").click();
   await expectNoAxeViolations(page, testInfo, "editorial-caderno");
-  await readEditorialStation(page, "Pulso de Calor", "Continuar expedição");
+  await readEditorialStation(page, pulso, "Continuar expedição");
   await expectNoAxeViolations(page, testInfo, "editorial-route-choice");
-  await readEditorialStation(page, "Respostas Desiguais", "Continuar expedição");
-  await readEditorialStation(page, "Corais sob Estresse", "Continuar expedição");
-  await readEditorialStation(page, "Convergência", null);
+  await readEditorialStation(page, respostas, "Continuar expedição");
+  await readEditorialStation(page, corais, "Continuar expedição");
+  await readEditorialStation(page, convergencia, null);
   await expectNoAxeViolations(page, testInfo, "editorial-convergencia");
   await page.locator("#convergencia summary:visible").click();
   await expectNoAxeViolations(page, testInfo, "editorial-convergencia-caderno");
@@ -59,7 +48,7 @@ test("3D sailing, reader, Caderno, Convergência, and completion have no automat
   await expectNoAxeViolations(page, testInfo, "3d-sailing");
   await page.getByRole("button", { name: "Pausar expedição", exact: true }).click();
   await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+  await openEditorialStation(page, pulso);
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
   const reader = page.getByRole("region", { name: "Voz da estação" });
   await expect(reader).toBeVisible();
@@ -67,10 +56,10 @@ test("3D sailing, reader, Caderno, Convergência, and completion have no automat
   await reader.locator("summary:visible").click();
   await expectNoAxeViolations(page, testInfo, "3d-caderno");
   await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
-  await readEditorialStation(page, "Pulso de Calor", "Continuar expedição");
-  await readEditorialStation(page, "Corais sob Estresse", "Continuar expedição");
-  await readEditorialStation(page, "Respostas Desiguais", "Continuar expedição");
-  await readEditorialStation(page, "Convergência", null);
+  await readEditorialStation(page, pulso, "Continuar expedição");
+  await readEditorialStation(page, corais, "Continuar expedição");
+  await readEditorialStation(page, respostas, "Continuar expedição");
+  await readEditorialStation(page, convergencia, null);
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
   await expect(reader.getByRole("button", { name: "Conectar expedição", exact: true })).toBeVisible();
   await expectNoAxeViolations(page, testInfo, "3d-convergencia");
@@ -79,12 +68,16 @@ test("3D sailing, reader, Caderno, Convergência, and completion have no automat
   await expectNoAxeViolations(page, testInfo, "3d-completion");
 });
 
-test("reduced-motion and failure states have no automated WCAG violations", { tag: "@critical" }, async ({ page }, testInfo) => {
+test("reduced-motion text, reduced-motion 3D, and failure states have no automated WCAG violations", { tag: "@critical" }, async ({ page }, testInfo) => {
   test.setTimeout(90_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Preparar 3D com movimento reduzido" })).toBeVisible();
   await expectNoAxeViolations(page, testInfo, "reduced-motion");
+  await page.getByRole("button", { name: "Preparar 3D com movimento reduzido" }).click();
+  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+  await page.getByRole("button", { name: "Iniciar expedição", exact: true }).click();
+  await expectNoAxeViolations(page, testInfo, "reduced-motion-3d");
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.route("**/models/*.glb", (route) => route.abort());
   await page.goto("/");
@@ -95,8 +88,7 @@ test("reduced-motion and failure states have no automated WCAG violations", { ta
 test("reduced motion moves focus between stations without animated scrolling", { tag: "@critical" }, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
-  await expect(page.locator("#pulso-de-calor-title")).toBeFocused();
+  await openEditorialStation(page, pulso);
   const landed = await page.evaluate(() => scrollY);
   await page.waitForTimeout(500);
   expect(await page.evaluate(() => scrollY)).toBe(landed);
@@ -107,7 +99,7 @@ test("both presentations expose named control groups, station progress, and poli
   test.setTimeout(90_000);
   const announcer = page.locator("#expedition-announcer");
   await page.goto("/");
-  await readEditorialStation(page, "Pulso de Calor", "Continuar expedição");
+  await readEditorialStation(page, pulso, "Continuar expedição");
   await expect(announcer).toHaveText(/Pulso de Calor concluída/);
   await expect(page.getByRole("group", { name: "Navegação dos sinais de Pulso de Calor" })).toHaveCount(1);
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
@@ -121,5 +113,10 @@ test("both presentations expose named control groups, station progress, and poli
   await page.getByRole("button", { name: "Pausar expedição", exact: true }).click();
   await expect(announcer).toHaveText("Expedição pausada.");
   await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
+  await expect(announcer).toHaveText("Versão em texto. Seu lugar na expedição está preservado.");
+  // Repeating a message must still change the live region, or it is not announced.
+  const previous = await announcer.textContent();
+  await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
+  await expect.poll(() => announcer.textContent()).not.toBe(previous);
   await expect(announcer).toHaveText("Versão em texto. Seu lugar na expedição está preservado.");
 });

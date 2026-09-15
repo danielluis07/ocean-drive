@@ -1,12 +1,16 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
+import { evidenceRoute, openEditorialStation } from "@/tests/browser/editorial-route";
+
+type Box = { x: number; y: number; width: number; height: number };
 
 const checkpoints = [
   { name: "desktop", width: 1440, height: 1000 },
   { name: "portrait phone", width: 390, height: 844 },
   { name: "landscape phone", width: 844, height: 390 },
-  { name: "200% zoom", width: 640, height: 512 },
-  { name: "400% reflow", width: 320, height: 256 },
+  { name: "200% zoom of 1280×1024", width: 640, height: 512 },
+  { name: "200% zoom of 1920×1080", width: 960, height: 540 },
+  { name: "400% reflow of 1280×1024", width: 320, height: 256 },
 ] as const;
 
 // WCAG 1.4.12 text-spacing overrides.
@@ -48,7 +52,7 @@ async function expectReachable(locator: Locator, state: string) {
   expect(hit, `${state}: pointer reaches control`).toBe(true);
 }
 
-function overlaps(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }) {
+function overlaps(a: Box, b: Box) {
   return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
 }
 
@@ -59,7 +63,7 @@ for (const checkpoint of checkpoints) {
     await page.goto("/");
     await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
     await expectNoOverflowOrClipping(page, "editorial entry");
-    await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+    await openEditorialStation(page, evidenceRoute[0]);
     await page.locator("#pulso-de-calor .logbook summary:visible").click();
     await expectReachable(page.getByRole("link", { name: /Acessar fonte/ }).first(), "editorial source");
     await expectNoOverflowOrClipping(page, "editorial Caderno");
@@ -104,7 +108,7 @@ test("text spacing and system-font fallback keep content unclipped at phone widt
   await page.goto("/");
   await page.addStyleTag({ content: textSpacing });
   await expectNoOverflowOrClipping(page, "editorial entry with text spacing");
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+  await openEditorialStation(page, evidenceRoute[0]);
   await page.locator("#pulso-de-calor .logbook summary:visible").click();
   await expectNoOverflowOrClipping(page, "Caderno with text spacing");
   await expectReachable(page.getByRole("button", { name: "Voltar ao sinal", exact: true }), "Caderno return with text spacing");

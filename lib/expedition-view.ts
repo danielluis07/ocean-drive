@@ -42,9 +42,18 @@ export function getAvailableStationIds(
   );
 }
 
+export function getCompletedEvidenceCount(expedition: ExpeditionState): number {
+  return expedition.completedStations.filter((id) => evidenceStationIds.includes(id)).length;
+}
+
 export function getEvidenceProgress(expedition: ExpeditionState): string {
-  const completed = expedition.completedStations.filter((id) => evidenceStationIds.includes(id)).length;
-  return `${completed} de ${evidenceStationIds.length} estações de evidência concluídas`;
+  return `${getCompletedEvidenceCount(expedition)} de ${evidenceStationIds.length} estações de evidência concluídas`;
+}
+
+// Live regions stay silent when their text does not change. Repeating a message
+// (reopening the same station) alternates a trailing no-break space instead.
+export function nextAnnouncement(previous: string, text: string): string {
+  return previous === text ? `${text} ` : text;
 }
 
 export function getStationStatus(

@@ -12,16 +12,16 @@ export function closeDisclosures(): void {
   });
 }
 
-// Escape layering: an open Caderno closes first and returns focus to its signal.
-// Prefer the Caderno holding focus, then one the Visitor can see; hidden stations
-// may keep an earlier Caderno open.
-export function closeOpenCaderno(root: ParentNode | null): boolean {
+// Escape layering: an open logbook (Caderno de bordo) closes first and returns
+// focus to its signal. The reader is a single focused context, so it may close
+// the visible logbook; the editorial page only closes the one holding focus.
+export function closeOpenLogbook(root: ParentNode | null, { focusedOnly = false } = {}): boolean {
   if (!root) return false;
   const open = [...root.querySelectorAll<HTMLDetailsElement>("details.logbook[open]")];
-  const caderno = open.find((details) => details.contains(document.activeElement))
-    ?? open.find((details) => details.checkVisibility());
-  if (!caderno) return false;
-  returnToSignal(caderno);
+  const logbook = open.find((details) => details.contains(document.activeElement))
+    ?? (focusedOnly ? undefined : open.find((details) => details.checkVisibility()));
+  if (!logbook) return false;
+  returnToSignal(logbook);
   return true;
 }
 

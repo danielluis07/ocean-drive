@@ -3,7 +3,7 @@ import {
   evidenceStationIds,
   type ExpeditionState,
 } from "@/lib/expedition-state";
-import { getEvidenceProgress, getStationStatus } from "@/lib/expedition-view";
+import { getCompletedEvidenceCount, getEvidenceProgress, getStationStatus } from "@/lib/expedition-view";
 
 type RouteNavigationProps = {
   availableStationIds: Set<StationId>;
@@ -18,9 +18,7 @@ export default function RouteNavigation({
   expedition,
   onOpenStation,
 }: RouteNavigationProps) {
-  const completedEvidenceCount = expedition.completedStations.filter((id) =>
-    evidenceStationIds.includes(id),
-  ).length;
+  const completedEvidenceCount = getCompletedEvidenceCount(expedition);
 
   return (
     <nav
@@ -34,8 +32,8 @@ export default function RouteNavigation({
           </h2>
           <p id="route-progress">{getEvidenceProgress(expedition)}</p>
         </div>
-        <progress max="3" value={completedEvidenceCount} aria-labelledby="route-progress">
-          {completedEvidenceCount} de 3
+        <progress max={evidenceStationIds.length} value={completedEvidenceCount} aria-labelledby="route-progress">
+          {completedEvidenceCount} de {evidenceStationIds.length}
         </progress>
       </div>
       <ol>

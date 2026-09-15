@@ -40,7 +40,7 @@ test("reading and focus survive delayed vessel preparation and an essential fail
   await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
 });
 
-test("reduced motion defers graphics until requested and loads the mobile vessel", async ({ page }) => {
+test("reduced motion defers graphics until requested and loads the mobile vessel", { tag: "@critical" }, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   const vessels: string[] = [];
@@ -57,7 +57,7 @@ test("reduced motion defers graphics until requested and loads the mobile vessel
 });
 
 for (const capability of ["unsupported", "refused"] as const) {
-  test(`${capability} WebGL keeps the editorial Expedition usable`, async ({ page }) => {
+  test(`${capability} WebGL keeps the editorial Expedition usable`, { tag: "@critical" }, async ({ page }) => {
     await page.addInitScript((mode) => {
       if (mode === "unsupported") Object.defineProperty(window, "WebGL2RenderingContext", { value: undefined });
       else {

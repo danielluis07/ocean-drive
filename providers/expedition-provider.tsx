@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import { createContext, useCallback, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { createInitialExpeditionState, type ExpeditionState } from "@/lib/expedition-state";
+import { nextAnnouncement } from "@/lib/expedition-view";
 
 type ExpeditionContextValue = {
   expedition: ExpeditionState;
@@ -10,9 +11,12 @@ type ExpeditionContextValue = {
   setEnhanced: Dispatch<SetStateAction<boolean>>;
   readerOpen: boolean;
   setReaderOpen: Dispatch<SetStateAction<boolean>>;
+  // The complete source list is an optional disclosure; switching presentation closes it.
+  allSourcesOpen: boolean;
+  setAllSourcesOpen: Dispatch<SetStateAction<boolean>>;
   // One polite live region serves both presentations.
   announcement: string;
-  announce: Dispatch<SetStateAction<string>>;
+  announce: (text: string) => void;
 };
 
 const ExpeditionContext = createContext<ExpeditionContextValue | null>(null);
@@ -21,9 +25,11 @@ export function ExpeditionProvider({ children }: { children: ReactNode }) {
   const [expedition, setExpedition] = useState(createInitialExpeditionState);
   const [enhanced, setEnhanced] = useState(false);
   const [readerOpen, setReaderOpen] = useState(false);
-  const [announcement, announce] = useState("");
+  const [allSourcesOpen, setAllSourcesOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  const announce = useCallback((text: string) => setAnnouncement((previous) => nextAnnouncement(previous, text)), []);
   return (
-    <ExpeditionContext value={{ expedition, setExpedition, enhanced, setEnhanced, readerOpen, setReaderOpen, announcement, announce }}>
+    <ExpeditionContext value={{ expedition, setExpedition, enhanced, setEnhanced, readerOpen, setReaderOpen, allSourcesOpen, setAllSourcesOpen, announcement, announce }}>
       {children}
     </ExpeditionContext>
   );

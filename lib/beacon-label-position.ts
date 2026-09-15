@@ -1,7 +1,7 @@
 import { Vector3, type Camera, type Object3D } from "three";
 
 // Half of the tallest centered beacon label plus a small gap, in CSS pixels.
-export const BEACON_LABEL_EDGE_MARGIN = 60;
+const BEACON_LABEL_EDGE_MARGIN = 60;
 
 const projected = new Vector3();
 

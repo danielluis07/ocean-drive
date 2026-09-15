@@ -70,7 +70,7 @@
 .ocean-world[data-reading="true"] { grid-template-rows: minmax(0, 1fr); }
 .ocean-world canvas { touch-action: none; }
 .ocean-world > div:first-child { min-height: 0; }
-.ocean-caption { position: absolute; top: 2rem; left: max(3rem, env(safe-area-inset-left)); color: #e2edf4; text-shadow: 0 2px 12px #061525; pointer-events: none; }
+.ocean-caption { position: absolute; top: max(2rem, env(safe-area-inset-top)); left: max(3rem, env(safe-area-inset-left)); color: #e2edf4; text-shadow: 0 2px 12px #061525; pointer-events: none; }
 .ocean-caption p { margin: 0; font-size: 0.85rem; }
 .ocean-caption h1 { margin: 0.4rem 0 0; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -0.03em; }
 .ocean-caption em { font-family: var(--font-editorial); }
@@ -116,7 +116,7 @@
   .presentation-bar > div { flex-wrap: wrap; gap: 0.65rem; flex-shrink: 1; }
   .presentation-bar p { font-size: 0.75rem; }
   .ocean-world { height: calc(100svh - 4.25rem); min-height: 600px; }
-  .ocean-caption { top: 0.5rem; left: max(1.25rem, env(safe-area-inset-left)); }
+  .ocean-caption { top: max(0.5rem, env(safe-area-inset-top)); left: max(1.25rem, env(safe-area-inset-left)); }
   .ocean-caption h1 { font-size: 1.35rem; }
   .ocean-caption p { display: none; }
   .helm-controls { gap: 0.5rem; padding-inline: max(0.75rem, env(safe-area-inset-left)) max(0.75rem, env(safe-area-inset-right)); }

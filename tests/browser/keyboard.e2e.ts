@@ -1,6 +1,11 @@
 import { expect, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import { settleScroll } from "@/tests/browser/scroll";
+import { evidenceRoute, openEditorialStation } from "@/tests/browser/editorial-route";
+
+// Playwright's WebKit follows Safari: sequential focus skips links unless full
+// keyboard access is used, and its Windows build keeps links out even then.
+const keepsLinksOutOfTabOrder = () => test.info().project.name === "webkit";
 
 type FocusStop = { label: string; indicated: boolean; unobscured: boolean };
 
@@ -27,8 +32,7 @@ async function focusStop(page: Page): Promise<FocusStop> {
 
 async function tabThrough(page: Page, stops: number) {
   const seen: FocusStop[] = [];
-  // WebKit follows Safari: plain Tab skips links unless full keyboard access is used.
-  const tab = test.info().project.name === "webkit" ? "Alt+Tab" : "Tab";
+  const tab = keepsLinksOutOfTabOrder() ? "Alt+Tab" : "Tab";
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   for (let index = 0; index < stops; index++) {
     await page.keyboard.press(tab);
@@ -50,13 +54,12 @@ test("editorial keyboard focus is always visible, unobscured, and never trapped"
   test.setTimeout(120_000);
   await page.goto("/");
   await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+  await openEditorialStation(page, evidenceRoute[0]);
   const stops = await tabThrough(page, 30);
   expect(stops.filter((stop) => !stop.indicated || !stop.unobscured)).toEqual([]);
   // Reaching the final link and leaving it proves the document has no trap.
   const labels = stops.map((stop) => stop.label);
-  // Playwright's WebKit keeps links out of sequential focus, like Safari's default.
-  const finalControl = test.info().project.name === "webkit" ? "button Voltar à rota" : "a Voltar ao início";
+  const finalControl = keepsLinksOutOfTabOrder() ? "button Voltar à rota" : "a Voltar ao início";
   const last = labels.indexOf(finalControl);
   expect(last).toBeGreaterThanOrEqual(0);
   expect(labels.slice(last + 1).some((label) => label === "(outside page content)" || label === labels[0])).toBe(true);
@@ -83,11 +86,17 @@ test("3D keyboard focus reaches steering without traps and stays visible", { tag
 
 test("Escape closes Caderno before the reader and never changes presentation", { tag: "@critical" }, async ({ page }) => {
   await page.goto("/");
-  await page.locator("#rota").getByRole("button", { name: /^01 Pulso de Calor/ }).click();
+  await openEditorialStation(page, evidenceRoute[0]);
   const summary = page.locator("#pulso-de-calor .logbook summary:visible");
-  await summary.focus();
-  await page.keyboard.press("Enter");
+  // Escape elsewhere on the page never closes a Caderno or pulls focus to it.
+  await summary.click();
   await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
+  const quality = page.getByRole("combobox", { name: "Qualidade" });
+  await quality.focus();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
+  await expect(quality).toBeFocused();
+  await summary.focus();
   await page.keyboard.press("Escape");
   await expect(page.locator("main details.logbook[open]")).toHaveCount(0);
   await expect(page.locator("#pulso-de-calor-signal-1")).toBeFocused();

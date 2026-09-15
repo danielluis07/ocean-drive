@@ -73,7 +73,7 @@ export default function OceanPresentation({
 }: {
   configuration: OceanConfiguration;
 }) {
-  const { expedition, setExpedition, enhanced, readerOpen, setReaderOpen, announce } =
+  const { expedition, setExpedition, enhanced, readerOpen, setReaderOpen, setAllSourcesOpen, announce } =
     useExpedition();
   const [stage, setStage] = useState<PreparationStage>("checking");
   const [eligible, setEligible] = useState(false);
@@ -286,6 +286,7 @@ export default function OceanPresentation({
     checkpoint();
     steering.current = 0;
     closeDisclosures();
+    setAllSourcesOpen(false);
     setExpedition((current) => {
       const selected =
         threeD && current.qualityPreference === "text"
