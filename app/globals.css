@@ -66,7 +66,7 @@
 .ocean-world[data-reading="true"] { grid-template-rows: minmax(0, 1fr); }
 .ocean-world canvas { touch-action: none; }
 .ocean-world > div:first-child { min-height: 0; }
-.ocean-caption { position: absolute; top: 2rem; left: 3rem; color: var(--petroleum-deep); pointer-events: none; }
+.ocean-caption { position: absolute; top: 2rem; left: 3rem; color: #e2edf4; text-shadow: 0 2px 12px #061525; pointer-events: none; }
 .ocean-caption p { margin: 0; font-size: 0.85rem; }
 .ocean-caption h1 { margin: 0.4rem 0 0; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -0.03em; }
 .ocean-caption em { font-family: var(--font-editorial); }

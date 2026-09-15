@@ -12,6 +12,8 @@ import { advanceStationJourney, type StationNavigation } from "@/lib/station-app
 import type { AssistanceStage } from "@/lib/assisted-return";
 import { boundaryCurrent } from "@/lib/boundary-current";
 import { frameHelmCamera } from "@/lib/helm-camera";
+import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
+import { createOceanEnvironment } from "@/lib/ocean-lighting";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
 
@@ -42,82 +44,6 @@ type RuntimeProps = {
   onStation: (station: OceanStation) => void;
 };
 
-const vertexShader = `
-  uniform float time;
-  varying vec3 world;
-  void main() {
-    vec3 p = position;
-    p.z += sin(p.x * .07 + time * .4) * .16 + sin(p.y * .11 - time * .3) * .12;
-    world = (modelMatrix * vec4(p, 1.)).xyz;
-    gl_Position = projectionMatrix * viewMatrix * vec4(world, 1.);
-  }
-`;
-
-const fragmentShader = `
-  uniform float time;
-  uniform vec2 vessel;
-  uniform float heading;
-  uniform float moving;
-  uniform float wakeDetail;
-  uniform vec2 boundaryCenter;
-  uniform float boundaryRadius;
-  varying vec3 world;
-  float noise(vec2 p) {
-    vec2 i = floor(p), f = fract(p);
-    f = f * f * (3. - 2. * f);
-    vec4 h = fract(sin(vec4(dot(i, vec2(127.1, 311.7)), dot(i + vec2(1., 0.), vec2(127.1, 311.7)),
-      dot(i + vec2(0., 1.), vec2(127.1, 311.7)), dot(i + vec2(1., 1.), vec2(127.1, 311.7)))) * 43758.5453);
-    return mix(mix(h.x, h.y, f.x), mix(h.z, h.w, f.x), f.y);
-  }
-  void main() {
-    vec2 p = world.xz;
-    float broad = noise(p * .025 + time * .008);
-    vec3 water = mix(vec3(.003, .033, .05), vec3(.018, .12, .10), broad);
-    #ifndef LOW_QUALITY
-    vec2 current = p + vec2(noise(p * .07), noise(p * .09)) * 8.;
-    float ripple = sin(current.x * 2.2 + current.y * .7 + time * .55);
-    float silver = pow(max(0., ripple), 24.) * pow(noise(current * vec2(.3, 1.6)), 3.);
-    water += silver * vec3(.12, .2, .18) * min(wakeDetail, 1.);
-    vec2 offset = p - vessel;
-    float aft = dot(offset, vec2(-sin(heading), cos(heading)));
-    float side = abs(dot(offset, vec2(cos(heading), sin(heading))));
-    float wake = (1. - smoothstep(.12, .5, abs(side - aft * .18)))
-      * smoothstep(1., 3., aft) * (1. - smoothstep(3., 16., aft)) * moving;
-    water = mix(water, vec3(.55, .72, .66), wake * .48 * min(wakeDetail, 1.));
-    float foam = (1. - smoothstep(0., 1.4, side)) * smoothstep(1., 2., aft)
-      * (1. - smoothstep(2., 10., aft)) * noise(p * 3. + time);
-    water += foam * .12 * moving * max(0., wakeDetail - 1.);
-    #endif
-    vec2 edge = p - boundaryCenter;
-    float radius = length(edge);
-    float band = smoothstep(boundaryRadius - 10., boundaryRadius, radius)
-      * (1. - smoothstep(boundaryRadius + 18., boundaryRadius + 32., radius));
-    // Curved, inward-running ribbons make the returning current visible on water.
-    float ribbons = pow(max(0., sin(atan(edge.y, edge.x) * 24. + radius * .45 + time * .8)), 10.);
-    water = mix(water, vec3(.53, .77, .68), band * (.16 + ribbons * .58));
-    float haze = smoothstep(65., 260., distance(cameraPosition, world));
-    gl_FragColor = vec4(mix(water, vec3(.64, .76, .74), haze), 1.);
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
-  }
-`;
-
-// Baseline water keeps the visible boundary current if decorative shading fails.
-const baselineFragmentShader = `
-  uniform vec2 boundaryCenter;
-  uniform float boundaryRadius;
-  varying vec3 world;
-  void main() {
-    float radius = length(world.xz - boundaryCenter);
-    float band = smoothstep(boundaryRadius - 10., boundaryRadius, radius)
-      * (1. - smoothstep(boundaryRadius + 18., boundaryRadius + 32., radius));
-    vec3 water = mix(vec3(.018, .12, .10), vec3(.53, .77, .68), band * .6);
-    float haze = smoothstep(65., 260., distance(cameraPosition, world));
-    gl_FragColor = vec4(mix(water, vec3(.64, .76, .74), haze), 1.);
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
-  }
-`;
 
 function SailableScene(props: RuntimeProps) {
   const { onStage, onFailure, onFrame, active, sailing, reading, visible, recoveryGeneration } = props;
@@ -139,12 +65,32 @@ function SailableScene(props: RuntimeProps) {
   const desiredCamera = useMemo(() => new Vector3(), []);
   const lookTarget = useMemo(() => new Vector3(), []);
   const material = useMemo(() => new ShaderMaterial({
-    defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : {},
+    defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {},
     uniforms: { time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, moving: { value: 0 }, wakeDetail: { value: 1 },
       boundaryCenter: { value: new Vector2(boundaryCurrent.centerX, boundaryCurrent.centerZ) }, boundaryRadius: { value: boundaryCurrent.radius } },
-    vertexShader,
-    fragmentShader: baselineWater ? baselineFragmentShader : fragmentShader,
+    vertexShader: oceanVertexShader,
+    fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
   }), [baselineWater, props.quality.tier]);
+
+  useEffect(() => {
+    const environment = createOceanEnvironment(gl);
+    scene.environment = environment.texture;
+    scene.environmentIntensity = .75;
+    let disposed = false;
+    const release = () => {
+      if (disposed) return;
+      disposed = true;
+      scene.environment = null;
+      environment.dispose();
+    };
+    // Release render-target handles while the old context is still lost.
+    // Deleting them after restoration would invalidate the new context's frame.
+    gl.domElement.addEventListener("webglcontextlost", release);
+    return () => {
+      gl.domElement.removeEventListener("webglcontextlost", release);
+      release();
+    };
+  }, [gl, scene, recoveryGeneration]);
 
   useEffect(() => {
     let cancelled = false;
@@ -244,8 +190,21 @@ function SailableScene(props: RuntimeProps) {
       material.uniforms.moving.value = sailing ? 1 : 0;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
       if (vesselGroup.current) {
-        vesselGroup.current.position.set(pose.position.x, 0.05, pose.position.z);
-        vesselGroup.current.rotation.y = -pose.heading;
+        const { x, z } = pose.position;
+        const time = elapsed.current;
+        const forwardX = Math.sin(pose.heading);
+        const forwardZ = -Math.cos(pose.heading);
+        const bowHeight = sampleOceanHeight(x + forwardX * 2.5, z + forwardZ * 2.5, time);
+        const sternHeight = sampleOceanHeight(x - forwardX * 2.5, z - forwardZ * 2.5, time);
+        const portHeight = sampleOceanHeight(x - Math.cos(pose.heading), z - Math.sin(pose.heading), time);
+        const starboardHeight = sampleOceanHeight(x + Math.cos(pose.heading), z + Math.sin(pose.heading), time);
+        vesselGroup.current.position.set(x, sampleOceanHeight(x, z, time) + .05, z);
+        vesselGroup.current.rotation.set(
+          props.reducedMotion ? 0 : Math.atan2(bowHeight - sternHeight, 5),
+          -pose.heading,
+          props.reducedMotion ? 0 : Math.atan2(starboardHeight - portHeight, 2),
+          "YXZ",
+        );
       }
       const portrait = size.width < size.height;
       const choosingMiddle = props.completedStations.length === 1 && props.availableStations.length === 3;
@@ -283,11 +242,11 @@ function SailableScene(props: RuntimeProps) {
 
   return (
     <>
-      <color attach="background" args={["#a3c2bd"]} />
-      <hemisphereLight args={["#f0f2dd", "#174c54", 2.5]} />
-      <directionalLight position={[-30, 60, 20]} intensity={2.6} color="#fff1cf" />
+      <color attach="background" args={["#183047"]} />
+      <hemisphereLight args={["#dceaf2", "#173d47", .65]} />
+      <directionalLight position={[-25, 78, -57]} intensity={3.1} color="#edf4ff" />
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={material}>
-        <planeGeometry args={[2400, 2400, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
+        <planeGeometry args={[1200, 1200, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
       {props.configuration.stations.map((station, index) => (
@@ -316,7 +275,7 @@ export default function OceanRuntime(props: RuntimeProps) {
       dpr={props.quality.dpr}
       camera={{ fov: 42, near: 0.5, far: 1200 }}
       frameloop={!props.visible ? "never" : props.active && props.sailing ? "always" : "demand"}
-      gl={{ alpha: false, antialias: false, powerPreference: "low-power" }}
+      gl={{ alpha: false, antialias: true, powerPreference: "default" }}
       onCreated={({ gl }) => props.onCanvas(gl.domElement)}
       fallback="A navegação em 3D não está disponível. Use a versão em texto.">
       <Suspense fallback={null}><SailableScene {...props} /></Suspense>

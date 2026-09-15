@@ -12,12 +12,18 @@ capped at 50 ms. React receives quality updates only when the settings change.
 
 | Tier | DPR ceiling range | Presentation |
 | --- | --- | --- |
-| High | 1.25–1.5 | Richer procedural wake and foam, 160 water subdivisions |
-| Balanced | 1.0–1.25 | Simplified wake, 120 water subdivisions |
-| Low | 0.75–1.0 | 48 water subdivisions, low vessel LOD, opaque approach rings, no transparent beacon enhancements |
+| High | 1.25–1.5 | Fine surface ripples and richer foam, 160 water subdivisions |
+| Balanced | 1.0–1.25 | Reflective wave shading and a broken foam wake, 120 water subdivisions |
+| Low | 0.75–1.0 | Simplified reflective wave shading, 48 water subdivisions, low vessel LOD, opaque approach rings, no transparent beacon enhancements |
 
-Effective DPR never exceeds the device's raw DPR. All tiers omit shadows, live
-reflections, render targets, and post-processing. Low runs at the browser's cadence;
+Effective DPR never exceeds the device's raw DPR. All tiers use canvas antialiasing
+and omit shadow maps, live scene reflections, and post-processing. A small local
+sky texture is prefiltered once into an environment render target for the vessel's
+paint, glass, and metal, and rebuilt after context restoration. Its GPU handles
+are released during context loss so cleanup cannot invalidate the restored frame.
+Water uses analytic wind-wave normals, deep navy absorption, Fresnel sky shading,
+patches of silver sun highlights, and a soft hull contact shadow
+in a single surface pass. Low runs at the browser's cadence;
 the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop or
 Low for coarse pointers/small screens once; subsequent changes use measurements.
 
@@ -58,6 +64,9 @@ browser scenario still verifies that threshold with the production controller.
 The journey fixture advances ten individual 16 ms frames per round-trip and uses
 0.5 device scale for the software renderer while preserving CSS viewports and
 input coordinates. These runs cannot serve as full-resolution performance evidence.
-Low also compiles out richer wake and highlight calculations entirely.
+Low compiles out foam, wake deformation, clouds, and fine ripple calculations.
+The vessel follows the same long swells as the water; reduced motion freezes wave
+time and disables pitch and roll. No new external textures or asset services are
+required. Regenerate both vessel detail levels with `bun run assets:vessels`.
 These are behavioral checks in Chromium with software rendering;
 physical-device performance and release acceptance remain unvalidated.
