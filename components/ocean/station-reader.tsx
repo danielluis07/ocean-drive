@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
-import { closeDisclosures, returnToSignal } from "@/lib/reader-interactions";
+import { closeDisclosures, closeOpenCaderno } from "@/lib/reader-interactions";
 
 export default function StationReader({ children, onClose }: { children: ReactNode; onClose: () => void }) {
   const reader = useRef<HTMLElement>(null);
@@ -7,10 +7,8 @@ export default function StationReader({ children, onClose }: { children: ReactNo
   useEffect(() => {
     const escape = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || event.defaultPrevented) return;
-      const disclosure = reader.current?.querySelector<HTMLDetailsElement>("details[open]");
       event.preventDefault();
-      if (disclosure) returnToSignal(disclosure);
-      else onClose();
+      if (!closeOpenCaderno(reader.current)) onClose();
     };
     const rememberSource = () => {
       const focused = document.activeElement;

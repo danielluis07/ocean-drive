@@ -27,6 +27,7 @@ export default function Connected({
       </div>
       <div
         className="connected__actions"
+        role="group"
         aria-label="Ações da expedição conectada">
         <button type="button" onClick={onReviewStations}>
           Revisitar estações

@@ -10,7 +10,7 @@ import RouteNavigation from "@/components/expedition/route-navigation";
 import StationList from "@/components/expedition/station-list";
 import OceanPresentation from "@/components/ocean/ocean-presentation";
 import StationReader from "@/components/ocean/station-reader";
-import { closeDisclosures, focusOceanTarget } from "@/lib/reader-interactions";
+import { closeDisclosures, closeOpenCaderno, focusOceanTarget } from "@/lib/reader-interactions";
 import { stations, type Station, type StationId } from "@/content/editorial";
 import {
   createInitialExpeditionState,
@@ -46,8 +46,9 @@ function ExpeditionContent() {
     setEnhanced,
     readerOpen,
     setReaderOpen,
+    announcement,
+    announce: setAnnouncement,
   } = useExpedition();
-  const [announcement, setAnnouncement] = useState("");
   const [showAllSources, setShowAllSources] = useState(false);
   const threeD = expedition.presentation === "three-dimensional";
   const availableStationIds = getAvailableStationIds(
@@ -109,6 +110,17 @@ function ExpeditionContent() {
       window.removeEventListener("pagehide", pauseAndPersist);
     };
   }, [setExpedition]);
+
+  useEffect(() => {
+    if (threeD) return;
+    // The 3D reader owns its own Escape layering; editorial Escape only closes Caderno.
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (closeOpenCaderno(document.querySelector("main"))) event.preventDefault();
+    };
+    document.addEventListener("keydown", escape);
+    return () => document.removeEventListener("keydown", escape);
+  }, [threeD]);
 
   function openStation(stationId: StationId) {
     if (!availableStationIds.has(stationId)) return;
@@ -251,7 +263,7 @@ function ExpeditionContent() {
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo
       </a>
-      <p className="visually-hidden" aria-live="polite" aria-atomic="true">
+      <p id="expedition-announcer" className="visually-hidden" aria-live="polite" aria-atomic="true">
         {announcement}
       </p>
       <main id="conteudo-principal">

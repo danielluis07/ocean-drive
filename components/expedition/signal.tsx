@@ -77,6 +77,7 @@ export default function Signal({
         </details>
         <div
           className="signal__controls"
+          role="group"
           aria-label={`Navegação dos sinais de ${station.name}`}>
           <button
             type="button"

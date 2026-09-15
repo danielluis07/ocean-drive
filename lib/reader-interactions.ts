@@ -7,9 +7,22 @@ export function focusOceanTarget(id: string): void {
 }
 
 export function closeDisclosures(): void {
-  document.querySelectorAll<HTMLDetailsElement>("main details[open]").forEach((details) => {
+  document.querySelectorAll<HTMLDetailsElement>("main details.logbook[open]").forEach((details) => {
     details.open = false;
   });
+}
+
+// Escape layering: an open Caderno closes first and returns focus to its signal.
+// Prefer the Caderno holding focus, then one the Visitor can see; hidden stations
+// may keep an earlier Caderno open.
+export function closeOpenCaderno(root: ParentNode | null): boolean {
+  if (!root) return false;
+  const open = [...root.querySelectorAll<HTMLDetailsElement>("details.logbook[open]")];
+  const caderno = open.find((details) => details.contains(document.activeElement))
+    ?? open.find((details) => details.checkVisibility());
+  if (!caderno) return false;
+  returnToSignal(caderno);
+  return true;
 }
 
 export function returnToSignal(element: HTMLElement): void {

@@ -44,7 +44,7 @@ async function finishStation(page: Page) {
   await expect(reader).toBeHidden();
 }
 
-test("arrival opens a protected reader and completion reveals both middle destinations", async ({ page }) => {
+test("arrival opens a protected reader and completion reveals both middle destinations", { tag: "@critical" }, async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto("/");
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
@@ -53,6 +53,7 @@ test("arrival opens a protected reader and completion reveals both middle destin
   const reader = page.getByRole("region", { name: "Voz da estação" });
   await expect(reader).toBeVisible({ timeout: 60_000 });
   await expect(reader.getByRole("heading", { name: "Pulso de Calor", exact: true })).toBeVisible();
+  await expect(page.locator("#expedition-announcer")).toHaveText("Pulso de Calor, estação aberta.");
   await reader.getByRole("button", { name: "Próximo sinal", exact: true }).click();
   await reader.getByRole("button", { name: "Próximo sinal", exact: true }).click();
   await reader.getByRole("button", { name: "Continuar expedição", exact: true }).click();
@@ -63,7 +64,7 @@ test("arrival opens a protected reader and completion reveals both middle destin
 });
 
 for (const firstMiddle of ["corais-sob-estresse", "respostas-desiguais"] as const) {
-  test(`complete Live Experience via ${firstMiddle}, sources, bookmarks, revisit and deliberate synthesis`, async ({ page, context }, testInfo) => {
+  test(`complete Live Experience via ${firstMiddle}, sources, bookmarks, revisit and deliberate synthesis`, { tag: "@critical" }, async ({ page, context }, testInfo) => {
     test.setTimeout(300_000);
     const mobile = firstMiddle === "respostas-desiguais";
     await page.setViewportSize(mobile ? { width: 390, height: 844 } : { width: 1440, height: 1000 });

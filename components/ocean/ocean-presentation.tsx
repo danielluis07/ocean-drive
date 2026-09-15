@@ -24,6 +24,8 @@ import {
 import type { OceanConfiguration, OceanStation } from "@/lib/ocean-config";
 import { ARRIVAL_RADIUS, stationDistance } from "@/lib/station-approach";
 import { closeDisclosures, focusOceanTarget as focusTarget } from "@/lib/reader-interactions";
+import { getEvidenceProgress } from "@/lib/expedition-view";
+import { useStickyScrollOffset } from "@/lib/use-sticky-scroll-offset";
 import type { PreparationStage } from "@/components/ocean/ocean-runtime";
 
 // The only runtime import. Editorial code and the state model never import Three.
@@ -71,7 +73,7 @@ export default function OceanPresentation({
 }: {
   configuration: OceanConfiguration;
 }) {
-  const { expedition, setExpedition, enhanced, readerOpen, setReaderOpen } =
+  const { expedition, setExpedition, enhanced, readerOpen, setReaderOpen, announce } =
     useExpedition();
   const [stage, setStage] = useState<PreparationStage>("checking");
   const [eligible, setEligible] = useState(false);
@@ -96,6 +98,8 @@ export default function OceanPresentation({
   const savedPose = expedition.vesselCheckpoints.current;
   const availableStations = configuration.stations.filter((station) => isStationAvailable(expedition, station.id)).map((station) => station.id);
   const previouslyActive = useRef(false);
+  const presentationBar = useRef<HTMLElement>(null);
+  useStickyScrollOffset(presentationBar);
 
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
@@ -295,6 +299,9 @@ export default function OceanPresentation({
         presentation: threeD ? "three-dimensional" : "editorial",
       });
     });
+    announce(threeD
+      ? "Expedição em 3D. A navegação está pausada."
+      : "Versão em texto. Seu lugar na expedição está preservado.");
     focusTarget(readerOpen ? passageId : threeD ? "expedition-movement" : "expedition-editorial-heading");
   }
 
@@ -303,6 +310,7 @@ export default function OceanPresentation({
     checkpoint();
     steering.current = 0;
     setStarted(true);
+    announce(sailing ? "Expedição pausada." : "Expedição em movimento.");
     setExpedition((current) =>
       transitionExpedition(current, {
         type: "set-pause-state",
@@ -342,6 +350,7 @@ export default function OceanPresentation({
       return transitionExpedition(arrived, { type: "open-station", station: station.id });
     });
     closeDisclosures();
+    announce(`${station.name}, estação aberta.`);
     focusTarget(`${station.id}-signal-${expedition.bookmarks[station.id] + 1}`);
   }
 
@@ -352,6 +361,7 @@ export default function OceanPresentation({
   return (
     <>
       <section
+        ref={presentationBar}
         className="presentation-bar"
         aria-label="Apresentação da expedição">
         <p role="status" aria-atomic="true">
@@ -451,7 +461,7 @@ export default function OceanPresentation({
               Mar <em>aberto</em>
             </h1>
           </div>
-          <div className="helm-controls" aria-label="Controles da embarcação" hidden={readerOpen}>
+          <div className="helm-controls" role="group" aria-label="Controles da embarcação" hidden={readerOpen}>
               <button
                 id="expedition-movement"
                 type="button"
@@ -495,6 +505,7 @@ export default function OceanPresentation({
                 Você conduz a direção. A embarcação mantém um ritmo tranquilo.
               </p>
             ) : null}
+            <p className="helm-progress">{getEvidenceProgress(expedition)}</p>
             <p className="ocean-disclosure">
               Pesquisa histórica · expedição fictícia
             </p>

@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 
-test("a ready ocean still requires explicit entry and first movement", async ({ page }) => {
+test("a ready ocean still requires explicit entry and first movement", { tag: "@critical" }, async ({ page }) => {
   const warnings: string[] = [];
   page.on("console", (message) => { if (message.type() === "warning") warnings.push(message.text()); });
   await page.goto("/");
@@ -76,7 +76,7 @@ for (const capability of ["unsupported", "refused"] as const) {
   });
 }
 
-test("the complete scientific story is readable without JavaScript", async ({ browser }) => {
+test("the complete scientific story is readable without JavaScript", { tag: "@critical" }, async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/");
@@ -86,7 +86,7 @@ test("the complete scientific story is readable without JavaScript", async ({ br
   await context.close();
 });
 
-test("context loss returns to the matching editorial passage with sailing paused", async ({ page }) => {
+test("context loss returns to the matching editorial passage with sailing paused", { tag: "@critical" }, async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto("/");
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();

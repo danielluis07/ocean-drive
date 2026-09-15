@@ -10,6 +10,9 @@ type ExpeditionContextValue = {
   setEnhanced: Dispatch<SetStateAction<boolean>>;
   readerOpen: boolean;
   setReaderOpen: Dispatch<SetStateAction<boolean>>;
+  // One polite live region serves both presentations.
+  announcement: string;
+  announce: Dispatch<SetStateAction<string>>;
 };
 
 const ExpeditionContext = createContext<ExpeditionContextValue | null>(null);
@@ -18,8 +21,9 @@ export function ExpeditionProvider({ children }: { children: ReactNode }) {
   const [expedition, setExpedition] = useState(createInitialExpeditionState);
   const [enhanced, setEnhanced] = useState(false);
   const [readerOpen, setReaderOpen] = useState(false);
+  const [announcement, announce] = useState("");
   return (
-    <ExpeditionContext value={{ expedition, setExpedition, enhanced, setEnhanced, readerOpen, setReaderOpen }}>
+    <ExpeditionContext value={{ expedition, setExpedition, enhanced, setEnhanced, readerOpen, setReaderOpen, announcement, announce }}>
       {children}
     </ExpeditionContext>
   );

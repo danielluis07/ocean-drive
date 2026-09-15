@@ -54,6 +54,8 @@ function SailableScene(props: RuntimeProps) {
   const prepared = useRef(false);
   const announced = useRef(false);
   const failed = useRef(false);
+  const compiling = useRef<Promise<unknown>>(Promise.resolve());
+  const liveMaterial = useRef<ShaderMaterial | null>(null);
   const fallbackPending = useRef(false);
   const [baselineWater, setBaselineWater] = useState(false);
   const elapsed = useRef(0);
@@ -115,7 +117,9 @@ function SailableScene(props: RuntimeProps) {
       failed.current = true;
       onFailure();
     };
-    gl.compileAsync(scene, camera).then(() => {
+    const compilation = gl.compileAsync(scene, camera);
+    compiling.current = compilation.catch(() => undefined);
+    compilation.then(() => {
       if (cancelled || failed.current || fallbackPending.current) return;
       prepared.current = true;
       onStage("frame");
@@ -149,7 +153,17 @@ function SailableScene(props: RuntimeProps) {
     if (visible) invalidate();
   }, [active, sailing, reading, visible, recoveryGeneration, onFrame, invalidate]);
 
-  useEffect(() => () => material.dispose(), [material]);
+  // Three polls every compiling material until its program is ready. Disposing one
+  // mid-poll throws and strands readiness (parallel compilation in Firefox/WebKit
+  // widens that window), so release a material only after that compilation, and
+  // only if it was replaced or unmounted rather than remounted.
+  useEffect(() => {
+    liveMaterial.current = material;
+    return () => {
+      liveMaterial.current = null;
+      void compiling.current.then(() => { if (liveMaterial.current !== material) material.dispose(); });
+    };
+  }, [material]);
 
   useFrame((_, delta) => {
     if (failed.current || document.hidden || props.suspended.current || gl.getContext().isContextLost()) return;

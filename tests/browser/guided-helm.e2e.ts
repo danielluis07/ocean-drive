@@ -12,7 +12,7 @@ async function start(page: Page) {
   await page.getByRole("button", { name: "Iniciar expedição", exact: true }).click();
 }
 
-test("keyboard and semantic steering move only while sailing and preserve heading on release", async ({ page }) => {
+test("keyboard and semantic steering move only while sailing and preserve heading on release", { tag: "@critical" }, async ({ page }) => {
   await start(page);
   const canvas = page.getByRole("group", { name: /Navegação da embarcação/ });
   await canvas.focus();

@@ -3,7 +3,7 @@ import {
   evidenceStationIds,
   type ExpeditionState,
 } from "@/lib/expedition-state";
-import { getStationStatus } from "@/lib/expedition-view";
+import { getEvidenceProgress, getStationStatus } from "@/lib/expedition-view";
 
 type RouteNavigationProps = {
   availableStationIds: Set<StationId>;
@@ -32,9 +32,9 @@ export default function RouteNavigation({
           <h2 id="route-title" tabIndex={-1}>
             Quatro estações. Doze sinais.
           </h2>
-          <p>{completedEvidenceCount} de 3 estações de evidência concluídas</p>
+          <p id="route-progress">{getEvidenceProgress(expedition)}</p>
         </div>
-        <progress max="3" value={completedEvidenceCount}>
+        <progress max="3" value={completedEvidenceCount} aria-labelledby="route-progress">
           {completedEvidenceCount} de 3
         </progress>
       </div>
