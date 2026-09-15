@@ -23,7 +23,7 @@ export default function Opening() {
         </p>
       </div>
       <div className="opening-copy page-shell">
-        <h1>
+        <h1 id="expedition-editorial-heading" tabIndex={-1}>
           Conduza a expedição e <em>conecte os sinais</em> de um oceano em
           mudança.
         </h1>

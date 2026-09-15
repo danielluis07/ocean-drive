@@ -34,6 +34,9 @@
 .presentation-bar button:not(:disabled):hover,
 .helm-controls button:not(:disabled):hover { background: var(--petroleum); }
 .presentation-bar a { padding-block: 0.8rem; white-space: nowrap; }
+.quality-choice { display: flex; align-items: center; gap: 0.5rem; }
+.quality-choice select { min-height: 44px; max-width: 10rem; border: 1px solid var(--mist); border-radius: 3px; padding: 0.4rem; color: var(--salt); background: var(--petroleum-deep); font: inherit; }
+.quality-choice select:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
 .presentation-bar button:focus-visible,
 .helm-controls button:focus-visible,
 .beacon-label:focus-visible,

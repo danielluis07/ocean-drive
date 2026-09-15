@@ -1,4 +1,5 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "@/tests/browser/journey-fixture";
 
 test("a ready ocean still requires explicit entry and first movement", async ({ page }) => {
   await page.goto("/");
@@ -95,6 +96,7 @@ test("context loss returns to the matching editorial passage with sailing paused
     (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
   });
   await expect(page.getByRole("status")).toContainText("conexão gráfica");
-  await expect(page.locator("#pulso-de-calor-signal-2")).toBeFocused();
+  await expect(page.locator("#expedition-editorial-heading")).toBeFocused();
+  await expect(page.locator("#pulso-de-calor-signal-2")).toBeVisible();
   await expect(page.getByRole("button", { name: "Pausar expedição" })).toBeHidden();
 });

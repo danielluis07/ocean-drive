@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
+import { test } from "@/tests/browser/journey-fixture";
 import type { VesselPose } from "@/lib/expedition-state";
 
 async function pose(page: Page): Promise<VesselPose> {

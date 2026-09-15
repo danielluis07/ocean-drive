@@ -13,14 +13,15 @@ Readiness follows real capability checking, module/GLB loading, shader compilati
 and a rendered frame with a connected station label and input handlers. It never
 changes presentation or starts movement. Reduced motion defers preparation until
 requested. Hidden tabs pause movement; restoration opens text and requires explicit
-3D entry and resume. Essential startup failures and context loss lock 3D for the
-visit while preserving editorial reading and Expedition State.
+3D entry and resume. Essential startup failures, failed recovery, and repeated
+context loss lock 3D for the visit while preserving reading and Expedition State.
 
 The initial scene included the first Field Station and its semantic reading action.
 The [complete spatial station journey](field-station-journey.md) extends it in #25
-with arrival-based reading and all four destinations. Assisted navigation and bounded waters belong to #26;
-adaptive quality and one-attempt context restoration to #27. This implementation
-uses a conservative initial Balanced/Low selection, not the adaptive controller.
+with arrival-based reading and all four destinations. Assisted navigation and
+bounded waters are documented in [assisted-return.md](assisted-return.md). The
+adaptive controller and one-attempt recovery added in #27 are documented in
+[ocean-resilience.md](ocean-resilience.md).
 
 ## Reproducible vessel assets
 

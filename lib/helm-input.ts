@@ -6,7 +6,6 @@ type HelmInput = {
   steering: RefObject<number>;
   targetHeading: RefObject<number | null>;
   onSuspend: () => void;
-  onContextLoss: () => void;
 };
 
 // Listeners belong only to the canvas: labels, readers and controls never steer.
@@ -57,7 +56,7 @@ export function connectHelmInput(canvas: HTMLCanvasElement, input: HelmInput) {
   };
   const suspend = () => { reset(); input.onSuspend(); };
   const hidden = () => { if (document.hidden) suspend(); };
-  const lost = (event: Event) => { event.preventDefault(); reset(); input.onContextLoss(); };
+  const lost = (event: Event) => { event.preventDefault(); reset(); };
   canvas.addEventListener("pointerdown", down);
   canvas.addEventListener("pointermove", move);
   canvas.addEventListener("pointerup", release);

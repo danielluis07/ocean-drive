@@ -10,6 +10,27 @@ import {
   type ExpeditionState,
 } from "@/lib/expedition-state";
 
+test("one context restoration preserves the visit and a second loss locks 3D across restart and reload", () => {
+  const original = reachConvergence();
+  const lost = transitionExpedition(original, { type: "lose-context" });
+  expect(lost.threeDAvailability.status).toBe("restoring");
+  expect(lost.bookmarks).toEqual(original.bookmarks);
+  expect(lost.middleOrder).toEqual(original.middleOrder);
+  expect(lost.vesselCheckpoints).toEqual(original.vesselCheckpoints);
+  expect(transitionExpedition(lost, { type: "set-presentation", presentation: "three-dimensional" })).toBe(lost);
+  const restored = transitionExpedition(lost, { type: "restore-context" });
+  expect(restored.presentation).toBe("editorial");
+  expect(restored.pauseState).toBe("paused");
+  expect(restored.threeDAvailability.status).toBe("available");
+  const reloaded = restoreExpeditionState(serializeExpeditionState(restored));
+  const secondLoss = transitionExpedition(reloaded, { type: "lose-context" });
+  const restarted = transitionExpedition(secondLoss, { type: "restart-expedition" });
+  expect(restarted.threeDAvailability).toEqual({ status: "unavailable", reason: "context-loss" });
+  expect(transitionExpedition(restarted, { type: "restore-context" })).toBe(restarted);
+  expect(restoreExpeditionState(serializeExpeditionState(lost)).threeDAvailability)
+    .toEqual({ status: "unavailable", reason: "context-loss" });
+});
+
 function reachConvergence(
   firstMiddle:
     | "corais-sob-estresse"

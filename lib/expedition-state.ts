@@ -39,8 +39,10 @@ export type ExpeditionState = {
   presentation: ExpeditionPresentation;
   pauseState: ExpeditionPauseState;
   qualityPreference: ExpeditionQualityPreference;
+  contextLosses: number;
   threeDAvailability:
     | { status: "available" }
+    | { status: "restoring" }
     | { status: "unavailable"; reason: ThreeDUnavailableReason };
 };
 
@@ -56,6 +58,8 @@ export type ExpeditionAction =
   | { type: "set-pause-state"; pauseState: ExpeditionPauseState }
   | { type: "set-quality-preference"; qualityPreference: ExpeditionQualityPreference }
   | { type: "checkpoint-vessel"; checkpoint: "current" | StationId; pose: VesselPose }
+  | { type: "lose-context" }
+  | { type: "restore-context" }
   | { type: "lock-three-d"; reason: ThreeDUnavailableReason };
 
 const initialVesselPose: VesselPose = {
@@ -81,6 +85,7 @@ export function createInitialExpeditionState(): ExpeditionState {
     presentation: "editorial",
     pauseState: "paused",
     qualityPreference: "automatic",
+    contextLosses: 0,
     threeDAvailability: { status: "available" },
   };
 }
@@ -152,9 +157,11 @@ function isExpeditionState(value: unknown): value is ExpeditionState {
   if (value.presentation !== "editorial" && value.presentation !== "three-dimensional") return false;
   if (value.pauseState !== "paused" && value.pauseState !== "sailing") return false;
   if (value.qualityPreference !== "automatic" && value.qualityPreference !== "reduced-3d" && value.qualityPreference !== "text") return false;
+  if (value.contextLosses !== undefined && value.contextLosses !== 0 && value.contextLosses !== 1 && value.contextLosses !== 2) return false;
   if (!isRecord(value.threeDAvailability)) return false;
-  if (value.threeDAvailability.status === "available") {
+  if (value.threeDAvailability.status === "available" || value.threeDAvailability.status === "restoring") {
     if (Object.keys(value.threeDAvailability).some((key) => key !== "status")) return false;
+    if (value.threeDAvailability.status === "restoring" && (value.contextLosses !== 1 || value.presentation !== "editorial")) return false;
   } else if (value.threeDAvailability.status === "unavailable") {
     if (!["unsupported", "refused", "asset-failure", "context-loss", "unusable-quality"].includes(value.threeDAvailability.reason as string)) return false;
     if (value.presentation !== "editorial") return false;
@@ -233,11 +240,12 @@ export function transitionExpedition(state: ExpeditionState, action: ExpeditionA
         ...initial,
         presentation: state.presentation,
         qualityPreference: state.qualityPreference,
+        contextLosses: state.contextLosses,
         threeDAvailability: state.threeDAvailability,
       };
     }
     case "set-presentation":
-      if (action.presentation === "three-dimensional" && state.threeDAvailability.status === "unavailable") {
+      if (action.presentation === "three-dimensional" && state.threeDAvailability.status !== "available") {
         return state;
       }
       return { ...state, presentation: action.presentation, pauseState: "paused" };
@@ -266,7 +274,20 @@ export function transitionExpedition(state: ExpeditionState, action: ExpeditionA
         ...state,
         vesselCheckpoints: { ...state.vesselCheckpoints, [action.checkpoint]: action.pose },
       };
+    case "lose-context":
+      if (state.threeDAvailability.status === "unavailable") return state;
+      return {
+        ...state,
+        contextLosses: Math.min(2, state.contextLosses + 1),
+        threeDAvailability: state.contextLosses === 0 ? { status: "restoring" } : { status: "unavailable", reason: "context-loss" },
+        presentation: "editorial",
+        pauseState: "paused",
+      };
+    case "restore-context":
+      if (state.threeDAvailability.status !== "restoring") return state;
+      return { ...state, threeDAvailability: { status: "available" } };
     case "lock-three-d":
+      if (state.threeDAvailability.status === "unavailable") return state;
       return {
         ...state,
         threeDAvailability: { status: "unavailable", reason: action.reason },
@@ -287,7 +308,10 @@ export function restoreExpeditionState(value: string | null): ExpeditionState {
       return createInitialExpeditionState();
     }
 
-    return { ...candidate.state, pauseState: "paused" };
+    const restored = { ...candidate.state, contextLosses: candidate.state.contextLosses ?? 0, pauseState: "paused" as const };
+    return restored.threeDAvailability.status === "restoring"
+      ? transitionExpedition(restored, { type: "lock-three-d", reason: "context-loss" })
+      : restored;
   } catch {
     return createInitialExpeditionState();
   }

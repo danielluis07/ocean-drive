@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
+import { test } from "@/tests/browser/journey-fixture";
 import type { VesselPose } from "@/lib/expedition-state";
 
 async function pose(page: Page): Promise<VesselPose> {
@@ -158,13 +159,15 @@ test("reduced-motion 3D stays still after steering and after a portrait-to-lands
   await page.waitForTimeout(500);
   await page.keyboard.up("d");
   await page.getByRole("button", { name: "Pausar expedição" }).click();
+  await page.waitForTimeout(300);
   const still = await canvas.screenshot();
   await page.waitForTimeout(600);
-  expect(await canvas.screenshot()).toEqual(still);
+  expect((await canvas.screenshot()).equals(still)).toBe(true);
   await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(300);
   const landscape = await canvas.screenshot({ path: testInfo.outputPath("reduced-motion-landscape.png") });
   await page.waitForTimeout(600);
-  expect(await canvas.screenshot()).toEqual(landscape);
+  expect((await canvas.screenshot()).equals(landscape)).toBe(true);
 });
 
 test("switching from a held key to a pointer releases the previous steering input", async ({ page }) => {
