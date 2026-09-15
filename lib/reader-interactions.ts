@@ -7,9 +7,22 @@ export function focusOceanTarget(id: string): void {
 }
 
 export function closeDisclosures(): void {
-  document.querySelectorAll<HTMLDetailsElement>("main details[open]").forEach((details) => {
+  document.querySelectorAll<HTMLDetailsElement>("main details.logbook[open]").forEach((details) => {
     details.open = false;
   });
+}
+
+// Escape layering: an open logbook (Caderno de bordo) closes first and returns
+// focus to its signal. The reader is a single focused context, so it may close
+// the visible logbook; the editorial page only closes the one holding focus.
+export function closeOpenLogbook(root: ParentNode | null, { focusedOnly = false } = {}): boolean {
+  if (!root) return false;
+  const open = [...root.querySelectorAll<HTMLDetailsElement>("details.logbook[open]")];
+  const logbook = open.find((details) => details.contains(document.activeElement))
+    ?? (focusedOnly ? undefined : open.find((details) => details.checkVisibility()));
+  if (!logbook) return false;
+  returnToSignal(logbook);
+  return true;
 }
 
 export function returnToSignal(element: HTMLElement): void {

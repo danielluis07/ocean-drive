@@ -11,7 +11,10 @@ export const test = base.extend({
     const frames = (async () => {
       while (running && !page.isClosed()) {
         // Batch ten 16 ms frames per browser round-trip without skipping frames.
-        await page.clock.runFor(160);
+        // The clock spans the context, so a closing popup or scanner page may
+        // reject one advance; only this page closing ends the loop.
+        try { await page.clock.runFor(160); }
+        catch (error) { if (page.isClosed()) break; if (!String(error).includes("closed")) throw error; }
         await new Promise((resolve) => setTimeout(resolve, 160));
       }
     })();

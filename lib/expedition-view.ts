@@ -1,5 +1,5 @@
 import type { SourceId, Station, StationId } from "@/content/editorial";
-import type { ExpeditionState } from "@/lib/expedition-state";
+import { evidenceStationIds, type ExpeditionState } from "@/lib/expedition-state";
 
 const scientificNameValues = [
   "Mussismilia braziliensis",
@@ -42,6 +42,13 @@ export function getAvailableStationIds(
   );
 }
 
+export function getCompletedEvidenceCount(expedition: ExpeditionState): number {
+  return expedition.completedStations.filter((id) => evidenceStationIds.includes(id)).length;
+}
+
+export function getEvidenceProgress(expedition: ExpeditionState): string {
+  return `${getCompletedEvidenceCount(expedition)} de ${evidenceStationIds.length} estações de evidência concluídas`;
+}
 export function getStationStatus(
   station: Station,
   available: boolean,
@@ -62,6 +69,10 @@ export function focusAndScrollToElement(id: string): void {
   requestAnimationFrame(() => {
     const element = document.getElementById(id);
     element?.focus({ preventScroll: true });
-    element?.scrollIntoView({ behavior: "smooth", block: "start" });
+    element?.scrollIntoView({
+      // An explicit behavior overrides CSS, so honor reduced motion here too.
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      block: "start",
+    });
   });
 }

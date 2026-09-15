@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AllSources from "@/components/expedition/all-sources";
 import Closing from "@/components/expedition/closing";
 import Connected from "@/components/expedition/connected";
@@ -10,7 +10,7 @@ import RouteNavigation from "@/components/expedition/route-navigation";
 import StationList from "@/components/expedition/station-list";
 import OceanPresentation from "@/components/ocean/ocean-presentation";
 import StationReader from "@/components/ocean/station-reader";
-import { closeDisclosures, focusOceanTarget } from "@/lib/reader-interactions";
+import { closeDisclosures, closeOpenLogbook, focusOceanTarget } from "@/lib/reader-interactions";
 import { stations, type Station, type StationId } from "@/content/editorial";
 import {
   createInitialExpeditionState,
@@ -46,9 +46,11 @@ function ExpeditionContent() {
     setEnhanced,
     readerOpen,
     setReaderOpen,
+    allSourcesOpen,
+    setAllSourcesOpen,
+    announcement,
+    announce,
   } = useExpedition();
-  const [announcement, setAnnouncement] = useState("");
-  const [showAllSources, setShowAllSources] = useState(false);
   const threeD = expedition.presentation === "three-dimensional";
   const availableStationIds = getAvailableStationIds(
     expedition,
@@ -110,6 +112,18 @@ function ExpeditionContent() {
     };
   }, [setExpedition]);
 
+  useEffect(() => {
+    if (threeD) return;
+    // The 3D reader owns its own Escape layering; editorial Escape only closes the
+    // Caderno holding focus, so it never pulls focus from elsewhere on the page.
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (closeOpenLogbook(document.querySelector("main"), { focusedOnly: true })) event.preventDefault();
+    };
+    document.addEventListener("keydown", escape);
+    return () => document.removeEventListener("keydown", escape);
+  }, [threeD]);
+
   function openStation(stationId: StationId) {
     if (!availableStationIds.has(stationId)) return;
     setReaderOpen(true);
@@ -119,8 +133,8 @@ function ExpeditionContent() {
         station: stationId,
       }),
     );
-    setShowAllSources(false);
-    setAnnouncement(
+    setAllSourcesOpen(false);
+    announce(
       `${stations.find((station) => station.id === stationId)!.name}, estação aberta.`,
     );
     focusAndScrollToElement(`${stationId}-title`);
@@ -137,7 +151,7 @@ function ExpeditionContent() {
         passage: signalIndex,
       }),
     );
-    setAnnouncement(
+    announce(
       `${station.name}. Sinal ${signalIndex + 1} de ${station.signals.length}: ${station.signals[signalIndex].title}`,
     );
     (threeD ? focusOceanTarget : focusAndScrollToElement)(`${station.id}-signal-${signalIndex + 1}`);
@@ -148,7 +162,7 @@ function ExpeditionContent() {
       setExpedition((current) =>
         transitionExpedition(current, { type: "connect-expedition" }),
       );
-      setAnnouncement(
+      announce(
         "Expedição conectada. As ações finais estão disponíveis.",
       );
       focusAndScrollToElement("expedicao-conectada-title");
@@ -168,7 +182,7 @@ function ExpeditionContent() {
 
     if (threeD) {
       closeReader();
-      setAnnouncement(isEvidenceComplete(nextState)
+      announce(isEvidenceComplete(nextState)
         ? "Três estações concluídas. Conduza até Convergência para conectar a expedição."
         : station.id === "pulso-de-calor"
           ? "Pulso de Calor concluída. Corais sob Estresse e Respostas Desiguais estão iluminadas; escolha seu percurso."
@@ -177,12 +191,12 @@ function ExpeditionContent() {
     }
 
     if (station.id === "pulso-de-calor") {
-      setAnnouncement(
+      announce(
         "Pulso de Calor concluída. Corais sob Estresse e Respostas Desiguais estão disponíveis; escolha a ordem da rota.",
       );
       focusAndScrollToElement("route-title");
     } else if (isEvidenceComplete(nextState)) {
-      setAnnouncement(
+      announce(
         "Três estações de evidência concluídas. Convergência está disponível.",
       );
       focusAndScrollToElement("convergencia-title");
@@ -190,7 +204,7 @@ function ExpeditionContent() {
       const nextStation = stations.find(
         (item) => item.id === nextMiddleStation,
       )!;
-      setAnnouncement(
+      announce(
         `${station.name} concluída. Próxima estação: ${nextStation.name}.`,
       );
       focusAndScrollToElement(`${nextMiddleStation}-title`);
@@ -201,9 +215,9 @@ function ExpeditionContent() {
     setExpedition((current) =>
       transitionExpedition(current, { type: "restart-expedition" }),
     );
-    setShowAllSources(false);
+    setAllSourcesOpen(false);
     if (threeD) closeReader();
-    setAnnouncement(
+    announce(
       "Expedição reiniciada. Pulso de Calor é a única estação disponível.",
     );
     if (!threeD) focusAndScrollToElement("pulso-de-calor-title");
@@ -212,13 +226,13 @@ function ExpeditionContent() {
   function closeReader() {
     closeDisclosures();
     setReaderOpen(false);
-    setShowAllSources(false);
+    setAllSourcesOpen(false);
     focusOceanTarget("expedition-movement");
   }
 
   function showSources() {
-    setShowAllSources(true);
-    setAnnouncement("Caderno completo de fontes aberto.");
+    setAllSourcesOpen(true);
+    announce("Caderno completo de fontes aberto.");
     focusAndScrollToElement("fontes-da-expedicao-title");
   }
 
@@ -237,7 +251,7 @@ function ExpeditionContent() {
         onReviewStations={() => threeD ? closeReader() : focusAndScrollToElement("route-title")}
         onShowSources={showSources}
       />
-      <AllSources visible={showAllSources} />
+      <AllSources visible={allSourcesOpen} />
     </>
   );
 
@@ -251,7 +265,7 @@ function ExpeditionContent() {
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo
       </a>
-      <p className="visually-hidden" aria-live="polite" aria-atomic="true">
+      <p id="expedition-announcer" className="visually-hidden" aria-live="polite" aria-atomic="true">
         {announcement}
       </p>
       <main id="conteudo-principal">

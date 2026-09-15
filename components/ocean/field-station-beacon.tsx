@@ -4,6 +4,7 @@ import { Html } from "@react-three/drei/web/Html";
 import type { OceanStation } from "@/lib/ocean-config";
 import type { VesselPose } from "@/lib/expedition-state";
 import { APPROACH_RADIUS, ARRIVAL_RADIUS, stationDistance } from "@/lib/station-approach";
+import { keepBeaconLabelInView } from "@/lib/beacon-label-position";
 
 type BeaconProps = {
   station: OceanStation;
@@ -52,7 +53,7 @@ export default function FieldStationBeacon({ station, available, completed, acti
             <cylinderGeometry args={[0.12, 0.55, 9, 8, 1, true]} />
             <meshBasicMaterial color={station.color} transparent opacity={assisted ? 0.7 : completed ? 0.12 : 0.3} depthWrite={false} />
           </mesh></> : null}
-          {!reading || near ? <Html position={[0, reading ? 8 : 13, 0]} center zIndexRange={[5, 0]}>
+          {!reading || near ? <Html position={[0, reading ? 8 : 13, 0]} center calculatePosition={keepBeaconLabelInView} zIndexRange={[5, 0]}>
             <button
               ref={onLabel}
               className="beacon-label"
