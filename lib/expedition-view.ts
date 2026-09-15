@@ -49,13 +49,6 @@ export function getCompletedEvidenceCount(expedition: ExpeditionState): number {
 export function getEvidenceProgress(expedition: ExpeditionState): string {
   return `${getCompletedEvidenceCount(expedition)} de ${evidenceStationIds.length} estações de evidência concluídas`;
 }
-
-// Live regions stay silent when their text does not change. Repeating a message
-// (reopening the same station) alternates a trailing no-break space instead.
-export function nextAnnouncement(previous: string, text: string): string {
-  return previous === text ? `${text} ` : text;
-}
-
 export function getStationStatus(
   station: Station,
   available: boolean,

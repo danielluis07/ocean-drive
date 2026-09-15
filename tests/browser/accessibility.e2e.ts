@@ -114,9 +114,14 @@ test("both presentations expose named control groups, station progress, and poli
   await expect(announcer).toHaveText("Expedição pausada.");
   await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
   await expect(announcer).toHaveText("Versão em texto. Seu lugar na expedição está preservado.");
-  // Repeating a message must still change the live region, or it is not announced.
-  const previous = await announcer.textContent();
+  // Assistive technology can ignore whitespace-only live-region changes, so a
+  // repeated message must clear the region and then restore the exact text.
+  await announcer.evaluate((region) => {
+    const history: string[] = [];
+    (window as unknown as { announcements: string[] }).announcements = history;
+    new MutationObserver(() => history.push(region.textContent ?? "")).observe(region, { childList: true, characterData: true, subtree: true });
+  });
   await page.getByRole("link", { name: "Versão em texto", exact: true }).click();
-  await expect.poll(() => announcer.textContent()).not.toBe(previous);
-  await expect(announcer).toHaveText("Versão em texto. Seu lugar na expedição está preservado.");
+  await expect.poll(() => page.evaluate(() => (window as unknown as { announcements: string[] }).announcements))
+    .toEqual(["", "Versão em texto. Seu lugar na expedição está preservado."]);
 });

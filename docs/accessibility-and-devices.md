@@ -8,8 +8,9 @@ hardening both presentations after Assisted Return (#26) and resilience (#27).
 **Semantics.** One polite live region (`#expedition-announcer`, owned by the
 Expedition provider) serves both presentations. It announces station opening,
 completion and route choice, entering 3D (always paused), sailing and pausing,
-and returning to Versão em texto with the place preserved. A repeated message
-alternates a trailing no-break space so the live region still changes. Readiness and failure
+and returning to Versão em texto with the place preserved. Each message clears
+the region and restores the text on the next frame, so repeats are announced
+even where assistive technology ignores whitespace-only changes. Readiness and failure
 reasons remain in the presentation bar's status. Evidence progress is available
 as text in the editorial route (labelling its `progress`) and in the 3D helm
 controls, so progress never depends on beacon light, color, or depth. Named
