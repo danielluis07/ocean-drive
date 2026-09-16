@@ -6,7 +6,7 @@ shared data and logic in top-level folders.
 ```text
 app/                         Next.js routes, layouts, and global styles
 components/
-  expedition/                Editorial expedition UI and interaction shell
+  voyage/                    Editorial voyage UI and interaction shell
   ocean/                     3D ocean presentation and runtime
 content/                     Editorial records and other authored content
 lib/                         State transitions, configuration, and pure helpers
@@ -21,14 +21,15 @@ Keep route files such as `app/page.tsx` small. They should compose the feature
 entry points that live under `components/`.
 
 Within a feature folder, split components by page section or clear UI
-responsibility. The `components/expedition/expedition.tsx` file owns the client
-state and coordinates the editorial expedition, while its sibling files render
-the route, stations, signals, sources, and static sections.
+responsibility. The `components/voyage/voyage.tsx` file owns the client state
+and coordinates both presentations, while its sibling files render the route,
+Stops, signals, sources, and static sections.
 
 Put reusable logic that does not render JSX in `lib/`. For example,
-`lib/expedition-state.ts` owns the expedition state machine and persistence,
-and `lib/expedition-view.ts` contains display-oriented helpers used by the
-expedition components. Put authored copy and evidence records in `content/` so
+`lib/voyage-state.ts` owns Voyage State and its persistence,
+`lib/charted-route.ts` and `lib/route-motion.ts` own the Charted Route and the
+Ship's movement along it, and `lib/voyage-view.ts` contains display-oriented
+helpers used by the voyage components. Put authored copy and evidence records in `content/` so
 components do not become data stores.
 
 Use the `@/` alias for imports across top-level folders. Use relative imports

@@ -1,29 +1,24 @@
 import { expect, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
-import type { ExpeditionState } from "@/lib/expedition-state";
+import type { VoyageState } from "@/lib/voyage-state";
 import {
   advanceEditorialSignal,
-  evidenceRoute,
+  expectSettledAt,
   holdVesselAssets,
-  openEditorialStation,
+  openEditorialStop,
+  voyageRoute,
+  voyageState,
 } from "@/tests/browser/editorial-route";
 
-const editorialHeading = "#expedition-editorial-heading";
-const movementControl = "#expedition-movement";
+const editorialHeading = "#voyage-editorial-heading";
+const ocean = "#voyage-ocean";
 
-async function state(page: Page): Promise<ExpeditionState> {
-  return page.evaluate(
-    () =>
-      JSON.parse(sessionStorage.getItem("ocean-drive:expedition:v1")!).state,
-  );
-}
-
-// Expedition State is presentation-independent: everything but the active
+// Voyage State is presentation-independent: everything but the active
 // presentation must survive a switch.
 function presentationIndependentState(
-  state: ExpeditionState,
-): Partial<ExpeditionState> {
-  const copy: Partial<ExpeditionState> = { ...state };
+  state: VoyageState,
+): Partial<VoyageState> {
+  const copy: Partial<VoyageState> = { ...state };
   delete copy.presentation;
   return copy;
 }
@@ -33,14 +28,13 @@ async function expectOptionalDisclosuresClosed(page: Page) {
   await expect(page.locator("#fontes-da-expedicao")).toBeHidden();
 }
 
-// Switch away and back, checking focus, closed disclosures, paused sailing, and
-// unchanged Expedition State in both directions.
+// Switch away and back, checking focus, closed disclosures, and unchanged
+// Voyage State in both directions.
 async function switchAndReturn(
   page: Page,
   focus: { away: string; back: string },
-  { sailing = false } = {},
 ) {
-  const before = await state(page);
+  const before = await voyageState(page);
   const toText = page.getByRole("link", {
     name: "Versão em texto",
     exact: true,
@@ -53,36 +47,22 @@ async function switchAndReturn(
   await (fromThreeD ? toText : to3D).click();
   await expect(page.locator(focus.away)).toBeFocused();
   await expectOptionalDisclosuresClosed(page);
-  const switched = await state(page);
+  const switched = await voyageState(page);
   expect(switched.presentation).toBe(
     fromThreeD ? "editorial" : "three-dimensional",
   );
-  if (sailing) {
-    // The persisted pose lags live sailing; the switch itself must freeze it.
-    const unmoved = presentationIndependentState(before);
-    delete unmoved.vesselCheckpoints;
-    expect(presentationIndependentState(switched)).toMatchObject({
-      ...unmoved,
-      pauseState: "paused",
-    });
-    await page.waitForTimeout(600);
-    expect(presentationIndependentState(await state(page))).toEqual(
-      presentationIndependentState(switched),
-    );
-  } else {
-    expect(presentationIndependentState(switched)).toEqual({
-      ...presentationIndependentState(before),
-      pauseState: "paused",
-    });
-  }
-  await (fromThreeD ? to3D : toText).click();
-  await expect(page.locator(focus.back)).toBeFocused();
-  expect(presentationIndependentState(await state(page))).toEqual(
+  expect(presentationIndependentState(switched)).toEqual(
+    presentationIndependentState(before),
+  );
+  await page.waitForTimeout(600);
+  expect(presentationIndependentState(await voyageState(page))).toEqual(
     presentationIndependentState(switched),
   );
-  await expect(
-    page.getByRole("button", { name: "Pausar expedição" }),
-  ).toBeHidden();
+  await (fromThreeD ? to3D : toText).click();
+  await expect(page.locator(focus.back)).toBeFocused();
+  expect(presentationIndependentState(await voyageState(page))).toEqual(
+    presentationIndependentState(switched),
+  );
 }
 
 async function openCaderno(page: Page) {
@@ -91,7 +71,7 @@ async function openCaderno(page: Page) {
 }
 
 test(
-  "switching presentations is atomic at entry, sailing, every Stop Account, and completion",
+  "switching presentations is atomic at entry, at a Stop, in every Stop Account, and at the Arrival",
   { tag: "@critical" },
   async ({ page }) => {
     test.setTimeout(240_000);
@@ -101,30 +81,21 @@ test(
     );
     // The approved identity disclosure is not an optional source disclosure.
     await expect(page.locator("main details.disclosure[open]")).toHaveCount(1);
-    await switchAndReturn(page, {
-      away: movementControl,
-      back: editorialHeading,
-    });
+    await switchAndReturn(page, { away: ocean, back: editorialHeading });
     await page
       .getByRole("button", { name: "Explorar em 3D", exact: true })
       .click();
-    await page
-      .getByRole("button", { name: "Iniciar expedição", exact: true })
-      .click();
-    await page.waitForTimeout(600);
-    await switchAndReturn(
-      page,
-      { away: editorialHeading, back: movementControl },
-      { sailing: true },
-    );
+    await page.keyboard.press("ArrowDown");
+    await expectSettledAt(page, 1);
+    await switchAndReturn(page, { away: editorialHeading, back: ocean });
     await page
       .getByRole("link", { name: "Versão em texto", exact: true })
       .click();
 
-    for (const station of evidenceRoute) {
-      const passage = `#${station.id}-signal-2`;
-      await openEditorialStation(page, station);
-      await advanceEditorialSignal(page, station, 2);
+    for (const stop of voyageRoute) {
+      const passage = `#${stop.id}-signal-2`;
+      await openEditorialStop(page, stop);
+      await advanceEditorialSignal(page, stop, 2);
       await openCaderno(page);
       await switchAndReturn(page, { away: passage, back: passage });
       await page
@@ -135,24 +106,22 @@ test(
       await page
         .getByRole("link", { name: "Versão em texto", exact: true })
         .click();
-      await advanceEditorialSignal(page, station, 3);
-      const confirm =
-        station.id === "convergencia"
-          ? "Conectar expedição"
-          : "Continuar expedição";
-      await page.getByRole("button", { name: confirm, exact: true }).click();
     }
     await expect(
-      page.getByRole("heading", { name: "Expedição conectada.", exact: true }),
-    ).toBeFocused();
-    expect((await state(page)).connected).toBe(true);
+      page.getByRole("heading", { name: "Viagem concluída.", exact: true }),
+    ).toBeVisible();
+    expect(await voyageState(page)).toMatchObject({
+      complete: true,
+      currentStop: "ilha-grande",
+      visitedStops: voyageRoute.map((stop) => stop.id),
+    });
     await page
       .getByRole("button", { name: "Consultar fontes", exact: true })
       .click();
     await expect(page.locator("#fontes-da-expedicao")).toBeVisible();
     await switchAndReturn(page, {
-      away: "#convergencia-signal-3",
-      back: "#convergencia-signal-3",
+      away: "#ilha-grande-signal-2",
+      back: "#ilha-grande-signal-2",
     });
   },
 );
@@ -168,18 +137,15 @@ test(
     await expect(
       page.getByRole("button", { name: "Explorar em 3D", exact: true }),
     ).toBeDisabled();
-    const loading = await state(page);
+    const loading = await voyageState(page);
     await page
       .getByRole("link", { name: "Versão em texto", exact: true })
       .click();
     await expect(page.locator(editorialHeading)).toBeFocused();
-    expect(await state(page)).toEqual(loading);
+    expect(await voyageState(page)).toEqual(loading);
     releaseVessel();
     await page
       .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
-    await page
-      .getByRole("button", { name: "Iniciar expedição", exact: true })
       .click();
     await page.locator("canvas").evaluate((canvas) => {
       (canvas as HTMLCanvasElement)
@@ -191,10 +157,9 @@ test(
     await expect(
       page.getByRole("button", { name: "Explorar em 3D", exact: true }),
     ).toBeEnabled();
-    expect((await state(page)).threeDAvailability.status).toBe("available");
-    await switchAndReturn(page, {
-      away: movementControl,
-      back: editorialHeading,
-    });
+    expect((await voyageState(page)).threeDAvailability.status).toBe(
+      "available",
+    );
+    await switchAndReturn(page, { away: ocean, back: editorialHeading });
   },
 );

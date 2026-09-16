@@ -4,14 +4,13 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
 import { useVesselScene } from "@/lib/use-vessel-scene";
 import { qualityEnvelope, type OceanQuality } from "@/lib/ocean-quality";
-import type { VesselPose } from "@/lib/expedition-state";
-import type { StationId } from "@/content/editorial";
-import type { OceanConfiguration, OceanStation } from "@/lib/ocean-config";
-import FieldStationBeacon from "@/components/ocean/field-station-beacon";
-import { advanceStationJourney, type StationNavigation } from "@/lib/station-approach";
-import type { AssistanceStage } from "@/lib/assisted-return";
-import { boundaryCurrent } from "@/lib/boundary-current";
-import { frameHelmCamera } from "@/lib/helm-camera";
+import { stops, type StopId } from "@/content/editorial";
+import type { OceanConfiguration } from "@/lib/ocean-config";
+import StopLabel from "@/components/ocean/stop-label";
+import StopMarker from "@/components/ocean/stop-marker";
+import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
+import type { RouteMotion } from "@/lib/route-motion";
+import { CAMERA_FOV, frameRouteCamera } from "@/lib/route-camera";
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
@@ -28,32 +27,30 @@ type RuntimeProps = {
   onFrame: (milliseconds: number | null) => void;
   reducedMotion: boolean;
   active: boolean;
-  sailing: boolean;
   reading: boolean;
-  availableStations: StationId[];
-  completedStations: StationId[];
-  livePose: RefObject<VesselPose>;
-  steering: RefObject<number>;
-  targetHeading: RefObject<number | null>;
-  reorientation: RefObject<boolean>;
-  assistance: { stage: AssistanceStage; boundaryReturning: boolean };
-  onAssistance: (assistance: { stage: AssistanceStage; boundaryReturning: boolean }) => void;
-  controlsConnected: RefObject<boolean>;
+  chartedRoute: ChartedRoute;
+  route: RefObject<RouteMotion>;
+  settledStop: number | null;
+  visitedStops: StopId[];
+  inputConnected: RefObject<boolean>;
   onStage: (stage: PreparationStage) => void;
   onFailure: () => void;
   onCanvas: (canvas: HTMLCanvasElement) => void;
-  onStation: (station: OceanStation) => void;
+  onSettle: (stop: number | null) => void;
+  onOpenStop: (stop: StopId) => void;
 };
+
+// Reduced motion keeps the water alive but slows its swell.
+const CALM_WAVE_RATE = 0.3;
 
 
 function SailableScene(props: RuntimeProps) {
-  const { onStage, onFailure, onFrame, active, sailing, reading, visible, recoveryGeneration } = props;
+  const { onStage, onFailure, onFrame, active, reading, visible, recoveryGeneration } = props;
   const { gl, scene, camera, size, invalidate, setFrameloop } = useThree();
   const measureScene = useSceneDiagnostics(gl);
   const oceanDraws = useRef(0);
   const vesselScene = useVesselScene(props.vesselUrl);
   const vesselGroup = useRef<Group>(null);
-  const stationLabel = useRef<HTMLButtonElement>(null);
   const prepared = useRef(false);
   const announced = useRef(false);
   const failed = useRef(false);
@@ -64,15 +61,11 @@ function SailableScene(props: RuntimeProps) {
   const elapsed = useRef(0);
   const lastFrame = useRef<number | null>(null);
   const frameWasActive = useRef(false);
-  const navigation = useRef<StationNavigation>({ departedStation: null, arrivalPending: false });
-  const cameraFraming = useRef<ReturnType<typeof frameHelmCamera> | null>(null);
-  const reportedAssistance = useRef(props.assistance);
-  const desiredCamera = useMemo(() => new Vector3(), []);
-  const lookTarget = useMemo(() => new Vector3(), []);
+  const reportedStop = useRef<number | null | undefined>(undefined);
+  const cameraPosition = useMemo(() => new Vector3(), []);
   const material = useMemo(() => new ShaderMaterial({
     defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {},
-    uniforms: { time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, moving: { value: 0 }, wakeDetail: { value: 1 },
-      boundaryCenter: { value: new Vector2(boundaryCurrent.centerX, boundaryCurrent.centerZ) }, boundaryRadius: { value: boundaryCurrent.radius } },
+    uniforms: { time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, moving: { value: 0 }, wakeDetail: { value: 1 } },
     vertexShader: oceanVertexShader,
     fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
   }), [baselineWater, props.quality.tier]);
@@ -155,7 +148,7 @@ function SailableScene(props: RuntimeProps) {
     frameWasActive.current = false;
     onFrame(null);
     if (visible) invalidate();
-  }, [active, sailing, reading, visible, recoveryGeneration, onFrame, invalidate]);
+  }, [active, reading, visible, recoveryGeneration, onFrame, invalidate]);
 
   // Three polls every compiling material until its program is ready. Disposing one
   // mid-poll throws and strands readiness (parallel compilation in Firefox/WebKit
@@ -172,40 +165,24 @@ function SailableScene(props: RuntimeProps) {
   useFrame((_, delta) => {
     if (failed.current || document.hidden || props.suspended.current || gl.getContext().isContextLost()) return;
     try {
-      const measuring = announced.current && props.active && props.sailing && !props.reading;
+      const measuring = announced.current && props.active && !props.reading;
       const now = performance.now();
       if (measuring && frameWasActive.current && lastFrame.current !== null) props.onFrame(now - lastFrame.current);
-      // The first frame after entry/resume anchors time without moving the vessel.
+      // The first frame after entry/resume anchors time without moving the Ship.
       const seconds = measuring && frameWasActive.current ? Math.min(delta, 0.05) : 0;
       lastFrame.current = measuring ? now : null;
       frameWasActive.current = measuring;
-      if (props.reorientation.current) {
-        navigation.current.assistance = undefined;
-        props.reorientation.current = false;
+      const motion = props.route.current.advance(seconds, now, props.reducedMotion);
+      if (reportedStop.current !== motion.settledStop) {
+        reportedStop.current = motion.settledStop;
+        props.onSettle(motion.settledStop);
       }
-      const journey = advanceStationJourney(props.livePose.current, navigation.current, {
-        stations: props.configuration.stations,
-        availableStations: props.availableStations,
-        completedStations: props.completedStations,
-        sailing: props.active && props.sailing,
-        steering: props.steering.current,
-        targetHeading: props.targetHeading.current,
-        seconds,
-      });
-      props.livePose.current = journey.pose;
-      navigation.current = journey.navigation;
-      const assistance = { stage: journey.navigation.assistance?.stage ?? "none", boundaryReturning: journey.navigation.boundaryReturning ?? false };
-      if (reportedAssistance.current.stage !== assistance.stage || reportedAssistance.current.boundaryReturning !== assistance.boundaryReturning) {
-        reportedAssistance.current = assistance;
-        props.onAssistance(assistance);
-      }
-      if (journey.arrived) props.onStation(journey.arrived);
-      const { pose, sailing } = journey;
-      if (sailing && !props.reducedMotion) elapsed.current += seconds;
+      const pose = poseAtProgress(props.chartedRoute, motion.progress);
+      elapsed.current += seconds * (props.reducedMotion ? CALM_WAVE_RATE : 1);
       material.uniforms.time.value = elapsed.current;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
-      material.uniforms.moving.value = sailing ? 1 : 0;
+      material.uniforms.moving.value = motion.moving ? 1 : 0;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
       if (vesselGroup.current) {
         const { x, z } = pose.position;
@@ -217,6 +194,7 @@ function SailableScene(props: RuntimeProps) {
         const portHeight = sampleOceanHeight(x - Math.cos(pose.heading), z - Math.sin(pose.heading), time);
         const starboardHeight = sampleOceanHeight(x + Math.cos(pose.heading), z + Math.sin(pose.heading), time);
         vesselGroup.current.position.set(x, sampleOceanHeight(x, z, time) + .05, z);
+        // Reduced motion disables pitch and roll; the Ship still turns along the route.
         vesselGroup.current.rotation.set(
           props.reducedMotion ? 0 : Math.atan2(bowHeight - sternHeight, 5),
           -pose.heading,
@@ -224,24 +202,17 @@ function SailableScene(props: RuntimeProps) {
           "YXZ",
         );
       }
-      const portrait = size.width < size.height;
-      const choosingMiddle = props.completedStations.length === 1 && props.availableStations.length === 3;
-      const framing = frameHelmCamera(cameraFraming.current, pose.heading, {
-        portrait, choosingMiddle, reading: props.reading, reducedMotion: props.reducedMotion, sailing, seconds,
-      });
-      cameraFraming.current = framing;
-      desiredCamera.set(pose.position.x - Math.sin(framing.heading) * framing.distance, framing.height, pose.position.z + Math.cos(framing.heading) * framing.distance);
-      // Keep the vessel coupled to the camera; only heading and framing have lag.
-      if (!sailing && camera.position.distanceToSquared(desiredCamera) > 0.001) invalidate();
-      camera.position.copy(desiredCamera);
-      lookTarget.set(pose.position.x + Math.sin(framing.heading) * framing.lookAhead, 0, pose.position.z - Math.cos(framing.heading) * framing.lookAhead);
-      camera.lookAt(lookTarget);
+      const framing = frameRouteCamera(pose.position, size);
+      // A cut while the scene renders on demand still needs its frame.
+      if (!measuring && camera.position.distanceToSquared(cameraPosition.set(...framing.position)) > 0.001) invalidate();
+      camera.position.set(...framing.position);
+      camera.lookAt(...framing.target);
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       oceanDraws.current = 0;
       gl.render(scene, camera);
       measureScene(props.quality.tier, oceanDraws.current);
       if (fallbackPending.current) return;
-      if (prepared.current && !announced.current && props.controlsConnected.current && stationLabel.current?.isConnected) {
+      if (prepared.current && !announced.current && props.inputConnected.current) {
         const context = gl.getContext();
         const error = context.getError();
         if (context.isContextLost() || error !== context.NO_ERROR || gl.info.render.calls < 3) {
@@ -260,6 +231,9 @@ function SailableScene(props: RuntimeProps) {
     }
   }, 1);
 
+  const settled = props.settledStop === null ? null : props.configuration.stops[props.settledStop];
+  const labelledStop = settled && stops[props.settledStop!].signals.length > 0 ? settled : null;
+
   return (
     <>
       <color attach="background" args={["#183047"]} />
@@ -269,24 +243,23 @@ function SailableScene(props: RuntimeProps) {
         <planeGeometry args={[1200, 1200, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
-      {props.configuration.stations.map((station, index) => (
-        <FieldStationBeacon
-          key={station.id}
-          station={station}
-          index={index + 1}
-          reducedMotion={props.reducedMotion}
-          available={props.availableStations.includes(station.id)}
-          completed={props.completedStations.includes(station.id)}
-          active={props.active}
-          reading={props.reading && props.active}
-          low={props.quality.tier === "low"}
-          assisted={props.assistance.stage !== "none" && (!props.completedStations.includes(station.id)
-            || props.availableStations.every((id) => props.completedStations.includes(id)))}
-          livePose={props.livePose}
-          onStation={(selected) => { navigation.current.departedStation = selected.id; props.onStation(selected); }}
-          onLabel={index === 0 ? (label) => { stationLabel.current = label; if (label) invalidate(); } : undefined}
+      {props.configuration.stops.map((stop) => stop.landmark ? (
+        <StopMarker
+          key={stop.id}
+          position={stop.landmark}
+          color={stop.color}
+          visited={props.visitedStops.includes(stop.id)}
+          animated={props.active && !props.reading && !props.reducedMotion}
         />
-      ))}
+      ) : null)}
+      {labelledStop && props.active && !props.reading ? (
+        <StopLabel
+          anchorage={labelledStop.anchorage}
+          number={String(props.settledStop).padStart(2, "0")}
+          name={stops[props.settledStop!].name}
+          onOpen={() => props.onOpenStop(labelledStop.id)}
+        />
+      ) : null}
     </>
   );
 }
@@ -295,8 +268,8 @@ export default function OceanRuntime(props: RuntimeProps) {
   return (
     <Canvas
       dpr={props.quality.dpr}
-      camera={{ fov: 42, near: 0.5, far: 1200 }}
-      frameloop={!props.visible ? "never" : props.active && props.sailing ? "always" : "demand"}
+      camera={{ fov: CAMERA_FOV, near: 0.5, far: 1200 }}
+      frameloop={!props.visible ? "never" : props.active && !props.reading ? "always" : "demand"}
       gl={{ alpha: false, antialias: true, powerPreference: "default" }}
       onCreated={({ gl }) => props.onCanvas(gl.domElement)}
       fallback="A navegação em 3D não está disponível. Use a versão em texto.">

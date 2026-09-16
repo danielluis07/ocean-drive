@@ -4,6 +4,7 @@ import { gzipSync } from "node:zlib";
 import { readFile, writeFile } from "node:fs/promises";
 import manifest from "@/content/asset-manifest.json";
 import { checkBudgets } from "@/lib/production-budgets";
+import { createInitialVoyageState, serializeVoyageState } from "@/lib/voyage-state";
 import type { SceneCounts } from "@/lib/local-diagnostics";
 
 type RequestRecord = {
@@ -48,20 +49,22 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     if (response.ok()) requests.push(measureResponse(response));
     else failed.push(`${response.status()} ${response.url()}`);
   });
-  await page.addInitScript(() => {
+  await page.addInitScript((voyage) => {
     sessionStorage.setItem("ocean-drive:diagnostics", "enabled");
-  });
+    // Start from the text preference so the lazy 3D runtime waits for an
+    // explicit request and route JavaScript can be measured on its own.
+    if (!sessionStorage.getItem("ocean-drive:voyage:v1"))
+      sessionStorage.setItem("ocean-drive:voyage:v1", voyage);
+  }, serializeVoyageState({ ...createInitialVoyageState(), qualityPreference: "text" }));
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
-  await expect(
-    page.getByRole("button", { name: "Preparar 3D com movimento reduzido" }),
-  ).toBeVisible();
+  await expect(page.getByRole("status")).toContainText(
+    "Versão em texto selecionada.",
+  );
   const route = await Promise.all(requests);
   expect(route.some((request) => request.path.endsWith(".glb"))).toBe(false);
-  await page
-    .getByRole("button", { name: "Preparar 3D com movimento reduzido" })
-    .click();
+  await page.getByRole("button", { name: "Preparar 3D", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Explorar em 3D", exact: true }),
   ).toBeEnabled();
@@ -71,25 +74,20 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     .click();
   await page.screenshot({ path: testInfo.outputPath("balanced-aerial.png") });
   await page.clock.install();
-  await page
-    .getByRole("button", { name: "Iniciar expedição", exact: true })
-    .click();
+  await page.keyboard.press("ArrowDown");
   await page.clock.runFor(2400);
-  await page
-    .getByRole("button", { name: "Pausar expedição", exact: true })
-    .click();
   await page
     .getByRole("link", { name: "Versão em texto", exact: true })
     .click();
-  for (const station of [
-    "Pulso de Calor",
-    "Corais sob Estresse",
-    "Respostas Desiguais",
-    "Chegada",
+  for (const stop of [
+    "Fernando de Noronha",
+    "Boipeba",
+    "Arquipélago de Abrolhos",
+    "Ilha Grande",
   ]) {
     await page
       .locator("#rota")
-      .getByRole("button", { name: new RegExp(`^0[1-4] ${station}`) })
+      .getByRole("button", { name: new RegExp(`^0[1-4] ${stop}`) })
       .click();
     for (let passage = 0; passage < 3; passage++) {
       const sources = page.locator(".signal:visible summary");
@@ -103,13 +101,6 @@ test("production requests, provenance, scene budgets and local diagnostics recon
           .getByRole("button", { name: "Próximo sinal", exact: true })
           .click();
     }
-    await page
-      .getByRole("button", {
-        name:
-          station === "Chegada" ? "Conectar expedição" : "Continuar expedição",
-        exact: true,
-      })
-      .click();
     await page.clock.runFor(100);
   }
   await page
@@ -232,8 +223,8 @@ test("diagnostic export is absent without an explicit local opt-in", async ({
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(
-    page.getByRole("button", { name: "Preparar 3D com movimento reduzido" }),
-  ).toBeVisible();
+    page.getByRole("button", { name: "Explorar em 3D", exact: true }),
+  ).toBeEnabled();
   expect(await page.evaluate(() => typeof window.__oceanDiagnostics)).toBe(
     "undefined",
   );

@@ -1,4 +1,4 @@
-import InstituteMark from "@/components/expedition/institute-mark";
+import InstituteMark from "@/components/voyage/institute-mark";
 
 export default function Opening() {
   return (
@@ -23,17 +23,15 @@ export default function Opening() {
         </p>
       </div>
       <div className="opening-copy page-shell">
-        <h1 id="expedition-editorial-heading" tabIndex={-1}>
-          Conduza a expedição e <em>conecte os sinais</em> de um oceano em
-          mudança.
+        <h1 id="voyage-editorial-heading" tabIndex={-1}>
+          O Brasil <em>visto do mar.</em>
         </h1>
         <div className="opening-note">
           <p>
-            <strong>Banco dos Abrolhos · 2019</strong>Do calor acumulado às
-            respostas dos corais, percorra doze sinais construídos a partir de
-            observações históricas.
+            <strong>Uma viagem · quatro ilhas</strong>De Fernando de Noronha a
+            Ilha Grande, a bordo do Maré Mansa.
           </p>
-          <a href="#rota">Iniciar leitura</a>
+          <a href="#rota">Ver a rota</a>
         </div>
       </div>
       <div className="horizon-note page-shell">

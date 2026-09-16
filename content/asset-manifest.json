@@ -2,11 +2,25 @@
   "schema": 1,
   "assets": [
     {
-      "path": "components/expedition/institute-mark.tsx",
+      "path": "components/ocean/stop-marker.tsx",
       "kind": "procedural",
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
-      "source": "components/expedition/institute-mark.tsx",
+      "source": "components/ocean/stop-marker.tsx",
+      "retrieved": "2026-09-15",
+      "rights": "Project-authored source contribution; no imported artwork",
+      "proof": "docs/third-party/project-assets.md",
+      "transformations": "Compiled by Next into same-origin HTML/application code",
+      "essential": false,
+      "experience": true,
+      "sha256": "e9862f0b5e539fe6a8a287497c6e636b44382ca9d33121c1a76e0f4572a95466"
+    },
+    {
+      "path": "components/voyage/institute-mark.tsx",
+      "kind": "procedural",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "components/voyage/institute-mark.tsx",
       "retrieved": "2026-09-15",
       "rights": "Project-authored source contribution; no imported artwork",
       "proof": "docs/third-party/project-assets.md",
@@ -14,51 +28,6 @@
       "essential": false,
       "experience": true,
       "sha256": "46e74a0ed48d498afb55a4dbe071031950c3347162c8525817d793d1c2fed94b"
-    },
-    {
-      "path": "components/ocean/beacon-body.tsx",
-      "kind": "procedural",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "components/ocean/beacon-body.tsx",
-      "retrieved": "2026-09-15",
-      "rights": "Project-authored source contribution; no imported artwork",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Compiled by Next into same-origin HTML/application code",
-      "essential": false,
-      "experience": true,
-      "sha256": "8aea335c09070924e95ce1fc9960e456b36f071fdba5b85afd10c74b1c52d167"
-    },
-    {
-      "path": "components/ocean/field-station-beacon.tsx",
-      "kind": "procedural",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "components/ocean/field-station-beacon.tsx",
-      "retrieved": "2026-09-15",
-      "rights": "Project-authored source contribution; no imported artwork",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Compiled by Next into same-origin HTML/application code",
-      "essential": false,
-      "experience": true,
-      "sha256": "4510eee5239f1ca2a21dd18ec4a722c3346ad8ef16670117b2d1fd90cff45fc7"
-    },
-    {
-      "path": "fonts/manrope-400-800-latin.v1.woff2",
-      "kind": "font",
-      "sourceKind": "ofl-font",
-      "file": "fonts/manrope-400-800-latin.v1.woff2",
-      "creator": "The Manrope Project Authors",
-      "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
-      "stylesheet": "https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap",
-      "retrieved": "2026-09-16",
-      "license": "OFL-1.1",
-      "proof": "docs/third-party/fonts/manrope-OFL.txt",
-      "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only. Variable font serves approved weights 400-800 without a duplicate request.",
-      "rights": "OFL-1.1 commercial use, modification and redistribution with retained notice",
-      "essential": false,
-      "experience": true,
-      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
     },
     {
       "path": "fonts/geistmono-500-latin.v1.woff2",
@@ -76,6 +45,23 @@
       "essential": false,
       "experience": true,
       "sha256": "72971bd4908d3984fa1b1426bb363730e4957e16a0f58bfbca76993095715488"
+    },
+    {
+      "path": "fonts/manrope-400-800-latin.v1.woff2",
+      "kind": "font",
+      "sourceKind": "ofl-font",
+      "file": "fonts/manrope-400-800-latin.v1.woff2",
+      "creator": "The Manrope Project Authors",
+      "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+      "stylesheet": "https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap",
+      "retrieved": "2026-09-16",
+      "license": "OFL-1.1",
+      "proof": "docs/third-party/fonts/manrope-OFL.txt",
+      "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only. Variable font serves approved weights 400-800 without a duplicate request.",
+      "rights": "OFL-1.1 commercial use, modification and redistribution with retained notice",
+      "essential": false,
+      "experience": true,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
     },
     {
       "path": "lib/ocean-lighting.ts",
@@ -103,7 +89,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": true,
       "experience": true,
-      "sha256": "0734e7cc97ce14f442f409df2f9c55df2dcdfd09c43eecb30632c678ed221538"
+      "sha256": "c6468a16f9c1c8fdee146b7a227a14ef6cbfabd28df779b35b1741154157fe15"
     },
     {
       "path": "public/identity/apple-touch-icon.v1.png",

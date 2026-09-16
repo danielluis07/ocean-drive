@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { closeDisclosures, closeOpenLogbook } from "@/lib/reader-interactions";
 
-export default function StationReader({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+export default function StopReader({ children, onClose }: { children: ReactNode; onClose: () => void }) {
   const reader = useRef<HTMLElement>(null);
   const sourceFocus = useRef<HTMLAnchorElement | null>(null);
   useEffect(() => {
@@ -28,9 +28,9 @@ export default function StationReader({ children, onClose }: { children: ReactNo
     };
   }, [onClose]);
   return (
-    <section ref={reader} className="station-reader" aria-label="Voz da estação">
+    <section ref={reader} className="station-reader" aria-label="Relato da parada">
       <header className="station-reader__bar">
-        <p>Voz da estação</p>
+        <p>Relato da parada</p>
         <button type="button" onClick={() => { closeDisclosures(); onClose(); }}>Voltar ao mar</button>
       </header>
       {children}

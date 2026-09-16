@@ -51,8 +51,6 @@ export const oceanFragmentShader = `
   uniform float heading;
   uniform float moving;
   uniform float wakeDetail;
-  uniform vec2 boundaryCenter;
-  uniform float boundaryRadius;
   varying vec3 world;
 
   vec3 noiseGradient(vec2 p) {
@@ -153,12 +151,6 @@ export const oceanFragmentShader = `
     water = mix(water, vec3(.65, .76, .83), clamp(foam * min(wakeDetail, 1.), 0., .88));
     #endif
 
-    vec2 edge = p - boundaryCenter;
-    float radius = length(edge);
-    float band = smoothstep(boundaryRadius - 10., boundaryRadius, radius)
-      * (1. - smoothstep(boundaryRadius + 18., boundaryRadius + 32., radius));
-    float ribbons = pow(max(0., sin(atan(edge.y, edge.x) * 24. + radius * .45 + time * .8)), 10.);
-    water = mix(water, vec3(.53, .77, .68), band * (.16 + ribbons * .58));
     float haze = smoothstep(140., 420., distance(cameraPosition, world));
     gl_FragColor = vec4(mix(water, vec3(.022, .043, .075), haze), 1.);
     #include <tonemapping_fragment>
@@ -166,16 +158,11 @@ export const oceanFragmentShader = `
   }
 `;
 
-// Preserve navigation cues even when the decorative shader cannot compile.
+// Keep a plain, usable ocean when the decorative shader cannot compile.
 export const baselineOceanFragmentShader = `
-  uniform vec2 boundaryCenter;
-  uniform float boundaryRadius;
   varying vec3 world;
   void main() {
-    float radius = length(world.xz - boundaryCenter);
-    float band = smoothstep(boundaryRadius - 10., boundaryRadius, radius)
-      * (1. - smoothstep(boundaryRadius + 18., boundaryRadius + 32., radius));
-    vec3 water = mix(vec3(.005, .016, .034), vec3(.53, .77, .68), band * .6);
+    vec3 water = vec3(.005, .016, .034);
     float haze = smoothstep(140., 420., distance(cameraPosition, world));
     gl_FragColor = vec4(mix(water, vec3(.022, .043, .075), haze), 1.);
     #include <tonemapping_fragment>

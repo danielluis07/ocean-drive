@@ -1,39 +1,41 @@
 import { expect, type Page } from "@playwright/test";
+import type { VoyageState } from "@/lib/voyage-state";
 import { settleScroll } from "@/tests/browser/scroll";
 
-export const evidenceRoute = [
-  { order: 1, name: "Pulso de Calor", id: "pulso-de-calor" },
-  { order: 2, name: "Corais sob Estresse", id: "corais-sob-estresse" },
-  { order: 3, name: "Respostas Desiguais", id: "respostas-desiguais" },
-  { order: 4, name: "Chegada", id: "convergencia" },
+// Stops 01–04 carry a Stop Account; Stop 00 is the opening.
+export const voyageRoute = [
+  { order: 1, name: "Fernando de Noronha", id: "fernando-de-noronha" },
+  { order: 2, name: "Boipeba", id: "boipeba" },
+  { order: 3, name: "Arquipélago de Abrolhos", id: "abrolhos" },
+  { order: 4, name: "Ilha Grande", id: "ilha-grande" },
 ] as const;
 
-type RouteStation = (typeof evidenceRoute)[number];
+type RouteStop = (typeof voyageRoute)[number];
 
-// The station's own route button, never a locked button that mentions it.
-export function routeButton(page: Page, station: RouteStation) {
-  return page
-    .locator("#rota")
-    .getByRole("button", {
-      name: new RegExp(`^0${station.order} ${station.name}`),
-    });
+export async function voyageState(page: Page): Promise<VoyageState> {
+  return page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("ocean-drive:voyage:v1")!).state,
+  );
 }
 
-export async function openEditorialStation(page: Page, station: RouteStation) {
-  await routeButton(page, station).click();
-  await expect(page.locator(`#${station.id}-title`)).toBeFocused();
+export function routeButton(page: Page, stop: RouteStop) {
+  return page
+    .locator("#rota")
+    .getByRole("button", { name: new RegExp(`^0${stop.order} ${stop.name}`) });
+}
+
+export async function openEditorialStop(page: Page, stop: RouteStop) {
+  await routeButton(page, stop).click();
+  await expect(page.locator(`#${stop.id}-title`)).toBeFocused();
 }
 
 // Advance to a passage and wait for it, so a click never lands on the previous signal.
 export async function advanceEditorialSignal(
   page: Page,
-  station: RouteStation,
+  stop: RouteStop,
   passage: 2 | 3,
 ) {
-  const article = page.getByRole("article", {
-    name: station.name,
-    exact: true,
-  });
+  const article = page.getByRole("article", { name: stop.name, exact: true });
   await settleScroll(page);
   await article
     .getByRole("button", { name: "Próximo sinal", exact: true })
@@ -43,19 +45,19 @@ export async function advanceEditorialSignal(
   ).toBeVisible();
 }
 
-export async function readEditorialStation(
-  page: Page,
-  station: RouteStation,
-  confirm: "Continuar expedição" | "Conectar expedição" | null,
-) {
-  await openEditorialStation(page, station);
-  await advanceEditorialSignal(page, station, 2);
-  await advanceEditorialSignal(page, station, 3);
-  if (confirm)
-    await page
-      .getByRole("article", { name: station.name, exact: true })
-      .getByRole("button", { name: confirm, exact: true })
-      .click();
+export async function readEditorialStop(page: Page, stop: RouteStop) {
+  await openEditorialStop(page, stop);
+  await advanceEditorialSignal(page, stop, 2);
+  await advanceEditorialSignal(page, stop, 3);
+}
+
+// Wait for the Ship to come to rest at a Stop in the 3D scene.
+export async function expectSettledAt(page: Page, stop: number, timeout = 30_000) {
+  await expect(page.locator("#voyage-ocean")).toHaveAttribute(
+    "data-settled-stop",
+    String(stop),
+    { timeout },
+  );
 }
 
 // Hold vessel assets at the network boundary so loading states stay observable.

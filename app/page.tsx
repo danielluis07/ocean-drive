@@ -1,5 +1,5 @@
-import Expedition from "@/components/expedition/expedition";
+import Voyage from "@/components/voyage/voyage";
 
 export default function Home() {
-  return <Expedition />;
+  return <Voyage />;
 }

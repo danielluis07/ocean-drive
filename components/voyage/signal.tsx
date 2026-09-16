@@ -1,52 +1,44 @@
-import ScientificNames from "@/components/expedition/scientific-names";
-import SourceCard from "@/components/expedition/source-card";
-import type { Signal as SignalRecord, Station } from "@/content/editorial";
-import { uniqueSources } from "@/lib/expedition-view";
+import ScientificNames from "@/components/voyage/scientific-names";
+import SourceCard from "@/components/voyage/source-card";
+import type { Signal as SignalRecord, Stop } from "@/content/editorial";
+import { stopNumber, uniqueSources } from "@/lib/voyage-view";
 import { returnToSignal } from "@/lib/reader-interactions";
 
 type SignalProps = {
   active: boolean;
-  connected: boolean;
   index: number;
-  onChange: (station: Station, signalIndex: number) => void;
-  onComplete: (station: Station) => void;
+  onChange: (stop: Stop, signalIndex: number) => void;
   signal: SignalRecord;
-  station: Station;
-  stationCompleted: boolean;
-  stationIndex: number;
+  stop: Stop;
 };
 
 export default function Signal({
   active,
-  connected,
   index,
   onChange,
-  onComplete,
   signal,
-  station,
-  stationCompleted,
-  stationIndex,
+  stop,
 }: SignalProps) {
   const sources = uniqueSources(
     signal.claims.flatMap((claim) => claim.sources),
   );
-  const isLastSignal = index === station.signals.length - 1;
+  const isLastSignal = index === stop.signals.length - 1;
 
   return (
     <section
       className="signal"
       data-active={active}
-      aria-labelledby={`${station.id}-signal-${index + 1}`}>
+      aria-labelledby={`${stop.id}-signal-${index + 1}`}>
       <div className="signal__marker" aria-hidden="true">
         <span>
-          {stationIndex + 1}.{index + 1}
+          {Number(stopNumber(stop))}.{index + 1}
         </span>
       </div>
       <div className="signal__body">
         <p className="signal__position">
-          Sinal {index + 1} de {station.signals.length}
+          Sinal {index + 1} de {stop.signals.length}
         </p>
-        <h3 id={`${station.id}-signal-${index + 1}`} tabIndex={-1}>
+        <h3 id={`${stop.id}-signal-${index + 1}`} tabIndex={-1}>
           {signal.title}
         </h3>
         <div className="signal__claims">
@@ -78,10 +70,10 @@ export default function Signal({
         <div
           className="signal__controls"
           role="group"
-          aria-label={`Navegação dos sinais de ${station.name}`}>
+          aria-label={`Navegação dos sinais de ${stop.name}`}>
           <button
             type="button"
-            onClick={() => onChange(station, index - 1)}
+            onClick={() => onChange(stop, index - 1)}
             disabled={index === 0}>
             Sinal anterior
           </button>
@@ -90,25 +82,11 @@ export default function Signal({
           </p>
           <button
             type="button"
-            onClick={() => onChange(station, index + 1)}
+            onClick={() => onChange(stop, index + 1)}
             disabled={isLastSignal}>
             Próximo sinal
           </button>
         </div>
-        {isLastSignal && !stationCompleted && !connected ? (
-          <div className="station__completion">
-            <p>
-              {station.id === "convergencia"
-                ? "Os três sinais estão conectados. Confirme para concluir a expedição."
-                : "Os três sinais desta estação foram percorridos. A conclusão só acontece com sua confirmação."}
-            </p>
-            <button type="button" onClick={() => onComplete(station)}>
-              {station.id === "convergencia"
-                ? "Conectar expedição"
-                : "Continuar expedição"}
-            </button>
-          </div>
-        ) : null}
       </div>
     </section>
   );

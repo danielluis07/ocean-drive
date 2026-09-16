@@ -1,4 +1,4 @@
-import type { ExpeditionQualityPreference } from "@/lib/expedition-state";
+import type { VoyageQualityPreference } from "@/lib/voyage-state";
 
 export type QualityTier = "high" | "balanced" | "low";
 export type OceanQuality = { tier: QualityTier; dpr: number; fallback: boolean };
@@ -8,13 +8,13 @@ export const qualityEnvelope = {
   low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0 },
 } as const;
 
-// This clock receives measured frame intervals only while visibly sailing.
+// This clock receives measured frame intervals only while the 3D voyage is visible and not being read.
 // Suspending discards partial windows and consecutive evidence, not cooldown time.
 export function createQualityController(hints: { coarsePointer: boolean; smallScreen: boolean; deviceDpr: number }) {
   const rawDpr = Number.isFinite(hints.deviceDpr) && hints.deviceDpr > 0 ? hints.deviceDpr : 1;
   let tier: QualityTier = hints.coarsePointer || hints.smallScreen ? "low" : "balanced";
   let dpr = Math.min(rawDpr, qualityEnvelope[tier].maxDpr);
-  let preference: ExpeditionQualityPreference = "automatic";
+  let preference: VoyageQualityPreference = "automatic";
   let fallback = false;
   let activeMs = 0;
   let lastChange = -Infinity;
@@ -37,7 +37,7 @@ export function createQualityController(hints: { coarsePointer: boolean; smallSc
   return {
     current,
     suspend,
-    choose(next: ExpeditionQualityPreference) {
+    choose(next: VoyageQualityPreference) {
       if (preference === next) return current();
       preference = next;
       suspend();

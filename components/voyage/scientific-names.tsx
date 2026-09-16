@@ -1,4 +1,4 @@
-import { splitScientificNames } from "@/lib/expedition-view";
+import { splitScientificNames } from "@/lib/voyage-view";
 
 export default function ScientificNames({ text }: { text: string }) {
   return splitScientificNames(text).map((part, index) =>

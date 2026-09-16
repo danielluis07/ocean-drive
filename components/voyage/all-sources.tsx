@@ -1,4 +1,4 @@
-import SourceCard from "@/components/expedition/source-card";
+import SourceCard from "@/components/voyage/source-card";
 import { sourceRecords, type SourceId } from "@/content/editorial";
 
 export default function AllSources({ visible }: { visible: boolean }) {

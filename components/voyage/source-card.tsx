@@ -1,4 +1,4 @@
-import ScientificNames from "@/components/expedition/scientific-names";
+import ScientificNames from "@/components/voyage/scientific-names";
 import { sourceRecords, type SourceId } from "@/content/editorial";
 
 export default function SourceCard({ sourceId }: { sourceId: SourceId }) {

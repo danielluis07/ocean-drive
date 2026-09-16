@@ -2,6 +2,9 @@
 
 Implementation scope: [issue #24](https://github.com/danielluis07/ocean-drive/issues/24).
 
+This is a historical record. Steering, pausing, and reduced-motion deferral
+described below were replaced by the [Charted Route](charted-route.md).
+
 `OceanPresentation` is the client-only entry point and accepts a serializable
 `OceanConfiguration`. Its dynamic import has SSR disabled. Three, Fiber, the GLTF
 loader, and the selective Drei `Html` import live in the lazy runtime. The
@@ -16,10 +19,8 @@ requested. Hidden tabs pause movement; restoration opens text and requires expli
 3D entry and resume. Essential startup failures, failed recovery, and repeated
 context loss lock 3D for the visit while preserving reading and Expedition State.
 
-The initial scene included the first Stop and its semantic reading action.
-The [complete spatial station journey](field-station-journey.md) extends it in #25
-with arrival-based reading and all four destinations. Assisted navigation and
-bounded waters are documented in [assisted-return.md](assisted-return.md). The
+The original steering model was replaced by the [Charted Route](charted-route.md)
+in #35 (see [ADR 0001](adr/0001-charted-route-replaces-steering.md)). The
 adaptive controller and one-attempt recovery added in #27 are documented in
 [ocean-resilience.md](ocean-resilience.md).
 

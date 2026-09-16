@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
-import { evidenceRoute, openEditorialStation } from "@/tests/browser/editorial-route";
+import { openEditorialStop, voyageRoute } from "@/tests/browser/editorial-route";
 
 type Box = { x: number; y: number; width: number; height: number };
 
@@ -63,39 +63,27 @@ for (const checkpoint of checkpoints) {
     await page.goto("/");
     await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
     await expectNoOverflowOrClipping(page, "editorial entry");
-    await openEditorialStation(page, evidenceRoute[0]);
-    await page.locator("#pulso-de-calor .logbook summary:visible").click();
+    await openEditorialStop(page, voyageRoute[0]);
+    await page.locator("#fernando-de-noronha .logbook summary:visible").click();
     await expectReachable(page.getByRole("link", { name: /Acessar fonte/ }).first(), "editorial source");
     await expectNoOverflowOrClipping(page, "editorial Caderno");
 
     await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-    const reader = page.getByRole("region", { name: "Voz da estação" });
+    const reader = page.getByRole("region", { name: "Relato da parada" });
     await expect(reader).toBeVisible();
     await expectReachable(reader.getByRole("button", { name: "Voltar ao mar", exact: true }), "3D reader departure");
     await reader.locator(".logbook summary:visible").click();
     await expectReachable(reader.getByRole("link", { name: /Acessar fonte/ }).first(), "3D reader source");
     await expectReachable(reader.getByRole("button", { name: "Voltar ao sinal", exact: true }), "3D Caderno return");
     await expectNoOverflowOrClipping(page, "3D Caderno");
-    const readingLabel = page.locator('.beacon-label[data-reading="true"]');
-    if (await readingLabel.isVisible()) {
-      expect(overlaps((await readingLabel.boundingBox())!, (await reader.boundingBox())!), "label/reader collision").toBe(false);
-    }
-
     await reader.getByRole("button", { name: "Voltar ao sinal", exact: true }).click();
     await reader.getByRole("button", { name: "Voltar ao mar", exact: true }).click();
     await expect(reader).toBeHidden();
-    const helm = page.getByRole("group", { name: "Controles da embarcação" });
-    const expectDestinationUnobscured = async (state: string) => {
-      const labelBox = (await page.getByRole("button", { name: /Pulso de Calor/ }).boundingBox())!;
-      for (const cover of [await helm.boundingBox(), await page.locator(".presentation-bar").boundingBox()]) {
-        expect(overlaps(labelBox, cover!), `${state}: destination label obscured ${JSON.stringify({ labelBox, cover })}`).toBe(false);
-      }
-    };
-    await expectDestinationUnobscured("resting scroll");
-    for (const control of [/^(Iniciar|Retomar) expedição$/, "Virar à esquerda", "Virar à direita", "Controles"]) {
-      await expectReachable(helm.getByRole("button", { name: control, exact: true }), `helm ${control}`);
-    }
-    await expectDestinationUnobscured("scrolled to helm");
+    // Back on the route, the settled Stop's opener stands clear of the chrome.
+    const opener = page.getByRole("button", { name: /Parada 01 Fernando de Noronha/ });
+    await expect(opener).toBeVisible();
+    await expectReachable(opener, "Stop opener");
+    expect(overlaps((await opener.boundingBox())!, (await page.locator(".presentation-bar").boundingBox())!), "Stop opener obscured").toBe(false);
     await expectReachable(page.getByRole("link", { name: "Versão em texto", exact: true }), "text version");
     await expectNoOverflowOrClipping(page, "3D waters");
   });
@@ -108,8 +96,8 @@ test("text spacing and system-font fallback keep content unclipped at phone widt
   await page.goto("/");
   await page.addStyleTag({ content: textSpacing });
   await expectNoOverflowOrClipping(page, "editorial entry with text spacing");
-  await openEditorialStation(page, evidenceRoute[0]);
-  await page.locator("#pulso-de-calor .logbook summary:visible").click();
+  await openEditorialStop(page, voyageRoute[0]);
+  await page.locator("#fernando-de-noronha .logbook summary:visible").click();
   await expectNoOverflowOrClipping(page, "Caderno with text spacing");
   await expectReachable(page.getByRole("button", { name: "Voltar ao sinal", exact: true }), "Caderno return with text spacing");
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();

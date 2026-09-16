@@ -1,4 +1,4 @@
-import InstituteMark from "@/components/expedition/institute-mark";
+import InstituteMark from "@/components/voyage/institute-mark";
 
 export default function Closing() {
   return (

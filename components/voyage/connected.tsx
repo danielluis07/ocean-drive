@@ -1,42 +1,42 @@
 type ConnectedProps = {
   connected: boolean;
   onRestart: () => void;
-  onReviewStations: () => void;
+  onReviewStops: () => void;
   onShowSources: () => void;
 };
 
 export default function Connected({
   connected,
   onRestart,
-  onReviewStations,
+  onReviewStops,
   onShowSources,
 }: ConnectedProps) {
   return (
     <section
       className="connected page-shell"
-      aria-labelledby="expedicao-conectada-title"
+      aria-labelledby="viagem-concluida-title"
       hidden={!connected}>
       <div>
-        <h2 id="expedicao-conectada-title" tabIndex={-1}>
-          Expedição conectada.
+        <h2 id="viagem-concluida-title" tabIndex={-1}>
+          Viagem concluída.
         </h2>
         <p>
-          Você aproximou doze sinais sem apagar as diferenças entre tempos,
-          lugares, organismos e métodos.
+          Você chegou a Ilha Grande. Revisite qualquer parada ou recomece a
+          viagem.
         </p>
       </div>
       <div
         className="connected__actions"
         role="group"
-        aria-label="Ações da expedição conectada">
-        <button type="button" onClick={onReviewStations}>
-          Revisitar estações
+        aria-label="Ações da viagem concluída">
+        <button type="button" onClick={onReviewStops}>
+          Revisitar paradas
         </button>
         <button type="button" onClick={onShowSources}>
           Consultar fontes
         </button>
         <button type="button" onClick={onRestart}>
-          Recomeçar expedição
+          Recomeçar viagem
         </button>
       </div>
     </section>

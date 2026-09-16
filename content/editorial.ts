@@ -126,26 +126,36 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
 
 export type Claim = { text: string; sources: SourceId[] };
 export type Signal = { title: string; claims: Claim[] };
-export type StationId =
-  | "pulso-de-calor"
-  | "corais-sob-estresse"
-  | "respostas-desiguais"
-  | "convergencia";
-export type Station = {
-  id: StationId;
+export type StopId =
+  | "partida"
+  | "fernando-de-noronha"
+  | "boipeba"
+  | "abrolhos"
+  | "ilha-grande";
+// Placeholder Stop copy: the Stop Accounts are rewritten for the Travessia
+// voyage in a later issue. Stop 00 is the opening and has no account.
+export type Stop = {
+  id: StopId;
   name: string;
-  role: string;
+  context: string;
   introduction: string;
   signals: Signal[];
 };
 
-export const stations: Station[] = [
+export const stops: Stop[] = [
   {
-    id: "pulso-de-calor",
-    name: "Pulso de Calor",
-    role: "O que aconteceu",
+    id: "partida",
+    name: "Travessia",
+    context: "O Brasil visto do mar.",
+    introduction: "",
+    signals: [],
+  },
+  {
+    id: "fernando-de-noronha",
+    name: "Fernando de Noronha",
+    context: "Pernambuco · Dia 2",
     introduction:
-      "O primeiro sinal situa a expedição no Banco dos Abrolhos, em 2019, diante de um calor regional persistente.",
+      "Um arquipélago vulcânico isolado no Atlântico, onde a viagem começa de verdade.",
     signals: [
       {
         title: "Um calor que se acumula.",
@@ -189,11 +199,11 @@ export const stations: Station[] = [
     ],
   },
   {
-    id: "corais-sob-estresse",
-    name: "Corais sob Estresse",
-    role: "O que o branqueamento significa",
+    id: "boipeba",
+    name: "Boipeba",
+    context: "Bahia · Dia 5",
     introduction:
-      "O branqueamento aparece como uma resposta de organismos vivos ao estresse — e não como sinônimo de morte.",
+      "Uma ilha baixa de coqueirais, piscinas naturais e manguezais.",
     signals: [
       {
         title: "Branquear ainda é estar vivo.",
@@ -237,11 +247,11 @@ export const stations: Station[] = [
     ],
   },
   {
-    id: "respostas-desiguais",
-    name: "Respostas Desiguais",
-    role: "Por que as consequências variaram",
+    id: "abrolhos",
+    name: "Arquipélago de Abrolhos",
+    context: "Bahia · Dia 8",
     introduction:
-      "Os registros aproximam três recifes e dois organismos para revelar diferenças que uma média esconderia.",
+      "Cinco ilhas sobre o maior banco de corais do Atlântico Sul.",
     signals: [
       {
         title: "O mesmo calor, respostas diferentes.",
@@ -285,11 +295,11 @@ export const stations: Station[] = [
     ],
   },
   {
-    id: "convergencia",
-    name: "Chegada",
-    role: "Ler os sinais juntos",
+    id: "ilha-grande",
+    name: "Ilha Grande",
+    context: "Rio de Janeiro · Dia 12",
     introduction:
-      "A última estação não acrescenta uma nova descoberta: ela conecta escalas, métodos e respostas já encontrados.",
+      "A chegada: uma ilha de mata atlântica entre enseadas calmas.",
     signals: [
       {
         title: "Um evento, mais de uma resposta.",

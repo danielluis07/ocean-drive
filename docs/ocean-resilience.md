@@ -4,7 +4,7 @@ Implements [#27](https://github.com/danielluis07/ocean-drive/issues/27), using
 the quality and transition contracts approved in #13, #18, and #20.
 
 The renderer-independent quality controller consumes measured frame intervals
-only during visible sailing, after readiness. Preparation, readers, pauses,
+only while the 3D voyage is visible, after readiness. Preparation, readers,
 editorial presentation, hidden documents, and app switches discard partial windows
 and consecutive evidence. The first frame after a return anchors time without
 advancing simulation. Frame measurements remain uncapped; simulation steps are
@@ -14,7 +14,7 @@ capped at 50 ms. React receives quality updates only when the settings change.
 | --- | --- | --- |
 | High | 1.25–1.5 | Fine surface ripples and richer foam, 160 water subdivisions |
 | Balanced | 1.0–1.25 | Reflective wave shading and a broken foam wake, 120 water subdivisions |
-| Low | 0.75–1.0 | Simplified reflective wave shading, 48 water subdivisions, low vessel LOD, opaque approach rings, no transparent beacon enhancements |
+| Low | 0.75–1.0 | Simplified reflective wave shading, 48 water subdivisions, low vessel LOD |
 
 Effective DPR never exceeds the device's raw DPR. All tiers use canvas antialiasing
 and omit shadow maps, live scene reflections, and post-processing. A small local
@@ -36,7 +36,7 @@ presentation, including during cooldown or with a reduced-3D preference.
 Automático permits promotions; 3D reduzido selects Low and blocks promotions;
 Versão em texto suspends the scene. None clears failure locks.
 
-The first context loss checkpoints state, pauses, and opens text. The original
+The first context loss records the Ship's place on the route and opens text. The original
 canvas stays mounted for one restoration attempt. Native browser restoration and
 the context-loss extension converge on recompilation and valid-frame readiness.
 An eight-second foreground recovery deadline covers absent restoration events or
@@ -46,13 +46,12 @@ or a second loss locks 3D for the visit. The loss count and availability survive
 restart and tab-scoped persistence, with backward-compatible loading of v1 saves.
 
 The initial vessel, working renderer, baseline ocean, controls, and semantic
-station labels gate readiness. Optional vessel LOD requests retain the usable
+connected route input gate readiness. Optional vessel LOD requests retain the usable
 vessel while delayed or failed. Decorative water shader failure retries once with
-baseline water that preserves the visible boundary current; baseline/essential
+baseline water; baseline/essential
 shader failure opens text. Identity uses inline geometry and adjacent text;
 fonts already have CSS/system substitutes. Neither identity nor fonts adds a
-graphics readiness dependency. Low replaces translucent beacon effects with an
-opaque silhouette and approach ring without changing narrative or controls.
+graphics readiness dependency. Low never changes the route, the Stops, or input.
 
 Deterministic tests cover timing thresholds, cooldowns, preference and pause
 behavior, persistence, real WebGL loss/restoration events, recovery timeout,
