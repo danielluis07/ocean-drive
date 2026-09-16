@@ -87,6 +87,8 @@ with per-tier maxima spanning rendered states; they are not estimates from JSX.
 The general sailing regression fixture advances each 16 ms browser frame at no
 more than real-time pace and uses quarter-resolution software rendering. Its
 pacing accounts for time already spent rendering rather than doubling that wait.
+A touch-capable context selects the conservative Low initial tier for these
+navigation traces, while retaining mouse/keyboard controls and CSS viewports.
 This avoids expiring journey deadlines while the simulated clock barely advances;
 CSS viewports, input coordinates and navigation assertions remain unchanged.
 The separate production gate retains its own half-resolution configuration.

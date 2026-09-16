@@ -26,6 +26,7 @@ export const test = base.extend({
   },
 });
 
-// Preserve CSS viewports and input coordinates while bounding software GPU work.
-// Full-resolution physical performance is validated outside this journey suite.
-test.use({ deviceScaleFactor: 0.25 });
+// A touch-capable context conservatively starts in Low for software-rendered
+// navigation traces. CSS viewports and mouse/keyboard input remain available.
+// The separate production gate measures Balanced as well as Low.
+test.use({ deviceScaleFactor: 0.25, hasTouch: true });
