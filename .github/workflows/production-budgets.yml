@@ -1,0 +1,39 @@
+name: Production assets and budgets
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run assets:audit
+      - name: Verify reproducible masters
+        run: |
+          bun run assets:vessels
+          bun run assets:identity
+          git diff --exit-code -- public
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun test
+      - run: bun run build
+        env:
+          RELEASE_CANDIDATE: ${{ github.sha }}
+          BUILD_ID: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: bun run test:production
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-evidence-${{ github.sha }}
+          path: |
+            test-results/
+            .next/BUILD_ID
+            content/asset-manifest.json

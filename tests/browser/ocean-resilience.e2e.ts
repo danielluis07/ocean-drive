@@ -67,7 +67,7 @@ test("font and optional vessel detail failures never gate reading or a usable oc
   await page.goto("/");
   await page.getByRole("button", { name: "Preparar 3D com movimento reduzido" }).click();
   await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
-  await page.route("**/research-vessel-low.v1.glb", (route) => route.abort());
+  await page.route("**/research-vessel-low.v2.glb", (route) => route.abort());
   await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
   await page.getByRole("combobox", { name: "Qualidade" }).selectOption("reduced-3d");
   await expect(page.locator(".ocean-world")).toHaveAttribute("data-quality", "low");

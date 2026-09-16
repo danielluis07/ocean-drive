@@ -1,0 +1,5 @@
+*.svg text eol=lf
+*.woff2 binary
+*.glb binary
+*.png binary
+bun.lock text eol=lf

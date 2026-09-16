@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/immutability -- Three owns mutable GPU objects; frame updates and ref writes deliberately bypass React rendering. */
-import { Suspense, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
 import { useVesselScene } from "@/lib/use-vessel-scene";
@@ -14,6 +14,7 @@ import { boundaryCurrent } from "@/lib/boundary-current";
 import { frameHelmCamera } from "@/lib/helm-camera";
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
+import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
 
@@ -48,6 +49,8 @@ type RuntimeProps = {
 function SailableScene(props: RuntimeProps) {
   const { onStage, onFailure, onFrame, active, sailing, reading, visible, recoveryGeneration } = props;
   const { gl, scene, camera, size, invalidate, setFrameloop } = useThree();
+  const measureScene = useSceneDiagnostics(gl);
+  const oceanDraws = useRef(0);
   const vesselScene = useVesselScene(props.vesselUrl);
   const vesselGroup = useRef<Group>(null);
   const stationLabel = useRef<HTMLButtonElement>(null);
@@ -74,7 +77,8 @@ function SailableScene(props: RuntimeProps) {
     fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
   }), [baselineWater, props.quality.tier]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (props.quality.tier === "low") return;
     const environment = createOceanEnvironment(gl);
     scene.environment = environment.texture;
     scene.environmentIntensity = .75;
@@ -92,7 +96,7 @@ function SailableScene(props: RuntimeProps) {
       gl.domElement.removeEventListener("webglcontextlost", release);
       release();
     };
-  }, [gl, scene, recoveryGeneration]);
+  }, [gl, scene, recoveryGeneration, props.quality.tier]);
 
   useEffect(() => {
     let cancelled = false;
@@ -233,7 +237,9 @@ function SailableScene(props: RuntimeProps) {
       lookTarget.set(pose.position.x + Math.sin(framing.heading) * framing.lookAhead, 0, pose.position.z - Math.cos(framing.heading) * framing.lookAhead);
       camera.lookAt(lookTarget);
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
+      oceanDraws.current = 0;
       gl.render(scene, camera);
+      measureScene(props.quality.tier, oceanDraws.current);
       if (fallbackPending.current) return;
       if (prepared.current && !announced.current && props.controlsConnected.current && stationLabel.current?.isConnected) {
         const context = gl.getContext();
@@ -259,7 +265,7 @@ function SailableScene(props: RuntimeProps) {
       <color attach="background" args={["#183047"]} />
       <hemisphereLight args={["#dceaf2", "#173d47", .65]} />
       <directionalLight position={[-25, 78, -57]} intensity={3.1} color="#edf4ff" />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} material={material}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} material={material} onBeforeRender={() => { oceanDraws.current++; }}>
         <planeGeometry args={[1200, 1200, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
@@ -267,6 +273,8 @@ function SailableScene(props: RuntimeProps) {
         <FieldStationBeacon
           key={station.id}
           station={station}
+          index={index + 1}
+          reducedMotion={props.reducedMotion}
           available={props.availableStations.includes(station.id)}
           completed={props.completedStations.includes(station.id)}
           active={props.active}

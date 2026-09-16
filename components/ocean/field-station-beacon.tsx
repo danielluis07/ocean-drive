@@ -5,9 +5,12 @@ import type { OceanStation } from "@/lib/ocean-config";
 import type { VesselPose } from "@/lib/expedition-state";
 import { APPROACH_RADIUS, ARRIVAL_RADIUS, stationDistance } from "@/lib/station-approach";
 import { keepBeaconLabelInView } from "@/lib/beacon-label-position";
+import BeaconBody from "@/components/ocean/beacon-body";
 
 type BeaconProps = {
   station: OceanStation;
+  index: number;
+  reducedMotion: boolean;
   available: boolean;
   completed: boolean;
   active: boolean;
@@ -19,26 +22,21 @@ type BeaconProps = {
   onLabel?: (label: HTMLButtonElement | null) => void;
 };
 
-export default function FieldStationBeacon({ station, available, completed, active, reading, assisted, low, livePose, onStation, onLabel }: BeaconProps) {
+export default function FieldStationBeacon({ station, index, reducedMotion, available, completed, active, reading, assisted, low, livePose, onStation, onLabel }: BeaconProps) {
   const [near, setNear] = useState(false);
   useFrame(() => {
     const withinReadingDistance = stationDistance(livePose.current, station) <= ARRIVAL_RADIUS + 0.2;
     if (near !== withinReadingDistance) setNear(withinReadingDistance);
   });
+  const body = { index, color: station.color, available, completed, animated: active && !reading && !reducedMotion && available && !completed };
   return (
     <group position={station.position}>
-      <mesh position={[0, 0.6, 0]}>
-        <cylinderGeometry args={[0.7, 1.25, 1.3, 12]} />
-        <meshStandardMaterial color={available ? "#dbaa59" : "#657d79"} roughness={0.8} />
-      </mesh>
-      <mesh position={[0, 2.1, 0]}>
-        <cylinderGeometry args={[0.1, 0.14, 2.5, 8]} />
-        <meshStandardMaterial color="#f0ead6" />
-      </mesh>
-      <mesh position={[0, 3.5, 0]}>
-        <sphereGeometry args={[0.35, 8, 6]} />
-        <meshBasicMaterial color={available ? station.color : "#657d79"} />
-      </mesh>
+      {station.id === "convergencia" && available ? [-1, 1].map((side) => (
+        <group key={side} position={[side * 2.6, 0, 0]}>
+          <BeaconBody {...body} />
+        </group>
+      )) : null}
+      <BeaconBody {...body} />
       {available ? (
         <>
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.3, 0]}>
@@ -66,7 +64,7 @@ export default function FieldStationBeacon({ station, available, completed, acti
               tabIndex={active && !reading ? 0 : -1}>
               <span>{completed ? "Concluída · revisite" : station.id === "pulso-de-calor" ? "Primeira estação" : station.id === "convergencia" ? "Síntese da expedição" : "Escolha seu percurso"}</span>
               {station.name}
-              <small>{near ? "Ler estação" : "Conduza até o círculo de luz"}</small>
+              <small>{String(index).padStart(2, "0")} · {near ? "Ler estação" : "Conduza até o círculo de luz"}</small>
             </button>
           </Html> : null}
         </>

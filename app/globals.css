@@ -145,7 +145,7 @@
   --rule: #b8ceca;
   --font-body: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
   --font-utility: var(--font-geist-mono), "Courier New", monospace;
-  --font-editorial: Georgia, "Times New Roman", serif;
+  --font-editorial: var(--font-source-serif), Georgia, "Times New Roman", serif;
 }
 
 * {

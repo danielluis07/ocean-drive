@@ -1,0 +1,1608 @@
+{
+  "lockSha256": "b500eb59e9f41cebff52310127dded4234aa94ceaad73004e4f2d00a507ba0e1",
+  "dependencies": [
+    {
+      "name": "tslib",
+      "versions": [
+        "2.8.1"
+      ],
+      "creator": "Microsoft Corp.",
+      "source": "https://www.npmjs.com/package/tslib",
+      "retrieved": "2026-09-15",
+      "license": "0BSD",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@dimforge/rapier3d-compat",
+      "versions": [
+        "0.12.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@dimforge/rapier3d-compat",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@mediapipe/tasks-vision",
+      "versions": [
+        "0.10.17"
+      ],
+      "creator": "mediapipe@google.com",
+      "source": "https://www.npmjs.com/package/@mediapipe/tasks-vision",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@playwright/test",
+      "versions": [
+        "1.58.2"
+      ],
+      "creator": "Microsoft Corporation",
+      "source": "https://www.npmjs.com/package/@playwright/test",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@swc/helpers",
+      "versions": [
+        "0.5.23"
+      ],
+      "creator": "강동윤 <kdy1997.dev@gmail.com>",
+      "source": "https://www.npmjs.com/package/@swc/helpers",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "baseline-browser-mapping",
+      "versions": [
+        "2.11.21"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/baseline-browser-mapping",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "detect-libc",
+      "versions": [
+        "2.1.2"
+      ],
+      "creator": "Lovell Fuller <npm@lovell.info>",
+      "source": "https://www.npmjs.com/package/detect-libc",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "draco3d",
+      "versions": [
+        "1.5.7"
+      ],
+      "creator": "Google Draco Team",
+      "source": "https://www.npmjs.com/package/draco3d",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "hls.js",
+      "versions": [
+        "1.7.2"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/hls.js",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "playwright",
+      "versions": [
+        "1.58.2"
+      ],
+      "creator": "Microsoft Corporation",
+      "source": "https://www.npmjs.com/package/playwright",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "playwright-core",
+      "versions": [
+        "1.58.2"
+      ],
+      "creator": "Microsoft Corporation",
+      "source": "https://www.npmjs.com/package/playwright-core",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "promise-worker-transferable",
+      "versions": [
+        "1.0.4"
+      ],
+      "creator": "Roman Viskin <npm@terikon.com>",
+      "source": "https://www.npmjs.com/package/promise-worker-transferable",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "sharp",
+      "versions": [
+        "0.35.4"
+      ],
+      "creator": "Lovell Fuller <npm@lovell.info>",
+      "source": "https://www.npmjs.com/package/sharp",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@img/sharp-win32-x64",
+      "versions": [
+        "0.35.4"
+      ],
+      "creator": "Lovell Fuller <npm@lovell.info>",
+      "source": "https://www.npmjs.com/package/@img/sharp-win32-x64",
+      "retrieved": "2026-09-15",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "ieee754",
+      "versions": [
+        "1.2.1"
+      ],
+      "creator": "Feross Aboukhadijeh <feross@feross.org> (https://feross.org)",
+      "source": "https://www.npmjs.com/package/ieee754",
+      "retrieved": "2026-09-15",
+      "license": "BSD-3-Clause",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "source-map-js",
+      "versions": [
+        "1.2.1"
+      ],
+      "creator": "Valentin 7rulnik Semirulnik <v7rulnik@gmail.com>",
+      "source": "https://www.npmjs.com/package/source-map-js",
+      "retrieved": "2026-09-15",
+      "license": "BSD-3-Clause",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "caniuse-lite",
+      "versions": [
+        "1.0.30001810"
+      ],
+      "creator": "Ben Briggs <beneb.info@gmail.com> (http://beneb.info)",
+      "source": "https://www.npmjs.com/package/caniuse-lite",
+      "retrieved": "2026-09-15",
+      "license": "CC-BY-4.0",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "electron-to-chromium",
+      "versions": [
+        "1.5.422"
+      ],
+      "creator": "Kilian Valkhof",
+      "source": "https://www.npmjs.com/package/electron-to-chromium",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "isexe",
+      "versions": [
+        "2.0.0"
+      ],
+      "creator": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "source": "https://www.npmjs.com/package/isexe",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "lru-cache",
+      "versions": [
+        "5.1.1"
+      ],
+      "creator": "Isaac Z. Schlueter <i@izs.me>",
+      "source": "https://www.npmjs.com/package/lru-cache",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "picocolors",
+      "versions": [
+        "1.1.1"
+      ],
+      "creator": "Alexey Raspopov",
+      "source": "https://www.npmjs.com/package/picocolors",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "potpack",
+      "versions": [
+        "1.0.2"
+      ],
+      "creator": "Vladimir Agafonkin",
+      "source": "https://www.npmjs.com/package/potpack",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "semver",
+      "versions": [
+        "6.3.1",
+        "7.8.5"
+      ],
+      "creator": "GitHub Inc.",
+      "source": "https://www.npmjs.com/package/semver",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "which",
+      "versions": [
+        "2.0.2"
+      ],
+      "creator": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
+      "source": "https://www.npmjs.com/package/which",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "yallist",
+      "versions": [
+        "3.1.1"
+      ],
+      "creator": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "source": "https://www.npmjs.com/package/yallist",
+      "retrieved": "2026-09-15",
+      "license": "ISC",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/code-frame",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/code-frame",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/compat-data",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/compat-data",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/core",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/core",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/generator",
+      "versions": [
+        "7.29.8"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/generator",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-compilation-targets",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-compilation-targets",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-globals",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-globals",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-module-imports",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-module-imports",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-module-transforms",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-module-transforms",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-string-parser",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-string-parser",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-validator-identifier",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helper-validator-option",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helper-validator-option",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/helpers",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/helpers",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/parser",
+      "versions": [
+        "7.29.8"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/parser",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/runtime",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/runtime",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/template",
+      "versions": [
+        "7.29.7"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/template",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/traverse",
+      "versions": [
+        "7.29.8"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/traverse",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@babel/types",
+      "versions": [
+        "7.29.8"
+      ],
+      "creator": "The Babel Team (https://babel.dev/team)",
+      "source": "https://www.npmjs.com/package/@babel/types",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@img/colour",
+      "versions": [
+        "1.1.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@img/colour",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@jridgewell/gen-mapping",
+      "versions": [
+        "0.3.13"
+      ],
+      "creator": "Justin Ridgewell <justin@ridgewell.name>",
+      "source": "https://www.npmjs.com/package/@jridgewell/gen-mapping",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@jridgewell/remapping",
+      "versions": [
+        "2.3.5"
+      ],
+      "creator": "Justin Ridgewell <justin@ridgewell.name>",
+      "source": "https://www.npmjs.com/package/@jridgewell/remapping",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@jridgewell/resolve-uri",
+      "versions": [
+        "3.1.2"
+      ],
+      "creator": "Justin Ridgewell <justin@ridgewell.name>",
+      "source": "https://www.npmjs.com/package/@jridgewell/resolve-uri",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@jridgewell/sourcemap-codec",
+      "versions": [
+        "1.6.0"
+      ],
+      "creator": "Justin Ridgewell <justin@ridgewell.name>",
+      "source": "https://www.npmjs.com/package/@jridgewell/sourcemap-codec",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "versions": [
+        "0.3.31"
+      ],
+      "creator": "Justin Ridgewell <justin@ridgewell.name>",
+      "source": "https://www.npmjs.com/package/@jridgewell/trace-mapping",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@monogrid/gainmap-js",
+      "versions": [
+        "3.4.0"
+      ],
+      "creator": "MONOGRID <gainmap@monogrid.com>",
+      "source": "https://www.npmjs.com/package/@monogrid/gainmap-js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@next/env",
+      "versions": [
+        "16.3.4"
+      ],
+      "creator": "Next.js Team <support@vercel.com>",
+      "source": "https://www.npmjs.com/package/@next/env",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@next/swc-win32-x64-msvc",
+      "versions": [
+        "16.3.4"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@next/swc-win32-x64-msvc",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@react-three/drei",
+      "versions": [
+        "10.7.8"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@react-three/drei",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@react-three/fiber",
+      "versions": [
+        "9.7.0"
+      ],
+      "creator": "Paul Henschel (https://github.com/drcmda)",
+      "source": "https://www.npmjs.com/package/@react-three/fiber",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled by Next; clock patch retained in patches/."
+    },
+    {
+      "name": "@tweenjs/tween.js",
+      "versions": [
+        "23.1.3"
+      ],
+      "creator": "tween.js contributors (https://github.com/tweenjs/tween.js/graphs/contributors)",
+      "source": "https://www.npmjs.com/package/@tweenjs/tween.js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/draco3d",
+      "versions": [
+        "1.4.10"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/draco3d",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/node",
+      "versions": [
+        "20.19.43"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/node",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/offscreencanvas",
+      "versions": [
+        "2019.7.3"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/offscreencanvas",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/react",
+      "versions": [
+        "19.2.18"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/react",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/react-reconciler",
+      "versions": [
+        "0.28.9"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/react-reconciler",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/stats.js",
+      "versions": [
+        "0.17.4"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/stats.js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/three",
+      "versions": [
+        "0.185.4"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/three",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@types/webxr",
+      "versions": [
+        "0.5.24"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/@types/webxr",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@use-gesture/core",
+      "versions": [
+        "10.3.1"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/@use-gesture/core",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "@use-gesture/react",
+      "versions": [
+        "10.3.1"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/@use-gesture/react",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "base64-js",
+      "versions": [
+        "1.5.1"
+      ],
+      "creator": "T. Jameson Little <t.jameson.little@gmail.com>",
+      "source": "https://www.npmjs.com/package/base64-js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "bidi-js",
+      "versions": [
+        "1.1.0"
+      ],
+      "creator": "Jason Johnston",
+      "source": "https://www.npmjs.com/package/bidi-js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "browserslist",
+      "versions": [
+        "4.28.9"
+      ],
+      "creator": "Andrey Sitnik <andrey@sitnik.es>",
+      "source": "https://www.npmjs.com/package/browserslist",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "buffer",
+      "versions": [
+        "6.0.3"
+      ],
+      "creator": "Feross Aboukhadijeh <feross@feross.org> (https://feross.org)",
+      "source": "https://www.npmjs.com/package/buffer",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "camera-controls",
+      "versions": [
+        "3.1.2"
+      ],
+      "creator": "Yomotsu",
+      "source": "https://www.npmjs.com/package/camera-controls",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "client-only",
+      "versions": [
+        "0.0.1"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/client-only",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "convert-source-map",
+      "versions": [
+        "2.0.0"
+      ],
+      "creator": "Thorsten Lorenz <thlorenz@gmx.de> (http://thlorenz.com)",
+      "source": "https://www.npmjs.com/package/convert-source-map",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "cross-env",
+      "versions": [
+        "7.0.3"
+      ],
+      "creator": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)",
+      "source": "https://www.npmjs.com/package/cross-env",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "cross-spawn",
+      "versions": [
+        "7.0.6"
+      ],
+      "creator": "André Cruz <andre@moxy.studio>",
+      "source": "https://www.npmjs.com/package/cross-spawn",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "csstype",
+      "versions": [
+        "3.2.3"
+      ],
+      "creator": "Fredrik Nicol <fredrik.nicol@gmail.com>",
+      "source": "https://www.npmjs.com/package/csstype",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "debug",
+      "versions": [
+        "4.4.3"
+      ],
+      "creator": "Josh Junon (https://github.com/qix-)",
+      "source": "https://www.npmjs.com/package/debug",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "detect-gpu",
+      "versions": [
+        "5.0.70"
+      ],
+      "creator": "Tim van Scherpenzeel",
+      "source": "https://www.npmjs.com/package/detect-gpu",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "escalade",
+      "versions": [
+        "3.2.0"
+      ],
+      "creator": "Luke Edwards <luke.edwards05@gmail.com> (https://lukeed.com)",
+      "source": "https://www.npmjs.com/package/escalade",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "fflate",
+      "versions": [
+        "0.6.11",
+        "0.8.3"
+      ],
+      "creator": "Arjun Barrett <arjunbarrett@gmail.com>",
+      "source": "https://www.npmjs.com/package/fflate",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "gensync",
+      "versions": [
+        "1.0.0-beta.2"
+      ],
+      "creator": "Logan Smyth <loganfsmyth@gmail.com>",
+      "source": "https://www.npmjs.com/package/gensync",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "glsl-noise",
+      "versions": [
+        "0.0.0"
+      ],
+      "creator": "Ian McEwan, Ashima Arts, Stefan Gustavson",
+      "source": "https://www.npmjs.com/package/glsl-noise",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "has-flag",
+      "versions": [
+        "4.0.0"
+      ],
+      "creator": "Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)",
+      "source": "https://www.npmjs.com/package/has-flag",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "immediate",
+      "versions": [
+        "3.0.6"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/immediate",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "is-promise",
+      "versions": [
+        "2.2.2"
+      ],
+      "creator": "ForbesLindesay",
+      "source": "https://www.npmjs.com/package/is-promise",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "its-fine",
+      "versions": [
+        "2.0.0"
+      ],
+      "creator": "Cody Bennett (https://github.com/codyjasonbennett)",
+      "source": "https://www.npmjs.com/package/its-fine",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "js-tokens",
+      "versions": [
+        "4.0.0"
+      ],
+      "creator": "Simon Lydell",
+      "source": "https://www.npmjs.com/package/js-tokens",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "jsesc",
+      "versions": [
+        "3.1.0"
+      ],
+      "creator": "Mathias Bynens (https://mathiasbynens.be/)",
+      "source": "https://www.npmjs.com/package/jsesc",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "json5",
+      "versions": [
+        "2.2.3"
+      ],
+      "creator": "Aseem Kishore <aseem.kishore@gmail.com>",
+      "source": "https://www.npmjs.com/package/json5",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "lie",
+      "versions": [
+        "3.3.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/lie",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "maath",
+      "versions": [
+        "0.10.8"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/maath",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "meshline",
+      "versions": [
+        "3.3.1"
+      ],
+      "creator": "Jaume Sanchez <the.spite@gmail.com> (https://www.clicktorelease.com)",
+      "source": "https://www.npmjs.com/package/meshline",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "meshoptimizer",
+      "versions": [
+        "1.1.1"
+      ],
+      "creator": "Arseny Kapoulkine",
+      "source": "https://www.npmjs.com/package/meshoptimizer",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "ms",
+      "versions": [
+        "2.1.3"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/ms",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "nanoid",
+      "versions": [
+        "3.3.18"
+      ],
+      "creator": "Andrey Sitnik <andrey@sitnik.ru>",
+      "source": "https://www.npmjs.com/package/nanoid",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "next",
+      "versions": [
+        "16.3.4"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/next",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "node-releases",
+      "versions": [
+        "2.0.54"
+      ],
+      "creator": "Sergey Rubanov <chi187@gmail.com>",
+      "source": "https://www.npmjs.com/package/node-releases",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "path-key",
+      "versions": [
+        "3.1.1"
+      ],
+      "creator": "Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)",
+      "source": "https://www.npmjs.com/package/path-key",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "postcss",
+      "versions": [
+        "8.5.23"
+      ],
+      "creator": "Andrey Sitnik <andrey@sitnik.es>",
+      "source": "https://www.npmjs.com/package/postcss",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "react",
+      "versions": [
+        "19.2.8"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/react",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "react-dom",
+      "versions": [
+        "19.2.8"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/react-dom",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "react-use-measure",
+      "versions": [
+        "2.1.7"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/react-use-measure",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "require-from-string",
+      "versions": [
+        "2.0.2"
+      ],
+      "creator": "Vsevolod Strukchinsky <floatdrop@gmail.com> (github.com/floatdrop)",
+      "source": "https://www.npmjs.com/package/require-from-string",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "scheduler",
+      "versions": [
+        "0.27.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/scheduler",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "shebang-command",
+      "versions": [
+        "2.0.0"
+      ],
+      "creator": "Kevin Mårtensson <kevinmartensson@gmail.com> (github.com/kevva)",
+      "source": "https://www.npmjs.com/package/shebang-command",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "shebang-regex",
+      "versions": [
+        "3.0.0"
+      ],
+      "creator": "Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)",
+      "source": "https://www.npmjs.com/package/shebang-regex",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "stats-gl",
+      "versions": [
+        "2.4.2"
+      ],
+      "creator": "Renaud ROHLINGER (https://github.com/RenaudRohlinger)",
+      "source": "https://www.npmjs.com/package/stats-gl",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "stats.js",
+      "versions": [
+        "0.17.0"
+      ],
+      "creator": "mrdoob",
+      "source": "https://www.npmjs.com/package/stats.js",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "styled-jsx",
+      "versions": [
+        "5.1.6"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/styled-jsx",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "supports-color",
+      "versions": [
+        "7.2.0"
+      ],
+      "creator": "Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)",
+      "source": "https://www.npmjs.com/package/supports-color",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "suspend-react",
+      "versions": [
+        "0.1.3"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/suspend-react",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "three",
+      "versions": [
+        "0.170.0",
+        "0.185.1"
+      ],
+      "creator": "mrdoob",
+      "source": "https://www.npmjs.com/package/three",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "three-mesh-bvh",
+      "versions": [
+        "0.8.3"
+      ],
+      "creator": "Garrett Johnson <garrett.kjohnson@gmail.com>",
+      "source": "https://www.npmjs.com/package/three-mesh-bvh",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "three-stdlib",
+      "versions": [
+        "2.36.1"
+      ],
+      "creator": "Paul Henschel (https://github.com/drcmda)",
+      "source": "https://www.npmjs.com/package/three-stdlib",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "troika-three-text",
+      "versions": [
+        "0.52.5"
+      ],
+      "creator": "Jason Johnston <jason.johnston@protectwise.com>",
+      "source": "https://www.npmjs.com/package/troika-three-text",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "troika-three-utils",
+      "versions": [
+        "0.52.5"
+      ],
+      "creator": "Jason Johnston <jason.johnston@protectwise.com>",
+      "source": "https://www.npmjs.com/package/troika-three-utils",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "troika-worker-utils",
+      "versions": [
+        "0.52.0"
+      ],
+      "creator": "Jason Johnston <jason.johnston@protectwise.com>",
+      "source": "https://www.npmjs.com/package/troika-worker-utils",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "tunnel-rat",
+      "versions": [
+        "0.1.2"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/tunnel-rat",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "undici-types",
+      "versions": [
+        "6.21.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/undici-types",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "update-browserslist-db",
+      "versions": [
+        "1.3.2"
+      ],
+      "creator": "Andrey Sitnik <andrey@sitnik.es>",
+      "source": "https://www.npmjs.com/package/update-browserslist-db",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "use-sync-external-store",
+      "versions": [
+        "1.6.0"
+      ],
+      "creator": "Package copyright holders; see retained notice",
+      "source": "https://www.npmjs.com/package/use-sync-external-store",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "utility-types",
+      "versions": [
+        "3.11.0"
+      ],
+      "creator": "Piotr Witek <piotrek.witek@gmail.com> (http://piotrwitek.github.io)",
+      "source": "https://www.npmjs.com/package/utility-types",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "webgl-sdf-generator",
+      "versions": [
+        "1.1.1"
+      ],
+      "creator": "Jason Johnston",
+      "source": "https://www.npmjs.com/package/webgl-sdf-generator",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "zustand",
+      "versions": [
+        "4.5.7",
+        "5.0.15"
+      ],
+      "creator": "Paul Henschel",
+      "source": "https://www.npmjs.com/package/zustand",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    },
+    {
+      "name": "webgl-constants",
+      "versions": [
+        "1.1.1"
+      ],
+      "creator": "Tim van Scherpenzeel",
+      "source": "https://www.npmjs.com/package/webgl-constants",
+      "retrieved": "2026-09-15",
+      "license": "MIT",
+      "rights": "Commercial use and modification subject to the retained license and attribution terms.",
+      "proof": "docs/third-party/dependency-notices.md",
+      "transformations": "Bundled/tree-shaken by Next; no authored source modification."
+    }
+  ]
+}

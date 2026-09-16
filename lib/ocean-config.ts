@@ -14,8 +14,8 @@ export type OceanConfiguration = {
 
 export const oceanConfiguration: OceanConfiguration = {
   vessels: {
-    balanced: "/models/research-vessel-balanced.v1.glb",
-    low: "/models/research-vessel-low.v1.glb",
+    balanced: "/models/research-vessel-balanced.v2.glb",
+    low: "/models/research-vessel-low.v2.glb",
   },
   stations: [
     { id: "pulso-de-calor", position: [0, 0, -42], name: "Pulso de Calor", color: "#ffdda2" },

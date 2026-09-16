@@ -27,6 +27,7 @@ import { closeDisclosures, focusOceanTarget as focusTarget } from "@/lib/reader-
 import { getEvidenceProgress } from "@/lib/expedition-view";
 import { useStickyScrollOffset } from "@/lib/use-sticky-scroll-offset";
 import type { PreparationStage } from "@/components/ocean/ocean-runtime";
+import { enableLocalDiagnostics, recordDiagnostic, recordFrame } from "@/lib/local-diagnostics";
 
 // The only runtime import. Editorial code and the state model never import Three.
 const OceanRuntime = dynamic(() => import("@/components/ocean/ocean-runtime"), {
@@ -101,6 +102,10 @@ export default function OceanPresentation({
   const presentationBar = useRef<HTMLElement>(null);
   useStickyScrollOffset(presentationBar);
 
+  useEffect(() => { enableLocalDiagnostics(); recordDiagnostic("readiness", "editorial-ready"); }, []);
+  useEffect(() => { recordDiagnostic("quality", quality); }, [quality]);
+  useEffect(() => { recordDiagnostic("readiness", stage); }, [stage]);
+
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
       closeDisclosures();
@@ -121,6 +126,7 @@ export default function OceanPresentation({
 
   const fail = useCallback(
     (reason: ThreeDUnavailableReason) => {
+      recordDiagnostic("failure", reason);
       steering.current = 0;
       setExpedition((current) => {
         // Canvas disposal can itself emit context loss. Preserve the original failure.
@@ -146,14 +152,16 @@ export default function OceanPresentation({
     setExpedition((current) => transitionExpedition(current, { type: "set-pause-state", pauseState: "paused" }));
   }, [checkpoint, setExpedition]);
   const { visible, suspended } = useOceanLifecycle(suspend);
+  useEffect(() => { recordDiagnostic("lifecycle", `${visible ? "visible" : "hidden"}:${active ? "3d" : "editorial"}:${sailing ? "sailing" : "paused"}`); }, [visible, active, sailing]);
   const loseContext = useCallback(() => {
+    recordDiagnostic("context", "lost");
     suspend();
     setStage("preparing");
     setExpedition((current) => transitionExpedition(current, { type: "lose-context" }));
   }, [suspend, setExpedition]);
   useOceanRecovery(unavailable ? null : canvas, {
     onLost: loseContext,
-    onRestored: () => setRecoveryGeneration((generation) => generation + 1),
+    onRestored: () => { recordDiagnostic("context", "restored"); setRecoveryGeneration((generation) => generation + 1); },
     onFailed: () => fail("context-loss"),
     canRestore: expedition.contextLosses === 0,
   }, restoring);
@@ -162,12 +170,13 @@ export default function OceanPresentation({
     if (next === "ready") setExpedition((current) => transitionExpedition(current, { type: "restore-context" }));
   }, [setExpedition]);
   const measureFrame = useCallback((milliseconds: number | null) => {
+    recordFrame(milliseconds);
     const controller = qualityController.current;
     if (!controller) return;
     if (milliseconds === null) { controller.suspend(); return; }
     const previous = controller.current();
     const next = controller.frame(milliseconds);
-    if (next.fallback) { fail("unusable-quality"); return; }
+    if (next.fallback) { recordDiagnostic("quality", next); fail("unusable-quality"); return; }
     if (previous.tier !== next.tier || previous.dpr !== next.dpr) setQuality(next);
   }, [fail]);
 
@@ -274,6 +283,7 @@ export default function OceanPresentation({
   }, [canvas, active, sailing, visible, restoring, suspend]);
 
   function chooseQuality(preference: ExpeditionQualityPreference) {
+    recordDiagnostic("preference", preference);
     const next = qualityController.current?.choose(preference);
     if (next) setQuality(next);
     if (preference === "text") switchPresentation(false);

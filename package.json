@@ -10,7 +10,11 @@
     "test": "bun test",
     "test:browser": "playwright test",
     "assets:vessels": "bun scripts/generate-vessels.mjs",
-    "typecheck": "tsc --noEmit"
+    "assets:identity": "bun scripts/generate-identity.mjs",
+    "assets:record": "bun scripts/record-assets.mjs",
+    "assets:audit": "bun scripts/audit-assets.ts",
+    "test:production": "playwright test --config playwright.production.config.ts",
+    "typecheck": "bun --bun next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",
@@ -31,6 +35,8 @@
     "@types/three": "0.185.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "fontkit": "^2.0.4",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

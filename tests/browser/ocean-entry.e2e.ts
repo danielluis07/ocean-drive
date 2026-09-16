@@ -52,7 +52,7 @@ test("reduced motion defers graphics until requested and loads the mobile vessel
   await prepare.click();
   await expect(page.getByRole("status")).toContainText("O oceano está pronto");
   expect(vessels).toHaveLength(1);
-  expect(vessels[0]).toContain("research-vessel-low.v1.glb");
+  expect(vessels[0]).toContain("research-vessel-low.v2.glb");
   await expect(page.getByRole("heading", { name: /Conduza a expedição/ })).toBeVisible();
 });
 

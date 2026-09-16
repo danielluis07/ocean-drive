@@ -1,0 +1,32 @@
+[
+  {
+    "file": "fonts/geist-400-latin.v1.woff2",
+    "creator": "The Geist Project Authors",
+    "source": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFU.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Geist:wght@400;600&display=swap",
+    "retrieved": "2026-09-15",
+    "license": "OFL-1.1",
+    "proof": "docs/third-party/fonts/geist-OFL.txt",
+    "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only. Variable font serves approved weights 400 and 600 without a duplicate request."
+  },
+  {
+    "file": "fonts/geistmono-500-latin.v1.woff2",
+    "creator": "The Geist Project Authors",
+    "source": "https://fonts.gstatic.com/s/geistmono/v6/or3yQ6H-1_WfwkMZI_qYPLs1a-t7PU0AbeEPKK5U5Ck.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@500&display=swap",
+    "retrieved": "2026-09-15",
+    "license": "OFL-1.1",
+    "proof": "docs/third-party/fonts/geistmono-OFL.txt",
+    "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only."
+  },
+  {
+    "file": "fonts/sourceserif4-400-latin.v1.woff2",
+    "creator": "Adobe (Source Serif project)",
+    "source": "https://fonts.gstatic.com/s/sourceserif4/v14/vEF02_tTDB4M7-auWDN0ahZJW1ge6NmXpVAHV83Bfb_US2D2QYxoUKIkn98pRl9tDMQC.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,400&display=swap",
+    "retrieved": "2026-09-15",
+    "license": "OFL-1.1",
+    "proof": "docs/third-party/fonts/sourceserif4-OFL.txt",
+    "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only."
+  }
+]

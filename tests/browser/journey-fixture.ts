@@ -11,11 +11,14 @@ export const test = base.extend({
     const frames = (async () => {
       while (running && !page.isClosed()) {
         // Batch ten 16 ms frames per browser round-trip without skipping frames.
+        const startedAt = performance.now();
         // The clock spans the context, so a closing popup or scanner page may
         // reject one advance; only this page closing ends the loop.
         try { await page.clock.runFor(160); }
         catch (error) { if (page.isClosed()) break; if (!String(error).includes("closed")) throw error; }
-        await new Promise((resolve) => setTimeout(resolve, 160));
+        // Keep transient states observable at real-time pace without adding
+        // another full delay on top of time already spent in software rendering.
+        await new Promise((resolve) => setTimeout(resolve, Math.max(0, 160 - (performance.now() - startedAt))));
       }
     })();
     try { await providePage(page); }
@@ -25,4 +28,4 @@ export const test = base.extend({
 
 // Preserve CSS viewports and input coordinates while bounding software GPU work.
 // Full-resolution physical performance is validated outside this journey suite.
-test.use({ deviceScaleFactor: 0.5 });
+test.use({ deviceScaleFactor: 0.25 });

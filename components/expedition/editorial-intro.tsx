@@ -1,4 +1,5 @@
 import { wrapperDisclosure } from "@/content/editorial";
+import Image from "next/image";
 
 export default function EditorialIntro() {
   return (
@@ -10,6 +11,7 @@ export default function EditorialIntro() {
           Uma rota composta para aproximar evidências que aconteceram em
           tempos, lugares e escalas diferentes.
         </h2>
+        <Image src="/identity/editorial-vignette.v1.svg" alt="" width={420} height={180} unoptimized style={{ maxWidth: "100%", height: "auto" }} />
       </div>
       <div className="editorial-intro__copy">
         <p>
