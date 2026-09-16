@@ -17,18 +17,31 @@ test("one context restoration preserves the visit and a second loss locks 3D acr
   expect(lost.bookmarks).toEqual(original.bookmarks);
   expect(lost.middleOrder).toEqual(original.middleOrder);
   expect(lost.vesselCheckpoints).toEqual(original.vesselCheckpoints);
-  expect(transitionExpedition(lost, { type: "set-presentation", presentation: "three-dimensional" })).toBe(lost);
+  expect(
+    transitionExpedition(lost, {
+      type: "set-presentation",
+      presentation: "three-dimensional",
+    }),
+  ).toBe(lost);
   const restored = transitionExpedition(lost, { type: "restore-context" });
   expect(restored.presentation).toBe("editorial");
   expect(restored.pauseState).toBe("paused");
   expect(restored.threeDAvailability.status).toBe("available");
   const reloaded = restoreExpeditionState(serializeExpeditionState(restored));
   const secondLoss = transitionExpedition(reloaded, { type: "lose-context" });
-  const restarted = transitionExpedition(secondLoss, { type: "restart-expedition" });
-  expect(restarted.threeDAvailability).toEqual({ status: "unavailable", reason: "context-loss" });
-  expect(transitionExpedition(restarted, { type: "restore-context" })).toBe(restarted);
-  expect(restoreExpeditionState(serializeExpeditionState(lost)).threeDAvailability)
-    .toEqual({ status: "unavailable", reason: "context-loss" });
+  const restarted = transitionExpedition(secondLoss, {
+    type: "restart-expedition",
+  });
+  expect(restarted.threeDAvailability).toEqual({
+    status: "unavailable",
+    reason: "context-loss",
+  });
+  expect(transitionExpedition(restarted, { type: "restore-context" })).toBe(
+    restarted,
+  );
+  expect(
+    restoreExpeditionState(serializeExpeditionState(lost)).threeDAvailability,
+  ).toEqual({ status: "unavailable", reason: "context-loss" });
 });
 
 function reachConvergence(
@@ -87,7 +100,7 @@ describe("Expedition transitions", () => {
     ["corais-sob-estresse", "respostas-desiguais"],
     ["respostas-desiguais", "corais-sob-estresse"],
   ] as const)(
-    "unlocks Convergência after completing the %s then %s route",
+    "unlocks the Arrival after completing the %s then %s route",
     (firstMiddle, secondMiddle) => {
       let state = createInitialExpeditionState();
 
@@ -132,7 +145,7 @@ describe("Expedition transitions", () => {
     },
   );
 
-  test("keeps Convergência locked until every evidence station is complete", () => {
+  test("keeps the Arrival locked until every stop is complete", () => {
     const initial = createInitialExpeditionState();
 
     expect(
@@ -145,23 +158,52 @@ describe("Expedition transitions", () => {
 
   test("3D evidence completion unlocks destinations without opening them or moving the vessel", () => {
     let state = transitionExpedition(createInitialExpeditionState(), {
-      type: "set-presentation", presentation: "three-dimensional",
+      type: "set-presentation",
+      presentation: "three-dimensional",
     });
-    for (const station of ["pulso-de-calor", "respostas-desiguais", "corais-sob-estresse"] as const) {
+    for (const station of [
+      "pulso-de-calor",
+      "respostas-desiguais",
+      "corais-sob-estresse",
+    ] as const) {
       state = transitionExpedition(state, { type: "open-station", station });
-      state = transitionExpedition(state, { type: "set-bookmark", station, passage: 2 });
+      state = transitionExpedition(state, {
+        type: "set-bookmark",
+        station,
+        passage: 2,
+      });
       const before = state;
-      state = transitionExpedition(state, { type: "complete-station", station });
+      state = transitionExpedition(state, {
+        type: "complete-station",
+        station,
+      });
       expect(state.currentStation).toBe(station);
       expect(state.vesselCheckpoints).toEqual(before.vesselCheckpoints);
       expect(state.pauseState).toBe("paused");
     }
-    expect(state.completedStations).toEqual(["pulso-de-calor", "respostas-desiguais", "corais-sob-estresse"]);
-    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(false);
-    state = transitionExpedition(state, { type: "open-station", station: "convergencia" });
-    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(false);
-    state = transitionExpedition(state, { type: "set-bookmark", station: "convergencia", passage: 2 });
-    expect(transitionExpedition(state, { type: "connect-expedition" }).connected).toBe(true);
+    expect(state.completedStations).toEqual([
+      "pulso-de-calor",
+      "respostas-desiguais",
+      "corais-sob-estresse",
+    ]);
+    expect(
+      transitionExpedition(state, { type: "connect-expedition" }).connected,
+    ).toBe(false);
+    state = transitionExpedition(state, {
+      type: "open-station",
+      station: "convergencia",
+    });
+    expect(
+      transitionExpedition(state, { type: "connect-expedition" }).connected,
+    ).toBe(false);
+    state = transitionExpedition(state, {
+      type: "set-bookmark",
+      station: "convergencia",
+      passage: 2,
+    });
+    expect(
+      transitionExpedition(state, { type: "connect-expedition" }).connected,
+    ).toBe(true);
   });
 
   test("rejects completion until the current station's final passage and explicit action", () => {
@@ -208,7 +250,7 @@ describe("Expedition transitions", () => {
     ).toBe(locked);
   });
 
-  test("connects only from the final Convergência passage through the explicit action", () => {
+  test("connects only from the final Arrival passage through the explicit action", () => {
     const atConvergence = reachConvergence();
     const passiveAttempt = transitionExpedition(atConvergence, {
       type: "connect-expedition",
@@ -226,7 +268,7 @@ describe("Expedition transitions", () => {
     expect(connected.connected).toBe(true);
   });
 
-  test("preserves a bookmark when revisiting a completed Field Station", () => {
+  test("preserves a bookmark when revisiting a completed Stop", () => {
     const atConvergence = reachConvergence();
     const revisiting = transitionExpedition(atConvergence, {
       type: "open-station",

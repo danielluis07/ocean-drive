@@ -1,6 +1,6 @@
 # Project-authored asset provenance
 
-The Instituto symbol is retained from components/expedition/institute-mark.tsx
+The Travessia symbol is retained from components/expedition/institute-mark.tsx
 at commit 050de01837e97f2a6fb1e23abc134e9ef6483986. The vessel geometry is a
 simplification of the repository master in scripts/generate-vessels.mjs at that
 commit. Identity derivatives, outlined lettering, and the decorative vignette
@@ -15,7 +15,7 @@ modifying these repository assets for the Live Experience. The retained sources
 and Git history document authorship and transformations. No external asset
 rights are claimed for project-authored source. External typography remains
 under its own OFL terms, including commercial use, modification, redistribution,
-and retention of license/copyright notices. See fonts/*-OFL.txt and sources.json.
+and retention of license/copyright notices. See fonts/\*-OFL.txt and sources.json.
 
 Vessel v2 removes fine rails, fittings, rigging and texture-like window details;
 uses a common hull outline, waterline origin, -Z forward direction, and a shared

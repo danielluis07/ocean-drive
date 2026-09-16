@@ -150,7 +150,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "576a66b958c2b03092c135c74a631c65a6a5b2141a9327f766370c6588ed3814"
+      "sha256": "ea7ba5d1d92380f8352fe566e1f948cba4f323384598f160a40893c359756057"
     },
     {
       "path": "public/identity/editorial-vignette.v1.svg",
@@ -210,7 +210,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "76918aebc773a2aba3ac2a37bdd1a8b094871b9ed4f6828f5035dee540c92677"
+      "sha256": "b33a9e7a3d092291b46826f78f1146cbd7f4505bf02e78dfb4116c171bd86ba6"
     },
     {
       "path": "public/identity/monochrome.v1.svg",
@@ -225,7 +225,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "775b161e58c0c665ed72378ee2b070e28c8f4f67a3952c6f5b6b123477080023"
+      "sha256": "111535cf0c0e3d942836e8d4feae17c426c84b578f8808d0be4779c606eb2d05"
     },
     {
       "path": "public/identity/reversed.v1.svg",
@@ -240,7 +240,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "d3f978202b672e8eb84c2d42369ee2a1bb6c382e896d360dc1d530eb12da49a2"
+      "sha256": "f56a142c735d3754e922f763ea653305d2b690ea69e30f26dc1db5b865515a3c"
     },
     {
       "path": "public/identity/social.v1.png",
@@ -255,7 +255,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "1beef9e2d52bd2f2a76fb71c8f79c833b94943051030351b18caf190a16813e6"
+      "sha256": "279769c62ac69612ebfc8be8770f148d06abf38f5527f6cb1ba143913bcacec4"
     },
     {
       "path": "public/identity/social.v1.svg",
@@ -270,7 +270,7 @@
       "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
       "essential": false,
       "experience": false,
-      "sha256": "fa07c1db3b2e47a78294ba9e11dc75a4c5e7f1ba26e4ca0386e41e329f1e11ad"
+      "sha256": "ab6fc10ad6397563b39a03afcfb6c9300638eca3427e860daccefad935219d13"
     },
     {
       "path": "public/identity/symbol.v1.svg",

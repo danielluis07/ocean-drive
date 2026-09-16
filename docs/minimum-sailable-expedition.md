@@ -16,7 +16,7 @@ requested. Hidden tabs pause movement; restoration opens text and requires expli
 3D entry and resume. Essential startup failures, failed recovery, and repeated
 context loss lock 3D for the visit while preserving reading and Expedition State.
 
-The initial scene included the first Field Station and its semantic reading action.
+The initial scene included the first Stop and its semantic reading action.
 The [complete spatial station journey](field-station-journey.md) extends it in #25
 with arrival-based reading and all four destinations. Assisted navigation and
 bounded waters are documented in [assisted-return.md](assisted-return.md). The
@@ -30,10 +30,10 @@ Run `bun run assets:vessels` to reproduce both versioned, same-origin GLBs from
 negative-Z forward direction. The generator uses original geometric construction,
 with no imported models, textures, stock images, or scientific imagery.
 
-| Asset | Triangles | Uncompressed bytes | Materials |
-| --- | ---: | ---: | ---: |
-| `research-vessel-balanced.v1.glb` | 360 | 41,028 | 2 opaque |
-| `research-vessel-low.v1.glb` | 184 | 22,016 | 2 opaque |
+| Asset                             | Triangles | Uncompressed bytes | Materials |
+| --------------------------------- | --------: | -----------------: | --------: |
+| `research-vessel-balanced.v1.glb` |       360 |             41,028 |  2 opaque |
+| `research-vessel-low.v1.glb`      |       184 |             22,016 |  2 opaque |
 
 The project source is the editable vessel master. Ivory and ochre working parts
 share a vertex-colored material; the blue hull uses the second material. Low
@@ -48,11 +48,11 @@ integrity hashes retained in `bun.lock`. No external assets are fetched at runti
 All three libraries permit commercial use and modification under MIT; retained
 copyright and license notices are in `third-party/graphics-notices.md`.
 
-| Dependency | Version | Creator / canonical source | Transformation |
-| --- | --- | --- | --- |
-| Three.js | 0.185.1 | three.js authors; https://github.com/mrdoob/three.js | Bundled renderer and GLTF loader; exporter used locally |
-| React Three Fiber | 9.7.0 | Poimandres; https://github.com/pmndrs/react-three-fiber | Bundled web renderer |
-| Drei | 10.7.8 | react-spring / Poimandres; https://github.com/pmndrs/drei | Selective `web/Html` import only |
+| Dependency        | Version | Creator / canonical source                                | Transformation                                          |
+| ----------------- | ------- | --------------------------------------------------------- | ------------------------------------------------------- |
+| Three.js          | 0.185.1 | three.js authors; https://github.com/mrdoob/three.js      | Bundled renderer and GLTF loader; exporter used locally |
+| React Three Fiber | 9.7.0   | Poimandres; https://github.com/pmndrs/react-three-fiber   | Bundled web renderer                                    |
+| Drei              | 10.7.8  | react-spring / Poimandres; https://github.com/pmndrs/drei | Selective `web/Html` import only                        |
 
 ## Verification
 

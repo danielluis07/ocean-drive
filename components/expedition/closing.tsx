@@ -7,12 +7,12 @@ export default function Closing() {
         <div className="identity identity--closing">
           <InstituteMark />
           <span>
-            Instituto<strong>Maré Aberta</strong>
+            Travessia<strong>Viagens costeiras</strong>
           </span>
         </div>
         <p>
-          Observatório Atlântico Vivo
-          <span>Uma composição retrospectiva sobre Abrolhos em 2019.</span>
+          Travessia
+          <span>Uma viagem pela costa brasileira.</span>
         </p>
         <a href="#conteudo-principal">Voltar ao início</a>
       </div>

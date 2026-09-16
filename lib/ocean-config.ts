@@ -18,9 +18,29 @@ export const oceanConfiguration: OceanConfiguration = {
     low: "/models/research-vessel-low.v2.glb",
   },
   stations: [
-    { id: "pulso-de-calor", position: [0, 0, -42], name: "Pulso de Calor", color: "#ffdda2" },
-    { id: "corais-sob-estresse", position: [-14, 0, -76], name: "Corais sob Estresse", color: "#ecc5ac" },
-    { id: "respostas-desiguais", position: [14, 0, -76], name: "Respostas Desiguais", color: "#b3ded5" },
-    { id: "convergencia", position: [0, 0, -112], name: "Convergência", color: "#f4e9bc" },
+    {
+      id: "pulso-de-calor",
+      position: [0, 0, -42],
+      name: "Pulso de Calor",
+      color: "#ffdda2",
+    },
+    {
+      id: "corais-sob-estresse",
+      position: [-14, 0, -76],
+      name: "Corais sob Estresse",
+      color: "#ecc5ac",
+    },
+    {
+      id: "respostas-desiguais",
+      position: [14, 0, -76],
+      name: "Respostas Desiguais",
+      color: "#b3ded5",
+    },
+    {
+      id: "convergencia",
+      position: [0, 0, -112],
+      name: "Chegada",
+      color: "#f4e9bc",
+    },
   ],
 };

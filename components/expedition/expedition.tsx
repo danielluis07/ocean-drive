@@ -10,7 +10,11 @@ import RouteNavigation from "@/components/expedition/route-navigation";
 import StationList from "@/components/expedition/station-list";
 import OceanPresentation from "@/components/ocean/ocean-presentation";
 import StationReader from "@/components/ocean/station-reader";
-import { closeDisclosures, closeOpenLogbook, focusOceanTarget } from "@/lib/reader-interactions";
+import {
+  closeDisclosures,
+  closeOpenLogbook,
+  focusOceanTarget,
+} from "@/lib/reader-interactions";
 import { stations, type Station, type StationId } from "@/content/editorial";
 import {
   createInitialExpeditionState,
@@ -118,7 +122,10 @@ function ExpeditionContent() {
     // Caderno holding focus, so it never pulls focus from elsewhere on the page.
     const escape = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || event.defaultPrevented) return;
-      if (closeOpenLogbook(document.querySelector("main"), { focusedOnly: true })) event.preventDefault();
+      if (
+        closeOpenLogbook(document.querySelector("main"), { focusedOnly: true })
+      )
+        event.preventDefault();
     };
     document.addEventListener("keydown", escape);
     return () => document.removeEventListener("keydown", escape);
@@ -154,7 +161,9 @@ function ExpeditionContent() {
     announce(
       `${station.name}. Sinal ${signalIndex + 1} de ${station.signals.length}: ${station.signals[signalIndex].title}`,
     );
-    (threeD ? focusOceanTarget : focusAndScrollToElement)(`${station.id}-signal-${signalIndex + 1}`);
+    (threeD ? focusOceanTarget : focusAndScrollToElement)(
+      `${station.id}-signal-${signalIndex + 1}`,
+    );
   }
 
   function completeStation(station: Station) {
@@ -162,9 +171,7 @@ function ExpeditionContent() {
       setExpedition((current) =>
         transitionExpedition(current, { type: "connect-expedition" }),
       );
-      announce(
-        "Expedição conectada. As ações finais estão disponíveis.",
-      );
+      announce("Expedição conectada. As ações finais estão disponíveis.");
       focusAndScrollToElement("expedicao-conectada-title");
       return;
     }
@@ -182,11 +189,13 @@ function ExpeditionContent() {
 
     if (threeD) {
       closeReader();
-      announce(isEvidenceComplete(nextState)
-        ? "Três estações concluídas. Conduza até Convergência para conectar a expedição."
-        : station.id === "pulso-de-calor"
-          ? "Pulso de Calor concluída. Corais sob Estresse e Respostas Desiguais estão iluminadas; escolha seu percurso."
-          : `${station.name} concluída. Continue até a outra estação iluminada.`);
+      announce(
+        isEvidenceComplete(nextState)
+          ? "Três paradas visitadas. Continue pela rota até a Chegada."
+          : station.id === "pulso-de-calor"
+            ? "Pulso de Calor concluída. Corais sob Estresse e Respostas Desiguais estão iluminadas; escolha seu percurso."
+            : `${station.name} concluída. Continue até a outra estação iluminada.`,
+      );
       return;
     }
 
@@ -196,9 +205,7 @@ function ExpeditionContent() {
       );
       focusAndScrollToElement("route-title");
     } else if (isEvidenceComplete(nextState)) {
-      announce(
-        "Três estações de evidência concluídas. Convergência está disponível.",
-      );
+      announce("Três paradas visitadas. A Chegada está disponível.");
       focusAndScrollToElement("convergencia-title");
     } else if (nextMiddleStation) {
       const nextStation = stations.find(
@@ -248,7 +255,9 @@ function ExpeditionContent() {
       <Connected
         connected={expedition.connected}
         onRestart={restartExpedition}
-        onReviewStations={() => threeD ? closeReader() : focusAndScrollToElement("route-title")}
+        onReviewStations={() =>
+          threeD ? closeReader() : focusAndScrollToElement("route-title")
+        }
         onShowSources={showSources}
       />
       <AllSources visible={allSourcesOpen} />
@@ -265,25 +274,35 @@ function ExpeditionContent() {
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo
       </a>
-      <p id="expedition-announcer" className="visually-hidden" aria-live="polite" aria-atomic="true">
+      <p
+        id="expedition-announcer"
+        className="visually-hidden"
+        aria-live="polite"
+        aria-atomic="true">
         {announcement}
       </p>
       <main id="conteudo-principal">
         <OceanPresentation configuration={oceanConfiguration} />
         {threeD ? (
-          readerOpen ? <StationReader onClose={closeReader}>{stationContent}</StationReader> : null
-        ) : <div>
-          <Opening />
-          <EditorialIntro />
-          <RouteNavigation
-            availableStationIds={availableStationIds}
-            enhanced={enhanced}
-            expedition={expedition}
-            onOpenStation={openStation}
-          />
-          {stationContent}
-          <Closing />
-        </div>}
+          readerOpen ? (
+            <StationReader onClose={closeReader}>
+              {stationContent}
+            </StationReader>
+          ) : null
+        ) : (
+          <div>
+            <Opening />
+            <EditorialIntro />
+            <RouteNavigation
+              availableStationIds={availableStationIds}
+              enhanced={enhanced}
+              expedition={expedition}
+              onOpenStation={openStation}
+            />
+            {stationContent}
+            <Closing />
+          </div>
+        )}
       </main>
     </div>
   );

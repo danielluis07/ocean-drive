@@ -12,14 +12,14 @@ export default function Opening() {
         <a
           className="identity"
           href="#conteudo-principal"
-          aria-label="Instituto Maré Aberta, início">
+          aria-label="Travessia, início">
           <InstituteMark />
           <span>
-            Instituto<strong>Maré Aberta</strong>
+            Travessia<strong>Viagens costeiras</strong>
           </span>
         </a>
         <p>
-          Observatório<strong>Atlântico Vivo</strong>
+          Viagens<strong>pela costa brasileira</strong>
         </p>
       </div>
       <div className="opening-copy page-shell">

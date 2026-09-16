@@ -25,9 +25,9 @@ animation, interiors or fine rigging. Navigation geometry never depends on LOD.
 The identity family contains horizontal, compact, monochrome and reversed SVG
 lockups, a symbol-only master, SVG/PNG favicons, an Apple touch icon and a 1200×630
 social SVG/PNG pair. Preserve symbol proportions and at least half a symbol width
-of surrounding space; keep the Observatório line smaller than the Instituto
+of surrounding space; keep the descriptor line smaller than the Travessia
 wordmark. Use ink on pale backgrounds and reversed salt on dark backgrounds.
-Do not add a second Observatório symbol. The editorial vignette is decorative;
+Do not add a second Travessia symbol. The editorial vignette is decorative;
 its bow/cabin/working-deck and beacon shapes carry no unique information.
 
 Geist's retained variable Latin WOFF2 serves 400 and 600 with one request.
@@ -55,22 +55,22 @@ reduced-motion editorial entry, explicit 3D preparation, all twelve passages and
 source panels, completion, Low substitution and context restoration.
 It saves JSON reports, build identity, traces and aerial screenshots.
 
-| Measurement | Maximum |
-| --- | ---: |
-| Server/editorial JavaScript | 200 KiB |
-| Additional lazy 3D JavaScript | 350 KiB |
-| Minimum sailable payload | 1.5 MiB |
-| Complete first visit | 5 MiB |
-| Minimum-sailable authored visuals | 500 KiB |
-| All in-experience authored visuals | 750 KiB |
-| Fonts | 160 KiB |
-| High/Balanced vessel | 12,000 triangles; 250 KiB |
-| Low vessel | 4,000 triangles; 120 KiB |
-| Balanced visible draws | Fewer than 100 |
-| Balanced visible triangles | Fewer than 150,000 |
-| Ocean draws | Exactly one |
-| Balanced retained off-screen targets | At most one |
-| Low retained off-screen targets | Zero |
+| Measurement                          |                   Maximum |
+| ------------------------------------ | ------------------------: |
+| Server/editorial JavaScript          |                   200 KiB |
+| Additional lazy 3D JavaScript        |                   350 KiB |
+| Minimum sailable payload             |                   1.5 MiB |
+| Complete first visit                 |                     5 MiB |
+| Minimum-sailable authored visuals    |                   500 KiB |
+| All in-experience authored visuals   |                   750 KiB |
+| Fonts                                |                   160 KiB |
+| High/Balanced vessel                 | 12,000 triangles; 250 KiB |
+| Low vessel                           |  4,000 triangles; 120 KiB |
+| Balanced visible draws               |            Fewer than 100 |
+| Balanced visible triangles           |        Fewer than 150,000 |
+| Ocean draws                          |               Exactly one |
+| Balanced retained off-screen targets |               At most one |
+| Low retained off-screen targets      |                      Zero |
 
 Text, JavaScript, CSS and SVG response bodies are measured using standard gzip;
 already compressed fonts, PNG and GLB requests use their full response-body size.
@@ -111,7 +111,7 @@ physical-device pass is implied by this gate.
 In DevTools on the application origin, enable recording then reload:
 
 ```js
-sessionStorage.setItem('ocean-drive:diagnostics', 'enabled');
+sessionStorage.setItem("ocean-drive:diagnostics", "enabled");
 location.reload();
 ```
 

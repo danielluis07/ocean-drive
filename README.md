@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Travessia
 
-## Getting Started
+Travessia is a standalone interactive voyage commissioned as a fictional small-ship expedition along the Brazilian coast. Visitors move through a fixed Charted Route, pause at coastal Stops, and open each Stop Account over the ocean scene.
 
-First, run the development server:
+The project is written in English internally and presents user-facing copy in Brazilian Portuguese. Its Accessible Editorial Presentation remains available when 3D rendering is unavailable or reduced motion is preferred.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+## Development
+
+Use Bun 1.4.1:
+
+```sh
+bun install --frozen-lockfile
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+bun test
+bun run lint
+bun run typecheck
+bun run assets:audit
+bun run build
+bun run test:browser
+```
 
-## Learn More
+Production browser checks require the Playwright browsers installed locally. Asset generation is deterministic and does not require a network connection:
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+bun run assets:vessels
+bun run assets:identity
+bun run assets:record
+bun run assets:audit
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/` contains the Next.js route and global rules.
+- `components/` contains the voyage presentation and ocean scene.
+- `content/` contains authored voyage copy and source records.
+- `lib/` contains state transitions, route geometry, and rendering helpers.
+- `tests/` contains unit and browser journeys.
+- `docs/` contains project and asset guidance.

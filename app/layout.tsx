@@ -4,14 +4,26 @@ import { geistMono, geistSans, sourceSerif } from "@/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
-  title: "Observatório Atlântico Vivo | Instituto Maré Aberta",
+  title: "Travessia | Uma viagem pela costa brasileira",
   description:
     "Uma expedição editorial por evidências históricas da onda de calor marinha de 2019 em Abrolhos.",
   icons: {
-    icon: [{ url: "/identity/favicon.v1.svg", type: "image/svg+xml" }, { url: "/identity/favicon-32.v1.png", sizes: "32x32" }],
+    icon: [
+      { url: "/identity/favicon.v1.svg", type: "image/svg+xml" },
+      { url: "/identity/favicon-32.v1.png", sizes: "32x32" },
+    ],
     apple: "/identity/apple-touch-icon.v1.png",
   },
-  openGraph: { images: [{ url: "/identity/social.v1.png", width: 1200, height: 630, alt: "Mar aberto — Observatório Atlântico Vivo" }] },
+  openGraph: {
+    images: [
+      {
+        url: "/identity/social.v1.png",
+        width: 1200,
+        height: 630,
+        alt: "Travessia — uma viagem pela costa brasileira",
+      },
+    ],
+  },
 };
 
 // Cover extends into device safe areas; edge controls pad themselves with env() insets.

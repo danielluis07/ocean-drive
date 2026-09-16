@@ -1,5 +1,5 @@
 export const wrapperDisclosure =
-  "Esta experiência é uma composição retrospectiva criada a partir de pesquisas sobre Abrolhos em 2019. O Instituto Maré Aberta, a embarcação, as estações e o percurso são fictícios. Lugares, datas, organismos, medições e observações vêm das fontes indicadas. A experiência não mostra as condições atuais dos recifes.";
+  "Travessia é uma comissão fictícia. Esta viagem combina lugares, paisagens, organismos, temporadas e fenômenos reais da costa brasileira com um navio, uma tripulação e um percurso imaginados. A experiência não mostra as condições atuais dos recifes.";
 
 export type SourceId =
   | "duarte-heat"
@@ -58,8 +58,7 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
       "Registra o início do branqueamento em fevereiro, o pico em abril–maio e observações posteriores ao resfriamento.",
     boundary:
       "Descreve locais e períodos monitorados no Parque; não representa transmissão ao vivo nem todos os recifes de Abrolhos.",
-    href:
-      "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=31",
+    href: "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=31",
   },
   "duarte-survey": {
     credit: "Duarte et al. (2020)",
@@ -71,8 +70,7 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
       "Localiza no tempo o levantamento por transectos em Coroa Vermelha, Pedra do Silva e Virada de Fora.",
     boundary:
       "É um retrato posterior ao pico de calor, não uma medição feita durante o máximo térmico.",
-    href:
-      "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00179/full#h5",
+    href: "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00179/full#h5",
   },
   "noaa-bleaching": {
     credit: "NOAA Ocean Service",
@@ -92,14 +90,12 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
       "Relatório do Programa de Monitoramento de Ambientes Recifais do Parque Nacional Marinho dos Abrolhos (2019/20)",
     publication: "Parque Nacional Marinho dos Abrolhos",
     kind: "Relatório oficial de monitoramento",
-    locator:
-      "Páginas 34–36 · seis colônias fixas de Mussismilia braziliensis",
+    locator: "Páginas 34–36 · seis colônias fixas de Mussismilia braziliensis",
     support:
       "Documenta quatro colônias sem branqueamento, uma que branqueou e se recuperou e uma que morreu.",
     boundary:
       "É uma pequena série ilustrativa de colônias acompanhadas; não é estimativa populacional.",
-    href:
-      "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=35",
+    href: "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=35",
   },
   "icmbio-millepora": {
     credit: "ICMBio (2021)",
@@ -112,8 +108,7 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
       "Documenta o branqueamento completo e a morte das seis colônias acompanhadas em Mato Verde.",
     boundary:
       "O grupo foi pequeno, selecionado e raso em Mato Verde; não representa toda a espécie e não isola a causa da diferença.",
-    href:
-      "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=35",
+    href: "https://www.gov.br/icmbio/pt-br/assuntos/biodiversidade/unidade-de-conservacao/unidades-de-biomas/marinho/lista-de-ucs/parna-marinho-dos-abrolhos/pesquisa-e-monitoramento/monitoramento_recifal/relatorio_monitoramento_recifal_2019_20.pdf#page=35",
   },
   "duarte-taxa": {
     credit: "Duarte et al. (2020)",
@@ -125,8 +120,7 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
       "Sustenta as estimativas de branqueamento e mortalidade de M. alcicornis e M. braziliensis nos três recifes.",
     boundary:
       "Os percentuais pertencem a cada táxon, local, período e método; não são mortalidade do recife inteiro.",
-    href:
-      "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00179/full#T2",
+    href: "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00179/full#T2",
   },
 };
 
@@ -292,7 +286,7 @@ export const stations: Station[] = [
   },
   {
     id: "convergencia",
-    name: "Convergência",
+    name: "Chegada",
     role: "Ler os sinais juntos",
     introduction:
       "A última estação não acrescenta uma nova descoberta: ela conecta escalas, métodos e respostas já encontrados.",
@@ -323,11 +317,7 @@ export const stations: Station[] = [
           },
           {
             text: "Um índice de calor por satélite, uma classificação em transectos e o acompanhamento de colônias fixas não são medidas intercambiáveis.",
-            sources: [
-              "duarte-heat",
-              "duarte-taxa",
-              "icmbio-mussismilia",
-            ],
+            sources: ["duarte-heat", "duarte-taxa", "icmbio-mussismilia"],
           },
         ],
       },
@@ -335,16 +325,12 @@ export const stations: Station[] = [
         title: "Conectar sem apagar diferenças.",
         claims: [
           {
-            text: "Esta expedição conectou evidências históricas sem transformar diferenças em uma única resposta.",
+            text: "Esta viagem conecta relatos sem transformar diferenças em uma única resposta.",
             sources: ["duarte-heat", "icmbio-timeline", "duarte-taxa"],
           },
           {
             text: "É por isso que observações feitas ao longo do tempo, entre recifes e entre organismos precisam ser lidas juntas.",
-            sources: [
-              "duarte-taxa",
-              "icmbio-mussismilia",
-              "icmbio-millepora",
-            ],
+            sources: ["duarte-taxa", "icmbio-mussismilia", "icmbio-millepora"],
           },
         ],
       },

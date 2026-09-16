@@ -46,7 +46,7 @@ _Avoid_: Research Vessel, player, cursor
 
 **Charted Route**:
 The Voyage's navigation contract: the Ship sails one fixed, ordered route through the Stops as the Visitor moves forward or back through the Voyage. The Visitor never steers, and the Ship cannot leave the route.
-_Avoid_: Guided Helm, steering, free roaming, waypoint selection
+_Avoid_: visitor steering, free roaming, waypoint selection
 
 **Voyage Waters**:
 The persistent, bounded ocean space containing the Voyage's stable Stop locations and deliberately compressed sailing distances.
@@ -54,7 +54,7 @@ _Avoid_: Expedition Waters, open world, level map
 
 **Stop**:
 A real island off the Brazilian coast where the Ship pauses along the Charted Route, presenting one chapter of the Voyage.
-_Avoid_: Field Station, section, slide, checkpoint
+_Avoid_: section, slide, checkpoint
 
 **Stop Card**:
 The brief on-scene introduction to a Stop, shown beside the Ship when it settles there: its number, context line, name, one-sentence summary, and an invitation to open the Stop Account.
@@ -66,11 +66,11 @@ _Avoid_: Sheet, reader panel, Voz da estação
 
 **Landmark**:
 The physical feature in Voyage Waters that identifies a Stop, drawn from its real geography, such as a volcanic peak, a low reef-fringed archipelago, or a forested island. It carries no floating label or light marker.
-_Avoid_: Field Station Beacon, marker, waypoint, map pin
+_Avoid_: marker, waypoint, map pin
 
 **Visited Stop**:
 A Stop whose Stop Account the Visitor has opened at least once. Visiting is a record of what the Visitor has seen, never a gate: every Stop on the Charted Route is always reachable.
-_Avoid_: Completed Field Station, collected checkpoint, unlocked stop
+_Avoid_: collected checkpoint, unlocked stop
 
 **Arrival**:
 The Voyage's final Stop on the Charted Route. It is always reachable.

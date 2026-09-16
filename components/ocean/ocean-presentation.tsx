@@ -11,10 +11,17 @@ import {
 } from "react";
 import { useExpedition } from "@/providers/expedition-provider";
 import { connectHelmInput } from "@/lib/helm-input";
-import { createQualityController, type OceanQuality } from "@/lib/ocean-quality";
+import {
+  createQualityController,
+  type OceanQuality,
+} from "@/lib/ocean-quality";
 import { useOceanLifecycle } from "@/lib/use-ocean-lifecycle";
 import { useOceanRecovery } from "@/lib/use-ocean-recovery";
-import { getAssistanceDestinations, reorientVessel, type AssistanceStage } from "@/lib/assisted-return";
+import {
+  getAssistanceDestinations,
+  reorientVessel,
+  type AssistanceStage,
+} from "@/lib/assisted-return";
 import {
   isStationAvailable,
   transitionExpedition,
@@ -23,11 +30,18 @@ import {
 } from "@/lib/expedition-state";
 import type { OceanConfiguration, OceanStation } from "@/lib/ocean-config";
 import { ARRIVAL_RADIUS, stationDistance } from "@/lib/station-approach";
-import { closeDisclosures, focusOceanTarget as focusTarget } from "@/lib/reader-interactions";
+import {
+  closeDisclosures,
+  focusOceanTarget as focusTarget,
+} from "@/lib/reader-interactions";
 import { getEvidenceProgress } from "@/lib/expedition-view";
 import { useStickyScrollOffset } from "@/lib/use-sticky-scroll-offset";
 import type { PreparationStage } from "@/components/ocean/ocean-runtime";
-import { enableLocalDiagnostics, recordDiagnostic, recordFrame } from "@/lib/local-diagnostics";
+import {
+  enableLocalDiagnostics,
+  recordDiagnostic,
+  recordFrame,
+} from "@/lib/local-diagnostics";
 
 // The only runtime import. Editorial code and the state model never import Three.
 const OceanRuntime = dynamic(() => import("@/components/ocean/ocean-runtime"), {
@@ -74,18 +88,34 @@ export default function OceanPresentation({
 }: {
   configuration: OceanConfiguration;
 }) {
-  const { expedition, setExpedition, enhanced, readerOpen, setReaderOpen, setAllSourcesOpen, announce } =
-    useExpedition();
+  const {
+    expedition,
+    setExpedition,
+    enhanced,
+    readerOpen,
+    setReaderOpen,
+    setAllSourcesOpen,
+    announce,
+  } = useExpedition();
   const [stage, setStage] = useState<PreparationStage>("checking");
   const [eligible, setEligible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [quality, setQuality] = useState<OceanQuality>({ tier: "balanced", dpr: 1.25, fallback: false });
-  const qualityController = useRef<ReturnType<typeof createQualityController> | null>(null);
+  const [quality, setQuality] = useState<OceanQuality>({
+    tier: "balanced",
+    dpr: 1.25,
+    fallback: false,
+  });
+  const qualityController = useRef<ReturnType<
+    typeof createQualityController
+  > | null>(null);
   const [recoveryGeneration, setRecoveryGeneration] = useState(0);
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [started, setStarted] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const [assistance, setAssistance] = useState<{ stage: AssistanceStage; boundaryReturning: boolean }>({ stage: "none", boundaryReturning: false });
+  const [assistance, setAssistance] = useState<{
+    stage: AssistanceStage;
+    boundaryReturning: boolean;
+  }>({ stage: "none", boundaryReturning: false });
   const reorientation = useRef(false);
   const livePose = useRef(expedition.vesselCheckpoints.current);
   const steering = useRef(0);
@@ -97,14 +127,23 @@ export default function OceanPresentation({
   const restoring = expedition.threeDAvailability.status === "restoring";
   const passageId = `${expedition.currentStation}-signal-${expedition.bookmarks[expedition.currentStation] + 1}`;
   const savedPose = expedition.vesselCheckpoints.current;
-  const availableStations = configuration.stations.filter((station) => isStationAvailable(expedition, station.id)).map((station) => station.id);
+  const availableStations = configuration.stations
+    .filter((station) => isStationAvailable(expedition, station.id))
+    .map((station) => station.id);
   const previouslyActive = useRef(false);
   const presentationBar = useRef<HTMLElement>(null);
   useStickyScrollOffset(presentationBar);
 
-  useEffect(() => { enableLocalDiagnostics(); recordDiagnostic("readiness", "editorial-ready"); }, []);
-  useEffect(() => { recordDiagnostic("quality", quality); }, [quality]);
-  useEffect(() => { recordDiagnostic("readiness", stage); }, [stage]);
+  useEffect(() => {
+    enableLocalDiagnostics();
+    recordDiagnostic("readiness", "editorial-ready");
+  }, []);
+  useEffect(() => {
+    recordDiagnostic("quality", quality);
+  }, [quality]);
+  useEffect(() => {
+    recordDiagnostic("readiness", stage);
+  }, [stage]);
 
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
@@ -137,7 +176,13 @@ export default function OceanPresentation({
             checkpoint: "current",
             pose: livePose.current,
           }),
-          { type: "lock-three-d", reason: current.threeDAvailability.status === "restoring" ? "context-loss" : reason },
+          {
+            type: "lock-three-d",
+            reason:
+              current.threeDAvailability.status === "restoring"
+                ? "context-loss"
+                : reason,
+          },
         );
       });
     },
@@ -149,36 +194,72 @@ export default function OceanPresentation({
     targetHeading.current = null;
     qualityController.current?.suspend();
     checkpoint();
-    setExpedition((current) => transitionExpedition(current, { type: "set-pause-state", pauseState: "paused" }));
+    setExpedition((current) =>
+      transitionExpedition(current, {
+        type: "set-pause-state",
+        pauseState: "paused",
+      }),
+    );
   }, [checkpoint, setExpedition]);
   const { visible, suspended } = useOceanLifecycle(suspend);
-  useEffect(() => { recordDiagnostic("lifecycle", `${visible ? "visible" : "hidden"}:${active ? "3d" : "editorial"}:${sailing ? "sailing" : "paused"}`); }, [visible, active, sailing]);
+  useEffect(() => {
+    recordDiagnostic(
+      "lifecycle",
+      `${visible ? "visible" : "hidden"}:${active ? "3d" : "editorial"}:${sailing ? "sailing" : "paused"}`,
+    );
+  }, [visible, active, sailing]);
   const loseContext = useCallback(() => {
     recordDiagnostic("context", "lost");
     suspend();
     setStage("preparing");
-    setExpedition((current) => transitionExpedition(current, { type: "lose-context" }));
+    setExpedition((current) =>
+      transitionExpedition(current, { type: "lose-context" }),
+    );
   }, [suspend, setExpedition]);
-  useOceanRecovery(unavailable ? null : canvas, {
-    onLost: loseContext,
-    onRestored: () => { recordDiagnostic("context", "restored"); setRecoveryGeneration((generation) => generation + 1); },
-    onFailed: () => fail("context-loss"),
-    canRestore: expedition.contextLosses === 0,
-  }, restoring);
-  const onStage = useCallback((next: PreparationStage) => {
-    setStage(next);
-    if (next === "ready") setExpedition((current) => transitionExpedition(current, { type: "restore-context" }));
-  }, [setExpedition]);
-  const measureFrame = useCallback((milliseconds: number | null) => {
-    recordFrame(milliseconds);
-    const controller = qualityController.current;
-    if (!controller) return;
-    if (milliseconds === null) { controller.suspend(); return; }
-    const previous = controller.current();
-    const next = controller.frame(milliseconds);
-    if (next.fallback) { recordDiagnostic("quality", next); fail("unusable-quality"); return; }
-    if (previous.tier !== next.tier || previous.dpr !== next.dpr) setQuality(next);
-  }, [fail]);
+  useOceanRecovery(
+    unavailable ? null : canvas,
+    {
+      onLost: loseContext,
+      onRestored: () => {
+        recordDiagnostic("context", "restored");
+        setRecoveryGeneration((generation) => generation + 1);
+      },
+      onFailed: () => fail("context-loss"),
+      canRestore: expedition.contextLosses === 0,
+    },
+    restoring,
+  );
+  const onStage = useCallback(
+    (next: PreparationStage) => {
+      setStage(next);
+      if (next === "ready")
+        setExpedition((current) =>
+          transitionExpedition(current, { type: "restore-context" }),
+        );
+    },
+    [setExpedition],
+  );
+  const measureFrame = useCallback(
+    (milliseconds: number | null) => {
+      recordFrame(milliseconds);
+      const controller = qualityController.current;
+      if (!controller) return;
+      if (milliseconds === null) {
+        controller.suspend();
+        return;
+      }
+      const previous = controller.current();
+      const next = controller.frame(milliseconds);
+      if (next.fallback) {
+        recordDiagnostic("quality", next);
+        fail("unusable-quality");
+        return;
+      }
+      if (previous.tier !== next.tier || previous.dpr !== next.dpr)
+        setQuality(next);
+    },
+    [fail],
+  );
 
   const prepare = useCallback(() => {
     if (unavailable || restoring || eligible) return;
@@ -272,14 +353,22 @@ export default function OceanPresentation({
   useEffect(() => {
     if (!canvas) return;
     canvas.setAttribute("tabindex", active ? "0" : "-1");
-    canvas.setAttribute("aria-label", "Navegação da embarcação. Use A e D, setas ou arraste na horizontal.");
+    canvas.setAttribute(
+      "aria-label",
+      "Navegação da embarcação. Use A e D, setas ou arraste na horizontal.",
+    );
     canvas.setAttribute("role", "group");
     const disconnect = connectHelmInput(canvas, {
-      sailing: sailing && visible && !restoring, steering, targetHeading,
+      sailing: sailing && visible && !restoring,
+      steering,
+      targetHeading,
       onSuspend: suspend,
     });
     controlsConnected.current = true;
-    return () => { controlsConnected.current = false; disconnect(); };
+    return () => {
+      controlsConnected.current = false;
+      disconnect();
+    };
   }, [canvas, active, sailing, visible, restoring, suspend]);
 
   function chooseQuality(preference: ExpeditionQualityPreference) {
@@ -287,12 +376,18 @@ export default function OceanPresentation({
     const next = qualityController.current?.choose(preference);
     if (next) setQuality(next);
     if (preference === "text") switchPresentation(false);
-    setExpedition((current) => transitionExpedition(current, { type: "set-quality-preference", qualityPreference: preference }));
+    setExpedition((current) =>
+      transitionExpedition(current, {
+        type: "set-quality-preference",
+        qualityPreference: preference,
+      }),
+    );
   }
 
   function switchPresentation(threeD: boolean) {
     if (threeD && (stage !== "ready" || unavailable || restoring)) return;
-    if (threeD && expedition.qualityPreference === "text") qualityController.current?.choose("automatic");
+    if (threeD && expedition.qualityPreference === "text")
+      qualityController.current?.choose("automatic");
     checkpoint();
     steering.current = 0;
     closeDisclosures();
@@ -310,14 +405,29 @@ export default function OceanPresentation({
         presentation: threeD ? "three-dimensional" : "editorial",
       });
     });
-    announce(threeD
-      ? "Expedição em 3D. A navegação está pausada."
-      : "Versão em texto. Seu lugar na expedição está preservado.");
-    focusTarget(readerOpen ? passageId : threeD ? "expedition-movement" : "expedition-editorial-heading");
+    announce(
+      threeD
+        ? "Expedição em 3D. A navegação está pausada."
+        : "Versão em texto. Seu lugar na expedição está preservado.",
+    );
+    focusTarget(
+      readerOpen
+        ? passageId
+        : threeD
+          ? "expedition-movement"
+          : "expedition-editorial-heading",
+    );
   }
 
   function toggleSailing() {
-    if (stage !== "ready" || unavailable || restoring || readerOpen || suspended.current) return;
+    if (
+      stage !== "ready" ||
+      unavailable ||
+      restoring ||
+      readerOpen ||
+      suspended.current
+    )
+      return;
     checkpoint();
     steering.current = 0;
     setStarted(true);
@@ -339,7 +449,11 @@ export default function OceanPresentation({
 
   function reorient() {
     if (!sailing || assistance.stage !== "reorient") return;
-    const destinations = getAssistanceDestinations(configuration.stations, availableStations, expedition.completedStations);
+    const destinations = getAssistanceDestinations(
+      configuration.stations,
+      availableStations,
+      expedition.completedStations,
+    );
     steering.current = 0;
     targetHeading.current = null;
     livePose.current = reorientVessel(livePose.current, destinations);
@@ -349,16 +463,32 @@ export default function OceanPresentation({
   }
 
   function openStation(station: OceanStation) {
-    if (!active || readerOpen || !isStationAvailable(expedition, station.id)
-      || stationDistance(livePose.current, station) > ARRIVAL_RADIUS + 0.2) return;
+    if (
+      !active ||
+      readerOpen ||
+      !isStationAvailable(expedition, station.id) ||
+      stationDistance(livePose.current, station) > ARRIVAL_RADIUS + 0.2
+    )
+      return;
     steering.current = 0;
     targetHeading.current = null;
     const arrivalPose = livePose.current;
     setReaderOpen(true);
     setExpedition((current) => {
-      const checkpointed = transitionExpedition(current, { type: "checkpoint-vessel", checkpoint: "current", pose: arrivalPose });
-      const arrived = transitionExpedition(checkpointed, { type: "checkpoint-vessel", checkpoint: station.id, pose: arrivalPose });
-      return transitionExpedition(arrived, { type: "open-station", station: station.id });
+      const checkpointed = transitionExpedition(current, {
+        type: "checkpoint-vessel",
+        checkpoint: "current",
+        pose: arrivalPose,
+      });
+      const arrived = transitionExpedition(checkpointed, {
+        type: "checkpoint-vessel",
+        checkpoint: station.id,
+        pose: arrivalPose,
+      });
+      return transitionExpedition(arrived, {
+        type: "open-station",
+        station: station.id,
+      });
     });
     closeDisclosures();
     announce(`${station.name}, estação aberta.`);
@@ -383,21 +513,29 @@ export default function OceanPresentation({
               ? `${failureCopy[expedition.threeDAvailability.reason]} Continue pela versão em texto; seu lugar está preservado.`
               : restoring
                 ? "A conexão gráfica com o oceano foi interrompida. Tentando restaurar o 3D; continue pela versão em texto."
-              : !eligible && reducedMotion
-                ? "A versão em texto respeita sua preferência por movimento reduzido."
-                : !eligible && expedition.qualityPreference === "text"
-                  ? "Versão em texto selecionada."
-                  : preparationCopy[stage]}
+                : !eligible && reducedMotion
+                  ? "A versão em texto respeita sua preferência por movimento reduzido."
+                  : !eligible && expedition.qualityPreference === "text"
+                    ? "Versão em texto selecionada."
+                    : preparationCopy[stage]}
         </p>
         <div>
-          {enhanced ? <label className="quality-choice">
-            Qualidade
-            <select value={expedition.qualityPreference} onChange={(event) => chooseQuality(event.target.value as ExpeditionQualityPreference)}>
-              <option value="automatic">Automático</option>
-              <option value="reduced-3d">3D reduzido</option>
-              <option value="text">Versão em texto</option>
-            </select>
-          </label> : null}
+          {enhanced ? (
+            <label className="quality-choice">
+              Qualidade
+              <select
+                value={expedition.qualityPreference}
+                onChange={(event) =>
+                  chooseQuality(
+                    event.target.value as ExpeditionQualityPreference,
+                  )
+                }>
+                <option value="automatic">Automático</option>
+                <option value="reduced-3d">3D reduzido</option>
+                <option value="text">Versão em texto</option>
+              </select>
+            </label>
+          ) : null}
           {!unavailable &&
           !eligible &&
           enhanced &&
@@ -440,7 +578,9 @@ export default function OceanPresentation({
             <OceanRuntime
               configuration={configuration}
               vesselUrl={
-                quality.tier === "low" ? configuration.vessels.low : configuration.vessels.balanced
+                quality.tier === "low"
+                  ? configuration.vessels.low
+                  : configuration.vessels.balanced
               }
               quality={quality}
               visible={visible}
@@ -452,7 +592,11 @@ export default function OceanPresentation({
               sailing={sailing}
               reading={readerOpen}
               availableStations={availableStations}
-              completedStations={expedition.connected ? [...expedition.completedStations, "convergencia"] : expedition.completedStations}
+              completedStations={
+                expedition.connected
+                  ? [...expedition.completedStations, "convergencia"]
+                  : expedition.completedStations
+              }
               livePose={livePose}
               steering={steering}
               targetHeading={targetHeading}
@@ -467,22 +611,26 @@ export default function OceanPresentation({
             />
           </RuntimeErrorBoundary>
           <div className="ocean-caption">
-            <p>Observatório Atlântico Vivo</p>
+            <p>Travessia</p>
             <h1>
               Mar <em>aberto</em>
             </h1>
           </div>
-          <div className="helm-controls" role="group" aria-label="Controles da embarcação" hidden={readerOpen}>
-              <button
-                id="expedition-movement"
-                type="button"
-                onClick={toggleSailing}>
-                {sailing
-                  ? "Pausar expedição"
-                  : resumed
-                    ? "Retomar expedição"
-                    : "Iniciar expedição"}
-              </button>
+          <div
+            className="helm-controls"
+            role="group"
+            aria-label="Controles da embarcação"
+            hidden={readerOpen}>
+            <button
+              id="expedition-movement"
+              type="button"
+              onClick={toggleSailing}>
+              {sailing
+                ? "Pausar expedição"
+                : resumed
+                  ? "Retomar expedição"
+                  : "Iniciar expedição"}
+            </button>
             <button type="button" onClick={() => steer(-1)} disabled={!sailing}>
               Virar à esquerda
             </button>
@@ -497,9 +645,17 @@ export default function OceanPresentation({
               Controles
             </button>
             {assistance.stage === "reorient" ? (
-              <button type="button" onClick={reorient} disabled={!sailing}>Reorientar rota</button>
+              <button type="button" onClick={reorient} disabled={!sailing}>
+                Reorientar rota
+              </button>
             ) : null}
-            <p role="status" aria-live="polite" aria-atomic="true" hidden={assistance.stage === "none" && !assistance.boundaryReturning}>
+            <p
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              hidden={
+                assistance.stage === "none" && !assistance.boundaryReturning
+              }>
               {assistance.boundaryReturning
                 ? "A corrente na borda curva a embarcação de volta às águas da expedição."
                 : assistance.stage === "reorient"
