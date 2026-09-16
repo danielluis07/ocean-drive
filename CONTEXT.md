@@ -9,88 +9,80 @@ The standalone interactive website being designed and built as evidence of the a
 _Avoid_: Agency website, portfolio website
 
 **Fictional Commission**:
-The believable invented client brief that gives the Showcase Project a real communication purpose.
+The believable invented client brief that gives the Showcase Project a real communication purpose: Travessia, a small-ship expedition cruise brand, presenting one of its voyages along the Brazilian coast.
 _Avoid_: Real client project, technology demo
 
-**Instituto Maré Aberta**:
-The fictional, Brazil-rooted independent marine research institute that commissions the Live Experience. It connects scientists, coastal communities, and open ocean data for public understanding.
-_Avoid_: Government agency, advocacy campaign, real-world organization
-
-**Observatório Atlântico Vivo**:
-The fictional ongoing ocean-observation program operated by Instituto Maré Aberta. Its network of Field Stations connects separate scientific observations into a legible account of ocean change.
-_Avoid_: The commissioning organization, one-off voyage, public-awareness campaign
+**Travessia**:
+The fictional Brazilian small-ship expedition cruise brand that commissions the Live Experience. It offers calm, premium, nature-led voyages with naturalist guides.
+_Avoid_: Research institute, luxury yacht charter, real-world operator
 
 **Live Experience**:
 The publicly accessible, interactive form of the Showcase Project that visitors experience directly.
 _Avoid_: Case-study video, prerecorded walkthrough
 
 **Accessible Editorial Presentation**:
-The always-available, calm semantic HTML form of the Expedition. It carries Instituto Maré Aberta's identity, story, sources, route choice, and canonical Expedition state without simulating the ocean scene, and opens automatically when WebGL is unavailable, rendering fails, or reduced motion is preferred. Switching presentations preserves the current Field Station, each station's passage bookmark, completed stations, chosen middle-station order, Connected Expedition state, vessel position, and heading; it reopens the same passage with optional source disclosures collapsed and never advances or completes progress.
+The always-available, calm semantic HTML form of the Voyage. It carries Travessia's identity, every Stop's Stop Account in route order, and the canonical Voyage State without simulating the ocean scene. It opens automatically only when WebGL is unavailable or rendering fails; a reduced-motion preference keeps the ocean scene and replaces sailing with cuts between Stops. Switching presentations preserves the Voyage State and never advances or completes progress.
 _Avoid_: Accessibility summary, transcript, simplified fallback
 
 **Visitor**:
-A curious Brazilian adult without specialist marine-science knowledge. The Visitor is invited to understand connected evidence, not treated as a researcher, donor, or campaign supporter.
-_Avoid_: Player, scientist, policy professional
+A Brazilian adult drawn to nature travel, exploring what a Travessia voyage is like. The Visitor is invited to imagine the journey, not asked to buy, sign up, or perform tasks.
+_Avoid_: Player, customer, lead
 
 **Core Promise**:
-“Conduza a expedição e conecte os sinais de um oceano em mudança.” The poetic-scientific invitation that frames the Visitor's meaningful role in the Live Experience.
-_Avoid_: Campaign slogan, learning objective, claim of scientific contribution
+Travessia's tagline, the single invitation that frames the Voyage for the Visitor on the opening screen.
+_Avoid_: Campaign slogan, instruction
 
-**Expedition**:
-The visitor's complete three-to-five-minute representative journey through Observatório Atlântico Vivo. The visitor retraces a research route and connects existing evidence rather than producing new scientific data.
-_Avoid_: Page visit, level
+**Voyage**:
+The Visitor's complete three-to-five-minute journey along one Travessia itinerary, from departure to Arrival.
+_Avoid_: Expedition, page visit, level
 
-**Expedition State**:
-The presentation-independent record of the Visitor's place and progress in the Expedition, shared by the 3D and Accessible Editorial presentations. It includes the current Field Station, passage bookmarks, completed stations, chosen middle-station order, Connected Expedition state, and the Research Vessel's preserved position and heading. It lasts for the current browser tab across reload and back/forward navigation, restores with sailing paused, and clears on “Recomeçar expedição” or when that browser visit ends.
-_Avoid_: 3D state, reading-mode state, saved game
+**Voyage State**:
+The presentation-independent record of the Visitor's place and progress in the Voyage, shared by the 3D and Accessible Editorial presentations. It includes the current Stop, Visited Stops, whether the Voyage is complete, and the Ship's place on the Charted Route. It lasts for the current browser tab across reload and back/forward navigation and clears on “Recomeçar viagem” or when that browser visit ends.
+_Avoid_: Expedition State, 3D state, saved game
 
-**Research Vessel**:
-The boat the visitor guides during the Expedition.
-_Avoid_: Player, cursor
+**Ship**:
+Travessia's named vessel that carries the Visitor along the Charted Route.
+_Avoid_: Research Vessel, player, cursor
 
-**Guided Helm**:
-The Expedition's navigation contract: the Research Vessel advances at a calm, steady pace while the Visitor directs its heading without managing throttle or simulation-style vessel systems.
-_Avoid_: Autopilot, free-roaming boat simulation, waypoint selection
+**Charted Route**:
+The Voyage's navigation contract: the Ship sails one fixed, ordered route through the Stops as the Visitor moves forward or back through the Voyage. The Visitor never steers, and the Ship cannot leave the route.
+_Avoid_: Guided Helm, steering, free roaming, waypoint selection
 
-**Expedition Waters**:
-The persistent, bounded ocean space containing the Expedition's stable Field Station locations and deliberately compressed travel distances.
-_Avoid_: Open world, level map, procedurally generated ocean
+**Voyage Waters**:
+The persistent, bounded ocean space containing the Voyage's stable Stop locations and deliberately compressed sailing distances.
+_Avoid_: Expedition Waters, open world, level map
 
-**Environmental Wayfinding**:
-The Expedition's orientation language, in which landmarks, Field Station beacons, water, light, and scene-anchored labels communicate direction without a compass, minimap, or persistent navigation HUD.
-_Avoid_: Heads-up display, waypoint arrow, minimap
+**Stop**:
+A real island off the Brazilian coast where the Ship pauses along the Charted Route, presenting one chapter of the Voyage.
+_Avoid_: Field Station, section, slide, checkpoint
 
-**Assisted Return**:
-The Expedition's progressive, non-failing response when the Visitor stops making meaningful navigational progress, culminating in gentle course assistance toward relevant waters.
-_Avoid_: Failure state, forced reset, invisible wall
+**Stop Card**:
+The brief on-scene introduction to a Stop, shown beside the Ship when it settles there: its number, context line, name, one-sentence summary, and an invitation to open the Stop Account.
+_Avoid_: Popup, tooltip, beacon label
 
-**Field Station**:
-A discoverable destination in the ocean that presents one chapter of the fictional commission's story.
-_Avoid_: Section, slide, checkpoint
+**Stop Account**:
+The complete content of a Stop, opened on demand from its Stop Card and read over the paused ocean scene. Opening it is what makes a Stop visited.
+_Avoid_: Sheet, reader panel, Voz da estação
 
-**Field Station Beacon**:
-The coherent physical landmark that identifies a Field Station through its form, light, and spatial label within Expedition Waters.
-_Avoid_: Marker, waypoint, map pin, collectible
+**Landmark**:
+The physical feature in Voyage Waters that identifies a Stop, drawn from its real geography, such as a volcanic peak, a low reef-fringed archipelago, or a forested island. It carries no floating label or light marker.
+_Avoid_: Field Station Beacon, marker, waypoint, map pin
 
-**Completed Field Station**:
-A Field Station whose required core narrative has been reached and explicitly confirmed by the Visitor through “Continuar expedição”; Escape and “Voltar ao mar” preserve reading progress without completing it, and optional sources and supplementary detail do not gate this state.
-_Avoid_: Collected checkpoint, fully read content
+**Visited Stop**:
+A Stop whose Stop Account the Visitor has opened at least once. Visiting is a record of what the Visitor has seen, never a gate: every Stop on the Charted Route is always reachable.
+_Avoid_: Completed Field Station, collected checkpoint, unlocked stop
 
-**Convergence Station**:
-The Expedition's final destination, unlocked after the three evidence Field Stations are complete. It connects their observations into one account without introducing a new scientific claim.
-_Avoid_: Finish line, final level, fourth evidence station
+**Arrival**:
+The Voyage's final Stop on the Charted Route. It is always reachable.
+_Avoid_: Convergence Station, finish line, final level
 
-**Connected Expedition**:
-The completion state reached after the Visitor deliberately arrives at the Convergence Station, finishes its synthesis of the three evidence signals, and explicitly confirms it through “Conectar expedição.”
-_Avoid_: Victory, game over, automatic completion
-
-**Scientific Spine**:
-The real evidence chain anchoring the Expedition: a retrospective composite journey through the documented 2019 marine heatwave at Abrolhos Bank and the uneven bleaching and mortality responses of its corals.
-_Avoid_: Fictional science, generic ocean theme
+**Voyage Complete**:
+The state reached when the Visitor arrives at the Arrival Stop. It does not require every Stop to be visited.
+_Avoid_: Connected Expedition, victory, game over
 
 **Evidence Boundary**:
-The separation between sourced scientific content and the Expedition's invented narrative wrapper. Geography, organisms, instruments, historical observations, and scientific relationships remain factual and source-traceable; the institute, vessel, personnel, Field Station names, and composite itinerary may be fictional.
-_Avoid_: Science-inspired fiction, unlabeled synthetic evidence
+The separation between the real world and the Fictional Commission. Places, geography, marine life, seasons, and natural phenomena along the Brazilian coast are real and plausible; Travessia, its voyage, Ship, crew, and experiences are openly fictional and disclosed once as a fictional project.
+_Avoid_: Cited science, fake testimonials presented as real, invented wildlife or places
 
 **Validation Result**:
 The recorded outcome of evaluating one production Acceptance Criterion: Pass, Fail, or Unvalidated. Missing evidence is Unvalidated and never counts as a pass.
