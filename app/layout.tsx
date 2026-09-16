@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { geistMono, geistSans, sourceSerif } from "@/fonts";
+import { geistMono, manrope } from "@/fonts";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
@@ -38,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} h-full antialiased`}>
+      className={cn("h-full", "antialiased", "font-sans", manrope.variable, geistMono.variable)}>
       <body className="min-h-full">{children}</body>
     </html>
   );
