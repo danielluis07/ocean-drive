@@ -1,5 +1,5 @@
 {
-  "lockSha256": "b500eb59e9f41cebff52310127dded4234aa94ceaad73004e4f2d00a507ba0e1",
+  "lockSha256": "04ee37fc01ac4c29993e525f5f1817e3c9301dd0207e6368f276548ae6818144",
   "dependencies": [
     {
       "name": "tslib",

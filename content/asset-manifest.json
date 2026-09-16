@@ -41,7 +41,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "ce7c02f0362940a8d60c275a3d93d96ba0f341a081a0dc37e04c27a9f3b2eb50"
+      "sha256": "4510eee5239f1ca2a21dd18ec4a722c3346ad8ef16670117b2d1fd90cff45fc7"
     },
     {
       "path": "fonts/geist-400-latin.v1.woff2",
