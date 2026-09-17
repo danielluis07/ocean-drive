@@ -44,9 +44,8 @@ roll.
 
 `lib/route-camera.ts` frames a near top-down view at 80° with a fixed north-up
 orientation. The Ship sits left of centre on landscape viewports and above
-centre on portrait viewports, leaving room beside it for a Stop Card. Until Stop
-Cards arrive, a placeholder “Ler parada” opener stands in that space while the
-Ship rests at a Stop with an account.
+centre on portrait viewports, leaving room beside it for a Stop Card (see
+[minimal-chrome.md](minimal-chrome.md)).
 
 ## Voyage State
 
@@ -57,7 +56,8 @@ the quality preference, and 3D availability under the tab-scoped
 route progress; reaching the Arrival (Ilha Grande) completes the Voyage whatever
 has been visited. Opening a Stop's account records a Visited Stop. A reload
 mid-passage settles on the nearest Stop, and “Recomeçar viagem” clears the Voyage
-while keeping the visit's 3D availability.
+while keeping the visit's presentation and 3D availability. A new Voyage starts
+in the ocean scene; a reload keeps a Visitor who chose “Modo leitura” there.
 
 ## Verification
 

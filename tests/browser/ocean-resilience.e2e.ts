@@ -1,9 +1,14 @@
 import { expect, test, type Page } from "@playwright/test";
+import {
+  enterOcean,
+  expectOceanReady,
+  expectSettledAt,
+  openStopAccount,
+  returnToOceanButton,
+} from "@/tests/browser/editorial-route";
 
-async function enter(page: Page) {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-}
+const enter = (page: Page) => enterOcean(page);
+const notice = (page: Page) => page.locator('[data-slot="presentation-notice"]');
 
 async function loseContext(page: Page) {
   await page.locator("canvas").evaluate((canvas) => {
@@ -16,27 +21,30 @@ test("successful context restoration offers explicit return and a second loss lo
   await loseContext(page);
   await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
   await expect(page.locator("#voyage-editorial-heading")).toBeFocused();
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+  await expect(returnToOceanButton(page)).toBeEnabled();
+  await returnToOceanButton(page).click();
   await expect(page.locator("#voyage-ocean")).toBeFocused();
+  await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "three-dimensional");
   await loseContext(page);
-  await expect(page.locator(".presentation-bar")).toContainText("conexão gráfica");
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
-  await page.getByRole("combobox", { name: "Qualidade" }).selectOption("reduced-3d");
+  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
-  await expect(page.locator(".presentation-bar")).toContainText("conexão gráfica");
-  await expect(page.getByRole("button", { name: /Preparar 3D|Explorar em 3D/ })).toHaveCount(0);
+  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(returnToOceanButton(page)).toHaveCount(0);
+  await expect(page.locator("#voyage-ocean")).toHaveCount(0);
 });
 
 test("loss while reading restores the matching passage without interrupting its focus", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#rota button").first().click();
+  await enter(page);
+  await page.keyboard.press("ArrowDown");
+  await expectSettledAt(page, 1);
+  await openStopAccount(page);
   await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
   await loseContext(page);
   await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
+  await expect(returnToOceanButton(page)).toBeEnabled();
   await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
 });
 
@@ -48,47 +56,55 @@ test("a missing restoration event times out once while the matching text stays u
     extension.restoreContext = () => {};
     extension.loseContext();
   });
-  await expect(page.locator(".presentation-bar")).toContainText("Tentando restaurar");
+  await expect(notice(page)).toContainText("Tentando restaurá-la");
+  await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.locator("#rota button").first().click();
   await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
   await page.clock.runFor(8500);
-  await expect(page.locator(".presentation-bar")).toContainText("seu lugar está preservado");
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
+  await expect(notice(page).locator("p")).toHaveText(["A exibição do oceano em 3D foi interrompida."]);
+  await expect(returnToOceanButton(page)).toHaveCount(0);
   await expect(page.locator("#fernando-de-noronha-signal-2")).toBeVisible();
 });
 
-test("font and optional vessel detail failures never gate reading or a usable ocean", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("font and optional vessel detail failures never gate a usable ocean", async ({ page }) => {
+  test.setTimeout(120_000);
   await page.route("**/*.woff2", (route) => route.abort());
-  await page.goto("/");
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
   await page.route("**/research-vessel-low.v2.glb", (route) => route.abort());
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-  await page.getByRole("combobox", { name: "Qualidade" }).selectOption("reduced-3d");
-  await expect(page.locator(".ocean-world")).toHaveAttribute("data-quality", "low");
-  await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
+  // Steady 25 ms frames: slow enough to drop from Balanced to Low, never unusable.
+  // The clock stays paused, so slow real frames from software rendering never count.
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.addInitScript(() => {
+    window.requestAnimationFrame = (callback) => window.setTimeout(() => callback(performance.now()), 25);
+    window.cancelAnimationFrame = (id) => window.clearTimeout(id);
+  });
+  await page.goto("/");
+  await expect
+    .poll(async () => {
+      await page.clock.runFor(100);
+      // Read without auto-waiting: the ocean cannot appear while the clock is held.
+      return page.evaluate(() => document.getElementById("voyage-ocean")?.dataset.stage);
+    }, { timeout: 60_000 })
+    .toBe("ready");
+  await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-quality", "balanced");
+  await page.clock.runFor(7000);
+  // Low's vessel detail failed to load; the usable Balanced vessel stays in the scene.
+  await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-quality", "low");
+  await expectOceanReady(page);
   await page.keyboard.press("ArrowDown");
+  await page.clock.runFor(4000);
   await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-settled-stop", "1");
-  await page.getByRole("combobox", { name: "Qualidade" }).selectOption("text");
-  await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
 });
 
-test("delayed vessel readiness preserves reading while delayed fonts remain optional", async ({ page }) => {
-  let releaseVessel!: () => void;
+test("delayed fonts never delay the ocean", async ({ page }) => {
   let releaseFonts!: () => void;
-  const vessel = new Promise<void>((resolve) => { releaseVessel = resolve; });
   const fonts = new Promise<void>((resolve) => { releaseFonts = resolve; });
-  await page.route("**/models/*.glb", async (route) => { await vessel; await route.continue(); });
   await page.route("**/*.woff2", async (route) => { await fonts; await route.abort(); });
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page.locator(".presentation-bar")).toContainText("Carregando");
-  await page.locator("#rota button").first().click();
-  await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-  releaseVessel();
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+  await expectOceanReady(page);
+  await expect(page.locator('[data-slot="stop-card"]')).toBeVisible();
   releaseFonts();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+  await expect(page.locator('[data-slot="stop-card"]')).toBeVisible();
 });
 
 test("a hidden recovery preserves its foreground deadline and never returns to 3D on its own", async ({ page }) => {
@@ -100,19 +116,20 @@ test("a hidden recovery preserves its foreground deadline and never returns to 3
     extension.restoreContext = () => {};
     extension.loseContext();
   });
-  await expect(page.locator(".presentation-bar")).toContainText("Tentando restaurar");
+  await expect(notice(page)).toContainText("Tentando restaurá-la");
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await page.clock.runFor(20_000);
-  await expect(page.locator(".presentation-bar")).toContainText("Tentando restaurar");
+  await expect(notice(page)).toContainText("Tentando restaurá-la");
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => false });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await page.clock.runFor(8500);
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
+  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(returnToOceanButton(page)).toHaveCount(0);
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
 });
 
@@ -121,6 +138,8 @@ const storedProgress = (page: Page) =>
 
 for (const event of ["visibilitychange", "pagehide", "blur"] as const) {
   test(`${event} records the Ship's place, freezes the route, and settles on return`, async ({ page }) => {
+    // Software rendering draws every controlled frame, so these journeys run long.
+    test.setTimeout(120_000);
     await enter(page);
     await page.clock.install();
     await page.clock.pauseAt(new Date(Date.now() + 1000));
@@ -154,22 +173,26 @@ for (const event of ["visibilitychange", "pagehide", "blur"] as const) {
   });
 }
 
-test("sustained unusable Low rendering falls back even after choosing reduced 3D", async ({ page }) => {
+test("sustained unusable Low rendering falls back to the Accessible Editorial Presentation", async ({ page }) => {
+  // A small screen starts in Low, which then renders unusably slowly.
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.clock.install();
   await page.addInitScript(() => {
     window.requestAnimationFrame = (callback) => window.setTimeout(() => callback(performance.now()), 40);
     window.cancelAnimationFrame = (id) => window.clearTimeout(id);
   });
   await enter(page);
-  await page.getByRole("combobox", { name: "Qualidade" }).selectOption("reduced-3d");
+  await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-quality", "low");
   await page.clock.runFor(6400);
-  await expect(page.locator(".presentation-bar")).toContainText("não está estável");
+  await expect(notice(page).locator("p")).toHaveText(["O oceano em 3D não ficou estável neste dispositivo."]);
   await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
+  await expect(returnToOceanButton(page)).toHaveCount(0);
 });
 
 for (const failure of ["effects", "essential", "restored-frame"] as const) {
-  test(`${failure} shader failure chooses the approved substitute or text`, async ({ page }) => {
+  test(`${failure} shader failure chooses the approved substitute or reading mode`, async ({ page }) => {
+    // The decorative-shader fallback compiles the water twice.
+    test.setTimeout(120_000);
     await page.addInitScript((mode) => {
       const original = WebGL2RenderingContext.prototype.shaderSource;
       let lost = false;
@@ -181,15 +204,17 @@ for (const failure of ["effects", "essential", "restored-frame"] as const) {
     }, failure);
     await page.goto("/");
     if (failure === "effects") {
-      await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeEnabled();
-      await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
+      await expectOceanReady(page);
+      await expect(notice(page)).toHaveCount(0);
     } else {
       if (failure === "restored-frame") {
-        await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+        await expectOceanReady(page);
         await loseContext(page);
       }
-      await expect(page.getByRole("button", { name: "Explorar em 3D", exact: true })).toBeHidden();
-      await expect(page.locator(".presentation-bar")).toContainText(failure === "essential" ? "Não foi possível preparar" : "conexão gráfica");
+      await expect(notice(page).locator("p")).toHaveText([
+        failure === "essential" ? "Não foi possível carregar o oceano em 3D." : "A exibição do oceano em 3D foi interrompida.",
+      ]);
+      await expect(returnToOceanButton(page)).toHaveCount(0);
       await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
     }
   });

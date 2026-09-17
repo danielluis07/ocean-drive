@@ -124,6 +124,9 @@ export const sourceRecords: Record<SourceId, SourceRecord> = {
   },
 };
 
+// Travessia's Core Promise, the invitation on the opening Stop.
+export const corePromise = "O Brasil visto do mar.";
+
 export type Claim = { text: string; sources: SourceId[] };
 export type Signal = { title: string; claims: Claim[] };
 export type StopId =
@@ -134,6 +137,7 @@ export type StopId =
   | "ilha-grande";
 // Placeholder Stop copy: the Stop Accounts are rewritten for the Travessia
 // voyage in a later issue. Stop 00 is the opening and has no account.
+// A Stop Card shows the context line, the name, and the introduction sentence.
 export type Stop = {
   id: StopId;
   name: string;
@@ -146,8 +150,8 @@ export const stops: Stop[] = [
   {
     id: "partida",
     name: "Travessia",
-    context: "O Brasil visto do mar.",
-    introduction: "",
+    context: "",
+    introduction: corePromise,
     signals: [],
   },
   {

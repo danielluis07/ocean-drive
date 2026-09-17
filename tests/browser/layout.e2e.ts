@@ -1,8 +1,15 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
-import { openEditorialStop, voyageRoute } from "@/tests/browser/editorial-route";
-
-type Box = { x: number; y: number; width: number; height: number };
+import {
+  enterOcean,
+  expectSettledAt,
+  openEditorialStop,
+  readingModeLink,
+  returnToOceanButton,
+  stopCard,
+  stopReader,
+  voyageRoute,
+} from "@/tests/browser/editorial-route";
 
 const checkpoints = [
   { name: "desktop", width: 1440, height: 1000 },
@@ -23,6 +30,9 @@ async function expectNoOverflowOrClipping(page: Page, state: string) {
     if (document.documentElement.scrollWidth > innerWidth + 1) found.push(`page overflow ${document.documentElement.scrollWidth} > ${innerWidth}`);
     for (const element of document.querySelectorAll<HTMLElement>("main *")) {
       if (element.closest(".visually-hidden, [aria-hidden='true'], canvas") || !element.checkVisibility()) continue;
+      // Screen-reader-only text is deliberately clipped to one pixel.
+      const { width, height } = element.getBoundingClientRect();
+      if (width <= 1 && height <= 1) continue;
       const style = getComputedStyle(element);
       const clips = ["hidden", "clip"].includes(style.overflowX);
       const text = [...element.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.textContent!.trim());
@@ -52,24 +62,25 @@ async function expectReachable(locator: Locator, state: string) {
   expect(hit, `${state}: pointer reaches control`).toBe(true);
 }
 
-function overlaps(a: Box, b: Box) {
-  return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
-}
-
 for (const checkpoint of checkpoints) {
-  test(`${checkpoint.name}: both presentations fit, stay reachable, and never collide`, { tag: "@critical" }, async ({ page }) => {
-    test.setTimeout(120_000);
+  test(`${checkpoint.name}: both presentations fit and stay reachable`, { tag: "@critical" }, async ({ page }) => {
+    test.setTimeout(150_000);
     await page.setViewportSize({ width: checkpoint.width, height: checkpoint.height });
-    await page.goto("/");
-    await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
+    await enterOcean(page);
+    await expectNoOverflowOrClipping(page, "ocean opening");
+    await expectReachable(page.getByRole("button", { name: "Som ambiente" }), "sound toggle");
+    await expectReachable(page.getByRole("button", { name: "Capítulos", exact: true }), "chapters");
+    await expectReachable(readingModeLink(page), "reading mode");
+    await readingModeLink(page).click();
     await expectNoOverflowOrClipping(page, "editorial entry");
+    await expectReachable(returnToOceanButton(page), "return to the ocean");
     await openEditorialStop(page, voyageRoute[0]);
     await page.locator("#fernando-de-noronha .logbook summary:visible").click();
     await expectReachable(page.getByRole("link", { name: /Acessar fonte/ }).first(), "editorial source");
     await expectNoOverflowOrClipping(page, "editorial Caderno");
 
-    await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-    const reader = page.getByRole("region", { name: "Relato da parada" });
+    await returnToOceanButton(page).click();
+    const reader = stopReader(page);
     await expect(reader).toBeVisible();
     await expectReachable(reader.getByRole("button", { name: "Voltar ao mar", exact: true }), "3D reader departure");
     await reader.locator(".logbook summary:visible").click();
@@ -79,12 +90,11 @@ for (const checkpoint of checkpoints) {
     await reader.getByRole("button", { name: "Voltar ao sinal", exact: true }).click();
     await reader.getByRole("button", { name: "Voltar ao mar", exact: true }).click();
     await expect(reader).toBeHidden();
-    // Back on the route, the settled Stop's opener stands clear of the chrome.
-    const opener = page.getByRole("button", { name: /Parada 01 Fernando de Noronha/ });
-    await expect(opener).toBeVisible();
-    await expectReachable(opener, "Stop opener");
-    expect(overlaps((await opener.boundingBox())!, (await page.locator(".presentation-bar").boundingBox())!), "Stop opener obscured").toBe(false);
-    await expectReachable(page.getByRole("link", { name: "Versão em texto", exact: true }), "text version");
+    // Back on the route, the settled Stop's card and the chrome stay reachable.
+    await expectSettledAt(page, 1);
+    await expect(stopCard(page)).toHaveAttribute("data-visible", "true");
+    await expectReachable(stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }), "Stop Card action");
+    await expectReachable(readingModeLink(page), "reading mode after reading");
     await expectNoOverflowOrClipping(page, "3D waters");
   });
 }
@@ -93,14 +103,19 @@ test("text spacing and system-font fallback keep content unclipped at phone widt
   test.setTimeout(90_000);
   await page.route("**/*.woff2", (route) => route.abort());
   await page.setViewportSize({ width: 320, height: 640 });
-  await page.goto("/");
+  await enterOcean(page);
   await page.addStyleTag({ content: textSpacing });
+  await expectNoOverflowOrClipping(page, "ocean opening with text spacing");
+  await page.keyboard.press("ArrowDown");
+  await expectSettledAt(page, 1);
+  await expectReachable(stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }), "Stop Card action with text spacing");
+  await readingModeLink(page).click();
   await expectNoOverflowOrClipping(page, "editorial entry with text spacing");
   await openEditorialStop(page, voyageRoute[0]);
   await page.locator("#fernando-de-noronha .logbook summary:visible").click();
   await expectNoOverflowOrClipping(page, "Caderno with text spacing");
   await expectReachable(page.getByRole("button", { name: "Voltar ao sinal", exact: true }), "Caderno return with text spacing");
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+  await returnToOceanButton(page).click();
   await expectNoOverflowOrClipping(page, "3D reader with text spacing");
   await expectReachable(page.getByRole("button", { name: "Voltar ao mar", exact: true }), "3D departure with text spacing");
 });

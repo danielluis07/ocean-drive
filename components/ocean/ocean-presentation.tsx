@@ -18,20 +18,28 @@ import {
 } from "@/lib/ocean-quality";
 import { useOceanLifecycle } from "@/lib/use-ocean-lifecycle";
 import { useOceanRecovery } from "@/lib/use-ocean-recovery";
+import { useScrollCue } from "@/lib/use-scroll-cue";
 import {
   stopIds,
   stopIndex,
   transitionVoyage,
   type ThreeDUnavailableReason,
-  type VoyageQualityPreference,
 } from "@/lib/voyage-state";
 import type { OceanConfiguration } from "@/lib/ocean-config";
 import {
   closeDisclosures,
   focusOceanTarget as focusTarget,
 } from "@/lib/reader-interactions";
-import { useStickyScrollOffset } from "@/lib/use-sticky-scroll-offset";
+import {
+  applyStageLayout,
+  sameStageLayout,
+  type StageLayout,
+} from "@/lib/stage-layout";
 import type { PreparationStage } from "@/components/ocean/ocean-runtime";
+import OceanLoading from "@/components/ocean/ocean-loading";
+import PresentationNotice from "@/components/ocean/presentation-notice";
+import StopCard from "@/components/ocean/stop-card";
+import VoyageChrome, { ReadingModeLink } from "@/components/ocean/voyage-chrome";
 import {
   enableLocalDiagnostics,
   recordDiagnostic,
@@ -43,22 +51,16 @@ const OceanRuntime = dynamic(() => import("@/components/ocean/ocean-runtime"), {
   ssr: false,
 });
 
-const preparationCopy: Record<PreparationStage, string> = {
-  checking: "Verificando a navegação em 3D…",
-  loading: "Carregando o navio e a rota…",
-  preparing: "Preparando o oceano…",
-  frame: "Verificando a primeira imagem do oceano…",
-  ready: "O oceano está pronto",
-};
-
+// One short line each; the Accessible Editorial Presentation carries the rest.
 const failureCopy: Record<ThreeDUnavailableReason, string> = {
-  unsupported:
-    "Este navegador não oferece o recurso gráfico necessário para navegar em 3D.",
-  refused: "O navegador não permitiu iniciar a navegação em 3D.",
-  "asset-failure": "Não foi possível preparar o navio ou a imagem do oceano.",
-  "context-loss": "A conexão gráfica com o oceano foi interrompida.",
-  "unusable-quality": "A navegação em 3D não está estável neste dispositivo.",
+  unsupported: "Este navegador não consegue exibir o oceano em 3D.",
+  refused: "O navegador não permitiu exibir o oceano em 3D.",
+  "asset-failure": "Não foi possível carregar o oceano em 3D.",
+  "context-loss": "A exibição do oceano em 3D foi interrompida.",
+  "unusable-quality": "O oceano em 3D não ficou estável neste dispositivo.",
 };
+const restoringCopy =
+  "A exibição do oceano em 3D foi interrompida. Tentando restaurá-la…";
 
 class RuntimeErrorBoundary extends Component<
   { children: ReactNode; onFailure: () => void },
@@ -110,16 +112,25 @@ export default function OceanPresentation({
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [surface, setSurface] = useState<HTMLElement | null>(null);
   const [settledStop, setSettledStop] = useState<number | null>(null);
+  // The card keeps its last Stop while it fades out under way.
+  const [cardStop, setCardStop] = useState(0);
+  const laidOut = useRef<{ surface: HTMLElement; layout: StageLayout } | null>(null);
+  const { cueVisible, dismissCue } = useScrollCue();
   const inputConnected = useRef(false);
   const inputEnabled = useRef(false);
-  const active = voyage.presentation === "three-dimensional";
+  // Until enhancement, the server-rendered editorial content stays under the loading fade.
+  const active = enhanced && voyage.presentation === "three-dimensional";
   const unavailable = voyage.threeDAvailability.status === "unavailable";
   const restoring = voyage.threeDAvailability.status === "restoring";
   const currentStop = useRef(voyage.currentStop);
   const passageId = `${voyage.currentStop}-signal-${(signalPages[voyage.currentStop] ?? 0) + 1}`;
   const previouslyActive = useRef(false);
-  const presentationBar = useRef<HTMLElement>(null);
-  useStickyScrollOffset(presentationBar);
+  const explanation =
+    voyage.threeDAvailability.status === "unavailable"
+      ? failureCopy[voyage.threeDAvailability.reason]
+      : restoring
+        ? restoringCopy
+        : null;
 
   useEffect(() => {
     enableLocalDiagnostics();
@@ -135,17 +146,19 @@ export default function OceanPresentation({
     currentStop.current = voyage.currentStop;
   }, [voyage.currentStop]);
 
+  // A failure opens the Accessible Editorial Presentation with its explanation.
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
       closeDisclosures();
+      if (explanation) announce(explanation);
       focusTarget(readerOpen ? passageId : "voyage-editorial-heading");
     }
     previouslyActive.current = active;
-  }, [active, unavailable, restoring, passageId, readerOpen]);
+  }, [active, unavailable, restoring, passageId, readerOpen, explanation, announce]);
 
   // Record the Ship's place on the route, including partway between Stops.
   const checkpoint = useCallback(() => {
-    const { progress } = route.current.frame();
+    const { progress } = route.frame();
     setVoyage((current) =>
       transitionVoyage(current, { type: "set-route-progress", progress }),
     );
@@ -154,7 +167,7 @@ export default function OceanPresentation({
   const fail = useCallback(
     (reason: ThreeDUnavailableReason) => {
       recordDiagnostic("failure", reason);
-      const { progress } = route.current.frame();
+      const { progress } = route.frame();
       setVoyage((current) => {
         // Canvas disposal can itself emit context loss. Preserve the original failure.
         if (current.threeDAvailability.status === "unavailable") return current;
@@ -175,7 +188,7 @@ export default function OceanPresentation({
   const failAsset = useCallback(() => fail("asset-failure"), [fail]);
   const suspend = useCallback(() => {
     qualityController.current?.suspend();
-    route.current.release();
+    route.release();
     checkpoint();
   }, [route, checkpoint]);
   const { visible, suspended } = useOceanLifecycle(suspend);
@@ -239,7 +252,12 @@ export default function OceanPresentation({
   const settle = useCallback(
     (index: number | null) => {
       setSettledStop(index);
-      if (index === null || !inputEnabled.current) return;
+      if (index === null) {
+        if (inputEnabled.current) dismissCue();
+        return;
+      }
+      setCardStop(index);
+      if (!inputEnabled.current) return;
       const stop = stops[index];
       if (stop.id !== currentStop.current)
         announce(`Parada ${String(index).padStart(2, "0")} · ${stop.name}.`);
@@ -247,8 +265,22 @@ export default function OceanPresentation({
         transitionVoyage(current, { type: "arrive-at-stop", stop: stopIds[index] }),
       );
     },
-    [announce, setVoyage],
+    [announce, setVoyage, dismissCue],
   );
+  const placeCard = useCallback(
+    (layout: StageLayout) => {
+      if (!surface) return;
+      if (laidOut.current?.surface === surface && sameStageLayout(laidOut.current.layout, layout)) return;
+      laidOut.current = { surface, layout };
+      applyStageLayout(surface, layout);
+    },
+    [surface],
+  );
+  // A card hiding under way hands focus to the ocean; opening its account moves
+  // focus into the reader instead.
+  const yieldCardFocus = useCallback(() => {
+    if (!readerOpen) focusTarget("voyage-ocean");
+  }, [readerOpen]);
 
   const prepare = useCallback(() => {
     if (unavailable || restoring || eligible) return;
@@ -267,6 +299,7 @@ export default function OceanPresentation({
         return;
       }
       context.getExtension("WEBGL_lose_context")?.loseContext();
+      // Quality is automatic: device hints pick the starting tier, measurements adjust it.
       const controller = createQualityController({
         coarsePointer: window.matchMedia("(pointer: coarse)").matches,
         smallScreen: window.innerWidth < 768,
@@ -297,7 +330,8 @@ export default function OceanPresentation({
     };
   }, [enhanced, unavailable, eligible, voyage.qualityPreference, prepare]);
 
-  const voyaging = active && visible && !readerOpen && !restoring && stage === "ready";
+  const ready = active && !restoring && stage === "ready";
+  const voyaging = ready && visible && !readerOpen;
   useEffect(() => {
     inputEnabled.current = voyaging;
     if (!voyaging) {
@@ -312,7 +346,7 @@ export default function OceanPresentation({
   useEffect(() => {
     if (!surface) return;
     const disconnect = connectRouteInput(surface, {
-      route: () => route.current,
+      route: () => route,
       enabled: () => inputEnabled.current,
     });
     inputConnected.current = true;
@@ -322,21 +356,9 @@ export default function OceanPresentation({
     };
   }, [surface, route]);
 
-  function chooseQuality(preference: VoyageQualityPreference) {
-    recordDiagnostic("preference", preference);
-    const next = qualityController.current?.choose(preference);
-    if (next) setQuality(next);
-    if (preference === "text") switchPresentation(false);
-    setVoyage((current) =>
-      transitionVoyage(current, {
-        type: "set-quality-preference",
-        qualityPreference: preference,
-      }),
-    );
-  }
-
   function switchPresentation(threeD: boolean) {
-    if (threeD && (stage !== "ready" || unavailable || restoring)) return;
+    if (threeD && (unavailable || restoring)) return;
+    // The ocean prepares on the way back if it was never started.
     if (threeD && voyage.qualityPreference === "text")
       qualityController.current?.choose("automatic");
     checkpoint();
@@ -357,8 +379,8 @@ export default function OceanPresentation({
     });
     announce(
       threeD
-        ? "Viagem em 3D. Role ou use as setas para navegar entre as paradas."
-        : "Versão em texto. Seu lugar na viagem está preservado.",
+        ? "Oceano em 3D. Role, deslize ou use as setas para navegar entre as paradas."
+        : "Modo leitura. Seu lugar na viagem está preservado.",
     );
     focusTarget(
       readerOpen
@@ -377,74 +399,27 @@ export default function OceanPresentation({
 
   return (
     <>
-      <section
-        ref={presentationBar}
-        className="presentation-bar"
-        aria-label="Apresentação da viagem">
-        <p role="status" aria-atomic="true">
-          {!enhanced
-            ? "A viagem está disponível em texto."
-            : unavailable && voyage.threeDAvailability.status === "unavailable"
-              ? `${failureCopy[voyage.threeDAvailability.reason]} Continue pela versão em texto; seu lugar está preservado.`
-              : restoring
-                ? "A conexão gráfica com o oceano foi interrompida. Tentando restaurar o 3D; continue pela versão em texto."
-                : !eligible && voyage.qualityPreference === "text"
-                  ? "Versão em texto selecionada."
-                  : preparationCopy[stage]}
-        </p>
-        <div>
-          {enhanced ? (
-            <label className="quality-choice">
-              Qualidade
-              <select
-                value={voyage.qualityPreference}
-                onChange={(event) =>
-                  chooseQuality(event.target.value as VoyageQualityPreference)
-                }>
-                <option value="automatic">Automático</option>
-                <option value="reduced-3d">3D reduzido</option>
-                <option value="text">Versão em texto</option>
-              </select>
-            </label>
-          ) : null}
-          {!unavailable &&
-          !eligible &&
-          enhanced &&
-          voyage.qualityPreference === "text" ? (
-            <button type="button" onClick={prepare}>
-              Preparar 3D
-            </button>
-          ) : null}
-          {!active && !unavailable ? (
-            <button
-              type="button"
-              disabled={stage !== "ready" || restoring}
-              onClick={() => switchPresentation(true)}>
-              Explorar em 3D
-            </button>
-          ) : null}
-          <a
-            href={`#${passageId}`}
-            onClick={(event) => {
-              event.preventDefault();
-              switchPresentation(false);
-            }}>
-            Versão em texto
-          </a>
-        </div>
-      </section>
+      <OceanLoading loading={!enhanced || (active && !unavailable && stage !== "ready")} />
+      {enhanced && !active ? (
+        <PresentationNotice
+          explanation={explanation}
+          canReturn={!unavailable && !restoring}
+          onReturn={() => switchPresentation(true)}
+        />
+      ) : null}
       {eligible && !unavailable ? (
         <section
           ref={setSurface}
           id="voyage-ocean"
           tabIndex={-1}
-          className="ocean-world"
+          className="ocean-world group/ocean relative isolate grid h-svh grid-rows-[minmax(0,1fr)] overflow-hidden bg-background text-foreground focus-visible:outline-3 focus-visible:-outline-offset-4 focus-visible:outline-ring data-[active=false]:pointer-events-none data-[active=false]:invisible data-[active=false]:fixed data-[active=false]:inset-0 data-[active=false]:-z-10 [&_canvas]:touch-none [&>div:first-child]:min-h-0"
           data-active={active}
           data-reading={readerOpen}
+          data-stage={stage}
           data-quality={quality.tier}
           data-dpr={quality.dpr}
           data-settled-stop={settledStop ?? undefined}
-          aria-label="Viagem em 3D. Role, deslize ou use as setas e Page Up ou Page Down para navegar entre as paradas."
+          aria-label="Oceano da viagem. Role, deslize ou use as setas e Page Up ou Page Down para navegar entre as paradas."
           aria-hidden={!active}
           inert={!active}>
           <RuntimeErrorBoundary onFailure={failAsset}>
@@ -465,22 +440,29 @@ export default function OceanPresentation({
               reducedMotion={reducedMotion}
               active={active}
               reading={readerOpen}
-              settledStop={settledStop}
               visitedStops={voyage.visitedStops}
               inputConnected={inputConnected}
               onStage={onStage}
               onFailure={failAsset}
               onCanvas={setCanvas}
               onSettle={settle}
-              onOpenStop={openStop}
+              onLayout={placeCard}
             />
           </RuntimeErrorBoundary>
-          <div className="ocean-caption">
-            <p>Travessia</p>
-            <h1>
-              Mar <em>aberto</em>
-            </h1>
-          </div>
+          {ready && !readerOpen ? <VoyageChrome /> : null}
+          {ready ? (
+            <StopCard
+              stop={stops[cardStop]}
+              opening={cardStop === 0}
+              visible={!readerOpen && settledStop !== null}
+              cueVisible={cueVisible}
+              onOpen={() => openStop(stops[cardStop].id)}
+              onYieldFocus={yieldCardFocus}
+            />
+          ) : null}
+          {ready && !readerOpen ? (
+            <ReadingModeLink onReadingMode={() => switchPresentation(false)} />
+          ) : null}
         </section>
       ) : null}
     </>

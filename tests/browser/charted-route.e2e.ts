@@ -1,20 +1,18 @@
 import { expect, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import {
+  enterOcean,
   expectSettledAt,
+  openStopAccount,
+  stopCard,
+  stopReader,
   voyageState,
 } from "@/tests/browser/editorial-route";
 
 test.use({ actionTimeout: 15_000 });
 
-async function enter(page: Page) {
-  await page.goto("/");
-  await page
-    .getByRole("button", { name: "Explorar em 3D", exact: true })
-    .click();
-  await expect(page.locator("#voyage-ocean")).toBeFocused();
-  await expectSettledAt(page, 0);
-}
+// The ocean opens on its own; the Visitor never needs an entry step.
+const enter = (page: Page) => enterOcean(page);
 
 // A burst of wheel events in one task, like a trackpad gesture. Sending them one
 // round-trip at a time would let the controlled clock settle between events.
@@ -87,11 +85,6 @@ test(
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowLeft");
     await expectSettledAt(page, 0);
-    // Keys in a form field keep their own meaning.
-    await page.getByRole("combobox", { name: "Qualidade" }).focus();
-    await page.keyboard.press("ArrowDown");
-    await page.keyboard.press("Escape");
-    await page.waitForTimeout(600);
     expect((await voyageState(page)).currentStop).toBe("partida");
   },
 );
@@ -136,15 +129,11 @@ test(
   async ({ page }) => {
     test.setTimeout(90_000);
     await enter(page);
-    await expect(page.locator(".stop-label")).toHaveCount(0);
+    // The opening has no account to open.
+    await expect(stopCard(page).getByRole("button")).toHaveCount(0);
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 1);
-    const label = page.getByRole("button", {
-      name: /Parada 01 Fernando de Noronha/,
-    });
-    await label.click();
-    const reader = page.getByRole("region", { name: "Relato da parada" });
-    await expect(reader).toBeVisible();
+    await openStopAccount(page);
     await expect(page.locator("#fernando-de-noronha-signal-1")).toBeFocused();
     await expect
       .poll(async () => (await voyageState(page)).visitedStops)
@@ -155,8 +144,11 @@ test(
     await page.waitForTimeout(800);
     expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");
     await page.keyboard.press("Escape");
-    await expect(reader).toBeHidden();
-    await expect(page.locator("#voyage-ocean")).toBeFocused();
+    await expect(stopReader(page)).toBeHidden();
+    // Focus returns to the card's “Saiba mais”.
+    await expect(
+      stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }),
+    ).toBeFocused();
     expect((await voyageState(page)).routeProgress).toBe(1);
   },
 );
@@ -177,21 +169,17 @@ test(
       currentStop: "ilha-grande",
       visitedStops: [],
       routeProgress: 4,
+      presentation: "three-dimensional",
     });
 
+    // A reload returns to the ocean at the same Stop.
     await page.reload();
-    await expect(
-      page.getByRole("heading", { name: "Viagem concluída.", exact: true }),
-    ).toBeVisible();
-    expect(await voyageState(page)).toEqual({
-      ...arrived,
-      presentation: "editorial",
-    });
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
-    await expectSettledAt(page, 4);
+    await expectSettledAt(page, 4, 60_000);
+    await expect(stopCard(page).getByRole("heading", { name: "Ilha Grande" })).toBeVisible();
+    expect(await voyageState(page)).toEqual(arrived);
 
+    // The controlled test clock does not drive a document restored by history,
+    // so read the persisted Voyage State there and reload before sailing on.
     await page.goto("about:blank");
     await page.goBack();
     await expect
@@ -199,10 +187,14 @@ test(
       .toBe("ilha-grande");
     expect((await voyageState(page)).complete).toBe(true);
     await page.reload();
+    await expectSettledAt(page, 4, 60_000);
 
-    await page
+    await openStopAccount(page);
+    await stopReader(page)
       .getByRole("button", { name: "Recomeçar viagem", exact: true })
       .click();
+    await expect(stopReader(page)).toBeHidden();
+    await expectSettledAt(page, 0);
     await expect
       .poll(async () => (await voyageState(page)).complete)
       .toBe(false);
@@ -211,10 +203,6 @@ test(
       visitedStops: [],
       routeProgress: 0,
     });
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
-    await expectSettledAt(page, 0);
   },
 );
 

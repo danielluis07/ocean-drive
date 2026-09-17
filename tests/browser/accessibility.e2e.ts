@@ -2,29 +2,33 @@ import { expect } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import { expectNoAxeViolations } from "@/tests/browser/accessibility-scan";
 import {
+  enterOcean,
   expectSettledAt,
   holdVesselAssets,
   openEditorialStop,
+  openStopAccount,
   readEditorialStop,
+  readingModeLink,
+  returnToOceanButton,
+  stopReader,
   voyageRoute,
 } from "@/tests/browser/editorial-route";
 
 const [noronha, boipeba, abrolhos, ilhaGrande] = voyageRoute;
 
 test(
-  "editorial entry and loading states have no automated WCAG violations",
+  "loading and the ocean opening have no automated WCAG violations",
   { tag: "@critical" },
   async ({ page }, testInfo) => {
     test.setTimeout(90_000);
     const releaseVessel = await holdVesselAssets(page);
     await page.goto("/");
-    await expect(page.locator(".presentation-bar")).toContainText("Carregando");
+    await expect(page.locator('[data-slot="ocean-loading"]')).toBeVisible();
     await expectNoAxeViolations(page, testInfo, "loading");
     releaseVessel();
-    await expect(page.locator(".presentation-bar")).toContainText(
-      "O oceano está pronto",
-    );
-    await expectNoAxeViolations(page, testInfo, "entry");
+    await expectSettledAt(page, 0, 60_000);
+    await expect(page.locator('[data-slot="stop-card"]')).toHaveAttribute("data-visible", "true");
+    await expectNoAxeViolations(page, testInfo, "opening");
   },
 );
 
@@ -33,7 +37,9 @@ test(
   { tag: "@critical" },
   async ({ page }, testInfo) => {
     test.setTimeout(120_000);
-    await page.goto("/");
+    await enterOcean(page);
+    await readingModeLink(page).click();
+    await expectNoAxeViolations(page, testInfo, "editorial-entry");
     await openEditorialStop(page, noronha);
     await expectNoAxeViolations(page, testInfo, "editorial-stop");
     await page.locator("#fernando-de-noronha summary:visible").click();
@@ -55,35 +61,26 @@ test(
 );
 
 test(
-  "3D voyage, Stop Account, and Arrival have no automated WCAG violations",
+  "3D Stop Cards, Stop Account, and Arrival have no automated WCAG violations",
   { tag: "@critical" },
   async ({ page }, testInfo) => {
     test.setTimeout(150_000);
-    await page.goto("/");
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
-    await expectNoAxeViolations(page, testInfo, "3d-entry");
+    await enterOcean(page);
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 1);
-    await expectNoAxeViolations(page, testInfo, "3d-stop");
-    await page
-      .getByRole("button", { name: /Parada 01 Fernando de Noronha/ })
-      .click();
-    const reader = page.getByRole("region", { name: "Relato da parada" });
-    await expect(reader).toBeVisible();
+    await expectNoAxeViolations(page, testInfo, "3d-stop-card");
+    await openStopAccount(page);
     await expectNoAxeViolations(page, testInfo, "3d-reader");
-    await reader.locator("summary:visible").click();
+    await stopReader(page).locator("summary:visible").click();
     await expectNoAxeViolations(page, testInfo, "3d-caderno");
-    await page
-      .getByRole("link", { name: "Versão em texto", exact: true })
+    await stopReader(page)
+      .getByRole("button", { name: "Voltar ao mar", exact: true })
       .click();
+    await readingModeLink(page).click();
     await readEditorialStop(page, ilhaGrande);
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
+    await returnToOceanButton(page).click();
     await expect(
-      reader.getByRole("heading", { name: "Viagem concluída.", exact: true }),
+      stopReader(page).getByRole("heading", { name: "Viagem concluída.", exact: true }),
     ).toBeVisible();
     await expectNoAxeViolations(page, testInfo, "3d-arrival");
   },
@@ -95,22 +92,16 @@ test(
   async ({ page }, testInfo) => {
     test.setTimeout(90_000);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
-    await expect(page.locator(".presentation-bar")).toContainText(
-      "O oceano está pronto",
-    );
+    await enterOcean(page);
     await expectNoAxeViolations(page, testInfo, "reduced-motion");
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 1);
     await expectNoAxeViolations(page, testInfo, "reduced-motion-3d");
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.route("**/models/*.glb", (route) => route.abort());
     await page.goto("/");
-    await expect(page.locator(".presentation-bar")).toContainText(
-      "Não foi possível preparar",
+    await expect(page.locator('[data-slot="presentation-notice"]')).toContainText(
+      "Não foi possível carregar o oceano em 3D.",
     );
     await expectNoAxeViolations(page, testInfo, "failure");
   },
@@ -121,7 +112,8 @@ test(
   { tag: "@critical" },
   async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await enterOcean(page);
+    await readingModeLink(page).click();
     await openEditorialStop(page, noronha);
     const landed = await page.evaluate(() => scrollY);
     await page.waitForTimeout(500);
@@ -136,7 +128,11 @@ test(
   async ({ page }) => {
     test.setTimeout(90_000);
     const announcer = page.locator("#voyage-announcer");
-    await page.goto("/");
+    await enterOcean(page);
+    await readingModeLink(page).click();
+    await expect(announcer).toHaveText(
+      "Modo leitura. Seu lugar na viagem está preservado.",
+    );
     await openEditorialStop(page, noronha);
     await expect(announcer).toHaveText("Fernando de Noronha, parada aberta.");
     await expect(
@@ -147,24 +143,22 @@ test(
         name: "Navegação dos sinais de Fernando de Noronha",
       }),
     ).toHaveCount(1);
-    await page
-      .getByRole("button", { name: "Explorar em 3D", exact: true })
-      .click();
+    await returnToOceanButton(page).click();
     await expect(announcer).toHaveText(
-      "Viagem em 3D. Role ou use as setas para navegar entre as paradas.",
+      "Oceano em 3D. Role, deslize ou use as setas para navegar entre as paradas.",
     );
-    await page
+    await stopReader(page)
       .getByRole("button", { name: "Voltar ao mar", exact: true })
       .click();
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 2);
     await expect(announcer).toHaveText("Parada 02 · Boipeba.");
-    await page
-      .getByRole("link", { name: "Versão em texto", exact: true })
-      .click();
+    await readingModeLink(page).click();
     await expect(announcer).toHaveText(
-      "Versão em texto. Seu lugar na viagem está preservado.",
+      "Modo leitura. Seu lugar na viagem está preservado.",
     );
+    await openEditorialStop(page, noronha);
+    await expect(announcer).toHaveText("Fernando de Noronha, parada aberta.");
     // Assistive technology can ignore whitespace-only live-region changes, so a
     // repeated message must clear the region and then restore the exact text.
     await announcer.evaluate((region) => {
@@ -179,9 +173,7 @@ test(
         subtree: true,
       });
     });
-    await page
-      .getByRole("link", { name: "Versão em texto", exact: true })
-      .click();
+    await openEditorialStop(page, noronha);
     await expect
       .poll(() =>
         page.evaluate(
@@ -189,9 +181,6 @@ test(
             (window as unknown as { announcements: string[] }).announcements,
         ),
       )
-      .toEqual([
-        "",
-        "Versão em texto. Seu lugar na viagem está preservado.",
-      ]);
+      .toEqual(["", "Fernando de Noronha, parada aberta."]);
   },
 );
