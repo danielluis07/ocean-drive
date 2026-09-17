@@ -3,9 +3,10 @@ import type { VoyageQualityPreference } from "@/lib/voyage-state";
 export type QualityTier = "high" | "balanced" | "low";
 export type OceanQuality = { tier: QualityTier; dpr: number; fallback: boolean };
 export const qualityEnvelope = {
-  high: { minDpr: 1.25, maxDpr: 1.5, segments: 160, wake: 2 },
-  balanced: { minDpr: 1, maxDpr: 1.25, segments: 120, wake: 1 },
-  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0 },
+  // `wakePoints` is how much of the Ship's remembered trail the water shader reads.
+  high: { minDpr: 1.25, maxDpr: 1.5, segments: 160, wake: 2, wakePoints: 48 },
+  balanced: { minDpr: 1, maxDpr: 1.25, segments: 120, wake: 1, wakePoints: 32 },
+  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0, wakePoints: 0 },
 } as const;
 
 // This clock receives measured frame intervals only while the 3D voyage is visible and not being read.

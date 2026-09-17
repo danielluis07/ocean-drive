@@ -49,7 +49,6 @@ export const oceanFragmentShader = `
   ${surfaceShader}
   uniform vec2 vessel;
   uniform float heading;
-  uniform float moving;
   uniform float wakeDetail;
   varying vec3 world;
 
@@ -76,6 +75,108 @@ export const oceanFragmentShader = `
     slope += vec2(dot(wind[0], gradient), dot(wind[1], gradient)) * amplitude;
   }
 
+  #ifndef LOW_QUALITY
+  // Written by lib/ship-wake.ts, oldest point first and the Ship's live point last.
+  uniform vec4 wakePoints[WAKE_POINTS];
+  uniform vec4 wakeForces[WAKE_POINTS];
+  uniform vec4 wakeBounds;
+  uniform float speed;
+  uniform float thrust;
+  uniform vec2 course;
+
+  // Mirror lib/ship-wake.ts. Speeds are world units per second.
+  const float WAKE_LIFETIME = 9.;
+  const float CRUISE_SPEED = 60.;
+
+  float wakeEnergy(float shipSpeed) {
+    return min(sqrt(max(shipSpeed, 0.) / CRUISE_SPEED), 1.1);
+  }
+
+  // Every trail segment leaves divergent crests that travel outward (the Kelvin
+  // arms), transverse crests between them, and a lane of turbulent prop wash
+  // that widens and tears apart as it ages. Where segments overlap, at joints or
+  // where the Ship doubles back, the strongest contribution wins instead of
+  // adding up, so the trail never shows its seams.
+  void shipWake(vec2 p, inout vec2 slope, out float surface, out float slick, out float wash, out float washAge, out float breaking) {
+    surface = 0.;
+    slick = 0.;
+    wash = 0.;
+    washAge = 0.;
+    breaking = 0.;
+    if (any(lessThan(p, wakeBounds.xy)) || any(greaterThan(p, wakeBounds.zw))) return;
+    // World-anchored noise bends the arms and frays the lane, so the wake
+    // deforms where it lies rather than sliding along with the Ship.
+    float warp = noise(p * .085 + vec2(time * .021, -time * .013)) - .5;
+    float fray = noise(p * .23 + vec2(-time * .034, time * .027));
+    vec2 waveSlope = vec2(0.);
+    float waveSurface = 0.;
+    float waveWeight = 1e-5;
+    for (int i = 0; i < WAKE_POINTS - 1; i++) {
+      vec4 a = wakePoints[i];
+      vec4 b = wakePoints[i + 1];
+      float ageA = time - a.z;
+      float ageB = time - b.z;
+      if (min(ageA, ageB) > WAKE_LIFETIME || max(ageA, ageB) > WAKE_LIFETIME * 2.) continue;
+      vec2 track = b.xy - a.xy;
+      float span = dot(track, track);
+      float along = dot(p - a.xy, track) / max(span, 1e-4);
+      float t = clamp(along, 0., 1.);
+      vec2 away = p - a.xy - track * t;
+      float d = length(away);
+      vec4 force = mix(wakeForces[i], wakeForces[i + 1], t);
+      float age = max(mix(ageA, ageB, t), 0.);
+      float reach = 1.05 + .354 * force.x / (1. + force.x / 35.) * age;
+      float width = .7 + age * .42 + reach * .05;
+      float lane = .55 + sqrt(age) * .95;
+      if (d > max(reach + width * 3.8, lane * 3. + 1.2 + sqrt(age) * .7)) continue;
+
+      float energy = wakeEnergy(force.x) * force.w;
+      vec2 outward = d > 1e-3 ? away / d : vec2(0.);
+      vec2 forward = track * inversesqrt(max(span, 1e-8));
+      vec2 abeam = vec2(-forward.y, forward.x);
+      float side = dot(away, abeam) >= 0. ? 1. : -1.;
+      // Water piles up on the outside of a turn and slackens on the inside.
+      float bias = 1. - side * clamp(force.z * .5, -.45, .45);
+      // Crests only span their own stretch of trail. Rings wrapping past each
+      // end would otherwise chain along the wake, where real water cancels them.
+      float beyond = abs(along - t) * sqrt(span);
+      float stretch = 1. - smoothstep(0., 1. + reach * .3, beyond);
+
+      // Divergent crests ride just inside the cusp line. Their phase outruns
+      // the packet, as in deep water, so crests drift outward through it.
+      float u = (d - reach - warp * width * 1.6) / width;
+      float packet = exp(-u * u * 1.3) * energy * bias * stretch * exp(-age * .36) * (.55 + .9 * fray);
+      float phase = u * 3.4 - age * 1.9;
+      float crest = cos(phase);
+      vec2 waves = outward * packet * (-2.6 * u * crest - 3.4 * sin(phase)) / width;
+      // Transverse crests span the V behind the stern and keep moving once it has passed.
+      float wavenumber = 6.2832 / max(3.5, force.x * .3);
+      float transverse = energy * stretch * (1. - smoothstep(reach * .45, reach * .95, d)) * exp(-age * .5) * .2;
+      float transversePhase = age * force.x * wavenumber;
+      waves += forward * transverse * wavenumber * sin(transversePhase) * .1;
+      float envelope = packet + transverse;
+      float weight = envelope * envelope;
+      waveSlope += waves * weight;
+      waveSurface += (packet * crest + transverse * cos(transversePhase)) * weight;
+      waveWeight += weight;
+      breaking = max(breaking, smoothstep(.3, .85, packet * crest) * exp(-age * .9));
+
+      // The wash lane is thrown to the outside of a turn as the stern skids, and
+      // meanders as it ages. Shifting the lane's centre rather than the distance
+      // keeps it continuous around the ends of each segment.
+      float churn = (energy * .42 + force.y * .45 * force.w) * exp(-age * .42);
+      float drift = clamp(force.z, -2., 2.) * .4 * min(age, 1.5) + warp * sqrt(age) * 1.4;
+      float laneShape = dot(away + abeam * drift, away + abeam * drift) / (lane * lane);
+      float washHere = exp(-laneShape) * churn;
+      washAge = washHere > wash ? age : washAge;
+      wash = max(wash, washHere);
+      slick = max(slick, exp(-laneShape / 2.2) * min(energy * 1.6, 1.) * exp(-age * .2));
+    }
+    slope += waveSlope / waveWeight * .3;
+    surface = waveSurface / waveWeight;
+  }
+  #endif
+
   void main() {
     vec2 p = world.xz;
     float height;
@@ -85,25 +186,43 @@ export const oceanFragmentShader = `
     float footprint = max(length(dFdx(p)), length(dFdy(p)));
     float detail = 1. - smoothstep(.18, 1.6, footprint);
     // Cross the secondary ripples to break the uniform brushed-metal grain.
-    windWave(p, vec2(.8, .6), .48, .29, .18, slope);
-    windWave(p + vec2(17.2, -9.4), vec2(-.119615, .992820), 1.1, .13 * detail, -.24, slope);
+    vec2 ripples = vec2(0.);
+    windWave(p, vec2(.8, .6), .48, .29, .18, ripples);
+    windWave(p + vec2(17.2, -9.4), vec2(-.119615, .992820), 1.1, .13 * detail, -.24, ripples);
     #ifndef LOW_QUALITY
-    windWave(p + vec2(-8.3, 21.7), vec2(.919615, -.392820), 2.6, .057 * detail, .31, slope);
-    windWave(p + vec2(31.8, 4.1), vec2(.8, .6), 5.8, .019 * detail * detail, -.43, slope);
+    windWave(p + vec2(-8.3, 21.7), vec2(.919615, -.392820), 2.6, .057 * detail, .31, ripples);
+    windWave(p + vec2(31.8, 4.1), vec2(.8, .6), 5.8, .019 * detail * detail, -.43, ripples);
     #ifdef HIGH_QUALITY
-    windWave(p + vec2(7.1, 13.2), vec2(-.119615, .992820), 11.5, .007 * detail * detail, .52, slope);
+    windWave(p + vec2(7.1, 13.2), vec2(-.119615, .992820), 11.5, .007 * detail * detail, .52, ripples);
     #endif
     #endif
 
     vec2 offset = p - vessel;
     float aft = dot(offset, vec2(-sin(heading), cos(heading)));
     float side = dot(offset, vec2(cos(heading), sin(heading)));
+    float wakeSurface = 0.;
+    float slick = 0.;
     #ifndef LOW_QUALITY
-    float trail = smoothstep(2., 4., aft) * (1. - smoothstep(8., 23., aft)) * moving;
-    float wakeEdge = abs(side) - (1.05 + max(aft - 2.5, 0.) * .25);
-    float wakeRidge = exp(-wakeEdge * wakeEdge * 2.4) * trail;
-    slope += vec2(cos(heading), sin(heading)) * sign(side) * sin(wakeEdge * 5.) * wakeRidge * .15;
+    float wash;
+    float washAge;
+    float breaking;
+    shipWake(p, slope, wakeSurface, slick, wash, washAge, breaking);
+    // The hull's waterline as an ellipse along the course, so a Ship backing
+    // along the route pushes water from its stern. The bow wave rides just
+    // outside it, pushed further out and higher the faster the Ship sails.
+    float energy = wakeEnergy(speed);
+    vec2 abeamAxis = vec2(-course.y, course.x);
+    float ahead = dot(offset, course);
+    float abeam = dot(offset, abeamAxis);
+    float station = length(vec2(abeam / 1.2, ahead / 3.));
+    vec2 stationNormal = normalize(abeamAxis * abeam / 1.44 + course * ahead / 9. + 1e-5);
+    float ridge = station - 1.1 - energy * .25;
+    float bowWave = exp(-ridge * ridge * 14.) * energy * mix(.25, 1., smoothstep(-2., 2.8, ahead));
+    slope -= stationNormal * 28. * ridge * bowWave * .07;
+    wakeSurface += bowWave * .6;
     #endif
+    // Churned water smooths the wind ripples into a slick lane behind the Ship.
+    slope += ripples * (1. - slick * .65);
 
     vec3 normal = normalize(vec3(-slope.x, 1., -slope.y));
     vec3 view = normalize(cameraPosition - world);
@@ -123,30 +242,40 @@ export const oceanFragmentShader = `
     // as a pure mirror; it gathers on swell crests and viewer-facing slopes.
     float crest = smoothstep(-.3, .35, height);
     water += vec3(.003, .022, .034) * crest * max(dot(normal, view), 0.);
+    #ifndef LOW_QUALITY
+    // Wake crests catch the same scattered light and the troughs between them
+    // darken; aerated wash glows pale before it whitens into foam.
+    water += vec3(.003, .022, .03) * clamp(wakeSurface, -.2, 1.);
+    water += vec3(.002, .012, .014) * min(wash, 1.);
+    #endif
     water = mix(water, sky, fresnel * .88);
     vec3 sun = normalize(vec3(-.25, .78, -.57));
     vec3 halfway = normalize(sun + view);
     float specular = pow(max(dot(normal, halfway), 0.), 260.);
     float windPatch = smoothstep(.3, .8, noise(p * vec2(.36, .22) + time * .018));
-    water += vec3(.62, .72, .8) * specular * mix(.25, 1., windPatch) * .9;
+    water += vec3(.62, .72, .8) * specular * mix(.25, 1., windPatch) * (1. - slick * .5) * .9;
     water += vec3(.06, .1, .17) * pow(max(dot(reflected, sun), 0.), 18.) * .12;
 
-    // A soft contact shadow and broken foam seat the hull in the water.
+    // A soft contact shadow seats the hull in the water.
     float contact = exp(-pow(side / 1.35, 4.) - pow((aft + .1) / 3.15, 4.));
     water *= 1. - contact * .46;
     #ifndef LOW_QUALITY
-    vec2 wakePosition = vec2(side, aft - time * 2.4);
-    float turbulence = noise(wakePosition * 2.1);
-    float bubbles = noise(wakePosition * 6.7 + vec2(turbulence * 2.));
-    float foam = wakeRidge * smoothstep(.18, .7, turbulence) * .58;
-    float churnWidth = .42 + max(aft - 2.5, 0.) * .055;
-    float churnSide = side + (turbulence - .5) * .65;
-    float churn = (1. - smoothstep(churnWidth * .35, churnWidth + turbulence * .4, abs(churnSide))) * trail;
-    foam += churn * mix(.36, .86, smoothstep(.2, .78, bubbles));
-    float bow = exp(-pow((aft + 2.45) / .9, 2.)) * exp(-pow((abs(side) - .8) * 3., 2.));
-    foam += bow * moving * bubbles * .45;
+    // Foam is sampled where the water is, so the Ship sails through it rather than towing it.
+    float lather = noise(p * 1.3 + vec2(time * .06, -time * .045));
+    float bubbles = noise(p * 4.2 + lather * 2.3 - time * .02);
+    float fizz = noise(p * 11.7 - bubbles * 1.7 + time * .05);
+    float froth = lather * .5 + bubbles * .32 + fizz * .18;
+    // Fresh, hard-driven wash is a dense churn; as it ages the foam tears into
+    // lace and then into scattered streaks.
+    float tear = mix(.3, .66, smoothstep(0., 5., washAge)) - min(wash, 1.) * .18;
+    float foam = min(wash, 1.) * smoothstep(tear, tear + .3, froth);
+    foam += breaking * smoothstep(.45, .8, froth) * .5;
+    // Water broken along the hull, and spray heaped at the stem.
+    float skirt = exp(-ridge * ridge * 9.) * energy * smoothstep(-3.4, 1.6, ahead) * smoothstep(.4, .75, froth);
+    float stem = exp(-pow(abeam / .6, 2.) - pow((ahead - 2.9 - energy * .35) / .8, 2.)) * energy;
+    foam += skirt * .6 + stem * smoothstep(.25, .7, froth) * .7;
     #ifdef HIGH_QUALITY
-    foam += churn * noise(p * 9. - time) * .12;
+    foam += min(wash, 1.) * (noise(p * 13. + time * .3) - .5) * .18;
     #endif
     water = mix(water, vec3(.65, .76, .83), clamp(foam * min(wakeDetail, 1.), 0., .88));
     #endif

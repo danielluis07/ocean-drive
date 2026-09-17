@@ -12,6 +12,7 @@ import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
+import { createShipWake, CRUISE_SPEED } from "@/lib/ship-wake";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { LANDMARK_EXTENT, projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
 import type { StageLayout } from "@/lib/stage-layout";
@@ -43,6 +44,11 @@ type RuntimeProps = {
 
 // Reduced motion keeps the water alive but slows its swell.
 const CALM_WAVE_RATE = 0.3;
+// How far the hull answers the water it drives through, in radians.
+const SQUAT = 0.012;
+const SURGE_PITCH = 0.03;
+const HEEL = 0.035;
+const MAXIMUM_HEEL = 0.06;
 
 
 function SailableScene(props: RuntimeProps) {
@@ -65,12 +71,22 @@ function SailableScene(props: RuntimeProps) {
   const reportedStop = useRef<number | null | undefined>(undefined);
   const cameraPosition = useMemo(() => new Vector3(), []);
   const projection = useMemo(() => new Vector3(), []);
-  const material = useMemo(() => new ShaderMaterial({
-    defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {},
-    uniforms: { time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, moving: { value: 0 }, wakeDetail: { value: 1 } },
-    vertexShader: oceanVertexShader,
-    fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
-  }), [baselineWater, props.quality.tier]);
+  const [shipWake] = useState(createShipWake);
+  const material = useMemo(() => {
+    const { wakePoints } = qualityEnvelope[props.quality.tier];
+    return new ShaderMaterial({
+      defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : { WAKE_POINTS: wakePoints, ...(props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {}) },
+      uniforms: {
+        time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, wakeDetail: { value: 1 },
+        speed: { value: 0 }, thrust: { value: 0 }, course: { value: new Vector2(0, -1) },
+        wakePoints: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
+        wakeForces: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
+        wakeBounds: { value: new Float32Array([1, 1, -1, -1]) },
+      },
+      vertexShader: oceanVertexShader,
+      fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
+    });
+  }, [baselineWater, props.quality.tier]);
 
   useLayoutEffect(() => {
     if (props.quality.tier === "low") return;
@@ -184,8 +200,14 @@ function SailableScene(props: RuntimeProps) {
       material.uniforms.time.value = elapsed.current;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
-      material.uniforms.moving.value = motion.moving ? 1 : 0;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
+      const wake = shipWake.sail(pose.position, pose.heading, seconds, elapsed.current);
+      if (props.quality.tier !== "low") {
+        shipWake.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
+        material.uniforms.speed.value = wake.speed;
+        material.uniforms.thrust.value = Math.max(wake.surge, 0);
+        material.uniforms.course.value.set(wake.course.x, wake.course.z);
+      }
       if (vesselGroup.current) {
         const { x, z } = pose.position;
         const time = elapsed.current;
@@ -196,11 +218,16 @@ function SailableScene(props: RuntimeProps) {
         const portHeight = sampleOceanHeight(x - Math.cos(pose.heading), z - Math.sin(pose.heading), time);
         const starboardHeight = sampleOceanHeight(x + Math.cos(pose.heading), z + Math.sin(pose.heading), time);
         vesselGroup.current.position.set(x, sampleOceanHeight(x, z, time) + .05, z);
+        // Driving lifts the bow and braking dips it; a turn heels the Ship away
+        // from its centre. Backing along the route reverses both.
+        const astern = wake.course.x * forwardX + wake.course.z * forwardZ < 0 ? -1 : 1;
+        const cruise = Math.min(wake.speed / CRUISE_SPEED, 1);
+        const heel = Math.max(-MAXIMUM_HEEL, Math.min(MAXIMUM_HEEL, wake.turn * cruise * HEEL));
         // Reduced motion disables pitch and roll; the Ship still turns along the route.
         vesselGroup.current.rotation.set(
-          props.reducedMotion ? 0 : Math.atan2(bowHeight - sternHeight, 5),
+          props.reducedMotion ? 0 : Math.atan2(bowHeight - sternHeight, 5) + astern * (cruise * SQUAT + wake.surge * SURGE_PITCH),
           -pose.heading,
-          props.reducedMotion ? 0 : Math.atan2(starboardHeight - portHeight, 2),
+          props.reducedMotion ? 0 : Math.atan2(starboardHeight - portHeight, 2) + astern * heel,
           "YXZ",
         );
       }

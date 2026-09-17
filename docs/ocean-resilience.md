@@ -12,8 +12,8 @@ capped at 50 ms. React receives quality updates only when the settings change.
 
 | Tier | DPR ceiling range | Presentation |
 | --- | --- | --- |
-| High | 1.25–1.5 | Fine surface ripples and richer foam, 160 water subdivisions |
-| Balanced | 1.0–1.25 | Reflective wave shading and a broken foam wake, 120 water subdivisions |
+| High | 1.25–1.5 | Fine surface ripples and richer foam, a 48-point wake trail, 160 water subdivisions |
+| Balanced | 1.0–1.25 | Reflective wave shading and a broken foam wake, a 32-point wake trail, 120 water subdivisions |
 | Low | 0.75–1.0 | Simplified reflective wave shading, 48 water subdivisions, low vessel LOD |
 
 Effective DPR never exceeds the device's raw DPR. All tiers use canvas antialiasing
@@ -64,7 +64,7 @@ browser scenario still verifies that threshold with the production controller.
 The journey fixture advances ten individual 16 ms frames per round-trip and uses
 0.5 device scale for the software renderer while preserving CSS viewports and
 input coordinates. These runs cannot serve as full-resolution performance evidence.
-Low compiles out foam, wake deformation, clouds, and fine ripple calculations.
+Low compiles out foam, the wake trail, the bow wave, clouds, and fine ripple calculations.
 The vessel follows the same long swells as the water; reduced motion freezes wave
 time and disables pitch and roll. No new external textures or asset services are
 required. Regenerate both vessel detail levels with `bun run assets:vessels`.
@@ -93,3 +93,25 @@ it when upgrading Fiber to a release with native Timer support.
 `bun test tests/fiber-clock.test.ts` checks actual root creation and frame-mode
 timing. The browser entry test checks the warning through the bundled Canvas;
 the resilience suite checks pause, resume, context restoration, and fallback.
+
+## Ship wake
+
+`lib/ship-wake.ts` records the Ship's wake as a trail of world-space points,
+laid more sparsely the faster the Ship sails. Each point keeps its birth time and
+the Ship's smoothed speed, thrust, and rate of turn as it passed, and the newest
+points are uploaded as uniform arrays every frame. The water shader treats each
+segment as a source of divergent Kelvin crests that spread outward with age, at
+an angle that narrows for fast hulls, plus faint transverse crests and a lane of
+prop wash. The wash flattens the wind ripples, is thrown outward in turns, and
+tears from dense churn into lace as it ages. Overlapping segments take the
+strongest contribution rather than summing, and crests fade past each segment's
+ends, so joints and a Ship doubling back leave no seams. The wake stays where it
+was made and dissipates over nine seconds. A resting Ship lays no new water, and
+a cut, such as a chapter jump or a reduced-motion Stop change, clears the trail.
+
+A bounding box of the water the trail can still disturb lets pixels outside it
+skip the per-segment loop, so a settled Ship adds no wake cost. Around the hull,
+a bow wave and broken water along the sides follow the direction of travel and
+grow with speed. The hull squats as it drives, lifts its bow when accelerating,
+dips it when braking, and heels outward in turns. Reduced motion keeps the hull
+level.
