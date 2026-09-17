@@ -1,7 +1,15 @@
 import { expect, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import { settleScroll } from "@/tests/browser/scroll";
-import { expectSettledAt, openEditorialStop, voyageRoute } from "@/tests/browser/editorial-route";
+import {
+  enterOcean,
+  expectSettledAt,
+  openEditorialStop,
+  readingModeLink,
+  returnToOceanButton,
+  stopReader,
+  voyageRoute,
+} from "@/tests/browser/editorial-route";
 
 // Playwright's WebKit follows Safari: sequential focus skips links unless full
 // keyboard access is used, and its Windows build keeps links out even then.
@@ -54,11 +62,12 @@ async function tabThrough(page: Page, stops: number) {
 
 test("editorial keyboard focus is always visible, unobscured, and never trapped", { tag: "@critical" }, async ({ page }) => {
   test.setTimeout(120_000);
-  await page.goto("/");
-  await expect(page.locator(".presentation-bar")).toContainText("O oceano está pronto");
+  await enterOcean(page);
+  await readingModeLink(page).click();
   await openEditorialStop(page, voyageRoute[0]);
   const stops = await tabThrough(page, 30);
   expect(stops.filter((stop) => !stop.indicated || !stop.unobscured)).toEqual([]);
+  expect(stops.map((stop) => stop.label)).toContain("button Voltar ao oceano");
   // Reaching the final link and leaving it proves the document has no trap.
   const labels = stops.map((stop) => stop.label);
   const finalControl = keepsLinksOutOfTabOrder() ? "button Voltar à rota" : "a Voltar ao início";
@@ -67,34 +76,49 @@ test("editorial keyboard focus is always visible, unobscured, and never trapped"
   expect(labels.slice(last + 1).some((label) => label === "(outside page content)" || label === labels[0])).toBe(true);
 });
 
-test("3D keyboard focus reaches the Stop opener without traps and stays visible", { tag: "@critical" }, async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
+test("3D chrome and the Stop Card are keyboard reachable in order, with visible focus and no traps", { tag: "@critical" }, async ({ page }) => {
+  // Every Tab waits for scrolling and focus styles to settle over a rendering ocean.
+  test.setTimeout(180_000);
+  await enterOcean(page);
   await page.keyboard.press("ArrowDown");
   await expectSettledAt(page, 1);
-  const stops = await tabThrough(page, 12);
+  const stops = await tabThrough(page, 8);
   const labels = stops.map((stop) => stop.label);
-  expect(labels).toEqual(expect.arrayContaining([
-    expect.stringContaining("Versão em texto"),
-    expect.stringContaining("Fernando de Noronha"),
-  ]));
+  const order = ["Som ambiente", "Capítulos", "Saiba mais", ...(keepsLinksOutOfTabOrder() ? [] : ["Modo leitura"])]
+    .map((name) => labels.findIndex((label) => label.includes(name)));
+  expect(order.every((index) => index >= 0)).toBe(true);
+  expect(order).toEqual([...order].sort((a, b) => a - b));
   expect(stops.filter((stop) => !stop.indicated || !stop.unobscured)).toEqual([]);
+  expect(labels.some((label) => label === "(outside page content)" || label === labels[0])).toBe(true);
   // Route keys never capture Tab, and Tab never moves the Ship.
   expect((await page.evaluate(() => JSON.parse(sessionStorage.getItem("ocean-drive:voyage:v1")!).state)).currentStop).toBe("fernando-de-noronha");
+
+  // Enter on “Saiba mais” opens the Stop Account; a key that sails hands focus back to the ocean.
+  const action = page.getByRole("button", { name: "Saiba mais", exact: true });
+  await action.focus();
+  await page.keyboard.press("Enter");
+  await expect(stopReader(page)).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(action).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(page.locator("#voyage-ocean")).toBeFocused();
+  await expectSettledAt(page, 2);
 });
 
 test("Escape closes Caderno before the reader and never changes presentation", { tag: "@critical" }, async ({ page }) => {
-  await page.goto("/");
+  test.setTimeout(90_000);
+  await enterOcean(page);
+  await readingModeLink(page).click();
   await openEditorialStop(page, voyageRoute[0]);
   const summary = page.locator("#fernando-de-noronha .logbook summary:visible");
   // Escape elsewhere on the page never closes a Caderno or pulls focus to it.
   await summary.click();
   await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
-  const quality = page.getByRole("combobox", { name: "Qualidade" });
-  await quality.focus();
+  const returnToOcean = returnToOceanButton(page);
+  await returnToOcean.focus();
   await page.keyboard.press("Escape");
   await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
-  await expect(quality).toBeFocused();
+  await expect(returnToOcean).toBeFocused();
   await summary.focus();
   await page.keyboard.press("Escape");
   await expect(page.locator("main details.logbook[open]")).toHaveCount(0);
@@ -103,8 +127,8 @@ test("Escape closes Caderno before the reader and never changes presentation", {
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
   await expect(page.locator("#fernando-de-noronha-signal-1")).toBeVisible();
 
-  await page.getByRole("button", { name: "Explorar em 3D", exact: true }).click();
-  const reader = page.getByRole("region", { name: "Relato da parada" });
+  await returnToOcean.click();
+  const reader = stopReader(page);
   await reader.locator(".logbook summary:visible").focus();
   await page.keyboard.press("Enter");
   await page.keyboard.press("Escape");
@@ -112,7 +136,8 @@ test("Escape closes Caderno before the reader and never changes presentation", {
   await expect(page.locator("#fernando-de-noronha-signal-1")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(reader).toBeHidden();
+  await expect(page.getByRole("button", { name: "Saiba mais", exact: true })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "three-dimensional");
-  await expect(page.locator("#voyage-ocean")).toBeFocused();
+  await expect(page.getByRole("button", { name: "Saiba mais", exact: true })).toBeFocused();
 });

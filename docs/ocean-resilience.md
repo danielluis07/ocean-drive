@@ -32,16 +32,17 @@ degradation. First reduce DPR to the current tier's lower ceiling; if pressure
 continues, drop effects by one tier. Promotions require ten consecutive active
 seconds below 14 ms. Automatic changes are at least ten active seconds apart.
 Three consecutive Low windows above 33.3 ms lock 3D and open the preserved text
-presentation, including during cooldown or with a reduced-3D preference.
-Automático permits promotions; 3D reduzido selects Low and blocks promotions;
-Versão em texto suspends the scene. None clears failure locks.
+presentation, including during cooldown. Quality is always automatic since #36:
+the Visitor has no quality control. The stored preference remains in Voyage State
+only so the production gate can defer the lazy runtime; it never clears failure locks.
 
-The first context loss records the Ship's place on the route and opens text. The original
+The first context loss records the Ship's place on the route and opens the
+Accessible Editorial Presentation with a one-line explanation. The original
 canvas stays mounted for one restoration attempt. Native browser restoration and
 the context-loss extension converge on recompilation and valid-frame readiness.
 An eight-second foreground recovery deadline covers absent restoration events or
 stalled preparation; hiding or switching apps pauses that deadline. Readiness only
-offers explicit return. Failed recovery, an interrupted recovery across reload,
+offers an explicit “Voltar ao oceano”. Failed recovery, an interrupted recovery across reload,
 or a second loss locks 3D for the visit. The loss count and availability survive
 restart and tab-scoped persistence, with backward-compatible loading of v1 saves.
 

@@ -1,8 +1,8 @@
-export default function InstituteMark() {
+export default function InstituteMark({ className = "institute-mark" }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
-      className="institute-mark"
+      className={className}
       viewBox="0 0 52 52"
       fill="none">
       <circle cx="26" cy="26" r="24.5" stroke="currentColor" />

@@ -79,6 +79,7 @@ describe("Voyage transitions", () => {
     );
     expect(state).toEqual({
       ...createInitialVoyageState(),
+      presentation: "editorial",
       threeDAvailability: { status: "unavailable", reason: "context-loss" },
     });
   });

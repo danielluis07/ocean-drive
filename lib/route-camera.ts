@@ -10,12 +10,17 @@ export type CameraFrame = {
   target: [number, number, number];
 };
 
+// Portrait framing leaves room below the Ship; landscape framing, beside it.
+export function isPortraitViewport(viewport: { width: number; height: number }) {
+  return viewport.width > 0 && viewport.height > 0 && viewport.width < viewport.height;
+}
+
 // The Ship sits off-centre so a Stop Card can stand beside it: left of centre on
 // landscape viewports (card to the right), above centre on portrait (card below).
 // The camera keeps a fixed north-up orientation; only the Ship turns.
 export function frameRouteCamera(ship: RoutePoint, viewport: { width: number; height: number }): CameraFrame {
   const aspect = viewport.width > 0 && viewport.height > 0 ? viewport.width / viewport.height : 1;
-  const portrait = aspect < 1;
+  const portrait = isPortraitViewport(viewport);
   const height = portrait ? 92 : 64;
   const halfHeight = height * Math.tan((CAMERA_FOV * Math.PI) / 360);
   const halfWidth = halfHeight * aspect;

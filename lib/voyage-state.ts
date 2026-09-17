@@ -49,7 +49,8 @@ export function createInitialVoyageState(): VoyageState {
     visitedStops: [],
     complete: false,
     routeProgress: 0,
-    presentation: "editorial",
+    // The ocean scene is the default; the editorial presentation is chosen or a fallback.
+    presentation: "three-dimensional",
     qualityPreference: "automatic",
     contextLosses: 0,
     threeDAvailability: { status: "available" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type Dispatch, type ReactNode, type RefObject, type SetStateAction } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { StopId } from "@/content/editorial";
 import { createChartedRoute, type ChartedRoute } from "@/lib/charted-route";
 import { oceanConfiguration } from "@/lib/ocean-config";
@@ -21,7 +21,8 @@ type VoyageContextValue = {
   signalPages: Partial<Record<StopId, number>>;
   setSignalPage: (stop: StopId, page: number) => void;
   chartedRoute: ChartedRoute;
-  route: RefObject<RouteMotion>;
+  // One Ship's motion for the whole visit; the object itself never changes.
+  route: RouteMotion;
   // Move the Ship to a Stop: it sails there in 3D and arrives at once elsewhere.
   goToStop: (stop: StopId) => void;
   // One polite live region serves both presentations.
@@ -42,7 +43,7 @@ export function VoyageProvider({ children }: { children: ReactNode }) {
   const [allSourcesOpen, setAllSourcesOpen] = useState(false);
   const [signalPages, setSignalPages] = useState<Partial<Record<StopId, number>>>({});
   const [announcement, setAnnouncement] = useState("");
-  const route = useRef(createRouteMotion(chartedRoute));
+  const [route] = useState(() => createRouteMotion(chartedRoute));
   const presentation = useRef(voyage.presentation);
   const pendingAnnouncement = useRef<number | null>(null);
   useEffect(() => {
@@ -67,10 +68,10 @@ export function VoyageProvider({ children }: { children: ReactNode }) {
   }, []);
   const goToStop = useCallback((stop: StopId) => {
     const sailing = presentation.current === "three-dimensional";
-    route.current.goTo(stopIndex(stop), { cut: !sailing });
+    route.goTo(stopIndex(stop), { cut: !sailing });
     // The 3D scene records the arrival when the Ship settles there.
     if (!sailing) setVoyage((current) => transitionVoyage(current, { type: "arrive-at-stop", stop }));
-  }, []);
+  }, [route]);
   return (
     <VoyageContext value={{ voyage, setVoyage, enhanced, setEnhanced, readerOpen, setReaderOpen, allSourcesOpen, setAllSourcesOpen, signalPages, setSignalPage, chartedRoute, route, goToStop, announcement, announce }}>
       {children}

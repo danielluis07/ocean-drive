@@ -4,16 +4,17 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
 import { useVesselScene } from "@/lib/use-vessel-scene";
 import { qualityEnvelope, type OceanQuality } from "@/lib/ocean-quality";
-import { stops, type StopId } from "@/content/editorial";
+import type { StopId } from "@/content/editorial";
 import type { OceanConfiguration } from "@/lib/ocean-config";
-import StopLabel from "@/components/ocean/stop-label";
 import StopMarker from "@/components/ocean/stop-marker";
 import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
 import type { RouteMotion } from "@/lib/route-motion";
-import { CAMERA_FOV, frameRouteCamera } from "@/lib/route-camera";
+import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
+import { LANDMARK_EXTENT, projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
+import type { StageLayout } from "@/lib/stage-layout";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
 
@@ -29,15 +30,15 @@ type RuntimeProps = {
   active: boolean;
   reading: boolean;
   chartedRoute: ChartedRoute;
-  route: RefObject<RouteMotion>;
-  settledStop: number | null;
+  route: RouteMotion;
   visitedStops: StopId[];
   inputConnected: RefObject<boolean>;
   onStage: (stage: PreparationStage) => void;
   onFailure: () => void;
   onCanvas: (canvas: HTMLCanvasElement) => void;
   onSettle: (stop: number | null) => void;
-  onOpenStop: (stop: StopId) => void;
+  // Where the settled Ship and its Landmark appear, so the Stop Card stands clear of both.
+  onLayout: (layout: StageLayout) => void;
 };
 
 // Reduced motion keeps the water alive but slows its swell.
@@ -63,6 +64,7 @@ function SailableScene(props: RuntimeProps) {
   const frameWasActive = useRef(false);
   const reportedStop = useRef<number | null | undefined>(undefined);
   const cameraPosition = useMemo(() => new Vector3(), []);
+  const projection = useMemo(() => new Vector3(), []);
   const material = useMemo(() => new ShaderMaterial({
     defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {},
     uniforms: { time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, moving: { value: 0 }, wakeDetail: { value: 1 } },
@@ -172,7 +174,7 @@ function SailableScene(props: RuntimeProps) {
       const seconds = measuring && frameWasActive.current ? Math.min(delta, 0.05) : 0;
       lastFrame.current = measuring ? now : null;
       frameWasActive.current = measuring;
-      const motion = props.route.current.advance(seconds, now, props.reducedMotion);
+      const motion = props.route.advance(seconds, now, props.reducedMotion);
       if (reportedStop.current !== motion.settledStop) {
         reportedStop.current = motion.settledStop;
         props.onSettle(motion.settledStop);
@@ -207,6 +209,15 @@ function SailableScene(props: RuntimeProps) {
       if (!measuring && camera.position.distanceToSquared(cameraPosition.set(...framing.position)) > 0.001) invalidate();
       camera.position.set(...framing.position);
       camera.lookAt(...framing.target);
+      if (motion.settledStop !== null) {
+        camera.updateMatrixWorld();
+        const landmark = props.configuration.stops[motion.settledStop].landmark;
+        props.onLayout({
+          portrait: isPortraitViewport(size),
+          ship: projectWaterCircle(camera, pose.position, SHIP_EXTENT, size, projection),
+          landmark: landmark ? projectWaterCircle(camera, { x: landmark[0], z: landmark[1] }, LANDMARK_EXTENT, size, projection) : null,
+        });
+      }
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       oceanDraws.current = 0;
       gl.render(scene, camera);
@@ -231,9 +242,6 @@ function SailableScene(props: RuntimeProps) {
     }
   }, 1);
 
-  const settled = props.settledStop === null ? null : props.configuration.stops[props.settledStop];
-  const labelledStop = settled && stops[props.settledStop!].signals.length > 0 ? settled : null;
-
   return (
     <>
       <color attach="background" args={["#183047"]} />
@@ -252,14 +260,6 @@ function SailableScene(props: RuntimeProps) {
           animated={props.active && !props.reading && !props.reducedMotion}
         />
       ) : null)}
-      {labelledStop && props.active && !props.reading ? (
-        <StopLabel
-          anchorage={labelledStop.anchorage}
-          number={String(props.settledStop).padStart(2, "0")}
-          name={stops[props.settledStop!].name}
-          onOpen={() => props.onOpenStop(labelledStop.id)}
-        />
-      ) : null}
     </>
   );
 }
@@ -272,7 +272,7 @@ export default function OceanRuntime(props: RuntimeProps) {
       frameloop={!props.visible ? "never" : props.active && !props.reading ? "always" : "demand"}
       gl={{ alpha: false, antialias: true, powerPreference: "default" }}
       onCreated={({ gl }) => props.onCanvas(gl.domElement)}
-      fallback="A navegação em 3D não está disponível. Use a versão em texto.">
+      fallback="O oceano em 3D não está disponível. Use o modo leitura.">
       <Suspense fallback={null}><SailableScene {...props} /></Suspense>
     </Canvas>
   );

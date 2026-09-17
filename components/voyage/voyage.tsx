@@ -54,22 +54,21 @@ function VoyageContent() {
     announcement,
     announce,
   } = useVoyage();
-  const threeD = voyage.presentation === "three-dimensional";
+  // Server rendering and no-JavaScript visits always carry the editorial content.
+  const threeD = enhanced && voyage.presentation === "three-dimensional";
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
+      // The chosen presentation is restored too: a Visitor in “Modo leitura” stays there.
       let restored = createInitialVoyageState();
       try {
-        restored = transitionVoyage(loadVoyageState(sessionStorage), {
-          type: "set-presentation",
-          presentation: "editorial",
-        });
+        restored = loadVoyageState(sessionStorage);
       } catch {
         /* Storage access itself may be refused. */
       }
       // The Ship never rests between Stops, including after a reload mid-passage.
       const stop = nearestStopIndex(chartedRoute, restored.routeProgress);
-      route.current.goTo(stop, { cut: true });
+      route.goTo(stop, { cut: true });
       setVoyage(transitionVoyage(restored, { type: "arrive-at-stop", stop: stopIds[stop] }));
       setEnhanced(true);
     });
@@ -128,7 +127,7 @@ function VoyageContent() {
   }
 
   function restartVoyage() {
-    route.current.goTo(0, { cut: true });
+    route.goTo(0, { cut: true });
     setVoyage((current) =>
       transitionVoyage(current, { type: "restart-voyage" }),
     );
@@ -142,7 +141,8 @@ function VoyageContent() {
     closeDisclosures();
     setReaderOpen(false);
     setAllSourcesOpen(false);
-    focusOceanTarget("voyage-ocean");
+    // Return to the Stop Card's “Saiba mais”, which reappears as the reader closes.
+    focusOceanTarget("stop-card-action", "voyage-ocean");
   }
 
   function showSources() {
