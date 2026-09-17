@@ -43,11 +43,19 @@ export function createRouteMotion(route: ChartedRoute, initialStop = 0) {
   let pace = CRUISE_STOPS_PER_SECOND;
   let heading: 1 | -1 = 1;
   let held: HeldCourse | null = null;
+  // Every Stop is called at: the Anchor is the Stop the Ship last rested at, and
+  // input reaches no further than the Stops either side of it. One gesture is
+  // therefore one passage, however long the Visitor keeps scrolling.
+  let anchor = progress;
 
   const frame = (): RouteFrame => {
     const moving = progress !== target;
     return { progress, target, moving, settledStop: !moving && Number.isInteger(target) ? target : null };
   };
+
+  // Clamped to the route, then to the passage the Visitor is allowed to sail.
+  const reachable = (value: number) =>
+    Math.min(anchor + 1, Math.max(anchor - 1, clampProgress(route, value)));
 
   const passagePace = () =>
     Math.min(FASTEST_PASSAGE, Math.max(SLOWEST_PASSAGE, Math.abs(target - progress) / PASSAGE_SECONDS));
@@ -75,13 +83,13 @@ export function createRouteMotion(route: ChartedRoute, initialStop = 0) {
     // Continuous input (wheel, trackpad, touch), measured in Stops.
     scroll(stops: number, now: number) {
       if (!Number.isFinite(stops) || stops === 0) return;
-      target = clampProgress(route, target + stops);
+      target = reachable(target + stops);
       lastInput = now;
       steer(stops > 0 ? 1 : -1);
     },
     // Discrete input (Page keys) moves exactly one Stop from the current course.
     step(direction: 1 | -1) {
-      target = adjacentStopIndex(route, target, direction);
+      target = reachable(adjacentStopIndex(route, target, direction));
       lastInput = -Infinity;
       heading = direction;
       pace = passagePace();
@@ -95,7 +103,7 @@ export function createRouteMotion(route: ChartedRoute, initialStop = 0) {
     letGo(now: number) {
       if (!held) return;
       if (!held.stepped && now - held.since < TAP_MS) {
-        target = adjacentStopIndex(route, held.origin, held.direction);
+        target = reachable(adjacentStopIndex(route, held.origin, held.direction));
         pace = passagePace();
       }
       held = null;
@@ -103,8 +111,10 @@ export function createRouteMotion(route: ChartedRoute, initialStop = 0) {
     },
     // Programmatic navigation, such as the chapters menu. A cut places the Ship
     // immediately, as when the scene is not showing.
+    // A chosen chapter is the one passage the Visitor may skip.
     goTo(stop: number, { cut = false } = {}) {
       target = Math.round(clampProgress(route, stop));
+      anchor = target;
       lastInput = -Infinity;
       held = null;
       if (target !== progress) heading = target > progress ? 1 : -1;
@@ -120,22 +130,27 @@ export function createRouteMotion(route: ChartedRoute, initialStop = 0) {
       const delta = Math.max(0, Math.min(seconds, 0.05));
       if (held && !held.stepped && reducedMotion) {
         // Reduced motion answers a held key at once with a single Stop.
-        target = adjacentStopIndex(route, held.origin, held.direction);
+        target = reachable(adjacentStopIndex(route, held.origin, held.direction));
         held.stepped = true;
       } else if (held && !reducedMotion && now - held.since >= TAP_MS) {
         held.stepped = true;
-        target = clampProgress(route, target + held.direction * HELD_STOPS_PER_SECOND * delta);
+        target = reachable(target + held.direction * HELD_STOPS_PER_SECOND * delta);
         lastInput = now;
       }
-      if (now - lastInput >= SETTLE_DELAY_MS) dock(reducedMotion);
+      // The gesture has ended once input stops for the settle delay, or the key
+      // is let go; only then does a Stop the Ship is resting at become the Anchor.
+      const idle = !held && now - lastInput >= SETTLE_DELAY_MS;
+      if (idle) dock(reducedMotion);
       if (reducedMotion) {
         progress = nearestStopIndex(route, target);
+        if (idle) anchor = progress;
         return frame();
       }
       const remaining = target - progress;
       const eased = remaining * (1 - Math.exp(-delta * EASING_RATE));
       const capped = Math.sign(remaining) * Math.min(Math.abs(eased), pace * delta);
       progress = Math.abs(remaining - capped) < ARRIVED ? target : progress + capped;
+      if (idle && progress === target && Number.isInteger(progress)) anchor = progress;
       return frame();
     },
   };

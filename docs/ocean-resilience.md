@@ -28,8 +28,11 @@ the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop 
 Low for coarse pointers/small screens once; subsequent changes use measurements.
 
 Two-second p90 windows above 20 ms must occur three times consecutively before
-degradation. First reduce DPR to the current tier's lower ceiling; if pressure
-continues, drop effects by one tier. Promotions require ten consecutive active
+degradation. Resolution is the last thing the ocean gives up: first drop effects
+by one tier, keeping the sharpness the scene already has; only once the water is
+as plain as it gets does DPR step down, 1.25 to 1 to 0.75. A blurred ocean is more
+conspicuous than a calmer one, and a passage keeps the wake shader busy from Stop
+to Stop, so pressure lasts as long as the sailing does. Promotions require ten consecutive active
 seconds below 14 ms. Automatic changes are at least ten active seconds apart.
 Three consecutive Low windows above 33.3 ms lock 3D and open the preserved text
 presentation, including during cooldown. Quality is always automatic since #36:

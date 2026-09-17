@@ -35,7 +35,14 @@ Stops per second.
 | Tap an arrow key (under 200 ms), PageDown / PageUp | Next or previous Stop |
 | “Capítulos” (`goToStop(stop)` from `useVoyage()`) | Sails to that Stop in 3D and arrives immediately in the editorial presentation |
 
-The Visitor chooses where the Ship rests. When continuous input stops for 350 ms,
+The Ship calls at every Stop. The Anchor is the Stop it last rested at, and input
+reaches no further than the Stops either side of it, so one gesture is one passage
+however long the Visitor keeps scrolling: the Ship comes to rest at the next Stop,
+and only a fresh gesture — the wheel pausing for the settle delay, a key let go and
+pressed again — sails on. A chapter chosen from “Capítulos” is the one passage the
+Visitor may skip, and it moves the Anchor with it.
+
+The Visitor chooses where the Ship rests between Stops. When continuous input stops for 350 ms,
 or a held key is let go, the Ship carries on into the Stop ahead of it on its
 current heading if it has come within 0.15 Stops of it; a nudge under 0.03 Stops
 leaves it at the Stop it was already resting at. Otherwise it rests in open water,
@@ -71,8 +78,8 @@ in the ocean scene; a reload keeps a Visitor who chose “Modo leitura” there.
 
 ## Verification
 
-- `bun test` covers progress mapping, docking and resting in open water, held
-  and tapped keys, Stop steps, reduced
+- `bun test` covers progress mapping, calling at every Stop, docking and resting
+  in open water, held and tapped keys, Stop steps, reduced
   motion cuts, camera pitch and framing, and Voyage State transitions and
   persistence.
 - `tests/browser/charted-route.e2e.ts` covers wheel, touch, held and tapped key

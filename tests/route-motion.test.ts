@@ -60,7 +60,7 @@ describe("Following the Visitor's input", () => {
     motion.scroll(3, 0);
     expect(motion.frame().target).toBe(4);
     motion.scroll(-12, 0);
-    expect(motion.frame().target).toBe(0);
+    expect(motion.frame().target).toBe(3);
   });
 
   test("a stalled frame never jumps the Ship across the route", () => {
@@ -93,7 +93,7 @@ describe("Docking and open water", () => {
     expect(motion.frame().settledStop).toBe(1);
   });
 
-  test.each([0.4, 0.5, 1.7])("after scrolling %p Stops into open water, the Ship rests there", (distance) => {
+  test.each([0.4, 0.5, 0.7])("after scrolling %p Stops into open water, the Ship rests there", (distance) => {
     const motion = createRouteMotion(route);
     motion.scroll(distance, 0);
     run(motion, 0, 30_000);
@@ -120,6 +120,61 @@ describe("Docking and open water", () => {
     expect(motion.frame().target).toBe(DOCKING_CLING / 2);
     motion.advance(FRAME_MS / 1000, SETTLE_DELAY_MS, false);
     expect(motion.frame().target).toBe(0);
+  });
+});
+
+describe("Calling at every Stop", () => {
+  test("one long gesture sails one passage and the Ship holds at the Stop", () => {
+    const motion = createRouteMotion(route);
+    let now = 0;
+    // Scrolling on and on, well past Stop 01, without ever pausing.
+    for (let frame = 0; frame < 600; frame++) {
+      motion.scroll(0.05, now);
+      now += FRAME_MS;
+      expect(motion.advance(FRAME_MS / 1000, now, false).progress).toBeLessThanOrEqual(1);
+    }
+    expect(motion.frame().settledStop).toBe(1);
+  });
+
+  test("the Ship sails on once the gesture has ended", () => {
+    const motion = createRouteMotion(route);
+    motion.scroll(3, 0);
+    let now = run(motion, 0, 10_000);
+    expect(motion.frame().settledStop).toBe(1);
+    motion.scroll(3, now);
+    now = run(motion, now, 10_000);
+    expect(motion.frame().settledStop).toBe(2);
+  });
+
+  test("repeated taps before the Ship arrives never skip a Stop", () => {
+    const motion = createRouteMotion(route);
+    motion.step(1);
+    motion.step(1);
+    motion.step(1);
+    expect(motion.frame().target).toBe(1);
+    const now = run(motion, 0, 10_000);
+    expect(motion.frame().settledStop).toBe(1);
+    motion.step(1);
+    run(motion, now, 10_000);
+    expect(motion.frame().settledStop).toBe(2);
+  });
+
+  test("a chosen chapter is the one passage the Visitor may skip", () => {
+    const motion = createRouteMotion(route);
+    motion.goTo(3);
+    const now = run(motion, 0, 20_000);
+    expect(motion.frame().settledStop).toBe(3);
+    // The Anchor moves with it, so the route carries on from there.
+    motion.scroll(3, now);
+    run(motion, now, 20_000);
+    expect(motion.frame().settledStop).toBe(4);
+  });
+
+  test("reduced motion still cuts one Stop at a time", () => {
+    const motion = createRouteMotion(route);
+    motion.step(1);
+    motion.step(1);
+    expect(motion.advance(FRAME_MS / 1000, 0, true).settledStop).toBe(1);
   });
 });
 
@@ -160,8 +215,10 @@ describe("Held keys", () => {
     motion.hold(1, 0);
     motion.letGo(TAP_MS - 1);
     expect(motion.frame().target).toBe(1);
-    motion.hold(1, 1000);
-    motion.letGo(1000);
+    // Once the Ship has called at Stop 01, the next tap sails on to Stop 02.
+    const now = run(motion, 0, 10_000);
+    motion.hold(1, now);
+    motion.letGo(now);
     expect(motion.frame().target).toBe(2);
 
     const between = createRouteMotion(route, 1);
@@ -181,16 +238,18 @@ describe("Held keys", () => {
 });
 
 describe("Stop-to-Stop navigation", () => {
-  test("each step moves exactly one Stop, including repeated presses", () => {
+  test("each step moves exactly one Stop, in either direction", () => {
     const motion = createRouteMotion(route);
     motion.step(1);
     expect(motion.frame().target).toBe(1);
+    let now = run(motion, 0, 30_000);
+    expect(motion.frame().settledStop).toBe(1);
     motion.step(1);
     expect(motion.frame().target).toBe(2);
-    run(motion, 0, 30_000);
+    now = run(motion, now, 30_000);
     expect(motion.frame().settledStop).toBe(2);
     motion.step(-1);
-    run(motion, 0, 30_000);
+    run(motion, now, 30_000);
     expect(motion.frame().settledStop).toBe(1);
   });
 

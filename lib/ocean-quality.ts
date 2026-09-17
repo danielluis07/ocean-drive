@@ -9,6 +9,9 @@ export const qualityEnvelope = {
   low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0, wakePoints: 0 },
 } as const;
 
+// The rungs the plainest water steps down, once there is no effect left to shed.
+const dprLadder = [qualityEnvelope.balanced.maxDpr, qualityEnvelope.low.maxDpr, qualityEnvelope.low.minDpr];
+
 // This clock receives measured frame intervals only while the 3D voyage is visible and not being read.
 // Suspending discards partial windows and consecutive evidence, not cooldown time.
 export function createQualityController(hints: { coarsePointer: boolean; smallScreen: boolean; deviceDpr: number }) {
@@ -64,11 +67,15 @@ export function createQualityController(hints: { coarsePointer: boolean; smallSc
       }
       if (activeMs - lastChange < 10_000) return current();
       if (slowWindows >= 3) {
-        const envelope = qualityEnvelope[tier];
-        if (dpr > envelope.minDpr) change(tier, envelope.minDpr);
-        else if (tier !== "low") {
-          const nextTier = tier === "high" ? "balanced" : "low";
-          change(nextTier, qualityEnvelope[nextTier].maxDpr);
+        // Resolution is the last thing the ocean gives up: under pressure it
+        // drops effects a tier at a time, keeping the sharpness it has, and only
+        // steps DPR down once the water is as plain as it gets. A blurred ocean
+        // is more conspicuous than a calmer one, and a long passage keeps the
+        // wake shader busy from Stop to Stop.
+        if (tier !== "low") change(tier === "high" ? "balanced" : "low", dpr);
+        else {
+          const step = dprLadder.find((rung) => rung < dpr);
+          if (step !== undefined) change(tier, step);
         }
       } else if (fastMs >= 10_000 && preference === "automatic") {
         if (dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr)) change(tier, qualityEnvelope[tier].maxDpr);

@@ -1,13 +1,14 @@
 import { expect, test } from "bun:test";
 import { createQualityController } from "@/lib/ocean-quality";
 
-test("three slow active windows lower DPR before removing effects", () => {
+test("three slow active windows remove effects before lowering DPR", () => {
   const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 3 });
   expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
   for (let frame = 0; frame < 200; frame++) quality.frame(30);
   expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
   for (let frame = 0; frame < 4; frame++) quality.frame(30);
-  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false });
+  // The water goes plain, and stays exactly as sharp as it was.
+  expect(quality.current()).toEqual({ tier: "low", dpr: 1.25, fallback: false });
 });
 
 test("quality needs ten active fast seconds to promote and ten seconds between changes", () => {
@@ -17,15 +18,15 @@ test("quality needs ten active fast seconds to promote and ten seconds between c
   quality.frame(10);
   expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
   for (let frame = 0; frame < 204; frame++) quality.frame(30);
-  expect(quality.current().dpr).toBe(1.25);
+  expect(quality.current().tier).toBe("balanced");
   for (let frame = 0; frame < 136; frame++) quality.frame(30);
-  expect(quality.current().dpr).toBe(1);
+  expect(quality.current()).toEqual({ tier: "low", dpr: 1.25, fallback: false });
 });
 
-test("continued pressure drops effects one tier at a time, then reaches Low's minimum DPR", () => {
+test("continued pressure drops effects one tier at a time, then steps Low's DPR down", () => {
   const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   for (let frame = 0; frame < 240; frame++) quality.frame(25);
-  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false });
+  expect(quality.current()).toEqual({ tier: "low", dpr: 1.25, fallback: false });
   for (let frame = 0; frame < 400; frame++) quality.frame(25);
   expect(quality.current()).toEqual({ tier: "low", dpr: 1, fallback: false });
   for (let frame = 0; frame < 400; frame++) quality.frame(25);

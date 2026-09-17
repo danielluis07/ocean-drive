@@ -71,6 +71,11 @@ test(
     expect(
       await page.evaluate(() => document.documentElement.scrollTop),
     ).toBe(0);
+    // One gesture is one passage: scrolling far past Stop 01 without pausing
+    // still calls there, and only a fresh gesture sails on.
+    await wheelOverOcean(page, 110, 40);
+    await expectSettledAt(page, 1);
+    expect((await voyageState(page)).routeProgress).toBe(1);
   },
 );
 
@@ -89,6 +94,8 @@ test(
     await page.keyboard.press("PageUp");
     await expectSettledAt(page, 2);
     await page.keyboard.press("ArrowUp");
+    await expectSettledAt(page, 1);
+    // A second press before the Ship has called at Stop 01 would be ignored.
     await page.keyboard.press("ArrowLeft");
     await expectSettledAt(page, 0);
     expect((await voyageState(page)).currentStop).toBe("partida");
@@ -188,8 +195,11 @@ test(
   async ({ page }) => {
     test.setTimeout(180_000);
     await enter(page);
-    for (let stop = 0; stop < 4; stop++) await page.keyboard.press("ArrowDown");
-    await expectSettledAt(page, 4, 60_000);
+    // The Ship calls at every Stop: each passage is its own press.
+    for (let stop = 1; stop <= 4; stop++) {
+      await page.keyboard.press("ArrowDown");
+      await expectSettledAt(page, stop, 60_000);
+    }
     await expect
       .poll(async () => (await voyageState(page)).complete)
       .toBe(true);
