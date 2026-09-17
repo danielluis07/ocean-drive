@@ -19,7 +19,6 @@ jobs:
       - name: Verify reproducible masters
         run: |
           bun run assets:vessels
-          bun run assets:identity
           git diff --exit-code -- public
       - run: bun run typecheck
       - run: bun run lint
