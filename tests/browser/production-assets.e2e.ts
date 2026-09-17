@@ -73,6 +73,16 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   await page.clock.install();
   await page.keyboard.press("ArrowDown");
   await page.clock.runFor(2400);
+  // Keep sailing until at least one two-second timing window is recorded; slow
+  // software rendering on CI can need more than the fixed passage above.
+  await expect
+    .poll(async () => {
+      await page.clock.runFor(500);
+      return page.evaluate(
+        () => JSON.parse(window.__oceanDiagnostics!.exportJSON()).timing.windows.length,
+      );
+    })
+    .toBeGreaterThan(0);
   await page.getByRole("link", { name: "Modo leitura", exact: true }).click();
   for (const stop of [
     "Fernando de Noronha",
