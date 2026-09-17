@@ -23,9 +23,9 @@ export const oceanConfiguration: OceanConfiguration = {
   },
   stops: [
     { id: "partida", anchorage: [0, 0], landmark: null, color: "#f4f7f8" },
-    { id: "fernando-de-noronha", anchorage: [30, -70], landmark: [16, -78], color: "#ffdda2" },
-    { id: "boipeba", anchorage: [-14, -140], landmark: [-28, -148], color: "#ecc5ac" },
-    { id: "abrolhos", anchorage: [18, -205], landmark: [4, -213], color: "#b3ded5" },
-    { id: "ilha-grande", anchorage: [-16, -280], landmark: [-30, -288], color: "#f4e9bc" },
+    { id: "fernando-de-noronha", anchorage: [48, -112], landmark: [34, -120], color: "#ffdda2" },
+    { id: "boipeba", anchorage: [-22, -224], landmark: [-36, -232], color: "#ecc5ac" },
+    { id: "abrolhos", anchorage: [29, -328], landmark: [15, -336], color: "#b3ded5" },
+    { id: "ilha-grande", anchorage: [-26, -448], landmark: [-40, -456], color: "#f4e9bc" },
   ],
 };

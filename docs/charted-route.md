@@ -19,25 +19,35 @@ and progress is clamped to the route, so the Ship cannot leave it.
 ## Motion and input
 
 `lib/route-motion.ts` owns the Ship's place on the route. Input moves a target;
-each frame eases the Ship toward it, capped at 0.9 Stops per second and 50 ms per
-frame, so a stalled frame never jumps along the route.
+each frame eases the Ship toward it and 50 ms at a time, so a stalled frame never
+jumps along the route. The easing is close enough to the input that a short scroll
+is a short move that ends when the scrolling does, and the Ship never sails faster
+than 0.5 Stops per second under the Visitor's own input. A step or a chosen chapter
+sails its passage in about 3.5 seconds, never slower than 0.3 or faster than 0.9
+Stops per second.
 
 | Input | Effect |
 | --- | --- |
-| Wheel / trackpad over the ocean | Moves the target continuously (700 px per Stop) |
-| Touch swipe over the ocean | Moves the target continuously (60% of the viewport height per Stop; swipe up sails forward) |
-| ArrowDown / ArrowRight / PageDown | Next Stop |
-| ArrowUp / ArrowLeft / PageUp | Previous Stop |
+| Wheel / trackpad over the ocean | Moves the target continuously (1800 px per Stop) |
+| Touch swipe over the ocean | Moves the target continuously (one viewport height per Stop; swipe up sails forward) |
+| Hold ArrowDown / ArrowRight | Sails forward while held (0.25 Stops per second) |
+| Hold ArrowUp / ArrowLeft | Sails back while held |
+| Tap an arrow key (under 200 ms), PageDown / PageUp | Next or previous Stop |
 | “Capítulos” (`goToStop(stop)` from `useVoyage()`) | Sails to that Stop in 3D and arrives immediately in the editorial presentation |
 
-When continuous input stops for 350 ms, the target settles on the nearest Stop,
-so the Ship never rests between Stops. A step moves exactly one Stop from the
-current course. Keys are ignored in form fields and while a Sheet is open, and
+The Visitor chooses where the Ship rests. When continuous input stops for 350 ms,
+or a held key is let go, the Ship carries on into the Stop ahead of it on its
+current heading if it has come within 0.15 Stops of it; a nudge under 0.03 Stops
+leaves it at the Stop it was already resting at. Otherwise it rests in open water,
+with no Stop Card, until the Visitor sails on: the Ship never reverses course on
+its own to a Stop the Visitor has left behind. A step moves exactly one Stop from
+the current course, and a tap counts from where the key was pressed. A reload in
+open water resumes at the nearest Stop. Keys are ignored in form fields and while a Sheet is open, and
 route input only applies in the visible, ready 3D presentation. A
 hidden page ends input and records the Ship's place on the route.
 
 With `prefers-reduced-motion`, the scene keeps the 3D presentation but cuts from
-Stop to Stop instead of sailing, slows the waves, and disables the Ship's pitch and
+Stop to Stop instead of sailing (never resting in open water), slows the waves, and disables the Ship's pitch and
 roll.
 
 ## Camera
@@ -61,9 +71,10 @@ in the ocean scene; a reload keeps a Visitor who chose “Modo leitura” there.
 
 ## Verification
 
-- `bun test` covers progress mapping, nearest-Stop settling, Stop steps, reduced
+- `bun test` covers progress mapping, docking and resting in open water, held
+  and tapped keys, Stop steps, reduced
   motion cuts, camera pitch and framing, and Voyage State transitions and
   persistence.
-- `tests/browser/charted-route.e2e.ts` covers wheel, touch, and key navigation,
-  settling, opening a Stop, reload/history persistence, completion, restart, and
+- `tests/browser/charted-route.e2e.ts` covers wheel, touch, held and tapped key
+  navigation, docking, resting in open water, opening a Stop, reload/history persistence, completion, restart, and
   reduced motion in the running app.

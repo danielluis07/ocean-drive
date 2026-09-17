@@ -94,7 +94,7 @@ test("font and optional vessel detail failures never gate a usable ocean", async
   await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-quality", "low");
   await expectOceanReady(page);
   await page.keyboard.press("ArrowDown");
-  await page.clock.runFor(4000);
+  await page.clock.runFor(8000);
   await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-settled-stop", "1");
 });
 
@@ -146,7 +146,7 @@ for (const event of ["visibilitychange", "pagehide", "blur"] as const) {
     await page.clock.install();
     await page.clock.pauseAt(new Date(Date.now() + 1000));
     await page.locator("#voyage-ocean canvas").evaluate((canvas) => {
-      for (let event = 0; event < 4; event++) canvas.dispatchEvent(new WheelEvent("wheel", { bubbles: true, cancelable: true, deltaY: 100 }));
+      for (let event = 0; event < 16; event++) canvas.dispatchEvent(new WheelEvent("wheel", { bubbles: true, cancelable: true, deltaY: 100 }));
     });
     // Hide while still under way, before the settle delay ends.
     await page.clock.runFor(200);
@@ -167,8 +167,8 @@ for (const event of ["visibilitychange", "pagehide", "blur"] as const) {
         document.dispatchEvent(new Event(kind));
       } else window.dispatchEvent(new Event(kind === "pagehide" ? "pageshow" : "focus"));
     }, event);
-    // Input ended with the page hidden, so the Ship settles on the Stop nearest
-    // to where the Visitor scrolled (four notches pass the halfway point).
+    // Input ended with the page hidden, so the Ship docks at the Stop the
+    // Visitor scrolled close to (sixteen notches come within reach of Stop 01).
     await page.clock.runFor(6000);
     await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-settled-stop", "1");
     await expect.poll(() => storedProgress(page)).toBe(1);

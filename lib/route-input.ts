@@ -1,12 +1,13 @@
 import type { RouteMotion } from "@/lib/route-motion";
 
 // Calibration: how much wheel or finger travel sails the Ship one Stop.
-const WHEEL_PIXELS_PER_STOP = 700;
-const TOUCH_VIEWPORT_PER_STOP = 0.6;
+const WHEEL_PIXELS_PER_STOP = 1800;
+const TOUCH_VIEWPORT_PER_STOP = 1;
 const LINE_HEIGHT = 16;
 
-const forwardKeys = new Set(["ArrowDown", "ArrowRight", "PageDown"]);
-const backwardKeys = new Set(["ArrowUp", "ArrowLeft", "PageUp"]);
+// Arrow keys sail while held; Page keys go straight to the adjacent Stop.
+const heldKeys = new Map<string, 1 | -1>([["ArrowDown", 1], ["ArrowRight", 1], ["ArrowUp", -1], ["ArrowLeft", -1]]);
+const stepKeys = new Map<string, 1 | -1>([["PageDown", 1], ["PageUp", -1]]);
 
 type RouteInput = {
   route: () => RouteMotion | null;
@@ -30,6 +31,7 @@ function isEditable(target: EventTarget | null) {
 // outside form fields. Nothing here steers: input only moves along the route.
 export function connectRouteInput(surface: HTMLElement, input: RouteInput) {
   let touch: { id: number; y: number } | null = null;
+  let heldKey: string | null = null;
 
   const wheel = (event: WheelEvent) => {
     // Pinch-zoom arrives as a ctrl+wheel and remains the browser's.
@@ -55,14 +57,28 @@ export function connectRouteInput(surface: HTMLElement, input: RouteInput) {
   };
   const key = (event: KeyboardEvent) => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-    const direction = forwardKeys.has(event.key) ? 1 : backwardKeys.has(event.key) ? -1 : 0;
+    const holding = heldKeys.get(event.key);
+    const direction = holding ?? stepKeys.get(event.key);
     const route = input.route();
     if (!direction || !route || isEditable(event.target) || !input.enabled()) return;
     event.preventDefault();
-    route.step(direction);
+    if (!holding) route.step(direction);
+    else if (!event.repeat) {
+      heldKey = event.key;
+      route.hold(direction, performance.now());
+    }
+  };
+  const keyUp = (event: KeyboardEvent) => {
+    if (event.key !== heldKey) return;
+    heldKey = null;
+    const route = input.route();
+    // A key lifted once a Sheet has opened only stops the Ship.
+    if (input.enabled()) route?.letGo(performance.now());
+    else route?.release();
   };
   const release = () => {
     touch = null;
+    heldKey = null;
     input.route()?.release();
   };
 
@@ -72,6 +88,7 @@ export function connectRouteInput(surface: HTMLElement, input: RouteInput) {
   surface.addEventListener("pointerup", up);
   surface.addEventListener("pointercancel", up);
   document.addEventListener("keydown", key);
+  document.addEventListener("keyup", keyUp);
   window.addEventListener("blur", release);
   window.addEventListener("pagehide", release);
   return () => {
@@ -81,6 +98,7 @@ export function connectRouteInput(surface: HTMLElement, input: RouteInput) {
     surface.removeEventListener("pointerup", up);
     surface.removeEventListener("pointercancel", up);
     document.removeEventListener("keydown", key);
+    document.removeEventListener("keyup", keyUp);
     window.removeEventListener("blur", release);
     window.removeEventListener("pagehide", release);
   };

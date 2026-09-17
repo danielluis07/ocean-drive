@@ -429,7 +429,7 @@ export default function OceanPresentation({
           data-quality={quality.tier}
           data-dpr={quality.dpr}
           data-settled-stop={settledStop ?? undefined}
-          aria-label="Oceano da viagem. Role, deslize ou use as setas e Page Up ou Page Down para navegar entre as paradas."
+          aria-label="Oceano da viagem. Role, deslize ou segure as setas para navegar livremente; pressione uma seta, Page Up ou Page Down para ir à parada anterior ou seguinte."
           aria-hidden={!active}
           inert={!active}>
           <RuntimeErrorBoundary onFailure={failAsset}>

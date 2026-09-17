@@ -112,7 +112,7 @@ test("a Stop Card fades in when the Ship settles and out when scrolling resumes"
   expect(look.radius).toBeGreaterThanOrEqual(look.height / 2);
   expect(look.dot).toBe("rgb(255, 107, 74)");
 
-  await wheelOverOcean(page, 110, 6);
+  await wheelOverOcean(page, 110, 16);
   // Hiding makes the card inert at once, then it fades out while under way.
   await expect
     .poll(() => card.evaluate((element) => element.dataset.visible === "false" && (element as HTMLElement).inert))
@@ -159,9 +159,10 @@ test("each Stop change is announced once through the live region", { tag: "@crit
   await page.keyboard.press("ArrowDown");
   await expectSettledAt(page, 1);
   await expect.poll(announcements).toEqual(["Parada 01 · Fernando de Noronha."]);
-  // Scrolling a little and settling back on the same Stop announces nothing new.
+  // Sailing a little way out and back to the same Stop announces nothing new.
   await wheelOverOcean(page, 200);
   await expect(page.locator("#voyage-ocean")).not.toHaveAttribute("data-settled-stop", /.*/);
+  await wheelOverOcean(page, -200);
   await expectSettledAt(page, 1);
   await page.waitForTimeout(600);
   expect(await announcements()).toEqual(["Parada 01 · Fernando de Noronha."]);

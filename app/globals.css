@@ -975,9 +975,16 @@ body::-webkit-scrollbar-thumb {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
   html {
     @apply font-sans;
   }

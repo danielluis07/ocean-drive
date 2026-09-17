@@ -55,7 +55,7 @@ function VoyageContent() {
       } catch {
         /* Storage access itself may be refused. */
       }
-      // The Ship never rests between Stops, including after a reload mid-passage.
+      // A reload in open water resumes at the nearest Stop, so its card shows.
       const stop = nearestStopIndex(chartedRoute, restored.routeProgress);
       route.goTo(stop, { cut: true });
       setVoyage(transitionVoyage(restored, { type: "arrive-at-stop", stop: stopIds[stop] }));

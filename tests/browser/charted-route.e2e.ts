@@ -37,14 +37,14 @@ async function wheelOverOcean(page: Page, deltaY: number, events = 1) {
 }
 
 test(
-  "scrolling sails the Ship along the route and settles on the nearest Stop",
+  "scrolling sails the Ship freely and docks it close to a Stop",
   { tag: "@critical" },
   async ({ page }) => {
     test.setTimeout(90_000);
     await enter(page);
     const ocean = page.locator("#voyage-ocean");
-    // Several small wheel steps, like a trackpad, carry the Ship past halfway.
-    await wheelOverOcean(page, 110, 6);
+    // Several small wheel steps, like a trackpad, carry the Ship close to Stop 01.
+    await wheelOverOcean(page, 110, 16);
     // Under way, the Ship is between Stops.
     await expect(ocean).not.toHaveAttribute("data-settled-stop", /.*/);
     await expectSettledAt(page, 1);
@@ -55,12 +55,17 @@ test(
       .poll(async () => (await voyageState(page)).currentStop)
       .toBe("fernando-de-noronha");
     expect((await voyageState(page)).routeProgress).toBe(1);
-    // A short scroll back that does not reach halfway returns to the same Stop.
-    await wheelOverOcean(page, -300);
+    // A scroll back into open water leaves the Ship resting there, never pulled
+    // back to the Stop it left.
+    await wheelOverOcean(page, -400);
+    await expect
+      .poll(async () => (await voyageState(page)).routeProgress, { timeout: 30_000 })
+      .toBeCloseTo(1 - 400 / 1800, 3);
+    await page.waitForTimeout(1000);
     await expect(ocean).not.toHaveAttribute("data-settled-stop", /.*/);
-    await expectSettledAt(page, 1);
-    // A longer scroll back settles on the previous Stop.
-    await wheelOverOcean(page, -110, 6);
+    expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");
+    // Scrolling on within reach of the previous Stop docks there.
+    await wheelOverOcean(page, -110, 12);
     await expectSettledAt(page, 0);
     expect((await voyageState(page)).currentStop).toBe("partida");
     expect(
@@ -70,7 +75,7 @@ test(
 );
 
 test(
-  "arrow and page keys move exactly one Stop",
+  "tapping arrow keys and page keys moves exactly one Stop",
   { tag: "@critical" },
   async ({ page }) => {
     test.setTimeout(120_000);
@@ -87,6 +92,29 @@ test(
     await page.keyboard.press("ArrowLeft");
     await expectSettledAt(page, 0);
     expect((await voyageState(page)).currentStop).toBe("partida");
+  },
+);
+
+test(
+  "holding an arrow key sails freely and letting go rests in open water",
+  { tag: "@critical" },
+  async ({ page }) => {
+    test.setTimeout(90_000);
+    await enter(page);
+    const ocean = page.locator("#voyage-ocean");
+    await page.keyboard.down("ArrowDown");
+    await expect
+      .poll(async () => (await voyageState(page)).routeProgress, { timeout: 30_000 })
+      .toBeGreaterThan(0.3);
+    await page.keyboard.up("ArrowDown");
+    await page.waitForTimeout(2000);
+    await expect(ocean).not.toHaveAttribute("data-settled-stop", /.*/);
+    const resting = (await voyageState(page)).routeProgress;
+    expect(resting).toBeGreaterThan(0.2);
+    expect(resting).toBeLessThan(0.8);
+    // A tap from open water sails on to the next Stop.
+    await page.keyboard.press("ArrowDown");
+    await expectSettledAt(page, 1);
   },
 );
 
@@ -116,8 +144,8 @@ test(
       fire("pointerdown", start);
       // Sideways travel is ignored: only progress along the route changes.
       for (let step = 1; step <= 10; step++)
-        fire("pointermove", start - step * innerHeight * 0.05, step * 30);
-      fire("pointerup", start - innerHeight * 0.5, 300);
+        fire("pointermove", start - step * innerHeight * 0.09, step * 30);
+      fire("pointerup", start - innerHeight * 0.9, 300);
     });
     await expectSettledAt(page, 1);
     expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");
