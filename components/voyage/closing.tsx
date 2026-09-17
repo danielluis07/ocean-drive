@@ -1,18 +1,19 @@
-import InstituteMark from "@/components/voyage/institute-mark";
+import TravessiaMark from "@/components/voyage/travessia-mark";
+import { brand } from "@/content/editorial";
 
 export default function Closing() {
   return (
     <footer className="closing">
       <div className="closing__inner page-shell">
         <div className="identity identity--closing">
-          <InstituteMark />
+          <TravessiaMark />
           <span>
             Travessia<strong>Viagens costeiras</strong>
           </span>
         </div>
         <p>
-          Travessia
-          <span>Uma viagem pela costa brasileira.</span>
+          {brand.name}
+          <span>{brand.tagline}</span>
         </p>
         <a href="#conteudo-principal">Voltar ao início</a>
       </div>

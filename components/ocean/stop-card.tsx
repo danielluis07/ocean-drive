@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { RotateCcw } from "lucide-react";
-import { nextDeparture, type Stop } from "@/content/editorial";
+import { brand, type Stop } from "@/content/editorial";
 import { stopNumber } from "@/lib/voyage-view";
 
 type StopCardProps = {
@@ -102,7 +102,7 @@ export default function StopCard({
             {variant === "arrival" ? (
               // The closing card: the next departure takes the summary's place.
               <>
-                <p className="mt-3 max-w-[34ch] text-base leading-relaxed short:mt-1.5 short:text-sm short:leading-snug">{nextDeparture}</p>
+                <p className="mt-3 max-w-[34ch] text-base leading-relaxed short:mt-1.5 short:text-sm short:leading-snug">{brand.nextDeparture}</p>
                 <div className="mt-5 short:mt-3">
                   <button
                     id="stop-card-itinerary"

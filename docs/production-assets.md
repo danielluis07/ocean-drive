@@ -6,6 +6,12 @@ Every public file, local font and procedural visual source has an accountable
 source, retained rights record, transformation description and SHA-256 hash.
 `docs/third-party/dependencies.json` binds dependency notices to `bun.lock`.
 
+The six Stop Account images under `public/images/` are AI-generated
+illustrative visuals, allowed by the superseded asset policy in issue #33.
+Their provenance is `docs/third-party/ai-generated-images.md`; regenerating
+the manifest after adding or replacing one still goes through
+`bun run assets:record`.
+
 ## Reproduce and govern assets
 
 Use Bun 1.4.1 and the frozen lockfile:

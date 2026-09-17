@@ -1,4 +1,4 @@
-export default function InstituteMark({ className = "institute-mark" }: { className?: string }) {
+export default function TravessiaMark({ className = "travessia-mark" }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"

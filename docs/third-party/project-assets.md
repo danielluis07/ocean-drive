@@ -5,7 +5,7 @@ at commit 050de01837e97f2a6fb1e23abc134e9ef6483986. The vessel geometry is a
 simplification of the repository master in scripts/generate-vessels.mjs at that
 commit. Identity derivatives, outlined lettering, and the decorative vignette
 are deterministic code/vector work in scripts/generate-identity.mjs (the symbol now
-lives in components/voyage/institute-mark.tsx). The placeholder Stop markers,
+lives in components/voyage/travessia-mark.tsx). The placeholder Stop markers,
 water, wake and lighting are repository-authored procedural code. No stock,
 image-model output, scientific media, third-party model, map, HDRI or texture
 was imported. These are project source contributions, not commissioned external

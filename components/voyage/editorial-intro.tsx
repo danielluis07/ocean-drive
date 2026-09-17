@@ -1,15 +1,15 @@
-import { wrapperDisclosure } from "@/content/editorial";
+import { brand } from "@/content/editorial";
 import Image from "next/image";
 
 export default function EditorialIntro() {
   return (
     <section
       className="editorial-intro page-shell"
-      aria-labelledby="sobre-a-expedicao">
+      aria-labelledby="sobre-a-viagem">
       <div>
-        <h2 id="sobre-a-expedicao">
-          Uma rota composta para aproximar evidências que aconteceram em tempos,
-          lugares e escalas diferentes.
+        <h2 id="sobre-a-viagem">
+          Uma rota composta para reunir lugares reais da costa brasileira numa
+          única viagem.
         </h2>
         <Image
           src="/identity/editorial-vignette.v1.svg"
@@ -22,13 +22,13 @@ export default function EditorialIntro() {
       </div>
       <div className="editorial-intro__copy">
         <p>
-          Travessia dá forma a uma comissão ficcional. As paisagens e os
-          fenômenos são reais, e cada afirmação conduz aos registros que
-          sustentam — e limitam — sua leitura.
+          {brand.name} dá forma a uma comissão fictícia. As ilhas, a vida
+          marinha e as temporadas descritas são reais; o navio, a tripulação e
+          o roteiro a bordo são imaginados.
         </p>
         <details className="disclosure" open>
-          <summary>Pesquisa histórica · expedição fictícia</summary>
-          <p>{wrapperDisclosure}</p>
+          <summary>Comissão fictícia</summary>
+          <p>{brand.disclosure}</p>
         </details>
       </div>
     </section>

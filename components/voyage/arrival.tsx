@@ -1,5 +1,5 @@
 import Itinerary from "@/components/voyage/itinerary";
-import { nextDeparture } from "@/content/editorial";
+import { brand } from "@/content/editorial";
 
 type ArrivalProps = {
   enhanced: boolean;
@@ -11,7 +11,7 @@ export default function Arrival({ enhanced, onRestart }: ArrivalProps) {
   return (
     <section className="page-shell py-20" aria-labelledby="roteiro-completo-title">
       <div className="max-w-[46rem] rounded-2xl bg-card p-6 text-card-foreground sm:p-10">
-        <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">{nextDeparture}</p>
+        <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">{brand.nextDeparture}</p>
         <h2 id="roteiro-completo-title" className="mt-2 mb-6 text-3xl font-semibold tracking-tight">
           Roteiro completo
         </h2>

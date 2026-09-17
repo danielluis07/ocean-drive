@@ -1,4 +1,4 @@
-import InstituteMark from "@/components/voyage/institute-mark";
+import TravessiaMark from "@/components/voyage/travessia-mark";
 import { cn } from "@/lib/utils";
 
 type TravessiaLogoProps = {
@@ -10,7 +10,7 @@ type TravessiaLogoProps = {
 export default function TravessiaLogo({ className, compact = false }: TravessiaLogoProps) {
   return (
     <span className={cn("inline-flex items-center gap-2.5 text-foreground", className)}>
-      <InstituteMark className="size-[1.9em] shrink-0" />
+      <TravessiaMark className="size-[1.9em] shrink-0" />
       <span className={cn("font-sans font-semibold tracking-[0.2em] uppercase", compact && "max-[26rem]:sr-only")}>
         Travessia
       </span>

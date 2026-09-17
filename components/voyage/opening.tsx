@@ -1,4 +1,5 @@
-import InstituteMark from "@/components/voyage/institute-mark";
+import TravessiaMark from "@/components/voyage/travessia-mark";
+import { brand } from "@/content/editorial";
 
 export default function Opening() {
   return (
@@ -13,7 +14,7 @@ export default function Opening() {
           className="identity"
           href="#conteudo-principal"
           aria-label="Travessia, início">
-          <InstituteMark />
+          <TravessiaMark />
           <span>
             Travessia<strong>Viagens costeiras</strong>
           </span>
@@ -29,14 +30,14 @@ export default function Opening() {
         <div className="opening-note">
           <p>
             <strong>Uma viagem · quatro ilhas</strong>De Fernando de Noronha a
-            Ilha Grande, a bordo do Maré Mansa.
+            Ilha Grande, a bordo do {brand.ship}.
           </p>
           <a href="#rota">Ver a rota</a>
         </div>
       </div>
       <div className="horizon-note page-shell">
         <span aria-hidden="true" />
-        <p>Pesquisa histórica · expedição fictícia</p>
+        <p>Comissão fictícia · lugares e vida marinha reais</p>
       </div>
     </header>
   );
