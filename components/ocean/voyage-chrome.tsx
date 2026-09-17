@@ -11,7 +11,7 @@ export const oceanControl =
 // The persistent chrome over the ocean is this top bar (logo, sound toggle,
 // “Capítulos”) and the “Modo leitura” link below. The Stop Card sits between
 // them in focus order.
-export default function VoyageChrome() {
+export default function VoyageChrome({ chaptersOpen, onChapters }: { chaptersOpen: boolean; onChapters: () => void }) {
   // The ambient loop is wired to this toggle in #42; sound stays off by default.
   const [sound, setSound] = useState(false);
   return (
@@ -28,8 +28,13 @@ export default function VoyageChrome() {
       <span className="absolute left-1/2 -translate-x-1/2 text-sm text-shadow-sm text-shadow-background/60">
         <TravessiaLogo compact />
       </span>
-      {/* The chapters Sheet opens from this pill in #37. */}
-      <button type="button" className={`${oceanControl} px-4`}>
+      <button
+        id="voyage-chapters"
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={chaptersOpen}
+        onClick={onChapters}
+        className={`${oceanControl} px-4`}>
         Capítulos
       </button>
     </header>

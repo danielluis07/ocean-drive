@@ -23,7 +23,8 @@ entry points that live under `components/`.
 Within a feature folder, split components by page section or clear UI
 responsibility. The `components/voyage/voyage.tsx` file owns the client state
 and coordinates both presentations, while its sibling files render the route,
-Stops, signals, sources, and static sections.
+Stops, Stop Accounts, the itinerary, and static sections. The white Sheets read
+over the ocean live beside the scene in `components/ocean/`.
 
 Put reusable logic that does not render JSX in `lib/`. For example,
 `lib/voyage-state.ts` owns Voyage State and its persistence,

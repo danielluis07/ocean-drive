@@ -2,14 +2,15 @@ import { expect, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
 import type { VoyageState } from "@/lib/voyage-state";
 import {
-  advanceEditorialSignal,
   enterOcean,
   expectOceanReady,
   expectSettledAt,
+  expectSheetClosed,
   openEditorialStop,
+  openSheet,
+  openStopAccount,
   readingModeLink,
   returnToOceanButton,
-  stopReader,
   voyageRoute,
   voyageState,
 } from "@/tests/browser/editorial-route";
@@ -27,19 +28,14 @@ function presentationIndependentState(
   return copy;
 }
 
-async function expectOptionalDisclosuresClosed(page: Page) {
-  await expect(page.locator("main details.logbook[open]")).toHaveCount(0);
-  await expect(page.locator("#fontes-da-expedicao")).toBeHidden();
-}
-
 // Switch presentation with “Modo leitura” or “Voltar ao oceano”, checking focus,
-// closed disclosures, and unchanged Voyage State, including a moment later.
+// that no Sheet is open, and unchanged Voyage State, including a moment later.
 async function switchPresentation(page: Page, focus: string) {
   const before = await voyageState(page);
   const toReading = before.presentation === "three-dimensional";
   await (toReading ? readingModeLink(page) : returnToOceanButton(page)).click();
   await expect(page.locator(focus)).toBeFocused();
-  await expectOptionalDisclosuresClosed(page);
+  await expect(openSheet(page)).toHaveCount(0);
   const switched = await voyageState(page);
   expect(switched.presentation).toBe(
     toReading ? "editorial" : "three-dimensional",
@@ -53,13 +49,8 @@ async function switchPresentation(page: Page, focus: string) {
   );
 }
 
-async function openCaderno(page: Page) {
-  await page.locator("main .logbook summary:visible").click();
-  await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
-}
-
 test(
-  "switching presentations is atomic at the opening, at a Stop, in every Stop Account, and at the Arrival",
+  "switching presentations is atomic at the opening, at a Stop, around every Stop Account, and at the Arrival",
   { tag: "@critical" },
   async ({ page }) => {
     test.setTimeout(240_000);
@@ -76,31 +67,23 @@ test(
     await switchPresentation(page, editorialHeading);
 
     for (const stop of voyageRoute) {
-      const passage = `#${stop.id}-signal-2`;
       await openEditorialStop(page, stop);
-      await advanceEditorialSignal(page, stop, 2);
-      await openCaderno(page);
-      // The open Stop Account follows the Visitor to the ocean and back.
-      await switchPresentation(page, passage);
-      await expect(stopReader(page)).toBeVisible();
-      await stopReader(page)
-        .getByRole("button", { name: "Voltar ao mar", exact: true })
-        .click();
-      await expect(stopReader(page)).toBeHidden();
+      // The Stop read in the editorial text is where the Ship waits in the ocean.
+      await switchPresentation(page, ocean);
+      await expectSettledAt(page, stop.order);
+      await openStopAccount(page);
+      await page.keyboard.press("Escape");
+      await expectSheetClosed(page);
       await switchPresentation(page, editorialHeading);
     }
     await expect(
-      page.getByRole("heading", { name: "Viagem concluída.", exact: true }),
+      page.getByRole("heading", { name: "Roteiro completo", exact: true }),
     ).toBeVisible();
     expect(await voyageState(page)).toMatchObject({
       complete: true,
       currentStop: "ilha-grande",
       visitedStops: voyageRoute.map((stop) => stop.id),
     });
-    await page
-      .getByRole("button", { name: "Consultar fontes", exact: true })
-      .click();
-    await expect(page.locator("#fontes-da-expedicao")).toBeVisible();
     await switchPresentation(page, ocean);
   },
 );

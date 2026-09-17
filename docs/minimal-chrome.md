@@ -25,10 +25,10 @@ the ocean:
 | --- | --- | --- |
 | Travessia logo | Top centre | Mark only below 26rem wide; the name stays available to assistive technology |
 | Sound toggle | Top left | `aria-pressed`, off by default; the ambient loop is wired in #42 |
-| “Capítulos” pill | Top right | Opens the chapters Sheet in #37 |
+| “Capítulos” pill | Top right | Opens the chapters Sheet (see [sheets.md](sheets.md)) |
 | “Modo leitura” link | Bottom left | Switches to the Accessible Editorial Presentation |
 
-The chrome hides while a Stop Account is open.
+The chrome stays under the dim while a Sheet is open; the Sheet is modal.
 
 ## Stop Cards
 
@@ -42,8 +42,9 @@ viagem”.
 The card fades in when the Ship settles and fades out as soon as it is under way,
 keeping its last Stop while it fades. A hidden card is inert. If it held focus,
 focus moves to the ocean surface; closing a Stop Account returns focus to “Saiba
-mais”. Arrivals are announced once through the shared live region; the card itself
-is never a live region. Focus order is sound, “Capítulos”, the card, then “Modo
+mais”. At the Arrival the card becomes the closing card (see
+[sheets.md](sheets.md)). Arrivals are announced once through the shared live
+region; the card itself is never a live region. Focus order is sound, “Capítulos”, the card, then “Modo
 leitura”.
 
 ### Placement

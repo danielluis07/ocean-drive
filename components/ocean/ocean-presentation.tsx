@@ -26,10 +26,8 @@ import {
   type ThreeDUnavailableReason,
 } from "@/lib/voyage-state";
 import type { OceanConfiguration } from "@/lib/ocean-config";
-import {
-  closeDisclosures,
-  focusOceanTarget as focusTarget,
-} from "@/lib/reader-interactions";
+import { focusOceanTarget as focusTarget } from "@/lib/focus-target";
+import { accountStops } from "@/lib/voyage-view";
 import {
   applyStageLayout,
   sameStageLayout,
@@ -39,6 +37,9 @@ import type { PreparationStage } from "@/components/ocean/ocean-runtime";
 import OceanLoading from "@/components/ocean/ocean-loading";
 import PresentationNotice from "@/components/ocean/presentation-notice";
 import StopCard from "@/components/ocean/stop-card";
+import StopAccountSheet from "@/components/ocean/stop-account-sheet";
+import ChaptersSheet from "@/components/ocean/chapters-sheet";
+import ItinerarySheet from "@/components/ocean/itinerary-sheet";
 import VoyageChrome, { ReadingModeLink } from "@/components/ocean/voyage-chrome";
 import {
   enableLocalDiagnostics,
@@ -90,11 +91,12 @@ export default function OceanPresentation({
     voyage,
     setVoyage,
     enhanced,
-    readerOpen,
-    setAllSourcesOpen,
-    signalPages,
+    sheet,
+    setSheet,
     chartedRoute,
     route,
+    goToStop,
+    restartVoyage,
     announce,
   } = useVoyage();
   const [stage, setStage] = useState<PreparationStage>("checking");
@@ -123,7 +125,9 @@ export default function OceanPresentation({
   const unavailable = voyage.threeDAvailability.status === "unavailable";
   const restoring = voyage.threeDAvailability.status === "restoring";
   const currentStop = useRef(voyage.currentStop);
-  const passageId = `${voyage.currentStop}-signal-${(signalPages[voyage.currentStop] ?? 0) + 1}`;
+  // Sheets only show over the ocean scene; leaving it closes them.
+  const sheetOpen = active && sheet !== null;
+  const activeRef = useRef(active);
   const previouslyActive = useRef(false);
   const explanation =
     voyage.threeDAvailability.status === "unavailable"
@@ -145,16 +149,20 @@ export default function OceanPresentation({
   useEffect(() => {
     currentStop.current = voyage.currentStop;
   }, [voyage.currentStop]);
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   // A failure opens the Accessible Editorial Presentation with its explanation.
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
-      closeDisclosures();
       if (explanation) announce(explanation);
-      focusTarget(readerOpen ? passageId : "voyage-editorial-heading");
+      // An open Stop Account continues as the same Stop in the editorial text.
+      focusTarget(sheet === "account" ? `${voyage.currentStop}-title` : "voyage-editorial-heading");
+      setSheet(null);
     }
     previouslyActive.current = active;
-  }, [active, unavailable, restoring, passageId, readerOpen, explanation, announce]);
+  }, [active, unavailable, restoring, sheet, voyage.currentStop, explanation, announce, setSheet]);
 
   // Record the Ship's place on the route, including partway between Stops.
   const checkpoint = useCallback(() => {
@@ -195,9 +203,9 @@ export default function OceanPresentation({
   useEffect(() => {
     recordDiagnostic(
       "lifecycle",
-      `${visible ? "visible" : "hidden"}:${active ? "3d" : "editorial"}:${readerOpen ? "reading" : "voyage"}`,
+      `${visible ? "visible" : "hidden"}:${active ? "3d" : "editorial"}:${sheetOpen ? "reading" : "voyage"}`,
     );
-  }, [visible, active, readerOpen]);
+  }, [visible, active, sheetOpen]);
   const loseContext = useCallback(() => {
     recordDiagnostic("context", "lost");
     suspend();
@@ -276,11 +284,10 @@ export default function OceanPresentation({
     },
     [surface],
   );
-  // A card hiding under way hands focus to the ocean; opening its account moves
-  // focus into the reader instead.
+  // A card hiding under way hands focus to the ocean.
   const yieldCardFocus = useCallback(() => {
-    if (!readerOpen) focusTarget("voyage-ocean");
-  }, [readerOpen]);
+    focusTarget("voyage-ocean");
+  }, []);
 
   const prepare = useCallback(() => {
     if (unavailable || restoring || eligible) return;
@@ -331,7 +338,7 @@ export default function OceanPresentation({
   }, [enhanced, unavailable, eligible, voyage.qualityPreference, prepare]);
 
   const ready = active && !restoring && stage === "ready";
-  const voyaging = ready && visible && !readerOpen;
+  const voyaging = ready && visible && !sheetOpen;
   useEffect(() => {
     inputEnabled.current = voyaging;
     if (!voyaging) {
@@ -362,8 +369,7 @@ export default function OceanPresentation({
     if (threeD && voyage.qualityPreference === "text")
       qualityController.current?.choose("automatic");
     checkpoint();
-    closeDisclosures();
-    setAllSourcesOpen(false);
+    setSheet(null);
     setVoyage((current) => {
       const selected =
         threeD && current.qualityPreference === "text"
@@ -382,20 +388,24 @@ export default function OceanPresentation({
         ? "Oceano em 3D. Role, deslize ou use as setas para navegar entre as paradas."
         : "Modo leitura. Seu lugar na viagem está preservado.",
     );
-    focusTarget(
-      readerOpen
-        ? passageId
-        : threeD
-          ? "voyage-ocean"
-          : "voyage-editorial-heading",
-    );
+    focusTarget(threeD ? "voyage-ocean" : "voyage-editorial-heading");
   }
 
   function openStop(stop: StopId) {
-    if (!active || readerOpen || settledStop !== stopIndex(stop)) return;
-    closeDisclosures();
+    if (!active || sheetOpen || settledStop !== stopIndex(stop)) return;
     onOpenStop(stop);
   }
+
+  function chooseChapter(stop: StopId) {
+    setSheet(null);
+    goToStop(stop);
+  }
+
+  // Focus returns to the control that opened a Sheet, unless leaving the ocean
+  // scene has already placed it in the editorial text.
+  const returnTo = (id: string) => () => (activeRef.current ? document.getElementById(id) : null);
+  const closeSheet = () => setSheet(null);
+  const accountStop = accountStops.find((stop) => stop.id === stops[cardStop].id) ?? null;
 
   return (
     <>
@@ -414,7 +424,7 @@ export default function OceanPresentation({
           tabIndex={-1}
           className="ocean-world group/ocean relative isolate grid h-svh grid-rows-[minmax(0,1fr)] overflow-hidden bg-background text-foreground focus-visible:outline-3 focus-visible:-outline-offset-4 focus-visible:outline-ring data-[active=false]:pointer-events-none data-[active=false]:invisible data-[active=false]:fixed data-[active=false]:inset-0 data-[active=false]:-z-10 [&_canvas]:touch-none [&>div:first-child]:min-h-0"
           data-active={active}
-          data-reading={readerOpen}
+          data-reading={sheetOpen}
           data-stage={stage}
           data-quality={quality.tier}
           data-dpr={quality.dpr}
@@ -439,7 +449,7 @@ export default function OceanPresentation({
               onFrame={measureFrame}
               reducedMotion={reducedMotion}
               active={active}
-              reading={readerOpen}
+              reading={sheetOpen}
               visitedStops={voyage.visitedStops}
               inputConnected={inputConnected}
               onStage={onStage}
@@ -449,21 +459,55 @@ export default function OceanPresentation({
               onLayout={placeCard}
             />
           </RuntimeErrorBoundary>
-          {ready && !readerOpen ? <VoyageChrome /> : null}
+          {ready ? (
+            <VoyageChrome chaptersOpen={sheetOpen && sheet === "chapters"} onChapters={() => setSheet("chapters")} />
+          ) : null}
           {ready ? (
             <StopCard
               stop={stops[cardStop]}
-              opening={cardStop === 0}
-              visible={!readerOpen && settledStop !== null}
+              variant={cardStop === 0 ? "opening" : cardStop === stops.length - 1 ? "arrival" : "stop"}
+              visible={settledStop !== null}
               cueVisible={cueVisible}
+              accountOpen={sheetOpen && sheet === "account"}
+              itineraryOpen={sheetOpen && sheet === "itinerary"}
               onOpen={() => openStop(stops[cardStop].id)}
+              onItinerary={() => setSheet("itinerary")}
+              onRestart={() => {
+                restartVoyage();
+                focusTarget("voyage-ocean");
+              }}
               onYieldFocus={yieldCardFocus}
             />
           ) : null}
-          {ready && !readerOpen ? (
+          {ready ? (
             <ReadingModeLink onReadingMode={() => switchPresentation(false)} />
           ) : null}
         </section>
+      ) : null}
+      {eligible && !unavailable ? (
+        <>
+          <StopAccountSheet
+            stop={accountStop}
+            open={sheetOpen && sheet === "account"}
+            onClose={closeSheet}
+            returnFocus={returnTo("stop-card-action")}
+          />
+          <ChaptersSheet
+            open={sheetOpen && sheet === "chapters"}
+            currentStop={voyage.currentStop}
+            visitedStops={voyage.visitedStops}
+            onClose={closeSheet}
+            onChoose={chooseChapter}
+            onReadingMode={() => switchPresentation(false)}
+            onRestart={restartVoyage}
+            returnFocus={returnTo("voyage-chapters")}
+          />
+          <ItinerarySheet
+            open={sheetOpen && sheet === "itinerary"}
+            onClose={closeSheet}
+            returnFocus={returnTo("stop-card-itinerary")}
+          />
+        </>
       ) : null}
     </>
   );

@@ -4,7 +4,7 @@ Implements [#27](https://github.com/danielluis07/ocean-drive/issues/27), using
 the quality and transition contracts approved in #13, #18, and #20.
 
 The renderer-independent quality controller consumes measured frame intervals
-only while the 3D voyage is visible, after readiness. Preparation, readers,
+only while the 3D voyage is visible, after readiness. Preparation, open Sheets,
 editorial presentation, hidden documents, and app switches discard partial windows
 and consecutive evidence. The first frame after a return anchors time without
 advancing simulation. Frame measurements remain uncapped; simulation steps are

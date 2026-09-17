@@ -1,37 +1,10 @@
-import { stops, type SourceId, type Stop } from "@/content/editorial";
+import { stops, type Stop, type StopAccount } from "@/content/editorial";
 import type { VoyageState } from "@/lib/voyage-state";
 
-const scientificNameValues = [
-  "Mussismilia braziliensis",
-  "Millepora alcicornis",
-  "M. braziliensis",
-  "M. alcicornis",
-] as const;
-
-const scientificNameSet = new Set<string>(scientificNameValues);
-const scientificNames = new RegExp(
-  `(${scientificNameValues.map((name) => name.replace(".", "\\.")).join("|")})`,
-  "g",
-);
-
-export type ScientificNamePart = {
-  scientific: boolean;
-  text: string;
-};
-
-export function splitScientificNames(text: string): ScientificNamePart[] {
-  return text.split(scientificNames).map((part) => ({
-    scientific: scientificNameSet.has(part),
-    text: part,
-  }));
-}
-
-export function uniqueSources(sourceIds: SourceId[]): SourceId[] {
-  return [...new Set(sourceIds)];
-}
+export type AccountStop = Stop & { account: StopAccount };
 
 // Stops with a Stop Account; Stop 00 is the opening.
-export const accountStops: Stop[] = stops.filter((stop) => stop.signals.length > 0);
+export const accountStops = stops.filter((stop): stop is AccountStop => stop.account !== null);
 
 export function stopNumber(stop: Stop): string {
   return String(stops.indexOf(stop)).padStart(2, "0");

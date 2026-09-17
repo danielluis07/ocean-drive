@@ -3,11 +3,15 @@ import { test } from "@/tests/browser/journey-fixture";
 import {
   enterOcean,
   expectSettledAt,
+  expectSheetClosed,
+  openChapters,
   openEditorialStop,
+  openSheet,
+  openStopAccount,
   readingModeLink,
   returnToOceanButton,
+  saibaMais,
   stopCard,
-  stopReader,
   voyageRoute,
 } from "@/tests/browser/editorial-route";
 
@@ -28,8 +32,9 @@ async function expectNoOverflowOrClipping(page: Page, state: string) {
   const problems = await page.evaluate(() => {
     const found: string[] = [];
     if (document.documentElement.scrollWidth > innerWidth + 1) found.push(`page overflow ${document.documentElement.scrollWidth} > ${innerWidth}`);
-    for (const element of document.querySelectorAll<HTMLElement>("main *")) {
-      if (element.closest(".visually-hidden, [aria-hidden='true'], canvas") || !element.checkVisibility()) continue;
+    // An open Sheet renders outside main, which it hides from assistive technology.
+    for (const element of document.querySelectorAll<HTMLElement>("main *, [role='dialog'] *")) {
+      if (element.closest(".visually-hidden, .sr-only, [aria-hidden='true'], canvas") || !element.checkVisibility()) continue;
       // Screen-reader-only text is deliberately clipped to one pixel.
       const { width, height } = element.getBoundingClientRect();
       if (width <= 1 && height <= 1) continue;
@@ -75,25 +80,28 @@ for (const checkpoint of checkpoints) {
     await expectNoOverflowOrClipping(page, "editorial entry");
     await expectReachable(returnToOceanButton(page), "return to the ocean");
     await openEditorialStop(page, voyageRoute[0]);
-    await page.locator("#fernando-de-noronha .logbook summary:visible").click();
-    await expectReachable(page.getByRole("link", { name: /Acessar fonte/ }).first(), "editorial source");
-    await expectNoOverflowOrClipping(page, "editorial Caderno");
+    await expectReachable(page.getByRole("button", { name: "Voltar à rota", exact: true }), "editorial Stop return");
+    await expectNoOverflowOrClipping(page, "editorial Stop");
 
     await returnToOceanButton(page).click();
-    const reader = stopReader(page);
-    await expect(reader).toBeVisible();
-    await expectReachable(reader.getByRole("button", { name: "Voltar ao mar", exact: true }), "3D reader departure");
-    await reader.locator(".logbook summary:visible").click();
-    await expectReachable(reader.getByRole("link", { name: /Acessar fonte/ }).first(), "3D reader source");
-    await expectReachable(reader.getByRole("button", { name: "Voltar ao sinal", exact: true }), "3D Caderno return");
-    await expectNoOverflowOrClipping(page, "3D Caderno");
-    await reader.getByRole("button", { name: "Voltar ao sinal", exact: true }).click();
-    await reader.getByRole("button", { name: "Voltar ao mar", exact: true }).click();
-    await expect(reader).toBeHidden();
-    // Back on the route, the settled Stop's card and the chrome stay reachable.
     await expectSettledAt(page, 1);
     await expect(stopCard(page)).toHaveAttribute("data-visible", "true");
-    await expectReachable(stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }), "Stop Card action");
+    await expectReachable(saibaMais(page), "Stop Card action");
+    await openStopAccount(page);
+    const sheet = openSheet(page);
+    await expectReachable(sheet.getByRole("button", { name: "Fechar", exact: true }), "Stop Account close");
+    await expectReachable(sheet.locator("figcaption").last(), "Stop Account end");
+    await expectReachable(sheet.getByRole("button", { name: "Fechar", exact: true }), "Stop Account close after scrolling");
+    await expectNoOverflowOrClipping(page, "Stop Account");
+    await page.keyboard.press("Escape");
+    await expectSheetClosed(page);
+    await openChapters(page);
+    await expectReachable(openSheet(page).getByRole("button", { name: "Recomeçar viagem", exact: true }), "chapters restart");
+    await expectNoOverflowOrClipping(page, "Capítulos");
+    await page.keyboard.press("Escape");
+    await expectSheetClosed(page);
+    // Back on the route, the settled Stop's card and the chrome stay reachable.
+    await expectReachable(saibaMais(page), "Stop Card action after reading");
     await expectReachable(readingModeLink(page), "reading mode after reading");
     await expectNoOverflowOrClipping(page, "3D waters");
   });
@@ -112,12 +120,13 @@ test("text spacing and system-font fallback keep content unclipped at phone widt
   await readingModeLink(page).click();
   await expectNoOverflowOrClipping(page, "editorial entry with text spacing");
   await openEditorialStop(page, voyageRoute[0]);
-  await page.locator("#fernando-de-noronha .logbook summary:visible").click();
-  await expectNoOverflowOrClipping(page, "Caderno with text spacing");
-  await expectReachable(page.getByRole("button", { name: "Voltar ao sinal", exact: true }), "Caderno return with text spacing");
+  await expectNoOverflowOrClipping(page, "editorial Stop with text spacing");
   await returnToOceanButton(page).click();
-  await expectNoOverflowOrClipping(page, "3D reader with text spacing");
-  await expectReachable(page.getByRole("button", { name: "Voltar ao mar", exact: true }), "3D departure with text spacing");
+  await expectSettledAt(page, 1);
+  await openStopAccount(page);
+  await expectNoOverflowOrClipping(page, "Stop Account with text spacing");
+  await expectReachable(openSheet(page).locator("figcaption").last(), "Stop Account end with text spacing");
+  await expectReachable(openSheet(page).getByRole("button", { name: "Fechar", exact: true }), "Stop Account close with text spacing");
 });
 
 test("the viewport extends into safe areas so edge controls can respect insets", { tag: "@critical" }, async ({ page }) => {

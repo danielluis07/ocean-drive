@@ -1,6 +1,5 @@
 import { expect, type Page } from "@playwright/test";
 import type { VoyageState } from "@/lib/voyage-state";
-import { settleScroll } from "@/tests/browser/scroll";
 
 // Stops 01–04 carry a Stop Account; Stop 00 is the opening.
 export const voyageRoute = [
@@ -29,28 +28,6 @@ export async function openEditorialStop(page: Page, stop: RouteStop) {
   await expect(page.locator(`#${stop.id}-title`)).toBeFocused();
 }
 
-// Advance to a passage and wait for it, so a click never lands on the previous signal.
-export async function advanceEditorialSignal(
-  page: Page,
-  stop: RouteStop,
-  passage: 2 | 3,
-) {
-  const article = page.getByRole("article", { name: stop.name, exact: true });
-  await settleScroll(page);
-  await article
-    .getByRole("button", { name: "Próximo sinal", exact: true })
-    .click();
-  await expect(
-    article.getByText(`Sinal ${passage} de 3`, { exact: true }),
-  ).toBeVisible();
-}
-
-export async function readEditorialStop(page: Page, stop: RouteStop) {
-  await openEditorialStop(page, stop);
-  await advanceEditorialSignal(page, stop, 2);
-  await advanceEditorialSignal(page, stop, 3);
-}
-
 // The ocean opens on its own once ready, with the Ship at rest on its Stop.
 export async function expectOceanReady(page: Page, timeout = 60_000) {
   await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-stage", "ready", { timeout });
@@ -75,15 +52,41 @@ export function returnToOceanButton(page: Page) {
   return page.getByRole("button", { name: "Voltar ao oceano", exact: true });
 }
 
-// The Stop Account reader that “Saiba mais” opens until the Stop Account Sheet replaces it.
-export function stopReader(page: Page) {
-  return page.getByRole("region", { name: "Relato da parada" });
+export function saibaMais(page: Page) {
+  return stopCard(page).getByRole("button", { name: "Saiba mais", exact: true });
+}
+
+export function chaptersButton(page: Page) {
+  return page.getByRole("button", { name: "Capítulos", exact: true });
+}
+
+// The one open Sheet: a Stop Account, “Capítulos”, or the itinerary.
+export function openSheet(page: Page) {
+  return page.getByRole("dialog");
+}
+
+// Measure a Sheet where it comes to rest, not while it slides in.
+async function settleSheet(page: Page) {
+  await expect(openSheet(page)).toBeVisible();
+  await openSheet(page).evaluate((sheet) => Promise.all(sheet.getAnimations().map((animation) => animation.finished)));
 }
 
 export async function openStopAccount(page: Page) {
   await expect(stopCard(page)).toHaveAttribute("data-visible", "true");
-  await stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }).click();
-  await expect(stopReader(page)).toBeVisible();
+  await saibaMais(page).click();
+  await settleSheet(page);
+  await expect(openSheet(page).locator('[data-slot="stop-account"]')).toBeVisible();
+}
+
+export async function openChapters(page: Page) {
+  await chaptersButton(page).click();
+  await settleSheet(page);
+  await expect(openSheet(page).getByRole("heading", { name: "Capítulos" })).toBeVisible();
+}
+
+// A Sheet has finished closing once it leaves the document.
+export async function expectSheetClosed(page: Page) {
+  await expect(openSheet(page)).toHaveCount(0);
 }
 
 // Wait for the Ship to come to rest at a Stop in the 3D scene.

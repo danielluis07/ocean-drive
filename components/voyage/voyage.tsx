@@ -1,21 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import AllSources from "@/components/voyage/all-sources";
+import Arrival from "@/components/voyage/arrival";
 import Closing from "@/components/voyage/closing";
-import Connected from "@/components/voyage/connected";
 import EditorialIntro from "@/components/voyage/editorial-intro";
 import Opening from "@/components/voyage/opening";
 import RouteNavigation from "@/components/voyage/route-navigation";
 import StopList from "@/components/voyage/stop-list";
 import OceanPresentation from "@/components/ocean/ocean-presentation";
-import StopReader from "@/components/ocean/stop-reader";
-import {
-  closeDisclosures,
-  closeOpenLogbook,
-  focusOceanTarget,
-} from "@/lib/reader-interactions";
-import { stops, type Stop, type StopId } from "@/content/editorial";
+import { stops, type StopId } from "@/content/editorial";
 import { nearestStopIndex } from "@/lib/charted-route";
 import {
   createInitialVoyageState,
@@ -42,15 +35,11 @@ function VoyageContent() {
     setVoyage,
     enhanced,
     setEnhanced,
-    readerOpen,
-    setReaderOpen,
-    allSourcesOpen,
-    setAllSourcesOpen,
-    signalPages,
-    setSignalPage,
+    setSheet,
     chartedRoute,
     route,
     goToStop,
+    restartVoyage,
     announcement,
     announce,
   } = useVoyage();
@@ -84,99 +73,32 @@ function VoyageContent() {
     }
   }, [enhanced, voyage]);
 
-  useEffect(() => {
-    if (threeD) return;
-    // The 3D reader owns its own Escape layering; editorial Escape only closes the
-    // Caderno holding focus, so it never pulls focus from elsewhere on the page.
-    const escape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || event.defaultPrevented) return;
-      if (
-        closeOpenLogbook(document.querySelector("main"), { focusedOnly: true })
-      )
-        event.preventDefault();
-    };
-    document.addEventListener("keydown", escape);
-    return () => document.removeEventListener("keydown", escape);
-  }, [threeD]);
-
+  // Opening a Stop Account is what records a Visited Stop, in either presentation.
   function openStop(stopId: StopId) {
     const stop = stops.find((item) => item.id === stopId)!;
-    setReaderOpen(true);
     goToStop(stopId);
     setVoyage((current) =>
       transitionVoyage(current, { type: "visit-stop", stop: stopId }),
     );
-    setAllSourcesOpen(false);
+    if (threeD) {
+      // The Sheet names itself as it takes focus.
+      setSheet("account");
+      return;
+    }
     announce(`${stop.name}, parada aberta.`);
-    if (threeD)
-      focusOceanTarget(`${stopId}-signal-${(signalPages[stopId] ?? 0) + 1}`);
-    else focusAndScrollToElement(`${stopId}-title`);
+    focusAndScrollToElement(`${stopId}-title`);
   }
 
-  function changeSignal(stop: Stop, signalIndex: number) {
-    if (signalIndex < 0 || signalIndex >= stop.signals.length) return;
-    setReaderOpen(true);
-    closeDisclosures();
-    setSignalPage(stop.id, signalIndex);
-    announce(
-      `${stop.name}. Sinal ${signalIndex + 1} de ${stop.signals.length}: ${stop.signals[signalIndex].title}`,
-    );
-    (threeD ? focusOceanTarget : focusAndScrollToElement)(
-      `${stop.id}-signal-${signalIndex + 1}`,
-    );
+  function restartEditorial() {
+    restartVoyage();
+    focusAndScrollToElement("voyage-editorial-heading");
   }
-
-  function restartVoyage() {
-    route.goTo(0, { cut: true });
-    setVoyage((current) =>
-      transitionVoyage(current, { type: "restart-voyage" }),
-    );
-    setAllSourcesOpen(false);
-    if (threeD) closeReader();
-    announce("Viagem reiniciada. De volta ao início.");
-    if (!threeD) focusAndScrollToElement("voyage-editorial-heading");
-  }
-
-  function closeReader() {
-    closeDisclosures();
-    setReaderOpen(false);
-    setAllSourcesOpen(false);
-    // Return to the Stop Card's “Saiba mais”, which reappears as the reader closes.
-    focusOceanTarget("stop-card-action", "voyage-ocean");
-  }
-
-  function showSources() {
-    setAllSourcesOpen(true);
-    announce("Caderno completo de fontes aberto.");
-    focusAndScrollToElement("fontes-da-expedicao-title");
-  }
-
-  const stopContent = (
-    <>
-      <StopList
-        enhanced={enhanced}
-        signalPages={signalPages}
-        voyage={voyage}
-        onChangeSignal={changeSignal}
-      />
-      <Connected
-        connected={voyage.complete}
-        onRestart={restartVoyage}
-        onReviewStops={() =>
-          threeD ? closeReader() : focusAndScrollToElement("route-title")
-        }
-        onShowSources={showSources}
-      />
-      <AllSources visible={allSourcesOpen} />
-    </>
-  );
 
   return (
     <div
       className="voyage"
       data-enhanced={enhanced}
       data-presentation={voyage.presentation}
-      data-reading={readerOpen}
       data-complete={voyage.complete}>
       <a className="skip-link" href="#conteudo-principal">
         Pular para o conteúdo
@@ -193,11 +115,7 @@ function VoyageContent() {
           configuration={oceanConfiguration}
           onOpenStop={openStop}
         />
-        {threeD ? (
-          readerOpen ? (
-            <StopReader onClose={closeReader}>{stopContent}</StopReader>
-          ) : null
-        ) : (
+        {threeD ? null : (
           <div>
             <Opening />
             <EditorialIntro />
@@ -206,7 +124,8 @@ function VoyageContent() {
               voyage={voyage}
               onOpenStop={openStop}
             />
-            {stopContent}
+            <StopList enhanced={enhanced} voyage={voyage} />
+            <Arrival enhanced={enhanced} onRestart={restartEditorial} />
             <Closing />
           </div>
         )}

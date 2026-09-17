@@ -94,18 +94,9 @@ test("production requests, provenance, scene budgets and local diagnostics recon
       .locator("#rota")
       .getByRole("button", { name: new RegExp(`^0[1-4] ${stop}`) })
       .click();
-    for (let passage = 0; passage < 3; passage++) {
-      const sources = page.locator(".signal:visible summary");
-      await sources.click();
-      await expect(
-        page.getByRole("link", { name: /Acessar fonte/ }).first(),
-      ).toBeVisible();
-      await sources.click();
-      if (passage < 2)
-        await page
-          .getByRole("button", { name: "Próximo sinal", exact: true })
-          .click();
-    }
+    await expect(
+      page.getByRole("article", { name: stop, exact: true }).getByRole("heading", { name: "Destaques" }),
+    ).toBeVisible();
     await page.clock.runFor(100);
   }
   await returnToOcean.click();

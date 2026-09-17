@@ -1,25 +1,15 @@
-import Signal from "@/components/voyage/signal";
-import type { Stop as StopRecord } from "@/content/editorial";
+import StopAccount from "@/components/voyage/stop-account";
 import { arrivalStopId } from "@/lib/voyage-state";
-import { focusAndScrollToElement, stopNumber } from "@/lib/voyage-view";
+import { focusAndScrollToElement, stopNumber, type AccountStop } from "@/lib/voyage-view";
 
 type StopProps = {
-  activeSignalIndex: number;
   current: boolean;
   enhanced: boolean;
-  onChangeSignal: (stop: StopRecord, signalIndex: number) => void;
-  stop: StopRecord;
+  stop: AccountStop;
   visited: boolean;
 };
 
-export default function Stop({
-  activeSignalIndex,
-  current,
-  enhanced,
-  onChangeSignal,
-  stop,
-  visited,
-}: StopProps) {
+export default function Stop({ current, enhanced, stop, visited }: StopProps) {
   return (
     <article
       className={`station ${stop.id === arrivalStopId ? "station--convergence" : ""}`}
@@ -34,28 +24,17 @@ export default function Stop({
           <h2 id={`${stop.id}-title`} tabIndex={-1}>
             {stop.name}
           </h2>
-          <p>{stop.context}</p>
-          {enhanced ? (
-            <span className="station__state">
-              {visited
-                ? "Visitada"
-                : `${activeSignalIndex + 1} de ${stop.signals.length} sinais`}
-            </span>
-          ) : null}
+          <p>
+            {stop.context} · {stop.account.day}
+          </p>
+          {enhanced && visited ? <span className="station__state">Visitada</span> : null}
         </div>
         <p className="station__introduction">{stop.introduction}</p>
       </header>
-      <div className="signals page-shell">
-        {stop.signals.map((signal, signalIndex) => (
-          <Signal
-            key={signal.title}
-            active={activeSignalIndex === signalIndex}
-            index={signalIndex}
-            onChange={onChangeSignal}
-            signal={signal}
-            stop={stop}
-          />
-        ))}
+      <div className="page-shell">
+        <div className="max-w-[46rem] rounded-2xl bg-card p-6 text-card-foreground sm:p-10">
+          <StopAccount id={stop.id} account={stop.account} />
+        </div>
       </div>
       <footer className="station__footer page-shell">
         <p>Travessia · viagem fictícia</p>

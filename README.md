@@ -39,7 +39,7 @@ bun run assets:audit
 
 - `app/` contains the Next.js route and global rules.
 - `components/` contains the voyage presentation and ocean scene.
-- `content/` contains authored voyage copy and source records.
+- `content/` contains authored voyage copy.
 - `lib/` contains state transitions, route geometry, and rendering helpers.
 - `tests/` contains unit and browser journeys.
 - `docs/` contains project and asset guidance.

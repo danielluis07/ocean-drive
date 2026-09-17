@@ -28,12 +28,12 @@ frame, so a stalled frame never jumps along the route.
 | Touch swipe over the ocean | Moves the target continuously (60% of the viewport height per Stop; swipe up sails forward) |
 | ArrowDown / ArrowRight / PageDown | Next Stop |
 | ArrowUp / ArrowLeft / PageUp | Previous Stop |
-| `goToStop(stop)` from `useVoyage()` | Sails to that Stop in 3D and arrives immediately in the editorial presentation (for the chapters menu) |
+| “Capítulos” (`goToStop(stop)` from `useVoyage()`) | Sails to that Stop in 3D and arrives immediately in the editorial presentation |
 
 When continuous input stops for 350 ms, the target settles on the nearest Stop,
 so the Ship never rests between Stops. A step moves exactly one Stop from the
-current course. Keys are ignored in form fields and while the Stop reader is
-open, and route input only applies in the visible, ready 3D presentation. A
+current course. Keys are ignored in form fields and while a Sheet is open, and
+route input only applies in the visible, ready 3D presentation. A
 hidden page ends input and records the Ship's place on the route.
 
 With `prefers-reduced-motion`, the scene keeps the 3D presentation but cuts from

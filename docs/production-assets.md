@@ -51,8 +51,8 @@ packages from entering the browser runtime.
 `.github/workflows/production-budgets.yml` checks rights/hash reconciliation,
 reproducible outputs, types, lint, unit tests, a production build and Chromium
 request/scene measurements. The production test uses cold browser storage,
-reduced-motion editorial entry, explicit 3D preparation, all twelve passages and
-source panels, completion, Low substitution and context restoration.
+reduced-motion editorial entry, explicit 3D preparation, all four Stop Accounts,
+completion, Low substitution and context restoration.
 It saves JSON reports, build identity, traces and aerial screenshots.
 
 | Measurement                          |                   Maximum |
@@ -78,9 +78,7 @@ This conservative, reproducible payload measure excludes HTTP headers. GLB asset
 limits are additionally checked with gzip. Request bodies are hashed against the
 ledger, including Next's renamed font outputs. Next-generated JS/CSS and the
 server HTML are classified as application output; all requests must stay on the
-application origin. Source-link destinations are external editorial references,
-not runtime assets; the gate opens their local source panels without downloading
-external publisher pages. Missing measurements fail rather than counting as zero.
+application origin. Missing measurements fail rather than counting as zero.
 Scene counts come from actual renderer draws and retained target disposal events,
 with per-tier maxima spanning rendered states; they are not estimates from JSX.
 

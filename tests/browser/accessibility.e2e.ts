@@ -4,13 +4,15 @@ import { expectNoAxeViolations } from "@/tests/browser/accessibility-scan";
 import {
   enterOcean,
   expectSettledAt,
+  expectSheetClosed,
   holdVesselAssets,
+  openChapters,
   openEditorialStop,
+  openSheet,
   openStopAccount,
-  readEditorialStop,
   readingModeLink,
   returnToOceanButton,
-  stopReader,
+  stopCard,
   voyageRoute,
 } from "@/tests/browser/editorial-route";
 
@@ -33,7 +35,7 @@ test(
 );
 
 test(
-  "editorial Stops, Stop Accounts, Arrival, and sources have no automated WCAG violations",
+  "editorial Stops, Stop Accounts, and the Arrival have no automated WCAG violations",
   { tag: "@critical" },
   async ({ page }, testInfo) => {
     test.setTimeout(120_000);
@@ -42,26 +44,18 @@ test(
     await expectNoAxeViolations(page, testInfo, "editorial-entry");
     await openEditorialStop(page, noronha);
     await expectNoAxeViolations(page, testInfo, "editorial-stop");
-    await page.locator("#fernando-de-noronha summary:visible").click();
-    await expectNoAxeViolations(page, testInfo, "editorial-caderno");
-    await readEditorialStop(page, boipeba);
-    await readEditorialStop(page, abrolhos);
-    await readEditorialStop(page, ilhaGrande);
+    await openEditorialStop(page, boipeba);
+    await openEditorialStop(page, abrolhos);
+    await openEditorialStop(page, ilhaGrande);
     await expect(
-      page.getByRole("heading", { name: "Viagem concluída.", exact: true }),
+      page.getByRole("heading", { name: "Roteiro completo", exact: true }),
     ).toBeVisible();
     await expectNoAxeViolations(page, testInfo, "editorial-arrival");
-    await page.locator("#ilha-grande summary:visible").click();
-    await expectNoAxeViolations(page, testInfo, "editorial-arrival-caderno");
-    await page
-      .getByRole("button", { name: "Consultar fontes", exact: true })
-      .click();
-    await expectNoAxeViolations(page, testInfo, "editorial-all-sources");
   },
 );
 
 test(
-  "3D Stop Cards, Stop Account, and Arrival have no automated WCAG violations",
+  "3D Stop Cards, Sheets, and the Arrival have no automated WCAG violations",
   { tag: "@critical" },
   async ({ page }, testInfo) => {
     test.setTimeout(150_000);
@@ -70,19 +64,22 @@ test(
     await expectSettledAt(page, 1);
     await expectNoAxeViolations(page, testInfo, "3d-stop-card");
     await openStopAccount(page);
-    await expectNoAxeViolations(page, testInfo, "3d-reader");
-    await stopReader(page).locator("summary:visible").click();
-    await expectNoAxeViolations(page, testInfo, "3d-caderno");
-    await stopReader(page)
-      .getByRole("button", { name: "Voltar ao mar", exact: true })
+    await expectNoAxeViolations(page, testInfo, "3d-stop-account");
+    await page.keyboard.press("Escape");
+    await expectSheetClosed(page);
+    await openChapters(page);
+    await expectNoAxeViolations(page, testInfo, "3d-chapters");
+    await openSheet(page)
+      .getByRole("button", { name: /^04 Ilha Grande/ })
       .click();
-    await readingModeLink(page).click();
-    await readEditorialStop(page, ilhaGrande);
-    await returnToOceanButton(page).click();
-    await expect(
-      stopReader(page).getByRole("heading", { name: "Viagem concluída.", exact: true }),
-    ).toBeVisible();
+    await expectSettledAt(page, 4, 60_000);
+    await expect(stopCard(page)).toHaveAttribute("data-visible", "true");
     await expectNoAxeViolations(page, testInfo, "3d-arrival");
+    await stopCard(page)
+      .getByRole("button", { name: "Ver roteiro completo", exact: true })
+      .click();
+    await expect(openSheet(page)).toBeVisible();
+    await expectNoAxeViolations(page, testInfo, "3d-itinerary");
   },
 );
 
@@ -138,18 +135,10 @@ test(
     await expect(
       page.getByText("1 de 4 paradas visitadas", { exact: true }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("group", {
-        name: "Navegação dos sinais de Fernando de Noronha",
-      }),
-    ).toHaveCount(1);
     await returnToOceanButton(page).click();
     await expect(announcer).toHaveText(
       "Oceano em 3D. Role, deslize ou use as setas para navegar entre as paradas.",
     );
-    await stopReader(page)
-      .getByRole("button", { name: "Voltar ao mar", exact: true })
-      .click();
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 2);
     await expect(announcer).toHaveText("Parada 02 · Boipeba.");

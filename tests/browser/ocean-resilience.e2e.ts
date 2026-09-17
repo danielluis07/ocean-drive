@@ -35,17 +35,20 @@ test("successful context restoration offers explicit return and a second loss lo
   await expect(page.locator("#voyage-ocean")).toHaveCount(0);
 });
 
-test("loss while reading restores the matching passage without interrupting its focus", async ({ page }) => {
+test("loss while reading a Stop Account continues at the same Stop in the editorial text", async ({ page }) => {
   await enter(page);
   await page.keyboard.press("ArrowDown");
   await expectSettledAt(page, 1);
   await openStopAccount(page);
-  await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
   await loseContext(page);
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
   await expect(returnToOceanButton(page)).toBeEnabled();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
+  // Returning to the ocean does not reopen the Sheet.
+  await returnToOceanButton(page).click();
+  await expectSettledAt(page, 1);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
 test("a missing restoration event times out once while the matching text stays usable", async ({ page }) => {
@@ -59,11 +62,10 @@ test("a missing restoration event times out once while the matching text stays u
   await expect(notice(page)).toContainText("Tentando restaurá-la");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.locator("#rota button").first().click();
-  await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
   await page.clock.runFor(8500);
   await expect(notice(page).locator("p")).toHaveText(["A exibição do oceano em 3D foi interrompida."]);
   await expect(returnToOceanButton(page)).toHaveCount(0);
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeVisible();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeVisible();
 });
 
 test("font and optional vessel detail failures never gate a usable ocean", async ({ page }) => {

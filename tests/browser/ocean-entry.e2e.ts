@@ -5,10 +5,8 @@ import {
   expectOceanReady,
   expectSettledAt,
   holdVesselAssets,
-  openStopAccount,
   returnToOceanButton,
   stopCard,
-  stopReader,
   voyageState,
 } from "@/tests/browser/editorial-route";
 
@@ -58,12 +56,11 @@ test("an essential failure while loading opens reading mode with one explanation
   await expect(page.locator("#voyage-announcer")).toHaveText("Não foi possível carregar o oceano em 3D.");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.locator("#rota button").first().click();
-  await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
   await page.reload();
   // The lock lasts for the visit; Voyage State keeps the current Stop.
   await expect(notice(page)).toContainText("Não foi possível carregar o oceano em 3D.");
-  await expect(page.locator("#fernando-de-noronha-signal-1")).toBeVisible();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeVisible();
   await expect(returnToOceanButton(page)).toHaveCount(0);
 });
 
@@ -100,8 +97,8 @@ for (const capability of ["unsupported", "refused"] as const) {
     await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
     await expect(returnToOceanButton(page)).toHaveCount(0);
     await page.locator("#rota button").first().click();
-    await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-    await expect(page.locator("#fernando-de-noronha-signal-2")).toBeFocused();
+    await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 }
 
@@ -111,8 +108,13 @@ test("every Stop Account is readable without JavaScript", { tag: "@critical" }, 
   await page.goto("/");
   await expect(loading(page)).toBeHidden();
   await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
-  await expect(page.locator(".signal")).toHaveCount(12);
-  for (const signal of await page.locator(".signal").all()) await expect(signal).toBeVisible();
+  const accounts = page.locator("article.station");
+  await expect(accounts).toHaveCount(4);
+  for (const account of await accounts.all()) {
+    await expect(account).toBeVisible();
+    await expect(account.getByRole("heading", { level: 3 })).toHaveText(["Destaques", "Melhor época"]);
+  }
+  await expect(page.getByRole("heading", { name: "Roteiro completo" })).toBeVisible();
   await context.close();
 });
 
@@ -121,15 +123,12 @@ test("context loss returns to the matching editorial passage", { tag: "@critical
   await enterOcean(page);
   await page.keyboard.press("ArrowDown");
   await expectSettledAt(page, 1);
-  await openStopAccount(page);
-  await page.getByRole("button", { name: "Próximo sinal", exact: true }).click();
-  await stopReader(page).getByRole("button", { name: "Voltar ao mar", exact: true }).click();
   await page.locator("canvas").evaluate((canvas) => {
     (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
   });
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
   await expect(page.locator("#voyage-editorial-heading")).toBeFocused();
-  await expect(page.locator("#fernando-de-noronha-signal-2")).toBeVisible();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeVisible();
   // One restoration succeeds and offers an explicit return.
   await expect(returnToOceanButton(page)).toBeVisible();
   expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");

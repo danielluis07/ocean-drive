@@ -4,10 +4,13 @@ import { settleScroll } from "@/tests/browser/scroll";
 import {
   enterOcean,
   expectSettledAt,
+  expectSheetClosed,
   openEditorialStop,
+  openSheet,
+  openStopAccount,
   readingModeLink,
   returnToOceanButton,
-  stopReader,
+  saibaMais,
   voyageRoute,
 } from "@/tests/browser/editorial-route";
 
@@ -70,7 +73,7 @@ test("editorial keyboard focus is always visible, unobscured, and never trapped"
   expect(stops.map((stop) => stop.label)).toContain("button Voltar ao oceano");
   // Reaching the final link and leaving it proves the document has no trap.
   const labels = stops.map((stop) => stop.label);
-  const finalControl = keepsLinksOutOfTabOrder() ? "button Voltar à rota" : "a Voltar ao início";
+  const finalControl = keepsLinksOutOfTabOrder() ? "button Recomeçar viagem" : "a Voltar ao início";
   const last = labels.indexOf(finalControl);
   expect(last).toBeGreaterThanOrEqual(0);
   expect(labels.slice(last + 1).some((label) => label === "(outside page content)" || label === labels[0])).toBe(true);
@@ -97,47 +100,33 @@ test("3D chrome and the Stop Card are keyboard reachable in order, with visible 
   const action = page.getByRole("button", { name: "Saiba mais", exact: true });
   await action.focus();
   await page.keyboard.press("Enter");
-  await expect(stopReader(page)).toBeVisible();
+  await expect(openSheet(page)).toBeVisible();
   await page.keyboard.press("Escape");
+  await expectSheetClosed(page);
   await expect(action).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(page.locator("#voyage-ocean")).toBeFocused();
   await expectSettledAt(page, 2);
 });
 
-test("Escape closes Caderno before the reader and never changes presentation", { tag: "@critical" }, async ({ page }) => {
+test("Escape closes only the open Sheet and never changes presentation", { tag: "@critical" }, async ({ page }) => {
   test.setTimeout(90_000);
   await enterOcean(page);
-  await readingModeLink(page).click();
-  await openEditorialStop(page, voyageRoute[0]);
-  const summary = page.locator("#fernando-de-noronha .logbook summary:visible");
-  // Escape elsewhere on the page never closes a Caderno or pulls focus to it.
-  await summary.click();
-  await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
-  const returnToOcean = returnToOceanButton(page);
-  await returnToOcean.focus();
+  await page.keyboard.press("ArrowDown");
+  await expectSettledAt(page, 1);
+  await openStopAccount(page);
   await page.keyboard.press("Escape");
-  await expect(page.locator("main details.logbook[open]")).toHaveCount(1);
-  await expect(returnToOcean).toBeFocused();
-  await summary.focus();
-  await page.keyboard.press("Escape");
-  await expect(page.locator("main details.logbook[open]")).toHaveCount(0);
-  await expect(page.locator("#fernando-de-noronha-signal-1")).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
-  await expect(page.locator("#fernando-de-noronha-signal-1")).toBeVisible();
-
-  await returnToOcean.click();
-  const reader = stopReader(page);
-  await reader.locator(".logbook summary:visible").focus();
-  await page.keyboard.press("Enter");
-  await page.keyboard.press("Escape");
-  await expect(reader).toBeVisible();
-  await expect(page.locator("#fernando-de-noronha-signal-1")).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(reader).toBeHidden();
-  await expect(page.getByRole("button", { name: "Saiba mais", exact: true })).toBeFocused();
+  await expectSheetClosed(page);
+  await expect(saibaMais(page)).toBeFocused();
+  // With nothing open, Escape does nothing.
   await page.keyboard.press("Escape");
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "three-dimensional");
-  await expect(page.getByRole("button", { name: "Saiba mais", exact: true })).toBeFocused();
+  await expect(saibaMais(page)).toBeFocused();
+
+  await readingModeLink(page).click();
+  await openEditorialStop(page, voyageRoute[0]);
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
+  await expect(returnToOceanButton(page)).toBeVisible();
 });

@@ -3,9 +3,10 @@ import { test } from "@/tests/browser/journey-fixture";
 import {
   enterOcean,
   expectSettledAt,
+  expectSheetClosed,
   openStopAccount,
+  saibaMais,
   stopCard,
-  stopReader,
   voyageState,
 } from "@/tests/browser/editorial-route";
 
@@ -134,21 +135,21 @@ test(
     await page.keyboard.press("ArrowDown");
     await expectSettledAt(page, 1);
     await openStopAccount(page);
-    await expect(page.locator("#fernando-de-noronha-signal-1")).toBeFocused();
+    await expect
+      .poll(() => page.evaluate(() => !!document.activeElement?.closest("[role='dialog']")))
+      .toBe(true);
     await expect
       .poll(async () => (await voyageState(page)).visitedStops)
       .toEqual(["fernando-de-noronha"]);
-    // While reading, keys and wheel belong to the reader, never to the route.
+    // While reading, keys and wheel belong to the Sheet, never to the route.
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("PageDown");
     await page.waitForTimeout(800);
     expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");
     await page.keyboard.press("Escape");
-    await expect(stopReader(page)).toBeHidden();
+    await expectSheetClosed(page);
     // Focus returns to the card's “Saiba mais”.
-    await expect(
-      stopCard(page).getByRole("button", { name: "Saiba mais", exact: true }),
-    ).toBeFocused();
+    await expect(saibaMais(page)).toBeFocused();
     expect((await voyageState(page)).routeProgress).toBe(1);
   },
 );
@@ -189,11 +190,10 @@ test(
     await page.reload();
     await expectSettledAt(page, 4, 60_000);
 
-    await openStopAccount(page);
-    await stopReader(page)
+    // The Arrival's closing card restarts the Voyage.
+    await stopCard(page)
       .getByRole("button", { name: "Recomeçar viagem", exact: true })
       .click();
-    await expect(stopReader(page)).toBeHidden();
     await expectSettledAt(page, 0);
     await expect
       .poll(async () => (await voyageState(page)).complete)
