@@ -61,10 +61,21 @@ function SailableScene(props: RuntimeProps) {
   const prepared = useRef(false);
   const announced = useRef(false);
   const failed = useRef(false);
-  const compiling = useRef<Promise<unknown>>(Promise.resolve());
+  const compilations = useRef(0);
   const liveMaterial = useRef<ShaderMaterial | null>(null);
+  const retired = useRef(new Set<ShaderMaterial>());
+  // Dispose the water materials the scene no longer uses, once nothing polls them.
+  const releaseRetired = () => {
+    if (compilations.current > 0) return;
+    for (const old of retired.current) {
+      if (old === liveMaterial.current) continue;
+      retired.current.delete(old);
+      old.dispose();
+    }
+  };
   const fallbackPending = useRef(false);
   const [baselineWater, setBaselineWater] = useState(false);
+  const baselineActive = useRef(false);
   const elapsed = useRef(0);
   const lastFrame = useRef<number | null>(null);
   const frameWasActive = useRef(false);
@@ -109,21 +120,15 @@ function SailableScene(props: RuntimeProps) {
     };
   }, [gl, scene, recoveryGeneration, props.quality.tier]);
 
-  useEffect(() => {
-    let cancelled = false;
-    prepared.current = false;
-    announced.current = false;
-    failed.current = false;
-    fallbackPending.current = false;
-    if (baselineWater) {
-      const context = gl.getContext();
-      // Consume errors from the rejected decorative program before validating
-      // the replacement. Errors from its own frame still fail readiness.
-      for (let error = 0; error < 8 && context.getError() !== context.NO_ERROR; error++) { /* Drain old flags. */ }
-    }
-    onStage("preparing");
+  // Three checks a program for errors once, on its first use, and that can be
+  // the first frame, before any passive effect runs. So the handler is in place
+  // before a frame can draw and never lapses while the scene is mounted.
+  useLayoutEffect(() => {
+    baselineActive.current = baselineWater;
+  }, [baselineWater]);
+  useLayoutEffect(() => {
     gl.debug.onShaderError = (context, program, vertex, fragment) => {
-      if (!baselineWater && context.getShaderSource(fragment)?.includes("uniform float wakeDetail;")) {
+      if (!baselineActive.current && context.getShaderSource(fragment)?.includes("uniform float wakeDetail;")) {
         fallbackPending.current = true;
         setBaselineWater(true);
         return;
@@ -132,15 +137,39 @@ function SailableScene(props: RuntimeProps) {
       failed.current = true;
       onFailure();
     };
+    return () => { gl.debug.onShaderError = null; };
+  }, [gl, onFailure]);
+
+  useEffect(() => {
+    let cancelled = false;
+    prepared.current = false;
+    announced.current = false;
+    failed.current = false;
+    // A re-run before baseline water arrives (StrictMode, or any other
+    // dependency) keeps waiting for it: the failed decorative program will not
+    // report again, so validating it would read its errors as a broken frame.
+    if (fallbackPending.current && !baselineWater) return;
+    fallbackPending.current = false;
+    if (baselineWater) {
+      const context = gl.getContext();
+      // Consume errors from the rejected decorative program before validating
+      // the replacement. Errors from its own frame still fail readiness.
+      for (let error = 0; error < 8 && context.getError() !== context.NO_ERROR; error++) { /* Drain old flags. */ }
+    }
+    onStage("preparing");
+    compilations.current++;
     const compilation = gl.compileAsync(scene, camera);
-    compiling.current = compilation.catch(() => undefined);
+    void compilation.catch(() => undefined).then(() => {
+      compilations.current--;
+      releaseRetired();
+    });
     compilation.then(() => {
       if (cancelled || failed.current || fallbackPending.current) return;
       prepared.current = true;
       onStage("frame");
       invalidate();
     }).catch((error) => { console.error("Ocean preparation failed", error); onFailure(); });
-    return () => { cancelled = true; gl.debug.onShaderError = null; };
+    return () => { cancelled = true; };
   }, [gl, scene, camera, invalidate, onStage, onFailure, recoveryGeneration, material, baselineWater]);
 
   useEffect(() => {
@@ -170,13 +199,17 @@ function SailableScene(props: RuntimeProps) {
 
   // Three polls every compiling material until its program is ready. Disposing one
   // mid-poll throws and strands readiness (parallel compilation in Firefox/WebKit
-  // widens that window), so release a material only after that compilation, and
-  // only if it was replaced or unmounted rather than remounted.
+  // widens that window, and a re-run such as StrictMode's can leave more than one
+  // compilation polling it), so release a material only once no compilation is
+  // in flight, and only if it was replaced or unmounted rather than remounted.
   useEffect(() => {
+    const retiring = retired.current;
     liveMaterial.current = material;
+    retiring.delete(material);
     return () => {
       liveMaterial.current = null;
-      void compiling.current.then(() => { if (liveMaterial.current !== material) material.dispose(); });
+      retiring.add(material);
+      queueMicrotask(releaseRetired);
     };
   }, [material]);
 

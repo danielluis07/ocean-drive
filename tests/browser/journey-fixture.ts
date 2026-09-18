@@ -4,6 +4,13 @@ import { test as base } from "@playwright/test";
 // This controls the browser clock, not the application's quality decisions.
 // Dedicated resilience tests independently provide slow frames and failures.
 export const test = base.extend({
+  // A touch-capable context conservatively starts in Low for software-rendered
+  // navigation traces. CSS viewports and mouse/keyboard input remain available.
+  // The separate production gate measures Balanced as well as Low. These are
+  // fixture values rather than a `test.use` here: a helper module runs once per
+  // worker, so a top-level `test.use` would reach only the first spec file.
+  deviceScaleFactor: 0.25,
+  hasTouch: true,
   page: async ({ page }, providePage) => {
     await page.clock.install();
     await page.clock.pauseAt(new Date(Date.now() + 1000));
@@ -25,8 +32,3 @@ export const test = base.extend({
     finally { running = false; await frames; }
   },
 });
-
-// A touch-capable context conservatively starts in Low for software-rendered
-// navigation traces. CSS viewports and mouse/keyboard input remain available.
-// The separate production gate measures Balanced as well as Low.
-test.use({ deviceScaleFactor: 0.25, hasTouch: true });

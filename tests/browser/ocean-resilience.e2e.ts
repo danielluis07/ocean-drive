@@ -6,6 +6,12 @@ import {
   openStopAccount,
   returnToOceanButton,
 } from "@/tests/browser/editorial-route";
+import { test as journey } from "@/tests/browser/journey-fixture";
+
+// Several scenarios fast-forward hundreds of frames at once. At full scale the
+// software renderer is still drawing them long after a test ends, which stalls
+// the next test's browser context; a quarter scale keeps that backlog short.
+test.use({ deviceScaleFactor: 0.25 });
 
 const enter = (page: Page) => enterOcean(page);
 const notice = (page: Page) => page.locator('[data-slot="presentation-notice"]');
@@ -14,6 +20,26 @@ async function loseContext(page: Page) {
   await page.locator("canvas").evaluate((canvas) => {
     (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
   });
+}
+
+// Enter on a clock paused from the first frame, as the journey fixture does, and
+// advance it by hand. Quality then measures only steady 16 ms frames, so it never
+// re-prepares the scene under a scenario's input; and a clock installed over a
+// running ocean could overshoot its pause while software rendering is busy.
+async function enterPaused(page: Page) {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.goto("/");
+  await expect
+    .poll(async () => {
+      await page.clock.runFor(100);
+      // Read without auto-waiting: the ocean cannot get ready while the clock is held.
+      return page.evaluate(() => {
+        const ocean = document.getElementById("voyage-ocean");
+        return `${ocean?.dataset.stage}:${ocean?.dataset.settledStop}`;
+      });
+    }, { timeout: 60_000 })
+    .toBe("ready:0");
 }
 
 test("successful context restoration offers explicit return and a second loss locks the visit", async ({ page }) => {
@@ -35,7 +61,11 @@ test("successful context restoration offers explicit return and a second loss lo
   await expect(page.locator("#voyage-ocean")).toHaveCount(0);
 });
 
-test("loss while reading a Stop Account continues at the same Stop in the editorial text", async ({ page }) => {
+// Sailing to the Stop is a navigation journey, so it runs on the controlled
+// clock: in real time a software renderer can cross the Low fallback before
+// the Ship arrives.
+journey("loss while reading a Stop Account continues at the same Stop in the editorial text", async ({ page }) => {
+  journey.setTimeout(90_000);
   await enter(page);
   await page.keyboard.press("ArrowDown");
   await expectSettledAt(page, 1);
@@ -110,9 +140,7 @@ test("delayed fonts never delay the ocean", async ({ page }) => {
 });
 
 test("a hidden recovery preserves its foreground deadline and never returns to 3D on its own", async ({ page }) => {
-  await enter(page);
-  await page.clock.install();
-  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await enterPaused(page);
   await page.locator("canvas").evaluate((canvas) => {
     const extension = (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!;
     extension.restoreContext = () => {};
@@ -142,9 +170,7 @@ for (const event of ["visibilitychange", "pagehide", "blur"] as const) {
   test(`${event} records the Ship's place, freezes the route, and settles on return`, async ({ page }) => {
     // Software rendering draws every controlled frame, so these journeys run long.
     test.setTimeout(120_000);
-    await enter(page);
-    await page.clock.install();
-    await page.clock.pauseAt(new Date(Date.now() + 1000));
+    await enterPaused(page);
     await page.locator("#voyage-ocean canvas").evaluate((canvas) => {
       for (let event = 0; event < 16; event++) canvas.dispatchEvent(new WheelEvent("wheel", { bubbles: true, cancelable: true, deltaY: 100 }));
     });

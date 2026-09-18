@@ -65,8 +65,10 @@ ambiguous, including the existing navigation journeys: software rendering on the
 test host can cross the mandatory fallback threshold. A dedicated slow-frame
 browser scenario still verifies that threshold with the production controller.
 The journey fixture advances ten individual 16 ms frames per round-trip and uses
-0.5 device scale for the software renderer while preserving CSS viewports and
-input coordinates. These runs cannot serve as full-resolution performance evidence.
+0.25 device scale and a touch-capable context (so Low) for the software renderer
+while preserving CSS viewports and input coordinates. It sets these as fixture
+values, so every spec file that uses it gets them, not only the first one loaded.
+These runs cannot serve as full-resolution performance evidence.
 Low compiles out foam, the wake trail, the bow wave, clouds, and fine ripple calculations.
 The vessel follows the same long swells as the water; reduced motion freezes wave
 time and disables pitch and roll. No new external textures or asset services are
