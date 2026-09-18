@@ -50,11 +50,15 @@ leitura”.
 ### Placement
 
 Each frame at rest, the scene projects the Ship and the Stop's Landmark to screen
-circles (`lib/scene-projection.ts`, runtime only) and `lib/stage-layout.ts` writes
-them to the ocean surface as `--ship-*` and `--landmark-*` custom properties, plus
+circles (`lib/scene-projection.ts`, runtime only, using the Landmark's recorded
+radius from `content/landmarks.json`) and `lib/stage-layout.ts` writes them to the
+ocean surface as `--ship-*` and `--landmark-*` custom properties, plus
 `data-card-side`. Nothing re-renders React. Matching the camera framing, the card
 stands beside the Ship on landscape viewports, clear of the top chrome, and below
-it on portrait viewports, clear of “Modo leitura”. Viewports up to 30rem tall use
+it on portrait viewports, clear of “Modo leitura”. Its band begins past whichever
+of the two circles reaches further, so an island is never covered by the card
+that introduces it; `tests/landmark-placement.test.ts` checks that every
+production viewport leaves room for both. Viewports up to 30rem tall use
 the compact `short:` type scale. At extreme magnification the card band scrolls,
 so keyboard focus still reaches “Saiba mais”.
 

@@ -23,12 +23,14 @@ type StopCardProps = {
 
 // The card's band spans the free water beside the Ship (landscape) or below it
 // (portrait), from the custom properties the scene writes on the ocean surface.
-// Beside the Ship the band clears the top chrome; below it, the “Modo leitura”
-// link. On extreme zoom the band scrolls, so keyboard focus still reaches the card.
+// It starts past whichever of the Ship and the Stop's Landmark reaches further,
+// so an island is never covered by what it is there to introduce. Beside the
+// Ship the band clears the top chrome; below it, the “Modo leitura” link. On
+// extreme zoom the band scrolls, so keyboard focus still reaches the card.
 const band =
   "pointer-events-none absolute z-10 flex overflow-y-auto [scrollbar-width:none] " +
-  "group-data-[card-side=beside]/ocean:top-[max(4.75rem,calc(env(safe-area-inset-top)+3.75rem))] group-data-[card-side=beside]/ocean:right-[max(1rem,env(safe-area-inset-right))] group-data-[card-side=beside]/ocean:bottom-[max(1rem,env(safe-area-inset-bottom))] group-data-[card-side=beside]/ocean:left-[calc(var(--ship-x,35%)+var(--ship-radius,2rem)+1.5rem)] " +
-  "group-data-[card-side=below]/ocean:top-[calc(var(--ship-y,35%)+var(--ship-radius,2rem)+1rem)] group-data-[card-side=below]/ocean:right-[max(1rem,env(safe-area-inset-right))] group-data-[card-side=below]/ocean:bottom-[max(3.5rem,calc(env(safe-area-inset-bottom)+2.5rem))] group-data-[card-side=below]/ocean:left-[max(1rem,env(safe-area-inset-left))] group-data-[card-side=below]/ocean:justify-center";
+  "group-data-[card-side=beside]/ocean:top-[max(4.75rem,calc(env(safe-area-inset-top)+3.75rem))] group-data-[card-side=beside]/ocean:right-[max(1rem,env(safe-area-inset-right))] group-data-[card-side=beside]/ocean:bottom-[max(1rem,env(safe-area-inset-bottom))] group-data-[card-side=beside]/ocean:left-[calc(max(var(--ship-x,35%)+var(--ship-radius,2rem),var(--landmark-x,0px)+var(--landmark-radius,0px))+1.5rem)] " +
+  "group-data-[card-side=below]/ocean:top-[calc(max(var(--ship-y,35%)+var(--ship-radius,2rem),var(--landmark-y,0px)+var(--landmark-radius,0px))+1rem)] group-data-[card-side=below]/ocean:right-[max(1rem,env(safe-area-inset-right))] group-data-[card-side=below]/ocean:bottom-[max(3.5rem,calc(env(safe-area-inset-bottom)+2.5rem))] group-data-[card-side=below]/ocean:left-[max(1rem,env(safe-area-inset-left))] group-data-[card-side=below]/ocean:justify-center";
 
 const pill =
   "inline-flex h-11 items-center gap-2.5 rounded-full bg-card px-5 text-sm font-semibold text-card-foreground text-shadow-none transition-colors hover:bg-secondary focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring short:h-9";

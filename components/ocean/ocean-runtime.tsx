@@ -2,11 +2,10 @@
 import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
-import { useVesselScene } from "@/lib/use-vessel-scene";
+import { useModelScene } from "@/lib/use-model-scene";
 import { qualityEnvelope, type OceanQuality } from "@/lib/ocean-quality";
-import type { StopId } from "@/content/editorial";
 import type { OceanConfiguration } from "@/lib/ocean-config";
-import StopMarker from "@/components/ocean/stop-marker";
+import StopLandmark from "@/components/ocean/stop-landmark";
 import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
 import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
@@ -14,7 +13,8 @@ import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sa
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { createShipWake, CRUISE_SPEED } from "@/lib/ship-wake";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
-import { LANDMARK_EXTENT, projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
+import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
+import { createSurfMaterial } from "@/lib/landmark-surf";
 import type { StageLayout } from "@/lib/stage-layout";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
@@ -32,7 +32,6 @@ type RuntimeProps = {
   reading: boolean;
   chartedRoute: ChartedRoute;
   route: RouteMotion;
-  visitedStops: StopId[];
   inputConnected: RefObject<boolean>;
   onStage: (stage: PreparationStage) => void;
   onFailure: () => void;
@@ -56,7 +55,7 @@ function SailableScene(props: RuntimeProps) {
   const { gl, scene, camera, size, invalidate, setFrameloop } = useThree();
   const measureScene = useSceneDiagnostics(gl);
   const oceanDraws = useRef(0);
-  const vesselScene = useVesselScene(props.vesselUrl);
+  const vesselScene = useModelScene(props.vesselUrl);
   const vesselGroup = useRef<Group>(null);
   const prepared = useRef(false);
   const announced = useRef(false);
@@ -98,6 +97,10 @@ function SailableScene(props: RuntimeProps) {
       fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
     });
   }, [baselineWater, props.quality.tier]);
+  // One surf material for every Landmark: they all read the same swell, and one
+  // program keeps the shoreline inside the scene's draw and program budgets.
+  const surfMaterial = useMemo(() => createSurfMaterial(), []);
+  useEffect(() => () => surfMaterial.dispose(), [surfMaterial]);
 
   useLayoutEffect(() => {
     if (props.quality.tier === "low") return;
@@ -231,6 +234,10 @@ function SailableScene(props: RuntimeProps) {
       const pose = poseAtProgress(props.chartedRoute, motion.progress);
       elapsed.current += seconds * (props.reducedMotion ? CALM_WAVE_RATE : 1);
       material.uniforms.time.value = elapsed.current;
+      // The surf line shares the ocean's clock, so its band never drifts out of
+      // the swell it sits on. Reduced motion holds the sets still.
+      surfMaterial.uniforms.time.value = elapsed.current;
+      surfMaterial.uniforms.motion.value = props.reducedMotion ? 0 : 1;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
@@ -271,11 +278,14 @@ function SailableScene(props: RuntimeProps) {
       camera.lookAt(...framing.target);
       if (motion.settledStop !== null) {
         camera.updateMatrixWorld();
-        const landmark = props.configuration.stops[motion.settledStop].landmark;
+        const stop = props.configuration.stops[motion.settledStop];
+        const landmark = stop.landmark;
         props.onLayout({
           portrait: isPortraitViewport(size),
           ship: projectWaterCircle(camera, pose.position, SHIP_EXTENT, size, projection),
-          landmark: landmark ? projectWaterCircle(camera, { x: landmark[0], z: landmark[1] }, LANDMARK_EXTENT, size, projection) : null,
+          landmark: landmark
+            ? projectWaterCircle(camera, { x: landmark[0], z: landmark[1] }, props.configuration.landmarks[stop.id].radius, size, projection)
+            : null,
         });
       }
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
@@ -312,12 +322,11 @@ function SailableScene(props: RuntimeProps) {
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
       {props.configuration.stops.map((stop) => stop.landmark ? (
-        <StopMarker
+        <StopLandmark
           key={stop.id}
+          url={props.configuration.landmarks[stop.id].variants[props.quality.tier === "low" ? "low" : "balanced"].url}
           position={stop.landmark}
-          color={stop.color}
-          visited={props.visitedStops.includes(stop.id)}
-          animated={props.active && !props.reading && !props.reducedMotion}
+          surf={surfMaterial}
         />
       ) : null)}
     </>

@@ -1,10 +1,10 @@
 import type { Camera, Vector3 } from "three";
 import type { ScreenCircle } from "@/lib/stage-layout";
 
-// Generous world-space extents: the Ship's hull in any heading, and the
-// placeholder Landmark's base.
+// A generous world-space extent for the Ship's hull in any heading. A
+// Landmark's own extent is recorded in `content/landmarks.json` by the build
+// that produced its mesh.
 export const SHIP_EXTENT = 3.5;
-export const LANDMARK_EXTENT = 4;
 
 // Project a circle on the water to CSS pixels. The camera keeps a north-up
 // orientation, so an offset along world X measures the on-screen radius.

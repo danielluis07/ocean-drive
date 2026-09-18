@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "landmarks": [
+    {
+      "id": "fernando-de-noronha",
+      "place": "Fernando de Noronha, Pernambuco, Brazil",
+      "span": 24,
+      "extent": {
+        "x": 11.951,
+        "z": 9.277
+      },
+      "radius": 12.451,
+      "islands": 3,
+      "summitMetres": 230,
+      "surfWidth": 2.2,
+      "variants": {
+        "balanced": {
+          "url": "/models/landmark-fernando-de-noronha-balanced.v1.glb",
+          "triangles": 3964,
+          "bytes": 68544
+        },
+        "low": {
+          "url": "/models/landmark-fernando-de-noronha-low.v1.glb",
+          "triangles": 1238,
+          "bytes": 25496
+        }
+      }
+    },
+    {
+      "id": "boipeba",
+      "place": "Ilha de Boipeba, Bahia, Brazil",
+      "span": 19,
+      "extent": {
+        "x": 9.179,
+        "z": 9.449
+      },
+      "radius": 9.949,
+      "islands": 4,
+      "summitMetres": 68,
+      "surfWidth": 2.6,
+      "variants": {
+        "balanced": {
+          "url": "/models/landmark-boipeba-balanced.v1.glb",
+          "triangles": 3904,
+          "bytes": 66184
+        },
+        "low": {
+          "url": "/models/landmark-boipeba-low.v1.glb",
+          "triangles": 1255,
+          "bytes": 25464
+        }
+      }
+    },
+    {
+      "id": "abrolhos",
+      "place": "Arquipélago de Abrolhos, Bahia, Brazil",
+      "span": 22,
+      "extent": {
+        "x": 10.072,
+        "z": 10.975
+      },
+      "radius": 11.475,
+      "islands": 6,
+      "summitMetres": 39,
+      "surfWidth": 3.4,
+      "variants": {
+        "balanced": {
+          "url": "/models/landmark-abrolhos-balanced.v1.glb",
+          "triangles": 4279,
+          "bytes": 76308
+        },
+        "low": {
+          "url": "/models/landmark-abrolhos-low.v1.glb",
+          "triangles": 1292,
+          "bytes": 28372
+        }
+      }
+    },
+    {
+      "id": "ilha-grande",
+      "place": "Ilha Grande, Rio de Janeiro, Brazil",
+      "span": 28,
+      "extent": {
+        "x": 13.964,
+        "z": 7.51
+      },
+      "radius": 14.464,
+      "islands": 1,
+      "summitMetres": 1001,
+      "surfWidth": 2.4,
+      "variants": {
+        "balanced": {
+          "url": "/models/landmark-ilha-grande-balanced.v1.glb",
+          "triangles": 3792,
+          "bytes": 64928
+        },
+        "low": {
+          "url": "/models/landmark-ilha-grande-low.v1.glb",
+          "triangles": 1232,
+          "bytes": 24600
+        }
+      }
+    }
+  ]
+}

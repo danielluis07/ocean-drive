@@ -7,8 +7,11 @@ the Ship sails one fixed, ordered route through Stops 00–04 in Voyage Waters.
 ## Route and progress
 
 `lib/ocean-config.ts` lists the Stops in route order, each with the anchorage
-where the Ship rests and a placeholder Landmark beside it. Distances are
-compressed; the layout only echoes the order of the coast.
+where the Ship rests and the centre of the island Landmark beside it. Distances
+are compressed; the layout only echoes the order of the coast. The route runs
+west, and every Landmark lies north of its anchorage, so the Ship passes along
+each island's southern shore and the north-up camera frames the island above the
+Ship (see [landmarks.md](landmarks.md)).
 
 `lib/charted-route.ts` threads a Catmull-Rom spline through the anchorages.
 Route progress is measured in Stops: `0` is Stop 00, `1` is Stop 01, and
@@ -62,7 +65,7 @@ roll.
 `lib/route-camera.ts` frames a near top-down view at 80° with a fixed north-up
 orientation. The Ship sits left of centre on landscape viewports and above
 centre on portrait viewports, leaving room beside it for a Stop Card (see
-[minimal-chrome.md](minimal-chrome.md)).
+[minimal-chrome.md](minimal-chrome.md)) and, above it, for the Stop's Landmark.
 
 ## Voyage State
 
@@ -81,7 +84,8 @@ in the ocean scene; a reload keeps a Visitor who chose “Modo leitura” there.
 - `bun test` covers progress mapping, calling at every Stop, docking and resting
   in open water, held and tapped keys, Stop steps, reduced
   motion cuts, camera pitch and framing, and Voyage State transitions and
-  persistence.
+  persistence. `tests/landmark-placement.test.ts` checks the route against each
+  island's real outline: it passes beside every Landmark and never through one.
 - `tests/browser/charted-route.e2e.ts` covers wheel, touch, held and tapped key
   navigation, docking, resting in open water, opening a Stop, reload/history persistence, completion, restart, and
   reduced motion in the running app.

@@ -64,14 +64,21 @@ test("an essential failure while loading opens reading mode with one explanation
   await expect(returnToOceanButton(page)).toHaveCount(0);
 });
 
-test("reduced motion still opens the 3D voyage and loads the mobile vessel", { tag: "@critical" }, async ({ page }) => {
+test("reduced motion still opens the 3D voyage and loads the mobile vessel and Landmarks", { tag: "@critical" }, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
-  const vessels: string[] = [];
-  page.on("request", (request) => { if (request.url().endsWith(".glb")) vessels.push(request.url()); });
+  const models: string[] = [];
+  page.on("request", (request) => { if (request.url().endsWith(".glb")) models.push(new URL(request.url()).pathname); });
   await enterOcean(page);
-  expect(vessels).toHaveLength(1);
-  expect(vessels[0]).toContain("research-vessel-low.v2.glb");
+  // The Low tier fetches only its own simplified meshes: one vessel and one
+  // mesh per island Landmark, never a Balanced one.
+  expect(models.filter((path) => path.includes("research-vessel"))).toEqual(["/models/research-vessel-low.v2.glb"]);
+  expect(models.filter((path) => path.includes("/landmark-")).sort()).toEqual([
+    "/models/landmark-abrolhos-low.v1.glb",
+    "/models/landmark-boipeba-low.v1.glb",
+    "/models/landmark-fernando-de-noronha-low.v1.glb",
+    "/models/landmark-ilha-grande-low.v1.glb",
+  ]);
   await expect(stopCard(page)).toBeVisible();
 });
 

@@ -1,7 +1,21 @@
 # Graphics dependency notices
 
-These notices cover the direct graphics dependencies introduced by issue #24.
+These notices cover the direct graphics dependencies introduced by issue #24
+and the open geodata the island Landmarks are built from (issue #39).
 They do not replace the complete application dependency audit in issue #29.
+
+## Landmark source data
+
+- Coastlines: © OpenStreetMap contributors, made available under the Open
+  Database License (ODbL) 1.0.
+- Elevation data: SRTM courtesy of the U.S. Geological Survey, retrieved from
+  the Terrain Tiles open dataset on AWS.
+
+Sources, queries, licences and transformations are recorded in
+`docs/third-party/open-geodata.md`; the same credit is shown in the experience
+through `brand.dataCredit`.
+
+## Graphics dependencies
 
 - Three.js 0.185.1: Copyright © 2010-2026 three.js authors.
   Source: official package `three/LICENSE`.
