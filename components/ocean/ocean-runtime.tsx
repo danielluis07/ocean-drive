@@ -63,7 +63,7 @@ function SailableScene(props: RuntimeProps) {
   const compilations = useRef(0);
   const liveMaterial = useRef<ShaderMaterial | null>(null);
   const retired = useRef(new Set<ShaderMaterial>());
-  // Dispose the water materials the scene no longer uses, once nothing polls them.
+  // Dispose the water and surf materials the scene no longer uses, once nothing polls them.
   const releaseRetired = () => {
     if (compilations.current > 0) return;
     for (const old of retired.current) {
@@ -100,7 +100,16 @@ function SailableScene(props: RuntimeProps) {
   // One surf material for every Landmark: they all read the same swell, and one
   // program keeps the shoreline inside the scene's draw and program budgets.
   const surfMaterial = useMemo(() => createSurfMaterial(), []);
-  useEffect(() => () => surfMaterial.dispose(), [surfMaterial]);
+  // Every compilation polls the surf program too, so it is released like a
+  // retired water material: only once no compilation is still in flight.
+  useEffect(() => {
+    const retiring = retired.current;
+    retiring.delete(surfMaterial);
+    return () => {
+      retiring.add(surfMaterial);
+      queueMicrotask(releaseRetired);
+    };
+  }, [surfMaterial]);
 
   useLayoutEffect(() => {
     if (props.quality.tier === "low") return;

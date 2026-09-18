@@ -27,7 +27,7 @@
       "transformations": "Authored configuration, compiled by Next into same-origin application code",
       "essential": true,
       "experience": true,
-      "sha256": "202beac67e3584d73bbddc1ada7b7473b1c2fdb75ad51e963d5e6895e35d320d"
+      "sha256": "cca54fc557d42b0db132fde5fcb7293c66f4a90a7f7db39ebce15329cd901ffc"
     },
     {
       "path": "content/landmarks.json",

@@ -83,9 +83,9 @@ It saves JSON reports, build identity, traces and aerial screenshots.
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
 | Low vessel                           |  4,000 triangles; 120 KiB |
 | Landmark, High/Balanced              |  4,400 triangles; 76 KiB; |
-|                                      |              no textures  |
+|                                      |     2 draws; no textures  |
 | Landmark, Low                        |  1,300 triangles; 28 KiB; |
-|                                      |              no textures  |
+|                                      |     2 draws; no textures  |
 | Balanced visible draws               |            Fewer than 100 |
 | Balanced visible triangles           |        Fewer than 150,000 |
 | Ocean draws                          |               Exactly one |

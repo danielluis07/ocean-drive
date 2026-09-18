@@ -51,7 +51,7 @@ export async function auditAssets() {
       // with the record the scene reads its triangle and byte counts from.
       const tier = island[2] as keyof typeof landmarkBudget;
       const budget = landmarkBudget[tier];
-      if (model.triangles > budget.triangles || buffer.byteLength > budget.bytes) errors.push(`Landmark budget exceeded: ${asset.path} (${model.triangles} triangles, ${buffer.byteLength} bytes)`);
+      if (model.triangles > budget.triangles || buffer.byteLength > budget.bytes || model.draws > budget.draws) errors.push(`Landmark budget exceeded: ${asset.path} (${model.triangles} triangles, ${buffer.byteLength} bytes, ${model.draws} draws)`);
       if (!model.parts.includes("island") || !model.parts.includes("surf")) errors.push(`Landmark is missing its island or surf mesh: ${asset.path}`);
       const declared = landmarks.landmarks.find((entry) => entry.id === island[1])?.variants[tier];
       if (!declared || declared.triangles !== model.triangles || declared.bytes !== buffer.byteLength) errors.push(`Landmark record does not match its mesh: ${asset.path}`);

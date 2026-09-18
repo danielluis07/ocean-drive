@@ -17,10 +17,13 @@ export default function StopLandmark({
 }) {
   const scene = useModelScene(url);
   useLayoutEffect(() => {
+    const restores: (() => void)[] = [];
     scene.traverse((object) => {
       if (!(object instanceof Mesh)) return;
       if (object.name === "surf") {
+        const own = object.material;
         object.material = surf;
+        restores.push(() => { object.material = own; });
         // The band lies on the water, so it is drawn after it, and its own
         // bounds are flat; keep it out of the frustum test's flat-sphere edge.
         object.renderOrder = 1;
@@ -34,6 +37,9 @@ export default function StopLandmark({
         object.material.needsUpdate = true;
       }
     });
+    // A scene replaced by another tier is disposed with its materials, so it
+    // gets its own surf material back rather than taking the shared one along.
+    return () => restores.forEach((restore) => restore());
   }, [scene, surf]);
   return (
     <group position={[position[0], 0, position[1]]}>

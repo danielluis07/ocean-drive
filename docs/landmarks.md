@@ -103,16 +103,18 @@ one draw per island.
 
 ## Budgets
 
-| Per Landmark      | Triangles | Transfer |
-| ----------------- | --------: | -------: |
-| Balanced and High |     4,400 |   76 KiB |
-| Low               |     1,300 |   28 KiB |
+| Per Landmark      | Triangles | Transfer | Draws |
+| ----------------- | --------: | -------: | ----: |
+| Balanced and High |     4,400 |   76 KiB |     2 |
+| Low               |     1,300 |   28 KiB |     2 |
 
-Textures: none, at any tier. Draws: two per Landmark, the island and its surf
-band. The budgets are enforced twice — the build refuses to write a mesh that
-exceeds them, and `bun run assets:audit` re-measures the shipped GLB, checks it
-against the same budget, checks that it still carries an `island` and a `surf`
-part, and reconciles its triangle and byte counts with `content/landmarks.json`.
+Textures: none, at any tier. The two draws are the island and its surf band.
+The triangle and transfer budgets are enforced twice — the build refuses to
+write a mesh that exceeds them, and `bun run assets:audit` re-measures the
+shipped GLB. The audit also counts the GLB's primitives, one draw each, against
+the draw budget, rejects any texture, checks that it still carries an `island`
+and a `surf` part, and reconciles its triangle and byte counts with
+`content/landmarks.json`.
 The scene-wide draw-call and triangle budgets in `lib/production-budgets.ts`
 cover the four Landmarks together with the ocean and the Ship.
 

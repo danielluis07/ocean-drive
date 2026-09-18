@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { landmarkBudget, landmarkSources } from "@/content/landmark-sources";
 import { inspectModel } from "@/lib/asset-audit";
 import { auditAssets } from "@/scripts/audit-assets";
 
@@ -18,6 +19,19 @@ test("production vessel variants preserve the same footprint within the approved
   for (let axis = 0; axis < 3; axis++) {
     expect(low.min[axis]).toBeCloseTo(balanced.min[axis], 2);
     expect(low.max[axis]).toBeCloseTo(balanced.max[axis], 2);
+  }
+});
+
+test("every island Landmark stays within its tier's triangle, transfer, draw and texture budgets", async () => {
+  for (const source of landmarkSources) {
+    for (const tier of ["balanced", "low"] as const) {
+      const buffer = await Bun.file(`public/models/landmark-${source.id}-${tier}.v1.glb`).arrayBuffer();
+      const landmark = inspectModel(buffer);
+      expect(landmark.triangles).toBeLessThanOrEqual(landmarkBudget[tier].triangles);
+      expect(buffer.byteLength).toBeLessThanOrEqual(landmarkBudget[tier].bytes);
+      expect(landmark.draws).toBeLessThanOrEqual(landmarkBudget[tier].draws);
+      expect(landmark.textures).toBe(0);
+    }
   }
 });
 

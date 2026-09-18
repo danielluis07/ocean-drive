@@ -48,10 +48,11 @@ export type LandmarkSource = {
 };
 
 // Triangles each quality tier may spend on one Landmark, shared between the
-// island surface, the skirt that hides its underside, and the surf line.
+// island surface, the skirt that hides its underside, and the surf line, and
+// the draws it may add to the scene: one for the land, one for its surf line.
 export const landmarkBudget = {
-  balanced: { triangles: 4_400, bytes: 76 * 1024 },
-  low: { triangles: 1_300, bytes: 28 * 1024 },
+  balanced: { triangles: 4_400, bytes: 76 * 1024, draws: 2 },
+  low: { triangles: 1_300, bytes: 28 * 1024, draws: 2 },
 } as const;
 
 export const landmarkSources: LandmarkSource[] = [
