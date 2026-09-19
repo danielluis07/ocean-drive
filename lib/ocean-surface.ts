@@ -54,6 +54,9 @@ export const oceanFragmentShader = `
   uniform vec2 vessel;
   uniform float heading;
   uniform float wakeDetail;
+  uniform vec4 wakePoints[WAKE_POINTS];
+  uniform vec4 wakeForces[WAKE_POINTS];
+  uniform vec4 wakeBounds;
   varying vec3 world;
 
   vec3 noiseGradient(vec2 p) {
@@ -81,9 +84,6 @@ export const oceanFragmentShader = `
 
   #ifndef LOW_QUALITY
   // Written by lib/ship-wake.ts, oldest point first and the Ship's live point last.
-  uniform vec4 wakePoints[WAKE_POINTS];
-  uniform vec4 wakeForces[WAKE_POINTS];
-  uniform vec4 wakeBounds;
   uniform float speed;
   uniform float thrust;
   uniform vec2 course;
@@ -282,6 +282,29 @@ export const oceanFragmentShader = `
     foam += min(wash, 1.) * (noise(p * 13. + time * .3) - .5) * .18;
     #endif
     water = mix(water, vec3(.65, .76, .83), clamp(foam * min(wakeDetail, 1.), 0., .88));
+    #else
+    // Eight remembered points give phones a world-anchored wake in the same
+    // ocean draw. No slope derivatives, extra noise octaves, or render targets.
+    float foam = 0.;
+    if (all(greaterThanEqual(p, wakeBounds.xy)) && all(lessThanEqual(p, wakeBounds.zw))) {
+      for (int i = 0; i < WAKE_POINTS - 1; i++) {
+        vec4 a = wakePoints[i], b = wakePoints[i + 1];
+        vec2 segment = b.xy - a.xy;
+        float lengthSquared = dot(segment, segment);
+        if (lengthSquared < .001 || time - max(a.z, b.z) >= 9. || time - min(a.z, b.z) >= 18.) continue;
+        float along = clamp(dot(p - a.xy, segment) / lengthSquared, 0., 1.);
+        float age = max(0., time - mix(a.z, b.z, along));
+        vec4 force = mix(wakeForces[i], wakeForces[i + 1], along);
+        float energy = min(sqrt(max(force.x, 0.) / 60.), 1.);
+        float distanceToTrail = length(p - mix(a.xy, b.xy, along));
+        float width = .55 + sqrt(age) * .45;
+        float wash = exp(-pow(distanceToTrail / width, 2.));
+        float arm = exp(-pow((distanceToTrail - 1.05 - min(force.x * .18, 4.) * age) / .38, 2.));
+        foam = max(foam, (wash * .65 + arm * .28) * energy * force.w * (1. - smoothstep(0., 9., age)));
+      }
+      foam *= .65 + .35 * noise(p * 2. + time * .06);
+    }
+    water = mix(water, vec3(.65, .76, .83), clamp(foam * wakeDetail, 0., .8));
     #endif
 
     float haze = smoothstep(140., 420., distance(cameraPosition, world));

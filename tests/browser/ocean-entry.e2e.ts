@@ -72,7 +72,7 @@ test("reduced motion still opens the 3D voyage and loads the mobile vessel and L
   await enterOcean(page);
   // The Low tier fetches only its own simplified meshes: one vessel and one
   // mesh per island Landmark, never a Balanced one.
-  expect(models.filter((path) => path.includes("research-vessel"))).toEqual(["/models/research-vessel-low.v2.glb"]);
+  expect(models.filter((path) => path.includes("mare-mansa"))).toEqual(["/models/mare-mansa-low.v1.glb"]);
   expect(models.filter((path) => path.includes("/landmark-")).sort()).toEqual([
     "/models/landmark-abrolhos-low.v1.glb",
     "/models/landmark-boipeba-low.v1.glb",

@@ -15,13 +15,13 @@ function sail(wake: ReturnType<typeof createShipWake>, from: { z: number; time: 
   return { z, time };
 }
 
-function written(wake: ReturnType<typeof createShipWake>, time: number) {
-  const trail = new Float32Array(POINTS * 4);
-  const forces = new Float32Array(POINTS * 4);
+function written(wake: ReturnType<typeof createShipWake>, time: number, points = POINTS) {
+  const trail = new Float32Array(points * 4);
+  const forces = new Float32Array(points * 4);
   const bounds = new Float32Array(4);
   wake.write(trail, forces, bounds, time);
   const live = [];
-  for (let slot = 0; slot < POINTS; slot++) {
+  for (let slot = 0; slot < points; slot++) {
     const age = time - trail[slot * 4 + 2];
     if (age < WAKE_LIFETIME) live.push({ x: trail[slot * 4], z: trail[slot * 4 + 1], age, speed: forces[slot * 4], thrust: forces[slot * 4 + 1] });
   }
@@ -29,6 +29,18 @@ function written(wake: ReturnType<typeof createShipWake>, time: number) {
 }
 
 describe("Ship wake", () => {
+  test("Low retains a short fading trail and reduced-motion placement clears even a nearby cut", () => {
+    const wake = createShipWake();
+    wake.sail({ x: 0, z: 0 }, 0, 0, 0);
+    const state = sail(wake, { z: 0, time: 0 }, 20, 2);
+    const low = written(wake, state.time, 8);
+    expect(low.live).toHaveLength(8);
+    expect(low.live.some((point) => point.speed > 10)).toBe(true);
+    expect(written(wake, state.time + WAKE_LIFETIME + 1, 8).live).toHaveLength(0);
+    wake.place({ x: 0, z: state.z - 0.5 }, 0, state.time);
+    expect(wake.frame().speed).toBe(0);
+    expect(written(wake, state.time, 8).live.every((point) => point.speed === 0)).toBe(true);
+  });
   test("the water answers a sudden start with inertia and a burst of thrust", () => {
     const wake = createShipWake();
     wake.sail({ x: 0, z: 0 }, 0, 0, 0);

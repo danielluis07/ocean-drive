@@ -44,6 +44,34 @@
       "sha256": "04e3ecbc140868facb346120d42afb14eff3b29e127a73465a4b43a8d3432853"
     },
     {
+      "path": "content/ship-source.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ship.ts",
+      "retrieved": "2026-09-19",
+      "rights": "Project-authored adaptation pipeline; upstream artwork remains CC-BY-3.0",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Authored Ship configuration and reproducible glTF adaptation pipeline",
+      "essential": true,
+      "experience": false,
+      "sha256": "b4a46d29c2aabb75e97505aa81df9d0771217304dd19305526b270112531f325"
+    },
+    {
+      "path": "content/ship.json",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ship.ts",
+      "retrieved": "2026-09-19",
+      "rights": "Project-authored adaptation pipeline; upstream artwork remains CC-BY-3.0",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Measured output from the offline Ship build",
+      "essential": true,
+      "experience": false,
+      "sha256": "cf72f38f20c5088e56a777d8b12c631c6c546fa187e68913084a4f8cfe7f2212"
+    },
+    {
       "path": "data/landmarks/abrolhos.json",
       "kind": "source-data",
       "sourceKind": "open-data",
@@ -98,6 +126,48 @@
       "essential": false,
       "experience": false,
       "sha256": "667b2838865895bbd487cd0179782564ef1217febd4c784e428cad29421b94d7"
+    },
+    {
+      "path": "data/ship/cruise-ship.glb",
+      "kind": "source-data",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Retained upstream bytes; source-page snapshot and Creative Commons legal code retained as rights evidence",
+      "essential": false,
+      "experience": false,
+      "sha256": "b27cc7002dc45f0dcd427acdede55a5a7b7f600c1e5c27a03138ef4a8d96d327"
+    },
+    {
+      "path": "docs/third-party/ship/CC-BY-3.0.txt",
+      "kind": "source-data",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Retained upstream bytes; source-page snapshot and Creative Commons legal code retained as rights evidence",
+      "essential": false,
+      "experience": false,
+      "sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76"
+    },
+    {
+      "path": "docs/third-party/ship/source.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Retained upstream bytes; source-page snapshot and Creative Commons legal code retained as rights evidence",
+      "essential": false,
+      "experience": false,
+      "sha256": "7371dff3c4ec5d774169c34fe8e68a42438a99f38cb79265b4635755b78bd85e"
     },
     {
       "path": "fonts/geistmono-500-latin.v1.woff2",
@@ -187,7 +257,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": true,
       "experience": true,
-      "sha256": "e73a3794774921cb0cbc7603482768ee6600a9d11eefb73415113468fb9330d7"
+      "sha256": "b982517d9766da77e7f2ae82b32a93192a31790f6fb0432e1438a68817b742d3"
     },
     {
       "path": "public/identity/apple-touch-icon.v1.png",
@@ -565,34 +635,48 @@
       "sha256": "92d47b4cbc8ae901ce7604ed2fc8f778934d5e709f40d3f8b635889fd2c4f2be"
     },
     {
-      "path": "public/models/research-vessel-balanced.v2.glb",
-      "url": "/models/research-vessel-balanced.v2.glb",
+      "path": "public/models/mare-mansa-balanced.v1.glb",
+      "url": "/models/mare-mansa-balanced.v1.glb",
       "kind": "authored",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "scripts/generate-vessels.mjs",
-      "retrieved": "2026-09-15",
-      "rights": "Project-authored source contribution; no imported artwork",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Deterministic GLB v2 export from the shared geometry master",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Cruise ship adapted as Maré Mansa: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
       "essential": true,
       "experience": true,
-      "sha256": "d25ce1a5432914926463307014e74499632d623c1d394e950e3c60c0a72d4d65"
+      "sha256": "f2d17055c32fe853ce1e16ff2663a3342f4d5a3e13bb45434d947cac9136ddeb"
     },
     {
-      "path": "public/models/research-vessel-low.v2.glb",
-      "url": "/models/research-vessel-low.v2.glb",
+      "path": "public/models/mare-mansa-low.v1.glb",
+      "url": "/models/mare-mansa-low.v1.glb",
       "kind": "authored",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "scripts/generate-vessels.mjs",
-      "retrieved": "2026-09-15",
-      "rights": "Project-authored source contribution; no imported artwork",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Deterministic GLB v2 export from the shared geometry master",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Cruise ship adapted as Maré Mansa: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
       "essential": true,
       "experience": true,
-      "sha256": "3345b87259b404881401e156c8f056bcc413c727b061b6ad2c7d8cf6d4f54372"
+      "sha256": "28d0b22bba8733da7f8abd62859a892e2d9f92b222234434854afe5d3e9a0a5f"
+    },
+    {
+      "path": "scripts/build-ship.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ship.ts",
+      "retrieved": "2026-09-19",
+      "rights": "Project-authored adaptation pipeline; upstream artwork remains CC-BY-3.0",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Authored Ship configuration and reproducible glTF adaptation pipeline",
+      "essential": true,
+      "experience": false,
+      "sha256": "f0309ca1619724729db0966b91ef82b527fe8c45d7202ee1fc628274f3a37a21"
     }
   ]
 }

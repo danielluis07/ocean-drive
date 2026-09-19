@@ -85,7 +85,7 @@ function SailableScene(props: RuntimeProps) {
   const material = useMemo(() => {
     const { wakePoints } = qualityEnvelope[props.quality.tier];
     return new ShaderMaterial({
-      defines: props.quality.tier === "low" ? { LOW_QUALITY: 1 } : { WAKE_POINTS: wakePoints, ...(props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {}) },
+      defines: { WAKE_POINTS: wakePoints, ...(props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {}) },
       uniforms: {
         time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, wakeDetail: { value: 1 },
         speed: { value: 0 }, thrust: { value: 0 }, course: { value: new Vector2(0, -1) },
@@ -250,9 +250,10 @@ function SailableScene(props: RuntimeProps) {
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
+      if (props.reducedMotion) shipWake.place(pose.position, pose.heading, elapsed.current);
       const wake = shipWake.sail(pose.position, pose.heading, seconds, elapsed.current);
+      shipWake.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
       if (props.quality.tier !== "low") {
-        shipWake.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
         material.uniforms.speed.value = wake.speed;
         material.uniforms.thrust.value = Math.max(wake.surge, 0);
         material.uniforms.course.value.set(wake.course.x, wake.course.z);
@@ -305,7 +306,8 @@ function SailableScene(props: RuntimeProps) {
       if (prepared.current && !announced.current && props.inputConnected.current) {
         const context = gl.getContext();
         const error = context.getError();
-        if (context.isContextLost() || error !== context.NO_ERROR || gl.info.render.calls < 3) {
+        // Stop 00 can contain only the ocean and the Ship's single material.
+        if (context.isContextLost() || error !== context.NO_ERROR || gl.info.render.calls < 2) {
           console.error("Ocean frame validation failed", context.isContextLost(), error, gl.info.render.calls);
           failed.current = true;
           props.onFailure();

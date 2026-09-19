@@ -101,6 +101,7 @@ export function createShipWake() {
 
   return {
     frame,
+    place,
     // Records one frame in which `seconds` of sailing brought the Ship to `position`
     // at shader `time`. Movement without elapsed time is a cut.
     sail(position: RoutePoint, heading: number, seconds: number, time: number): WakeFrame {
