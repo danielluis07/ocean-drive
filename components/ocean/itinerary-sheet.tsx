@@ -19,6 +19,7 @@ export default function ItinerarySheet({ open, onClose, returnFocus }: Itinerary
       </p>
       <Itinerary />
       <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground">{brand.disclosure}</p>
+      <p className="mt-3 text-sm text-muted-foreground">{brand.dataCredit}</p>
     </VoyageSheet>
   );
 }

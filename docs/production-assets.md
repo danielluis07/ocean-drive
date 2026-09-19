@@ -12,6 +12,12 @@ Their provenance is `docs/third-party/ai-generated-images.md`; regenerating
 the manifest after adding or replacing one still goes through
 `bun run assets:record`.
 
+The eight island Landmark GLBs under `public/models/` are built from open
+coastline and elevation data recorded under `data/landmarks/`, also allowed by
+issue #33. Their provenance is `docs/third-party/open-geodata.md`, the recorded
+source data carries its own ledger entries, and the pipeline is described in
+[landmarks.md](landmarks.md).
+
 ## Reproduce and govern assets
 
 Use Bun 1.4.1 and the frozen lockfile:
@@ -19,12 +25,16 @@ Use Bun 1.4.1 and the frozen lockfile:
 ```sh
 bun install --frozen-lockfile
 bun run assets:vessels
+bun run landmarks:build
 bun run assets:identity
 bun run assets:audit
 ```
 
-Generation uses code/vector masters and the retained font bytes, with no network
-requests. The GLBs retain their shared outline, origin, -Z bow and collision
+Generation uses code/vector masters, the retained font bytes and the recorded
+coastline/elevation data under `data/`, with no network requests.
+`bun run landmarks:fetch` is the one command that reaches an outside service; it
+is a maintenance step that re-records `data/landmarks/`, and its output is
+committed and reviewed like any other asset change. The GLBs retain their shared outline, origin, -Z bow and collision
 footprint. High uses the Balanced GLB. Both have two opaque materials, no textures,
 animation, interiors or fine rigging. Navigation geometry never depends on LOD.
 
@@ -72,6 +82,10 @@ It saves JSON reports, build identity, traces and aerial screenshots.
 | Fonts                                |                   160 KiB |
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
 | Low vessel                           |  4,000 triangles; 120 KiB |
+| Landmark, High/Balanced              |  4,400 triangles; 76 KiB; |
+|                                      |     2 draws; no textures  |
+| Landmark, Low                        |  1,300 triangles; 28 KiB; |
+|                                      |     2 draws; no textures  |
 | Balanced visible draws               |            Fewer than 100 |
 | Balanced visible triangles           |        Fewer than 150,000 |
 | Ocean draws                          |               Exactly one |
@@ -87,6 +101,10 @@ server HTML are classified as application output; all requests must stay on the
 application origin. Missing measurements fail rather than counting as zero.
 Scene counts come from actual renderer draws and retained target disposal events,
 with per-tier maxima spanning rendered states; they are not estimates from JSX.
+Each Landmark's budget is enforced twice: the build refuses to write a mesh over
+it, and `bun run assets:audit` re-measures the shipped GLB, checks that it still
+carries its `island` and `surf` parts, and reconciles its triangle and byte
+counts with `content/landmarks.json`.
 
 The general sailing regression fixture advances each 16 ms browser frame at no
 more than real-time pace and uses quarter-resolution software rendering. Its

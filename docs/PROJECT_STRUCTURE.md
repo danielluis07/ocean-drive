@@ -9,6 +9,7 @@ components/
   voyage/                    Editorial voyage UI and interaction shell
   ocean/                     3D ocean presentation and runtime
 content/                     Editorial records and other authored content
+data/                        Recorded third-party source data, never served
 lib/                         State transitions, configuration, and pure helpers
 providers/                   React context providers shared across features
 public/                      Static assets served by Next.js
@@ -25,6 +26,11 @@ responsibility. The `components/voyage/voyage.tsx` file owns the client state
 and coordinates both presentations, while its sibling files render the route,
 Stops, Stop Accounts, the itinerary, and static sections. The white Sheets read
 over the ocean live beside the scene in `components/ocean/`.
+
+`data/` holds open source data recorded once from an outside service and
+committed, such as the coastline and elevation records the island Landmarks are
+built from. Nothing under `data/` is served to the browser; generation scripts
+read it offline so builds stay reproducible. See [landmarks.md](landmarks.md).
 
 Put reusable logic that does not render JSX in `lib/`. For example,
 `lib/voyage-state.ts` owns Voyage State and its persistence,

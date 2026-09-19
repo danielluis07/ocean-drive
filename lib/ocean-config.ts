@@ -1,31 +1,56 @@
 import type { StopId } from "@/content/editorial";
+import landmarks from "@/content/landmarks.json";
+
+export type LandmarkVariant = { url: string; triangles: number; bytes: number };
+
+export type Landmark = {
+  id: string;
+  place: string;
+  span: number;
+  // Half the island's width and depth in world units, from its built mesh.
+  extent: { x: number; z: number };
+  // Half the side of the square about the centre the island fits inside, which
+  // the Stop Card keeps clear of.
+  radius: number;
+  islands: number;
+  summitMetres: number;
+  surfWidth: number;
+  variants: { balanced: LandmarkVariant; low: LandmarkVariant };
+};
 
 export type OceanStop = {
   id: StopId;
   // Where the Ship rests on the Charted Route.
   anchorage: [number, number];
-  // The placeholder Landmark beside the anchorage; Stop 00 is open water.
+  // The Landmark's centre, north of the anchorage; Stop 00 is open water.
   landmark: [number, number] | null;
-  color: string;
 };
 
 export type OceanConfiguration = {
   vessels: { balanced: string; low: string };
   stops: OceanStop[];
+  landmarks: Record<string, Landmark>;
 };
 
 // Fictional Voyage Waters with compressed distances, ordered along the route.
 // The layout echoes the coast's order, not geographic measurement.
+//
+// The Charted Route runs west, and every Landmark lies due north of its
+// anchorage, so the Ship passes along the island's southern shore rather than
+// sailing at it, and the near top-down camera frames the whole island above the
+// Ship with the Stop Card clear to the side. `tests/landmark-placement.test.ts`
+// holds both of those as checks.
 export const oceanConfiguration: OceanConfiguration = {
   vessels: {
     balanced: "/models/research-vessel-balanced.v2.glb",
     low: "/models/research-vessel-low.v2.glb",
   },
   stops: [
-    { id: "partida", anchorage: [0, 0], landmark: null, color: "#f4f7f8" },
-    { id: "fernando-de-noronha", anchorage: [48, -112], landmark: [34, -120], color: "#ffdda2" },
-    { id: "boipeba", anchorage: [-22, -224], landmark: [-36, -232], color: "#ecc5ac" },
-    { id: "abrolhos", anchorage: [29, -328], landmark: [15, -336], color: "#b3ded5" },
-    { id: "ilha-grande", anchorage: [-26, -448], landmark: [-40, -456], color: "#f4e9bc" },
+    { id: "partida", anchorage: [0, 0], landmark: null },
+    { id: "fernando-de-noronha", anchorage: [-112, -12], landmark: [-112, -26.1] },
+    { id: "boipeba", anchorage: [-224, 10], landmark: [-224, -4.3] },
+    { id: "abrolhos", anchorage: [-336, -8], landmark: [-336, -12.4] },
+    { id: "ilha-grande", anchorage: [-448, 12], landmark: [-448, -0.3] },
   ],
+  landmarks: Object.fromEntries(landmarks.landmarks.map((landmark) => [landmark.id, landmark as Landmark])),
 };

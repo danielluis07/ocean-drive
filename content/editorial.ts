@@ -6,6 +6,9 @@ export type Brand = {
   tagline: string;
   ship: string;
   disclosure: string;
+  // Credits the open data the island Landmarks are built from. OpenStreetMap's
+  // ODbL requires this notice wherever the meshes are shown.
+  dataCredit: string;
   nextDeparture: string;
 };
 
@@ -15,6 +18,8 @@ export const brand: Brand = {
   ship: "Maré Mansa",
   disclosure:
     "Travessia é uma comissão fictícia. Esta viagem combina lugares, paisagens, organismos e temporadas reais da costa brasileira com um navio, uma tripulação e um roteiro imaginados. Nenhuma reserva, tripulação ou embarque descritos aqui existe de fato.",
+  dataCredit:
+    "As ilhas em 3D foram modeladas a partir de dados abertos: linha de costa © colaboradores do OpenStreetMap (ODbL 1.0) e elevação SRTM, cortesia do U.S. Geological Survey. As formas são reconhecíveis, mas as distâncias e as escalas foram comprimidas: não servem para navegação.",
   nextDeparture: "Próxima partida · setembro de 2027",
 };
 

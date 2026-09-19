@@ -29,6 +29,7 @@ export default function EditorialIntro() {
         <details className="disclosure" open>
           <summary>Comissão fictícia</summary>
           <p>{brand.disclosure}</p>
+          <p>{brand.dataCredit}</p>
         </details>
       </div>
     </section>

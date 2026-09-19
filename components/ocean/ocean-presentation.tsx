@@ -450,7 +450,6 @@ export default function OceanPresentation({
               reducedMotion={reducedMotion}
               active={active}
               reading={sheetOpen}
-              visitedStops={voyage.visitedStops}
               inputConnected={inputConnected}
               onStage={onStage}
               onFailure={failAsset}

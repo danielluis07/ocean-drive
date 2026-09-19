@@ -57,18 +57,6 @@ describe("Charted Route progress mapping", () => {
       expect(Math.abs(headingDifference(here.heading, travel))).toBeLessThan(0.05);
     }
   });
-
-  test("placeholder Landmarks stand clear of the route the Ship sails", () => {
-    for (const stop of oceanConfiguration.stops) {
-      if (!stop.landmark) continue;
-      let clearance = Infinity;
-      for (let progress = 0; progress <= anchorages.length - 1; progress += 0.005) {
-        const { position } = poseAtProgress(route, progress);
-        clearance = Math.min(clearance, Math.hypot(position.x - stop.landmark[0], position.z - stop.landmark[1]));
-      }
-      expect(clearance).toBeGreaterThan(8);
-    }
-  });
 });
 
 describe("Stop selection", () => {

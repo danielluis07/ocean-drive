@@ -15,7 +15,11 @@ const swellShader = swells.map((wave) =>
   `wave(p, vec2(${wave.x}, ${wave.z}), ${wave.amplitude}, ${wave.speed}, height, slope);`,
 ).join("\n");
 
-const surfaceShader = `
+// The shoreline hook: any mesh that has to sit on the water includes this chunk
+// and displaces its world Y by `swell(world.xz, height, slope)` with the same
+// `time` the ocean is given, so it rides the same surface. The Landmark surf
+// line in `lib/landmark-surf.ts` is the first caller; see docs/landmarks.md.
+export const oceanSwellShader = `
   uniform float time;
   void wave(vec2 p, vec2 direction, float amplitude, float speed, inout float height, inout vec2 slope) {
     float phase = dot(p, direction) + time * speed;
@@ -30,7 +34,7 @@ const surfaceShader = `
 `;
 
 export const oceanVertexShader = `
-  ${surfaceShader}
+  ${oceanSwellShader}
   uniform vec2 vessel;
   varying vec3 world;
   void main() {
@@ -46,7 +50,7 @@ export const oceanVertexShader = `
 `;
 
 export const oceanFragmentShader = `
-  ${surfaceShader}
+  ${oceanSwellShader}
   uniform vec2 vessel;
   uniform float heading;
   uniform float wakeDetail;

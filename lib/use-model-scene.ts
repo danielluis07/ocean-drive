@@ -3,7 +3,7 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Mesh, type Group } from "three";
 
-function disposeVessel(scene: Group) {
+function disposeScene(scene: Group) {
   scene.traverse((object) => {
     if (!(object instanceof Mesh)) return;
     object.geometry.dispose();
@@ -11,8 +11,10 @@ function disposeVessel(scene: Group) {
   });
 }
 
-// Only the initial vessel gates entry. Keep it visible during optional LOD loads.
-export function useVesselScene(url: string) {
+// Only the first model gates entry. Keep it visible during optional LOD loads:
+// a quality change swaps the scene once its replacement has arrived, so the
+// Ship and the Landmarks never blink out while a tier is substituted.
+export function useModelScene(url: string) {
   const [initialUrl] = useState(url);
   const initial = useLoader(GLTFLoader, initialUrl).scene;
   const [replacement, setReplacement] = useState<{ url: string; scene: typeof initial } | null>(null);
@@ -21,13 +23,13 @@ export function useVesselScene(url: string) {
     let cancelled = false;
     let loaded: Group | null = null;
     new GLTFLoader().load(url, (asset) => {
-      if (cancelled) { disposeVessel(asset.scene); return; }
+      if (cancelled) { disposeScene(asset.scene); return; }
       loaded = asset.scene;
       setReplacement({ url, scene: asset.scene });
-    }, undefined, () => { /* Preserve the already usable vessel. */ });
+    }, undefined, () => { /* Preserve the already usable model. */ });
     return () => {
       cancelled = true;
-      if (loaded) disposeVessel(loaded);
+      if (loaded) disposeScene(loaded);
     };
   }, [url, initialUrl]);
   return replacement?.url === url ? replacement.scene : initial;
