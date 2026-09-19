@@ -57,6 +57,9 @@ const SHORE_DIP = 0.6;
 const SKIRT_DEPTH = 3.2;
 // World units over which the land climbs out of the water behind its shoreline.
 const SHORE_RAMP = 0.5;
+// Compressed lowlands must clear the 0.395-unit swell envelope. This display
+// offset preserves their recorded relief instead of letting the sea erase it.
+const LOWLAND_CLEARANCE = 0.44;
 
 // The Landmark's outlines in world units, for the first spacing estimate.
 function coastline(record: LandmarkRecord, source: LandmarkSource) {
@@ -115,7 +118,7 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
     // Behind the shoreline the land climbs to its recorded height; at the
     // shoreline it sits below the water, where the surf line covers the join.
     const seat = Math.min(1, shoreAt[index] / SHORE_RAMP);
-    const height = (metresAt[index] / Math.max(summit, 1)) * source.height;
+    const height = LOWLAND_CLEARANCE + (metresAt[index] / Math.max(summit, 1)) * source.height;
     positions.set([point.x, height * seat * seat - SHORE_DIP * (1 - seat), point.z], index * 3);
   }
 
@@ -139,6 +142,8 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
         shoreHeight: source.shoreHeight,
         summit,
         grain: mottle(point.x * 0.9, point.z * 0.9),
+        shoreDistance: shoreAt[index],
+        beachWidth: source.beachWidth,
       },
       source.palette,
     );
@@ -151,7 +156,7 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   const skirtColours: number[] = [];
   const skirtIndices: number[] = [];
   const rockColour = shadeSurface(
-    { metres: 0, slope: 1, shoreHeight: source.shoreHeight, summit, grain: 0.35 },
+    { metres: 0, slope: 1, shoreHeight: source.shoreHeight, summit, grain: 0.35, shoreDistance: 0, beachWidth: source.beachWidth },
     source.palette,
   ).map((value) => Math.round(value * 255 * 0.55));
   for (const ring of surface.outlines) {

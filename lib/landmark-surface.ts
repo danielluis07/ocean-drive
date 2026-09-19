@@ -84,6 +84,10 @@ export type SurfacePoint = {
   summit: number;
   // 0 to 1 grain, from `mottle`.
   grain: number;
+  // Distance inland and beach width in the same world units. Low inland
+  // ground is forest or scrub, rather than a beach across the whole island.
+  shoreDistance: number;
+  beachWidth: number;
 };
 
 // Returns linear-sRGB, the space a Three vertex colour is read in.
@@ -97,7 +101,9 @@ export function shadeSurface(point: SurfacePoint, palette: LandmarkPalette): [nu
   // Steep ground sheds soil, so rock takes over as the slope grows. Flat, low
   // ground at the waterline is beach; a steep shoreline is cliff, not sand.
   const bare = smoothstep(0.42, 0.72, point.slope);
-  const beach = smoothstep(point.shoreHeight * 2.2, 0, point.metres) * (1 - smoothstep(0.26, 0.5, point.slope));
+  const coastal = 1 - smoothstep(point.beachWidth * 0.15, point.beachWidth, point.shoreDistance);
+  const beach = coastal * (1 - smoothstep(0, point.shoreHeight * 2.2, point.metres))
+    * (1 - smoothstep(0.26, 0.5, point.slope));
   const ground = vegetation.map((value, index) => value + (rock[index] - value) * bare);
   const mixed = ground.map((value, index) => value + (sand[index] - value) * beach);
   // A little grain, and a lift on the summits, so a large island does not read

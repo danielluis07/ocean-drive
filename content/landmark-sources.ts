@@ -37,10 +37,12 @@ export type LandmarkSource = {
   // so that a 1 km archipelago and a 25 km island both read from the camera.
   // `tests/landmark-placement.test.ts` holds the sizes the camera can frame.
   span: number;
-  // World units from sea level to the island's real summit, at `span`'s scale.
+  // World units of relief to the real summit, above the lowland display offset.
   height: number;
   // Metres of real elevation that read as beach rather than hillside.
   shoreHeight: number;
+  // Visible sandy margin in world units; low inland ground stays vegetated.
+  beachWidth: number;
   // World units of water the surf line covers outside the shoreline.
   surfWidth: number;
   // How the island is shaded by height and slope.
@@ -65,11 +67,12 @@ export const landmarkSources: LandmarkSource[] = [
     smallestRing: 0.004,
     group: 0.6,
     span: 24,
-    height: 2.6,
-    shoreHeight: 26,
-    surfWidth: 2.2,
+    height: 3.2,
+    shoreHeight: 14,
+    beachWidth: 0.85,
+    surfWidth: 1.35,
     // Volcanic: dark basalt headlands, dry scrub, pale coral sand.
-    palette: { sand: "#e8d8b4", rock: "#4a4640", lowland: "#7b8a55", highland: "#61764a" },
+    palette: { sand: "#e8d8b4", rock: "#655e50", lowland: "#657747", highland: "#7b8050" },
   },
   {
     id: "boipeba",
@@ -82,9 +85,10 @@ export const landmarkSources: LandmarkSource[] = [
     span: 19,
     height: 0.9,
     shoreHeight: 8,
-    surfWidth: 2.6,
+    beachWidth: 1.05,
+    surfWidth: 1.65,
     // Low and sandy: long beaches, mangrove and restinga behind them.
-    palette: { sand: "#ecdfbe", rock: "#847a69", lowland: "#6d8f5b", highland: "#55764a" },
+    palette: { sand: "#ecdfbe", rock: "#847a69", lowland: "#416745", highland: "#6a8050" },
   },
   {
     id: "abrolhos",
@@ -96,8 +100,9 @@ export const landmarkSources: LandmarkSource[] = [
     group: 4,
     span: 22,
     height: 1.8,
-    shoreHeight: 7,
-    surfWidth: 3.4,
+    shoreHeight: 3,
+    beachWidth: 0.45,
+    surfWidth: 1.8,
     // Reef-fringed basalt tables: bare rock, thin grass, almost no beach.
     palette: { sand: "#e0d2af", rock: "#54504a", lowland: "#8d9260", highland: "#7a8156" },
   },
@@ -110,10 +115,11 @@ export const landmarkSources: LandmarkSource[] = [
     smallestRing: 0.006,
     group: 0.2,
     span: 28,
-    height: 2.4,
-    shoreHeight: 30,
-    surfWidth: 2.4,
+    height: 3.1,
+    shoreHeight: 14,
+    beachWidth: 0.65,
+    surfWidth: 1.3,
     // Atlantic forest to the waterline, with granite showing on the ridges.
-    palette: { sand: "#e5d5b6", rock: "#6f675e", lowland: "#4b7248", highland: "#3a5c3c" },
+    palette: { sand: "#e5d5b6", rock: "#6f675e", lowland: "#365d3d", highland: "#60774c" },
   },
 ];

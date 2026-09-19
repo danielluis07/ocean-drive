@@ -130,7 +130,7 @@ describe("Landmark triangulation", () => {
 describe("Landmark shading", () => {
   const palette: LandmarkPalette = { sand: "#ffffff", rock: "#000000", lowland: "#00ff00", highland: "#008000" };
   const at = (metres: number, slope: number) =>
-    shadeSurface({ metres, slope, shoreHeight: 10, summit: 300, grain: 0.5 }, palette);
+    shadeSurface({ metres, slope, shoreHeight: 10, summit: 300, grain: 0.5, shoreDistance: 0, beachWidth: 1 }, palette);
 
   test("low, flat ground at the waterline is sand", () => {
     const [r, g, b] = at(0, 0);
@@ -143,6 +143,13 @@ describe("Landmark shading", () => {
 
   test("gentle slopes above the beach carry vegetation", () => {
     const [r, g, b] = at(80, 0.1);
+    expect(g).toBeGreaterThan(r + 0.3);
+    expect(g).toBeGreaterThan(b + 0.3);
+  });
+
+  test("low inland ground stays vegetated instead of becoming an island-wide beach", () => {
+    const [r, g, b] = shadeSurface({ metres: 0, slope: 0, shoreHeight: 10, summit: 300,
+      grain: 0.5, shoreDistance: 2, beachWidth: 1 }, palette);
     expect(g).toBeGreaterThan(r + 0.3);
     expect(g).toBeGreaterThan(b + 0.3);
   });

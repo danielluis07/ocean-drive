@@ -11,6 +11,11 @@ image-model output, scientific media, third-party model, map, HDRI or texture
 was imported. These are project source contributions, not commissioned external
 artwork; there is no third-party artwork transfer agreement to invent.
 
+Island surface grain and the surf material are also project-authored procedural
+code in `lib/landmark-material.ts` and `lib/landmark-surf.ts`. They use no imported
+textures. The underlying island geometry uses the separately attributed open
+geodata documented in `open-geodata.md`.
+
 The project owner's instruction to implement issue #29 authorizes creating and
 modifying these repository assets for the Live Experience. The retained sources
 and Git history document authorship and transformations. No external asset

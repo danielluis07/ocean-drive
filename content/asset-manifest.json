@@ -27,7 +27,7 @@
       "transformations": "Authored configuration, compiled by Next into same-origin application code",
       "essential": true,
       "experience": true,
-      "sha256": "cca54fc557d42b0db132fde5fcb7293c66f4a90a7f7db39ebce15329cd901ffc"
+      "sha256": "37c421f21e6600fd6a4f87551a711f6e5bee039a0fc651517e01979ad5e6914f"
     },
     {
       "path": "content/landmarks.json",
@@ -41,7 +41,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "5a9ede6eec236ca12b007bceb14be219418ae219b63355798acee4c09d94c10f"
+      "sha256": "04e3ecbc140868facb346120d42afb14eff3b29e127a73465a4b43a8d3432853"
     },
     {
       "path": "data/landmarks/abrolhos.json",
@@ -134,6 +134,20 @@
       "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
     },
     {
+      "path": "lib/landmark-material.ts",
+      "kind": "procedural",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "lib/landmark-material.ts",
+      "retrieved": "2026-09-19",
+      "rights": "Project-authored source contribution; no imported artwork",
+      "proof": "docs/third-party/project-assets.md",
+      "transformations": "Compiled by Next into same-origin HTML/application code",
+      "essential": false,
+      "experience": true,
+      "sha256": "5c10113717387c330f856c74dd9e04ca32d1ddeb2ec97bec9bbd0fd3f9ef06f5"
+    },
+    {
       "path": "lib/landmark-surf.ts",
       "kind": "procedural",
       "sourceKind": "project-source",
@@ -145,7 +159,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "35408967239b59a3fa4ca39e06d9a52e2ea2a7f247c81a68f35bc1ca47ed2f48"
+      "sha256": "6075038981ac561277a690a7515845f0f39159e638324878ae1fb232cddb78ec"
     },
     {
       "path": "lib/ocean-lighting.ts",
@@ -440,10 +454,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "01d3764793c466caa3bb0f38336f720feddb260f2df3b673c510f496ac56f4ec"
+      "sha256": "6aab0765d66f2a067872907b31ac77fb8014652bfd49fdbef70a842085e907cb"
     },
     {
       "path": "public/models/landmark-abrolhos-low.v1.glb",
@@ -455,10 +469,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "6bf843ca4ef396dbd5460b4284acd637526eaa689bf4eb4cd2f642c7698e83fa"
+      "sha256": "d41915f49660b19df9e6bedb0b2162b0140d4d2199d9f80921c094457b6899d4"
     },
     {
       "path": "public/models/landmark-boipeba-balanced.v1.glb",
@@ -470,10 +484,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "df2c38e1bf2a3d41f291078319cf439ed1f70c5d2f677b156f304a6874936bcb"
+      "sha256": "c8f357ea3accc0c5670deb3fbe199e5f87cdc02be16b41941c82a419cbc6d91c"
     },
     {
       "path": "public/models/landmark-boipeba-low.v1.glb",
@@ -485,10 +499,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "d075beb0b71518fe8d9f9a3c21db8e47717b6508099e35e4cc8c7fba072fa9c7"
+      "sha256": "f896424519b3b75c1ed0a0deb87a23aa4ff16dfaa93696a2077199ac6413ea96"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
@@ -500,10 +514,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "e7de2ea8b3a6d893cc4b18c6acd550c7154c4ac53fa89a1953aff6af52c87701"
+      "sha256": "135a42d95578dc483c23ab03adc5402a04390c3f8594560a3909744fbeaa1d35"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
@@ -515,10 +529,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "d07f21d82987933225f1e42fa55629e544f5196e8dc49cd56893fbd8a3e22356"
+      "sha256": "b798ecafa54ab56c47ffe1bff5e8bbeb526e3561710770694268f41b83a8dfed"
     },
     {
       "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
@@ -530,10 +544,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "2d1b8c7e567923ccf2b46616604aecb8087240c6c9304eb5118a44c8d5f83bc8"
+      "sha256": "139742e5f89f963c39ad6a005bf231a74c131006fdd9e2fcdbb467d9e282b522"
     },
     {
       "path": "public/models/landmark-ilha-grande-low.v1.glb",
@@ -545,10 +559,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, shaded by height and slope, with a skirt and a surf band around the shoreline",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell, shaded by height, slope and distance inland, with a skirt and a surf band around the shoreline",
       "essential": true,
       "experience": true,
-      "sha256": "9181b895c2452c7a46ef2838b5d316e44216510dd36136749008df4d9be36041"
+      "sha256": "92d47b4cbc8ae901ce7604ed2fc8f778934d5e709f40d3f8b635889fd2c4f2be"
     },
     {
       "path": "public/models/research-vessel-balanced.v2.glb",

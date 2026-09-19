@@ -12,17 +12,17 @@
       "radius": 12.451,
       "islands": 3,
       "summitMetres": 230,
-      "surfWidth": 2.2,
+      "surfWidth": 1.35,
       "variants": {
         "balanced": {
           "url": "/models/landmark-fernando-de-noronha-balanced.v1.glb",
-          "triangles": 3964,
-          "bytes": 68544
+          "triangles": 4052,
+          "bytes": 70396
         },
         "low": {
           "url": "/models/landmark-fernando-de-noronha-low.v1.glb",
-          "triangles": 1238,
-          "bytes": 25496
+          "triangles": 1256,
+          "bytes": 26160
         }
       }
     },
@@ -37,17 +37,17 @@
       "radius": 9.949,
       "islands": 4,
       "summitMetres": 68,
-      "surfWidth": 2.6,
+      "surfWidth": 1.65,
       "variants": {
         "balanced": {
           "url": "/models/landmark-boipeba-balanced.v1.glb",
-          "triangles": 3904,
-          "bytes": 66184
+          "triangles": 3972,
+          "bytes": 67612
         },
         "low": {
           "url": "/models/landmark-boipeba-low.v1.glb",
-          "triangles": 1255,
-          "bytes": 25464
+          "triangles": 1264,
+          "bytes": 25952
         }
       }
     },
@@ -62,12 +62,12 @@
       "radius": 11.475,
       "islands": 6,
       "summitMetres": 39,
-      "surfWidth": 3.4,
+      "surfWidth": 1.8,
       "variants": {
         "balanced": {
           "url": "/models/landmark-abrolhos-balanced.v1.glb",
           "triangles": 4279,
-          "bytes": 76308
+          "bytes": 76312
         },
         "low": {
           "url": "/models/landmark-abrolhos-low.v1.glb",
@@ -87,17 +87,17 @@
       "radius": 14.464,
       "islands": 1,
       "summitMetres": 1001,
-      "surfWidth": 2.4,
+      "surfWidth": 1.3,
       "variants": {
         "balanced": {
           "url": "/models/landmark-ilha-grande-balanced.v1.glb",
-          "triangles": 3792,
-          "bytes": 64928
+          "triangles": 3976,
+          "bytes": 68792
         },
         "low": {
           "url": "/models/landmark-ilha-grande-low.v1.glb",
-          "triangles": 1232,
-          "bytes": 24600
+          "triangles": 1268,
+          "bytes": 25840
         }
       }
     }

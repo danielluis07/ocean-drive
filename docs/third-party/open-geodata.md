@@ -61,7 +61,9 @@ Transformation: terrarium pixels were decoded to metres with
 coastline were assembled, and the result was resampled to one square grid of
 whole metres over that island's bounds and stored base64-encoded. The build
 samples that grid bilinearly, clamps it at sea level, and scales it to the world
-height recorded per island. Heights are compressed with the island's own scale;
+height recorded per island. A 0.44-world-unit display offset keeps compressed
+lowlands above the ocean swell; the coastline still dips below the waterline.
+Heights are compressed with the island's own scale;
 they are not a survey and must not be read as one.
 
 ## What the meshes are, and are not
@@ -70,7 +72,9 @@ Each island's outline and relief come from the data above. Everything else —
 how large the island is in Voyage Waters, where it sits beside the Charted
 Route, and the sand/rock/vegetation palette it is shaded with — is authored in
 `content/landmark-sources.ts` and `lib/ocean-config.ts`, and is presentation,
-not measurement. Distances between Stops are deliberately compressed, and each
+not measurement. Coastal sand widths and the procedural canopy/rock grain in
+`lib/landmark-material.ts` are also authored, not recorded land-cover data.
+Distances between Stops are deliberately compressed, and each
 island is scaled on its own so that a 2 km archipelago and a 30 km island both
 read from the same camera. The Landmarks are recognisable portraits of real
 places inside an openly fictional voyage, not a chart, and nothing in the

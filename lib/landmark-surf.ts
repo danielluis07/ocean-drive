@@ -13,9 +13,11 @@ import { oceanSwellShader } from "@/lib/ocean-surface";
 const surfVertexShader = `
   ${oceanSwellShader}
   varying vec2 shore;
+  varying vec2 ground;
   void main() {
     shore = uv;
     vec3 world = (modelMatrix * vec4(position, 1.)).xyz;
+    ground = position.xz;
     float height;
     vec2 slope;
     swell(world.xz, height, slope);
@@ -27,6 +29,7 @@ const surfVertexShader = `
 
 const surfFragmentShader = `
   varying vec2 shore;
+  varying vec2 ground;
   uniform float time;
   // 1 while the surf rolls, 0 when it holds still as a foam ring.
   uniform float motion;
@@ -41,25 +44,26 @@ const surfFragmentShader = `
 
   void main() {
     // The shallows the island stands in, palest right against the land.
-    float shallows = 1. - smoothstep(0., .72, shore.y);
+    float reef = noise(ground * 1.3);
+    float shallows = (1. - smoothstep(0., .9, shore.y)) * (.65 + reef * .35);
     // Sets of breakers rolling shoreward, broken along the shore so the ring
     // never reads as one even stripe. A motion of zero leaves the set
     // where it stands: a still foam ring rather than a travelling one.
     float drift = time * .16 * motion;
-    float along = noise(vec2(shore.x * .35, drift * .6));
+    float along = noise(ground * .8 + drift * .15);
     float sets = .55 + .45 * cos((shore.y * 2.6 - drift * 2.2 + along * .9) * 6.2832);
-    float lather = noise(vec2(shore.x * 1.9, shore.y * 4.2 - drift * 1.4));
-    float fizz = noise(vec2(shore.x * 7.3 + drift, shore.y * 9.) );
+    float lather = noise(ground * 3.2 + vec2(drift * .3, -drift * .6));
+    float fizz = noise(ground * 11. + drift * .4);
     float froth = lather * .62 + fizz * .38;
     // Foam gathers where the water is shallowest and tears apart further out.
-    float breaking = smoothstep(.42, .86, froth * (.4 + .8 * sets)) * smoothstep(.8, .12, shore.y);
+    float breaking = smoothstep(.48, .84, froth * (.4 + .8 * sets)) * (1. - smoothstep(.12, .72, shore.y));
     // A wash right at the waterline, so the land always meets broken water.
-    float wash = smoothstep(.16, 0., shore.y);
-    float foam = clamp(max(breaking * .85, wash * (.6 + .3 * sets)), 0., 1.);
+    float wash = (1. - smoothstep(.02, .15, shore.y)) * smoothstep(.25, .7, lather);
+    float foam = clamp(max(breaking * .72, wash * (.35 + .3 * sets)), 0., 1.);
     // Reef shallows, not surf: a turquoise halo the white only breaks out of
     // against the land, so the band never reads as a rim of ice.
-    vec3 water = mix(vec3(.02, .09, .13), vec3(.07, .27, .3), shallows);
-    gl_FragColor = vec4(mix(water, vec3(.76, .86, .88), foam), clamp(shallows * .5 + foam * .8, 0., .86));
+    vec3 water = mix(vec3(.015, .08, .11), vec3(.035, .3, .25), shallows);
+    gl_FragColor = vec4(mix(water, vec3(.76, .86, .83), foam), clamp(shallows * .38 + foam * .72, 0., .78));
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }

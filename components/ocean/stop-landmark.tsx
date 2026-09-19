@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { Mesh, MeshStandardMaterial, type ShaderMaterial } from "three";
 import { useModelScene } from "@/lib/use-model-scene";
+import { detailLandmarkMaterial } from "@/lib/landmark-material";
 
 // One island Landmark: the land, built from open elevation and coastline data
 // by `scripts/generate-landmarks.ts`, and the surf line around its shore. The
@@ -32,9 +33,9 @@ export default function StopLandmark({
       // The island ships without normals to stay inside its transfer budget;
       // they are worth more as smooth shading here than as bytes on the wire.
       if (!object.geometry.getAttribute("normal")) object.geometry.computeVertexNormals();
-      if (object.material instanceof MeshStandardMaterial && object.material.flatShading) {
+      if (object.material instanceof MeshStandardMaterial) {
         object.material.flatShading = false;
-        object.material.needsUpdate = true;
+        restores.push(detailLandmarkMaterial(object.material));
       }
     });
     // A scene replaced by another tier is disposed with its materials, so it

@@ -51,13 +51,13 @@ and needs no network. Per island and per tier it:
    triangles whose centres fall in the water, which follows the coast and spans
    nothing between separate islands;
 4. lifts each vertex by the recorded elevation, easing the land down below the
-   waterline at the shore so the swell never uncovers a seam, and hangs a skirt
+   waterline at the shore so the swell never uncovers a seam, raises compressed
+   lowlands by 0.44 world units to clear the swell, and hangs a skirt
    under the shoreline so the camera's remaining perspective cannot look under
    the island;
-5. shades every vertex by height and slope — sand where the land is low and
-   flat, bare rock where it is steep, vegetation between, lighter toward the
-   summit — and bakes that into vertex colours, so a Landmark carries no
-   texture at all;
+5. shades every vertex by height, slope and distance inland — sand on low,
+   flat coastal ground within the configured `beachWidth`, bare rock where it
+   is steep, vegetation inland — and bakes that into vertex colours;
 6. builds the surf band around the shoreline; and
 7. exports `island` and `surf` as one glTF, then records what it actually wrote
    in `content/landmarks.json`.
@@ -65,6 +65,13 @@ and needs no network. Per island and per tier it:
 The sample spacing is not tuned by hand. The build estimates it from the
 island's area, measures what came out, and coarsens until the Landmark fits its
 tier's budget — which is why a new island needs no more than its config entry.
+
+At runtime, `lib/landmark-material.ts` adds stationary procedural canopy and
+rock grain to the existing land material, including subtle normal variation.
+The detail follows object coordinates and fades below pixel size to avoid
+shimmering. It adds no textures, geometry or draws, and both tiers use it.
+The vegetation pattern is an authored surface treatment, not surveyed land
+cover. The coastlines and large-scale relief still come from recorded data.
 
 ## Placement
 
@@ -93,8 +100,9 @@ program, so it does not depend on the ocean's decorative shader, which the Low
 tier sheds.
 
 The band's UVs carry world-unit arc length along the shore and the distance out
-from it, so the foam keeps one scale on every island. Sets of breakers roll
-shoreward over shallows that pale against the land. With
+from it. Foam breakup uses object coordinates to keep one scale on every island
+without an arc-length seam. Narrow, broken sets of breakers roll shoreward
+over mottled turquoise shallows. With
 `prefers-reduced-motion`, the `motion` uniform drops to zero and the sets hold
 still: the same band, as a static foam ring.
 
