@@ -24,19 +24,21 @@ Use Bun 1.4.1 and the frozen lockfile:
 
 ```sh
 bun install --frozen-lockfile
-bun run assets:vessels
+bun run assets:ship
 bun run landmarks:build
 bun run assets:identity
 bun run assets:audit
 ```
 
-Generation uses code/vector masters, the retained font bytes and the recorded
-coastline/elevation data under `data/`, with no network requests.
+Generation uses code/vector masters, the retained licensed Ship glTF and font
+bytes, and recorded coastline/elevation data under `data/`, with no network requests.
 `bun run landmarks:fetch` is the one command that reaches an outside service; it
 is a maintenance step that re-records `data/landmarks/`, and its output is
-committed and reviewed like any other asset change. The GLBs retain their shared outline, origin, -Z bow and collision
-footprint. High uses the Balanced GLB. Both have two opaque materials, no textures,
-animation, interiors or fine rigging. Navigation geometry never depends on LOD.
+committed and reviewed like any other asset change. The Ship GLBs retain their
+shared footprint, waterline origin and -Z bow. High uses the Balanced GLB. Both
+have one opaque material and one embedded texture, with no animation or skin.
+See [ship.md](ship.md) for the source adaptation, per-tier measurements, texture
+limits and wake. Navigation geometry never depends on LOD.
 
 The identity family contains horizontal, compact, monochrome and reversed SVG
 lockups, a symbol-only master, SVG/PNG favicons, an Apple touch icon and a 1200×630

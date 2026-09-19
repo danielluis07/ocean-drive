@@ -47,6 +47,10 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     failed.push(request.url());
   });
   context.on("response", (response) => {
+    // GLTFLoader decodes embedded textures through local blob URLs. Their
+    // bytes are already counted in the GLB; they are not network transfers,
+    // and Chromium cannot read them back through response.body().
+    if (new URL(response.url()).protocol === "blob:") return;
     if (response.ok()) requests.push(measureResponse(response));
     else failed.push(`${response.status()} ${response.url()}`);
   });
@@ -158,7 +162,7 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   expect(diagnostics.timing.frames).toBeGreaterThan(0);
   expect(diagnostics.timing.windows.length).toBeGreaterThan(0);
   const complete = await Promise.all(requests);
-  expect(complete.some((request) => request.path.includes("-low.v2.glb"))).toBe(true);
+  expect(complete.some((request) => request.path.includes("mare-mansa-low.v1.glb"))).toBe(true);
   expect(external).toEqual([]);
   expect(failed).toEqual([]);
   for (const request of complete) {

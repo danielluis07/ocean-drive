@@ -17,6 +17,13 @@ through `brand.dataCredit`.
 
 ## Graphics dependencies
 
+The Maré Mansa Ship model is adapted from **Cruise ship** by **Poly by Google**,
+<https://poly.pizza/m/dgLCxDWhnZQ>, under **CC BY 3.0**
+(<https://creativecommons.org/licenses/by/3.0/>). Proportions, geometry and texture
+were adapted for this project. The source listing, original GLB and full legal
+code are retained; see [ship-model.md](ship-model.md) for evidence and changes.
+This credit does not imply endorsement. The adaptation retains CC BY 3.0.
+
 - Three.js 0.185.1: Copyright © 2010-2026 three.js authors.
   Source: official package `three/LICENSE`.
 - React Three Fiber 9.7.0: Copyright (c) 2019-2025 Poimandres.

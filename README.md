@@ -29,7 +29,7 @@ bun run test:browser
 Production browser checks require the Playwright browsers installed locally. Asset generation is deterministic and does not require a network connection:
 
 ```sh
-bun run assets:vessels
+bun run assets:ship
 bun run assets:identity
 bun run assets:record
 bun run assets:audit

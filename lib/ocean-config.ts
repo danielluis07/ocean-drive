@@ -1,5 +1,6 @@
 import type { StopId } from "@/content/editorial";
 import landmarks from "@/content/landmarks.json";
+import ship from "@/content/ship.json";
 
 export type LandmarkVariant = { url: string; triangles: number; bytes: number };
 
@@ -42,8 +43,8 @@ export type OceanConfiguration = {
 // holds both of those as checks.
 export const oceanConfiguration: OceanConfiguration = {
   vessels: {
-    balanced: "/models/research-vessel-balanced.v2.glb",
-    low: "/models/research-vessel-low.v2.glb",
+    balanced: ship.variants.balanced.url,
+    low: ship.variants.low.url,
   },
   stops: [
     { id: "partida", anchorage: [0, 0], landmark: null },

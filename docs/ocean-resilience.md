@@ -69,10 +69,11 @@ The journey fixture advances ten individual 16 ms frames per round-trip and uses
 while preserving CSS viewports and input coordinates. It sets these as fixture
 values, so every spec file that uses it gets them, not only the first one loaded.
 These runs cannot serve as full-resolution performance evidence.
-Low compiles out foam, the wake trail, the bow wave, clouds, and fine ripple calculations.
-The vessel follows the same long swells as the water; reduced motion freezes wave
-time and disables pitch and roll. No new external textures or asset services are
-required. Regenerate both vessel detail levels with `bun run assets:vessels`.
+Low uses a short eight-point foam trail and compiles out the detailed wake
+slopes, bow wave, clouds, and fine ripple calculations. The Ship follows the
+same long swells as the water; reduced motion slows wave time, disables pitch
+and roll, and clears the wake on placement. Its texture is embedded in the
+same-origin GLB. Regenerate both detail levels with `bun run assets:ship`.
 These are behavioral checks in Chromium with software rendering;
 physical-device performance and release acceptance remain unvalidated.
 

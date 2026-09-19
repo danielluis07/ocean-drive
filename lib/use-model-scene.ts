@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { Mesh, type Group } from "three";
+import { Mesh, Texture, type Group } from "three";
 
 function disposeScene(scene: Group) {
+  const textures = new Set<Texture>();
   scene.traverse((object) => {
     if (!(object instanceof Mesh)) return;
     object.geometry.dispose();
-    for (const material of Array.isArray(object.material) ? object.material : [object.material]) material.dispose();
+    for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+      for (const value of Object.values(material)) if (value instanceof Texture) textures.add(value);
+      material.dispose();
+    }
   });
+  for (const texture of textures) {
+    texture.dispose();
+    // GLTFLoader uses ImageBitmap when available; release its CPU allocation too.
+    if (typeof ImageBitmap !== "undefined" && texture.image instanceof ImageBitmap) texture.image.close();
+  }
 }
 
 // Only the first model gates entry. Keep it visible during optional LOD loads:

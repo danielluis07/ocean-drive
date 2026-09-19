@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "bun test",
     "test:browser": "playwright test",
-    "assets:vessels": "bun scripts/generate-vessels.mjs",
+    "assets:ship": "bun scripts/build-ship.ts",
     "landmarks:fetch": "bun scripts/fetch-landmark-sources.ts",
     "landmarks:build": "bun scripts/generate-landmarks.ts",
     "assets:identity": "bun scripts/generate-identity.mjs",
@@ -44,6 +44,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "fontkit": "^2.0.4",
+    "meshoptimizer": "1.1.1",
     "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "typescript": "^5"

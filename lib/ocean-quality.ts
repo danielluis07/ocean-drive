@@ -6,7 +6,7 @@ export const qualityEnvelope = {
   // `wakePoints` is how much of the Ship's remembered trail the water shader reads.
   high: { minDpr: 1.25, maxDpr: 1.5, segments: 160, wake: 2, wakePoints: 48 },
   balanced: { minDpr: 1, maxDpr: 1.25, segments: 120, wake: 1, wakePoints: 32 },
-  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0, wakePoints: 0 },
+  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0.8, wakePoints: 8 },
 } as const;
 
 // The rungs the plainest water steps down, once there is no effect left to shed.

@@ -1,5 +1,6 @@
 import { brand } from "@/content/editorial";
 import Image from "next/image";
+import ShipCredit from "@/components/voyage/ship-credit";
 
 export default function EditorialIntro() {
   return (
@@ -30,6 +31,7 @@ export default function EditorialIntro() {
           <summary>Comissão fictícia</summary>
           <p>{brand.disclosure}</p>
           <p>{brand.dataCredit}</p>
+          <p><ShipCredit /></p>
         </details>
       </div>
     </section>

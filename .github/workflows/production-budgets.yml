@@ -18,9 +18,9 @@ jobs:
       - run: bun run assets:audit
       - name: Verify reproducible masters
         run: |
-          bun run assets:vessels
+          bun run assets:ship
           bun run landmarks:build
-          git diff --exit-code -- public content/landmarks.json
+          git diff --exit-code -- public content/landmarks.json content/ship.json
       - run: bun run typecheck
       - run: bun run lint
       - run: bun test
