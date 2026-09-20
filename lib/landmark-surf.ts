@@ -1,5 +1,6 @@
 import { DoubleSide, ShaderMaterial } from "three";
 import { oceanSwellShader } from "@/lib/ocean-surface";
+import { oceanDaylightShader, oceanDaylightUniforms, type OceanDaylight } from "@/lib/ocean-daylight";
 
 // The surf line: the band of water each Landmark's mesh carries around its
 // shoreline, drawn over the ocean rather than cut into it. Its vertices ride
@@ -14,6 +15,7 @@ const surfVertexShader = `
   ${oceanSwellShader}
   varying vec2 shore;
   varying vec2 ground;
+  varying vec3 waterPosition;
   void main() {
     shore = uv;
     vec3 world = (modelMatrix * vec4(position, 1.)).xyz;
@@ -23,13 +25,16 @@ const surfVertexShader = `
     swell(world.xz, height, slope);
     // Just clear of the water it sits on, so the band never z-fights the ocean.
     world.y += height + .03;
+    waterPosition = world;
     gl_Position = projectionMatrix * viewMatrix * vec4(world, 1.);
   }
 `;
 
 const surfFragmentShader = `
+  ${oceanDaylightShader}
   varying vec2 shore;
   varying vec2 ground;
+  varying vec3 waterPosition;
   uniform float time;
   // 1 while the surf rolls, 0 when it holds still as a foam ring.
   uniform float motion;
@@ -60,18 +65,17 @@ const surfFragmentShader = `
     // A wash right at the waterline, so the land always meets broken water.
     float wash = (1. - smoothstep(.02, .15, shore.y)) * smoothstep(.25, .7, lather);
     float foam = clamp(max(breaking * .72, wash * (.35 + .3 * sets)), 0., 1.);
-    // Reef shallows, not surf: a turquoise halo the white only breaks out of
-    // against the land, so the band never reads as a rim of ice.
-    vec3 water = mix(vec3(.015, .08, .11), vec3(.035, .3, .25), shallows);
-    gl_FragColor = vec4(mix(water, vec3(.76, .86, .83), foam), clamp(shallows * .38 + foam * .72, 0., .78));
+    // Pale navy shallows keep the white foam distinct from the water body.
+    vec3 water = mix(oceanDeep, oceanCrest * 3., shallows);
+    gl_FragColor = vec4(oceanHaze(mix(water, oceanWhite, foam), waterPosition), clamp(shallows * .38 + foam * .72, 0., .78));
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
 `;
 
-export function createSurfMaterial() {
+export function createSurfMaterial(daylight: OceanDaylight) {
   return new ShaderMaterial({
-    uniforms: { time: { value: 0 }, motion: { value: 1 } },
+    uniforms: { ...oceanDaylightUniforms(daylight), time: { value: 0 }, waveStrength: { value: 1 }, motion: { value: 1 } },
     vertexShader: surfVertexShader,
     fragmentShader: surfFragmentShader,
     transparent: true,

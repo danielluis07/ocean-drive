@@ -1,7 +1,8 @@
 # Ocean quality and resilience
 
-Implements [#27](https://github.com/danielluis07/ocean-drive/issues/27), using
-the quality and transition contracts approved in #13, #18, and #20.
+Implements [#27](https://github.com/danielluis07/ocean-drive/issues/27) and the
+navy daylight retune in [#41](https://github.com/danielluis07/ocean-drive/issues/41),
+using the quality and transition contracts approved in #13, #18, and #20.
 
 The renderer-independent quality controller consumes measured frame intervals
 only while the 3D voyage is visible, after readiness. Preparation, open Sheets,
@@ -12,17 +13,18 @@ capped at 50 ms. React receives quality updates only when the settings change.
 
 | Tier | DPR ceiling range | Presentation |
 | --- | --- | --- |
-| High | 1.25–1.5 | Fine surface ripples and richer foam, a 48-point wake trail, 160 water subdivisions |
-| Balanced | 1.0–1.25 | Reflective wave shading and a broken foam wake, a 32-point wake trail, 120 water subdivisions |
-| Low | 0.75–1.0 | Simplified reflective wave shading, 48 water subdivisions, low vessel LOD |
+| High | 1.25–1.5 | Navy water, moving wind whitecaps, fine ripples and glints, a 48-point wake trail, 160 water subdivisions |
+| Balanced | 1.0–1.25 | Navy water, moving wind whitecaps and glints, a 32-point wake trail, 120 water subdivisions |
+| Low | 0.75–1.0 | Same navy daylight, two ripple layers and subdued glints, an eight-point foam wake, 48 water subdivisions, low vessel LOD; no wind whitecaps |
 
 Effective DPR never exceeds the device's raw DPR. All tiers use canvas antialiasing
 and omit shadow maps, live scene reflections, and post-processing. A small local
-sky texture is prefiltered once into an environment render target for the vessel's
+sky texture is prefiltered once at High/Balanced into an environment render target for the vessel's
 paint, glass, and metal, and rebuilt after context restoration. Its GPU handles
 are released during context loss so cleanup cannot invalidate the restored frame.
-Water uses analytic wind-wave normals, deep navy absorption with crest scattering,
-roughened Fresnel sky shading, restrained patches of sun highlights, and a soft hull contact shadow
+Low retains no environment target. Water uses analytic wind-wave normals,
+deep navy absorption with crest scattering, roughened Fresnel sky shading,
+wind whitecaps, patches of sun highlights, and a soft hull contact shadow
 in a single surface pass. Low runs at the browser's cadence;
 the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop or
 Low for coarse pointers/small screens once; subsequent changes use measurements.
@@ -71,8 +73,11 @@ values, so every spec file that uses it gets them, not only the first one loaded
 These runs cannot serve as full-resolution performance evidence.
 Low uses a short eight-point foam trail and compiles out the detailed wake
 slopes, bow wave, clouds, and fine ripple calculations. The Ship follows the
-same long swells as the water; reduced motion slows wave time, disables pitch
-and roll, and clears the wake on placement. Its texture is embedded in the
+same long swells as the water; reduced motion runs wave time at 30% speed and
+swell height and ripple slopes at 45% strength, quiets glints and whitecaps,
+disables pitch and roll, and clears the wake on placement. The shoreline uses
+the same time and strength, with its travelling breakers held still.
+Its texture is embedded in the
 same-origin GLB. Regenerate both detail levels with `bun run assets:ship`.
 These are behavioral checks in Chromium with software rendering;
 physical-device performance and release acceptance remain unvalidated.
@@ -83,9 +88,63 @@ Secondary normal layers cross the dominant wind direction at ±60 degrees to
 break up the brushed-metal grain. Reflections and Fresnel use a softened normal,
 the water body scatters a little light, and sun glints stay below clipping, so the
 surface does not read as a mirror of the sky. Wave scales, strengths, distance fading, and
-lighting follow the original OceanX-inspired treatment. Validate the appearance
+the analytic wave layers retain the original OceanX-inspired treatment. Validate the appearance
 using matching camera, viewport, and wave time, including the upper/right water
 and the reduced-quality mobile view.
+
+## Navy daylight and shoreline contract
+
+`lib/ocean-daylight.ts` reads `--ocean-950` and `--ocean-050` from the Canvas's
+inherited CSS tokens once on mount. Three converts these sRGB colours to linear
+light. The water body, crest scattering, whitecaps, wake, surf, background,
+hemisphere light, directional light, and local sky environment derive their
+colours from that pair. One high sun at `[-25, 88, -40]` supplies the directional
+light, analytic glints, and environment highlight throughout Stops 00–04.
+There are no per-Stop lighting changes. The scene fog and shader haze share the
+navy colour and the 140–420 world-unit distance range; the water and surf use a
+smooth haze transition. Baseline shader recovery uses the same navy body and haze.
+
+High/Balanced wind whitecaps use the existing ripple slopes and foam noise,
+concentrating broken white flecks on steep swell crests even when the Ship rests.
+They need no new noise octaves, textures, geometry, or render passes. Specular
+glints broaden as waves become smaller than a pixel to reduce aliasing. Low
+uses a finer second ripple layer and 45% glint intensity to break up broad
+metallic highlights on portrait screens. It compiles out the whitecaps together
+with the detailed wake and additional ripple layers.
+The existing grid sizes, wake point counts, DPR controller, one ocean draw,
+and retained-target budget (one at High/Balanced, zero at Low) are unchanged.
+
+For a Landmark or another mesh that must meet the water:
+
+1. Include `oceanSwellShader` from `lib/ocean-surface.ts` in its vertex shader.
+   Pass the **same** `time` (simulation seconds) and `waveStrength` uniforms as
+   the ocean: strength `1` normally, `CALM_WAVE_STRENGTH` for reduced motion.
+   Call `swell(world.xz, height, slope)` after transforming to world coordinates,
+   then add `height` to world Y. Do not scale the returned height a second time.
+   CPU buoyancy uses `sampleOceanHeight(x, z, time, waveStrength)`.
+2. `createSurfMaterial(daylight)` in `lib/landmark-surf.ts` is the ready-made
+   shoreline implementation. Its flat band has UV `u` in world-unit arc length
+   along the shore, and `v` from zero at the coast to one at the outer edge.
+   The band adds a 0.03 world-unit clearance over the displaced surface.
+3. Use `oceanDaylightUniforms(daylight)` and `oceanDaylightShader` for the shared
+   linear-light colours and `oceanHaze(colour, worldPosition)`. Apply Three's
+   tone-mapping and colour-space chunks once at fragment output.
+4. Share one surf material across Landmarks, draw it after the opaque ocean
+   (`renderOrder = 1`), enable transparency, and disable depth writes. The surf
+   adds one draw per visible island and no render target. Update its clock and
+   strength with the ocean; set its `motion` uniform to zero for reduced motion.
+   The band works at every tier and survives decorative-water shader fallback.
+
+`tests/browser/ocean-daylight.e2e.ts` compiles and draws all three tiers with a
+Landmark visible, reads the actual GPU uniforms to check the shared foam colour,
+wave strength and time, checks reduced-motion timing and route-independent sun,
+and asserts scene draw/triangle/target budgets. It saves normal and calm images.
+The High case earns promotion through the production quality controller.
+`tests/ocean-surface.test.ts` measures reduced buoyancy displacement and vertical
+travel across all five anchorages. Run these alongside the resilience suite.
+Browser clocks and reduced render resolution make these deterministic functional
+checks, not frame-time measurements. Non-regression on the reference physical
+laptop and phone still requires matched before/after release measurements.
 
 Fiber 9.7.0 still constructs the deprecated `THREE.Clock` in its root store
 ([upstream issue](https://github.com/pmndrs/react-three-fiber/issues/3741)). A

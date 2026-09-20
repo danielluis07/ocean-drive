@@ -11,6 +11,7 @@ import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
+import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
 import { createShipWake, CRUISE_SPEED } from "@/lib/ship-wake";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
@@ -41,8 +42,6 @@ type RuntimeProps = {
   onLayout: (layout: StageLayout) => void;
 };
 
-// Reduced motion keeps the water alive but slows its swell.
-const CALM_WAVE_RATE = 0.3;
 // How far the hull answers the water it drives through, in radians.
 const SQUAT = 0.012;
 const SURGE_PITCH = 0.03;
@@ -53,6 +52,7 @@ const MAXIMUM_HEEL = 0.06;
 function SailableScene(props: RuntimeProps) {
   const { onStage, onFailure, onFrame, active, reading, visible, recoveryGeneration } = props;
   const { gl, scene, camera, size, invalidate, setFrameloop } = useThree();
+  const daylight = useMemo(() => readOceanDaylight(gl.domElement), [gl]);
   const measureScene = useSceneDiagnostics(gl);
   const oceanDraws = useRef(0);
   const vesselScene = useModelScene(props.vesselUrl);
@@ -87,6 +87,8 @@ function SailableScene(props: RuntimeProps) {
     return new ShaderMaterial({
       defines: { WAKE_POINTS: wakePoints, ...(props.quality.tier === "low" ? { LOW_QUALITY: 1 } : props.quality.tier === "high" ? { HIGH_QUALITY: 1 } : {}) },
       uniforms: {
+        ...oceanDaylightUniforms(daylight),
+        waveStrength: { value: 1 },
         time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, wakeDetail: { value: 1 },
         speed: { value: 0 }, thrust: { value: 0 }, course: { value: new Vector2(0, -1) },
         wakePoints: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
@@ -96,10 +98,10 @@ function SailableScene(props: RuntimeProps) {
       vertexShader: oceanVertexShader,
       fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
     });
-  }, [baselineWater, props.quality.tier]);
+  }, [baselineWater, props.quality.tier, daylight]);
   // One surf material for every Landmark: they all read the same swell, and one
   // program keeps the shoreline inside the scene's draw and program budgets.
-  const surfMaterial = useMemo(() => createSurfMaterial(), []);
+  const surfMaterial = useMemo(() => createSurfMaterial(daylight), [daylight]);
   // Every compilation polls the surf program too, so it is released like a
   // retired water material: only once no compilation is still in flight.
   useEffect(() => {
@@ -113,7 +115,7 @@ function SailableScene(props: RuntimeProps) {
 
   useLayoutEffect(() => {
     if (props.quality.tier === "low") return;
-    const environment = createOceanEnvironment(gl);
+    const environment = createOceanEnvironment(gl, daylight);
     scene.environment = environment.texture;
     scene.environmentIntensity = .75;
     let disposed = false;
@@ -130,7 +132,7 @@ function SailableScene(props: RuntimeProps) {
       gl.domElement.removeEventListener("webglcontextlost", release);
       release();
     };
-  }, [gl, scene, recoveryGeneration, props.quality.tier]);
+  }, [gl, scene, recoveryGeneration, props.quality.tier, daylight]);
 
   // Three checks a program for errors once, on its first use, and that can be
   // the first frame, before any passive effect runs. So the handler is in place
@@ -242,10 +244,13 @@ function SailableScene(props: RuntimeProps) {
       }
       const pose = poseAtProgress(props.chartedRoute, motion.progress);
       elapsed.current += seconds * (props.reducedMotion ? CALM_WAVE_RATE : 1);
+      const waveStrength = props.reducedMotion ? CALM_WAVE_STRENGTH : 1;
+      material.uniforms.waveStrength.value = waveStrength;
       material.uniforms.time.value = elapsed.current;
       // The surf line shares the ocean's clock, so its band never drifts out of
       // the swell it sits on. Reduced motion holds the sets still.
       surfMaterial.uniforms.time.value = elapsed.current;
+      surfMaterial.uniforms.waveStrength.value = waveStrength;
       surfMaterial.uniforms.motion.value = props.reducedMotion ? 0 : 1;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
@@ -263,11 +268,11 @@ function SailableScene(props: RuntimeProps) {
         const time = elapsed.current;
         const forwardX = Math.sin(pose.heading);
         const forwardZ = -Math.cos(pose.heading);
-        const bowHeight = sampleOceanHeight(x + forwardX * 2.5, z + forwardZ * 2.5, time);
-        const sternHeight = sampleOceanHeight(x - forwardX * 2.5, z - forwardZ * 2.5, time);
-        const portHeight = sampleOceanHeight(x - Math.cos(pose.heading), z - Math.sin(pose.heading), time);
-        const starboardHeight = sampleOceanHeight(x + Math.cos(pose.heading), z + Math.sin(pose.heading), time);
-        vesselGroup.current.position.set(x, sampleOceanHeight(x, z, time) + .05, z);
+        const bowHeight = sampleOceanHeight(x + forwardX * 2.5, z + forwardZ * 2.5, time, waveStrength);
+        const sternHeight = sampleOceanHeight(x - forwardX * 2.5, z - forwardZ * 2.5, time, waveStrength);
+        const portHeight = sampleOceanHeight(x - Math.cos(pose.heading), z - Math.sin(pose.heading), time, waveStrength);
+        const starboardHeight = sampleOceanHeight(x + Math.cos(pose.heading), z + Math.sin(pose.heading), time, waveStrength);
+        vesselGroup.current.position.set(x, sampleOceanHeight(x, z, time, waveStrength) + .05, z);
         // Driving lifts the bow and braking dips it; a turn heels the Ship away
         // from its centre. Backing along the route reverses both.
         const astern = wake.course.x * forwardX + wake.course.z * forwardZ < 0 ? -1 : 1;
@@ -325,9 +330,10 @@ function SailableScene(props: RuntimeProps) {
 
   return (
     <>
-      <color attach="background" args={["#183047"]} />
-      <hemisphereLight args={["#dceaf2", "#173d47", .65]} />
-      <directionalLight position={[-25, 78, -57]} intensity={3.1} color="#edf4ff" />
+      <color attach="background" args={[daylight.background]} />
+      <fog attach="fog" args={[daylight.background, ...oceanFogRange]} />
+      <hemisphereLight args={[daylight.white, daylight.deep, .65]} />
+      <directionalLight position={oceanSunPosition} intensity={3.1} color={daylight.white} />
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={material} onBeforeRender={() => { oceanDraws.current++; }}>
         <planeGeometry args={[1200, 1200, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
       </mesh>
