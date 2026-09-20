@@ -229,7 +229,21 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "6075038981ac561277a690a7515845f0f39159e638324878ae1fb232cddb78ec"
+      "sha256": "c8ba8670c301508df349794da65359e38dfd96f28a9a87cb64878e83463a9753"
+    },
+    {
+      "path": "lib/ocean-daylight.ts",
+      "kind": "procedural",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "lib/ocean-daylight.ts",
+      "retrieved": "2026-09-20",
+      "rights": "Project-authored source contribution; no imported artwork",
+      "proof": "docs/third-party/project-assets.md",
+      "transformations": "Compiled by Next into same-origin HTML/application code",
+      "essential": true,
+      "experience": true,
+      "sha256": "dda1973cfc277c0d5cbd9fa488d033a6ec258a2eee13bcbb74ed919a74b616d0"
     },
     {
       "path": "lib/ocean-lighting.ts",
@@ -243,7 +257,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "829ec2779237bb680b7ccbc2223803f4f2dd00ea751708143973b57126f5afc1"
+      "sha256": "1832d1cfac2e9a8ecc35af884d24f2579f615449da0e2214d310f40f766a38be"
     },
     {
       "path": "lib/ocean-surface.ts",
@@ -257,7 +271,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": true,
       "experience": true,
-      "sha256": "b982517d9766da77e7f2ae82b32a93192a31790f6fb0432e1438a68817b742d3"
+      "sha256": "cc56dd6ba98c0db452d4c3a37f0014172edda3263d1a8796255650748335ba28"
     },
     {
       "path": "public/identity/apple-touch-icon.v1.png",

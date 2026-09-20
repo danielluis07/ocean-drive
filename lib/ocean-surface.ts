@@ -1,3 +1,5 @@
+import { oceanDaylightShader } from "@/lib/ocean-daylight";
+
 // Long swells are shared by the GPU surface and the vessel's buoyancy samples.
 const swells = [
   { x: 0.16, z: 0.08, amplitude: 0.22, speed: 0.72 },
@@ -5,10 +7,10 @@ const swells = [
   { x: 0.31, z: 0.17, amplitude: 0.055, speed: 1.05 },
 ] as const;
 
-export function sampleOceanHeight(x: number, z: number, time: number) {
+export function sampleOceanHeight(x: number, z: number, time: number, waveStrength = 1) {
   let height = 0;
   for (const wave of swells) height += Math.sin(x * wave.x + z * wave.z + time * wave.speed) * wave.amplitude;
-  return height;
+  return height * waveStrength;
 }
 
 const swellShader = swells.map((wave) =>
@@ -17,10 +19,12 @@ const swellShader = swells.map((wave) =>
 
 // The shoreline hook: any mesh that has to sit on the water includes this chunk
 // and displaces its world Y by `swell(world.xz, height, slope)` with the same
-// `time` the ocean is given, so it rides the same surface. The Landmark surf
-// line in `lib/landmark-surf.ts` is the first caller; see docs/landmarks.md.
+// `time` and `waveStrength` the ocean is given, so it rides the same surface.
+// The Landmark surf line in `lib/landmark-surf.ts` is the first caller;
+// see docs/ocean-resilience.md for the complete material contract.
 export const oceanSwellShader = `
   uniform float time;
+  uniform float waveStrength;
   void wave(vec2 p, vec2 direction, float amplitude, float speed, inout float height, inout vec2 slope) {
     float phase = dot(p, direction) + time * speed;
     height += sin(phase) * amplitude;
@@ -30,6 +34,8 @@ export const oceanSwellShader = `
     height = 0.;
     slope = vec2(0.);
     ${swellShader}
+    height *= waveStrength;
+    slope *= waveStrength;
   }
 `;
 
@@ -51,6 +57,7 @@ export const oceanVertexShader = `
 
 export const oceanFragmentShader = `
   ${oceanSwellShader}
+  ${oceanDaylightShader}
   uniform vec2 vessel;
   uniform float heading;
   uniform float wakeDetail;
@@ -191,15 +198,21 @@ export const oceanFragmentShader = `
     float detail = 1. - smoothstep(.18, 1.6, footprint);
     // Cross the secondary ripples to break the uniform brushed-metal grain.
     vec2 ripples = vec2(0.);
+    #ifdef LOW_QUALITY
+    // Two layers still resolve smaller broken highlights on portrait screens;
+    // broad smooth ripples alone would read as polished metal from overhead.
+    windWave(p, vec2(.8, .6), .48, .22, .18, ripples);
+    windWave(p + vec2(17.2, -9.4), vec2(-.119615, .992820), 2.6, .057 * detail, -.24, ripples);
+    #else
     windWave(p, vec2(.8, .6), .48, .29, .18, ripples);
     windWave(p + vec2(17.2, -9.4), vec2(-.119615, .992820), 1.1, .13 * detail, -.24, ripples);
-    #ifndef LOW_QUALITY
     windWave(p + vec2(-8.3, 21.7), vec2(.919615, -.392820), 2.6, .057 * detail, .31, ripples);
     windWave(p + vec2(31.8, 4.1), vec2(.8, .6), 5.8, .019 * detail * detail, -.43, ripples);
     #ifdef HIGH_QUALITY
     windWave(p + vec2(7.1, 13.2), vec2(-.119615, .992820), 11.5, .007 * detail * detail, .52, ripples);
     #endif
     #endif
+    ripples *= waveStrength;
 
     vec2 offset = p - vessel;
     float aft = dot(offset, vec2(-sin(heading), cos(heading)));
@@ -234,31 +247,36 @@ export const oceanFragmentShader = `
     // turns grazing Fresnel into high-contrast brushed-metal streaks.
     vec3 reflectionNormal = normalize(vec3(-slope.x * .6, 1., -slope.y * .6));
     vec3 reflected = reflect(-view, reflectionNormal);
-    vec3 sky = mix(vec3(.15, .23, .34), vec3(.045, .1, .19), pow(max(reflected.y, 0.), .45));
+    vec3 sky = mix(oceanHorizon, oceanZenith, pow(max(reflected.y, 0.), .45));
     #ifndef LOW_QUALITY
     float cloud = smoothstep(.46, .77, noise(reflected.xz / max(.22, reflected.y) * 3.2));
-    sky = mix(sky, vec3(.3, .38, .48), cloud * .2);
+    sky = mix(sky, oceanWhite, cloud * .06);
     #endif
     float fresnel = .0204 + .9796 * pow(1. - max(dot(reflectionNormal, view), 0.), 5.);
     float depth = noise(p * .018);
-    vec3 water = mix(vec3(.003, .012, .03), vec3(.006, .021, .046), depth);
+    vec3 water = oceanDeep * mix(.8, 1.35, depth);
     // Light scattered back out of the water body keeps the surface from reading
     // as a pure mirror; it gathers on swell crests and viewer-facing slopes.
     float crest = smoothstep(-.3, .35, height);
-    water += vec3(.003, .022, .034) * crest * max(dot(normal, view), 0.);
+    water += oceanCrest * crest * max(dot(normal, view), 0.);
     #ifndef LOW_QUALITY
     // Wake crests catch the same scattered light and the troughs between them
     // darken; aerated wash glows pale before it whitens into foam.
-    water += vec3(.003, .022, .03) * clamp(wakeSurface, -.2, 1.);
-    water += vec3(.002, .012, .014) * min(wash, 1.);
+    water += oceanCrest * clamp(wakeSurface, -.2, 1.);
+    water += oceanCrest * .4 * min(wash, 1.);
     #endif
     water = mix(water, sky, fresnel * .88);
-    vec3 sun = normalize(vec3(-.25, .78, -.57));
+    vec3 sun = sunDirection;
     vec3 halfway = normalize(sun + view);
-    float specular = pow(max(dot(normal, halfway), 0.), 260.);
+    // Broaden unresolved highlights instead of letting subpixel pinpricks alias.
+    float specularPower = mix(90., 320., detail);
+    float specular = pow(max(dot(normal, halfway), 0.), specularPower);
+    #ifdef LOW_QUALITY
+    specular *= .45;
+    #endif
     float windPatch = smoothstep(.3, .8, noise(p * vec2(.36, .22) + time * .018));
-    water += vec3(.62, .72, .8) * specular * mix(.25, 1., windPatch) * (1. - slick * .5) * .9;
-    water += vec3(.06, .1, .17) * pow(max(dot(reflected, sun), 0.), 18.) * .12;
+    water += oceanWhite * specular * mix(.12, .85, windPatch) * (1. - slick * .5) * mix(.35, 1., waveStrength);
+    water += oceanZenith * pow(max(dot(reflected, sun), 0.), 18.) * .12;
 
     // A soft contact shadow seats the hull in the water.
     float contact = exp(-pow(side / 1.35, 4.) - pow((aft + .1) / 3.15, 4.));
@@ -269,6 +287,10 @@ export const oceanFragmentShader = `
     float bubbles = noise(p * 4.2 + lather * 2.3 - time * .02);
     float fizz = noise(p * 11.7 - bubbles * 1.7 + time * .05);
     float froth = lather * .5 + bubbles * .32 + fizz * .18;
+    // Wind-driven whitecaps remain visible away from the Ship. Reuse the
+    // existing ripple slopes and foam samples; no extra octaves or surface pass.
+    float whitecaps = smoothstep(.32, .55, length(ripples)) * smoothstep(.57, .8, froth);
+    whitecaps *= smoothstep(-.08, .24, height) * detail * waveStrength;
     // Fresh, hard-driven wash is a dense churn; as it ages the foam tears into
     // lace and then into scattered streaks.
     float tear = mix(.3, .66, smoothstep(0., 5., washAge)) - min(wash, 1.) * .18;
@@ -281,7 +303,7 @@ export const oceanFragmentShader = `
     #ifdef HIGH_QUALITY
     foam += min(wash, 1.) * (noise(p * 13. + time * .3) - .5) * .18;
     #endif
-    water = mix(water, vec3(.65, .76, .83), clamp(foam * min(wakeDetail, 1.), 0., .88));
+    water = mix(water, oceanWhite, clamp(max(foam * min(wakeDetail, 1.), whitecaps * .85), 0., .9));
     #else
     // Eight remembered points give phones a world-anchored wake in the same
     // ocean draw. No slope derivatives, extra noise octaves, or render targets.
@@ -304,11 +326,10 @@ export const oceanFragmentShader = `
       }
       foam *= .65 + .35 * noise(p * 2. + time * .06);
     }
-    water = mix(water, vec3(.65, .76, .83), clamp(foam * wakeDetail, 0., .8));
+    water = mix(water, oceanWhite, clamp(foam * wakeDetail, 0., .8));
     #endif
 
-    float haze = smoothstep(140., 420., distance(cameraPosition, world));
-    gl_FragColor = vec4(mix(water, vec3(.022, .043, .075), haze), 1.);
+    gl_FragColor = vec4(oceanHaze(water, world), 1.);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
@@ -316,11 +337,10 @@ export const oceanFragmentShader = `
 
 // Keep a plain, usable ocean when the decorative shader cannot compile.
 export const baselineOceanFragmentShader = `
+  ${oceanDaylightShader}
   varying vec3 world;
   void main() {
-    vec3 water = vec3(.005, .016, .034);
-    float haze = smoothstep(140., 420., distance(cameraPosition, world));
-    gl_FragColor = vec4(mix(water, vec3(.022, .043, .075), haze), 1.);
+    gl_FragColor = vec4(oceanHaze(oceanDeep, world), 1.);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }

@@ -94,15 +94,15 @@ the same camera. The outlines are true; the sizes and the distances are not.
 `lib/landmark-surf.ts` draws the band the build lays around each shoreline. Its
 vertices include `oceanSwellShader` from `lib/ocean-surface.ts` — the documented
 shoreline hook — and displace by the same swell the water uses, with the same
-clock, so the foam stays attached to the water rather than floating at a fixed
+clock and `waveStrength`, so the foam stays attached to the water rather than floating at a fixed
 height. That holds at every quality tier: the band is its own mesh and its own
-program, so it does not depend on the ocean's decorative shader, which the Low
-tier sheds.
+program, so it does not depend on the ocean's decorative shader. The complete
+material contract is in [ocean-resilience.md](ocean-resilience.md#navy-daylight-and-shoreline-contract).
 
 The band's UVs carry world-unit arc length along the shore and the distance out
 from it. Foam breakup uses object coordinates to keep one scale on every island
 without an arc-length seam. Narrow, broken sets of breakers roll shoreward
-over mottled turquoise shallows. With
+over mottled pale navy shallows, using the ocean's daylight palette. With
 `prefers-reduced-motion`, the `motion` uniform drops to zero and the sets hold
 still: the same band, as a static foam ring.
 
