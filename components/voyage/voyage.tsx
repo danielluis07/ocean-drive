@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Arrival from "@/components/voyage/arrival";
 import Closing from "@/components/voyage/closing";
-import EditorialIntro from "@/components/voyage/editorial-intro";
 import Opening from "@/components/voyage/opening";
 import RouteNavigation from "@/components/voyage/route-navigation";
 import StopList from "@/components/voyage/stop-list";
@@ -100,12 +99,16 @@ function VoyageContent() {
       data-enhanced={enhanced}
       data-presentation={voyage.presentation}
       data-complete={voyage.complete}>
-      <a className="skip-link" href="#conteudo-principal">
+      {/* The pill carries its own inset ring, so it reads over the ocean and the white page alike. */}
+      <a
+        data-slot="skip-link"
+        className="fixed top-[max(1rem,env(safe-area-inset-top))] left-[max(1rem,env(safe-area-inset-left))] z-100 -translate-y-[180%] rounded-full bg-card px-5 py-3 font-semibold text-card-foreground transition-transform focus:translate-y-0 focus-visible:outline-3 focus-visible:-outline-offset-4 focus-visible:outline-card-foreground"
+        href="#conteudo-principal">
         Pular para o conteúdo
       </a>
       <p
         id="voyage-announcer"
-        className="visually-hidden"
+        className="sr-only"
         aria-live="polite"
         aria-atomic="true">
         {announcement}
@@ -116,9 +119,8 @@ function VoyageContent() {
           onOpenStop={openStop}
         />
         {threeD ? null : (
-          <div>
+          <div data-slot="editorial" className="bg-card text-card-foreground">
             <Opening />
-            <EditorialIntro />
             <RouteNavigation
               enhanced={enhanced}
               voyage={voyage}

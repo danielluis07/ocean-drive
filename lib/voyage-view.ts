@@ -1,4 +1,4 @@
-import { stops, type Stop, type StopAccount } from "@/content/editorial";
+import { stops, type Stop, type StopAccount, type StopId } from "@/content/editorial";
 import type { VoyageState } from "@/lib/voyage-state";
 
 export type AccountStop = Stop & { account: StopAccount };
@@ -31,5 +31,21 @@ export function focusAndScrollToElement(id: string): void {
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
       block: "start",
     });
+  });
+}
+
+// Where the Accessible Editorial Presentation places the Visitor: the current
+// Stop's passage, or the opening heading at Stop 00.
+export function editorialTarget(stop: StopId): string {
+  return stop === stops[0].id ? "voyage-editorial-heading" : `${stop}-title`;
+}
+
+// Switching into the editorial presentation lands on the current Stop at once;
+// the page has just appeared, so there is nothing to animate from.
+export function revealEditorialStop(stop: StopId): void {
+  requestAnimationFrame(() => {
+    const element = document.getElementById(editorialTarget(stop));
+    element?.focus({ preventScroll: true });
+    element?.scrollIntoView({ block: "start", behavior: "instant" });
   });
 }

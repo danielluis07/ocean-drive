@@ -27,7 +27,7 @@ import {
 } from "@/lib/voyage-state";
 import type { OceanConfiguration } from "@/lib/ocean-config";
 import { focusOceanTarget as focusTarget } from "@/lib/focus-target";
-import { accountStops } from "@/lib/voyage-view";
+import { accountStops, revealEditorialStop } from "@/lib/voyage-view";
 import {
   applyStageLayout,
   sameStageLayout,
@@ -157,12 +157,12 @@ export default function OceanPresentation({
   useEffect(() => {
     if (previouslyActive.current && (unavailable || restoring)) {
       if (explanation) announce(explanation);
-      // An open Stop Account continues as the same Stop in the editorial text.
-      focusTarget(sheet === "account" ? `${voyage.currentStop}-title` : "voyage-editorial-heading");
+      // The editorial text opens at the current Stop, so an open Stop Account continues there.
+      revealEditorialStop(voyage.currentStop);
       setSheet(null);
     }
     previouslyActive.current = active;
-  }, [active, unavailable, restoring, sheet, voyage.currentStop, explanation, announce, setSheet]);
+  }, [active, unavailable, restoring, voyage.currentStop, explanation, announce, setSheet]);
 
   // Record the Ship's place on the route, including partway between Stops.
   const checkpoint = useCallback(() => {
@@ -388,7 +388,8 @@ export default function OceanPresentation({
         ? "Oceano em 3D. Role, deslize ou use as setas para navegar entre as paradas."
         : "Modo leitura. Seu lugar na viagem está preservado.",
     );
-    focusTarget(threeD ? "voyage-ocean" : "voyage-editorial-heading");
+    if (threeD) focusTarget("voyage-ocean");
+    else revealEditorialStop(voyage.currentStop);
   }
 
   function openStop(stop: StopId) {

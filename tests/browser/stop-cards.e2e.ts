@@ -55,7 +55,7 @@ test("nothing but the chrome and the current Stop Card stands over the ocean", {
     elements.filter((element) => element.checkVisibility()).map((element) => element.getAttribute("aria-label") ?? element.textContent));
   expect(buttons).toEqual(["Som ambiente", "Capítulos"]);
   const links = await page.getByRole("link").evaluateAll((elements) =>
-    elements.filter((element) => element.checkVisibility() && !element.matches(".skip-link")).map((element) => element.textContent));
+    elements.filter((element) => element.checkVisibility() && !element.matches("[data-slot='skip-link']")).map((element) => element.textContent));
   expect(links).toEqual(["Modo leitura"]);
   // The only other visible content over the ocean is the current Stop Card.
   const content = await ocean.evaluate((section) =>

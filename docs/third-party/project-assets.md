@@ -5,7 +5,7 @@ at commit 050de01837e97f2a6fb1e23abc134e9ef6483986. The vessel geometry is a
 simplification of the repository master at that commit; that procedural vessel
 and its generator were replaced in issue #40. The current licensed Maré Mansa
 model is documented separately in [ship-model.md](ship-model.md).
-Identity derivatives, outlined lettering, and the decorative vignette
+Identity derivatives and outlined lettering
 are deterministic code/vector work in scripts/generate-identity.mjs (the symbol now
 lives in components/voyage/travessia-mark.tsx). The placeholder Stop markers,
 water, wake and lighting are repository-authored procedural code. These identity
@@ -28,7 +28,6 @@ The retired Vessel v2 removed fine rails, fittings, rigging and texture-like win
 used a common hull outline, waterline origin, -Z forward direction, and a shared
 2.8 by 6.4 collision footprint; and exported two opaque vertex-color materials.
 The navigation collision/approach calculations are independent of rendering LOD.
-The vignette follows that bow/cabin/working-deck silhouette and the beacon mast.
 SVG lettering is outlined from the unmodified retained Geist font. PNGs are
 rasterized from those SVGs with the lockfile-pinned Sharp version.
 

@@ -251,7 +251,9 @@ test("“Modo leitura” in Capítulos opens the Accessible Editorial Presentati
   await openSheet(page).getByRole("button", { name: "Modo leitura", exact: true }).click();
   await expectSheetClosed(page);
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
-  await expect(page.locator("#voyage-editorial-heading")).toBeFocused();
+  // The page opens at the Stop the Ship was at, without marking it visited.
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeInViewport();
   expect(await voyageState(page)).toEqual({ ...before, presentation: "editorial" });
 });
 

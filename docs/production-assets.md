@@ -45,8 +45,7 @@ lockups, a symbol-only master, SVG/PNG favicons, an Apple touch icon and a 1200Ã
 social SVG/PNG pair. Preserve symbol proportions and at least half a symbol width
 of surrounding space; keep the descriptor line smaller than the Travessia
 wordmark. Use ink on pale backgrounds and reversed salt on dark backgrounds.
-Do not add a second Travessia symbol. The editorial vignette is decorative;
-its bow/cabin/working-deck and beacon shapes carry no unique information.
+Do not add a second Travessia symbol.
 
 Geist's retained variable Latin WOFF2 serves 400 and 600 with one request.
 Geist Mono 500 and Source Serif 4 Italic 400 complete the 59,608-byte font package.

@@ -2,7 +2,7 @@
 
 Travessia is a standalone interactive voyage commissioned as a fictional small-ship expedition along the Brazilian coast. Visitors move through a fixed Charted Route, pause at coastal Stops, and open each Stop Account over the ocean scene.
 
-The project is written in English internally and presents user-facing copy in Brazilian Portuguese. Its Accessible Editorial Presentation remains available when 3D rendering is unavailable or reduced motion is preferred.
+The project is written in English internally and presents user-facing copy in Brazilian Portuguese. Its Accessible Editorial Presentation (“Modo leitura”) is always one link away and opens on its own only when WebGL is unavailable or rendering fails; reduced motion keeps the 3D voyage with cuts between Stops. See [docs/accessibility-and-devices.md](docs/accessibility-and-devices.md).
 
 ## Development
 

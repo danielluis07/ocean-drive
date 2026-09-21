@@ -39,12 +39,6 @@ const outputs = {
     `<rect width="52" height="52" rx="10" fill="${ink}"/><g transform="translate(5 5) scale(.8)">${symbol}</g>`,
     salt,
   ),
-  // Canonical -Z bow, pale wheelhouse, ochre aft gantry, and the shared beacon mast.
-  "editorial-vignette.v1.svg": svg(
-    420,
-    180,
-    '<path d="M8 122Q110 94 210 122T412 122M8 145Q110 117 210 145T412 145" fill="none" stroke="#90adaf"/><g transform="translate(160 12)"><path d="M0 140L0 48Q0 16 30 0Q60 16 60 48V140Z" fill="#16485c"/><path d="M5 132V48Q5 22 30 7Q55 22 55 48V132Z" fill="#e2e5de"/><path d="M13 35H47V72H13Z" fill="#16485c"/><path d="M10 32H50V39H10Z" fill="#e2e5de"/><path d="M8 125V104H52V125" fill="none" stroke="#c99645" stroke-width="5"/></g><g transform="translate(318 54)"><ellipse cx="0" cy="82" rx="30" ry="7" fill="none" stroke="#c99645"/><path d="M-12 75L-8 56H8L12 75Z" fill="#c99645"/><path d="M0 56V8" stroke="#e2e5de" stroke-width="4"/><circle cy="6" r="5" fill="#c99645"/></g>',
-  ),
 };
 for (const [name, body] of Object.entries(outputs))
   await Bun.write(`${output}/${name}`, body);
