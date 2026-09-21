@@ -7,17 +7,12 @@ type StopListProps = {
   voyage: VoyageState;
 };
 
+// Stops 01–04 in route order, every account in full.
 export default function StopList({ enhanced, voyage }: StopListProps) {
   return (
-    <div className="stations">
+    <div>
       {accountStops.map((stop) => (
-        <Stop
-          key={stop.id}
-          current={voyage.currentStop === stop.id}
-          enhanced={enhanced}
-          stop={stop}
-          visited={voyage.visitedStops.includes(stop.id)}
-        />
+        <Stop key={stop.id} enhanced={enhanced} stop={stop} visited={voyage.visitedStops.includes(stop.id)} />
       ))}
     </div>
   );

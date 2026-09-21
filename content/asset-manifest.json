@@ -304,21 +304,6 @@
       "sha256": "ea7ba5d1d92380f8352fe566e1f948cba4f323384598f160a40893c359756057"
     },
     {
-      "path": "public/identity/editorial-vignette.v1.svg",
-      "url": "/identity/editorial-vignette.v1.svg",
-      "kind": "authored",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "scripts/generate-identity.mjs",
-      "retrieved": "2026-09-15",
-      "rights": "Project-authored source contribution; no imported artwork",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Deterministic SVG paths and Sharp PNG rasterization",
-      "essential": false,
-      "experience": true,
-      "sha256": "12822e4bdafaddd484b581398f9055c2a73310fa95a85ea2b057bc18260200b8"
-    },
-    {
       "path": "public/identity/favicon-32.v1.png",
       "url": "/identity/favicon-32.v1.png",
       "kind": "authored",

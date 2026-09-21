@@ -14,7 +14,8 @@ Quality is chosen automatically (see [ocean-resilience.md](ocean-resilience.md))
 When WebGL is missing or rendering fails, the Accessible Editorial Presentation
 opens under `components/ocean/presentation-notice.tsx`, a single explanation line
 that is also announced once. While 3D remains available, the same notice offers
-“Voltar ao oceano”. “Modo leitura” persists across reload in the same tab.
+“Voltar ao oceano”. “Modo leitura” persists across reload in the same tab. The
+page itself is described in [accessibility-and-devices.md](accessibility-and-devices.md).
 
 ## Chrome
 

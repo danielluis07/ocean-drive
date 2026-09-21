@@ -80,7 +80,12 @@ for (const checkpoint of checkpoints) {
     await expectNoOverflowOrClipping(page, "editorial entry");
     await expectReachable(returnToOceanButton(page), "return to the ocean");
     await openEditorialStop(page, voyageRoute[0]);
-    await expectReachable(page.getByRole("button", { name: "Voltar à rota", exact: true }), "editorial Stop return");
+    await expectReachable(
+      page
+        .getByRole("article", { name: voyageRoute[0].name, exact: true })
+        .getByRole("button", { name: "Voltar à rota", exact: true }),
+      "editorial Stop return",
+    );
     await expectNoOverflowOrClipping(page, "editorial Stop");
 
     await returnToOceanButton(page).click();

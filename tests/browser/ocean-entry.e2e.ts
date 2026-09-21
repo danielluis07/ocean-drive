@@ -115,7 +115,7 @@ test("every Stop Account is readable without JavaScript", { tag: "@critical" }, 
   await page.goto("/");
   await expect(loading(page)).toBeHidden();
   await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
-  const accounts = page.locator("article.station");
+  const accounts = page.locator('[data-slot="editorial-stop"]');
   await expect(accounts).toHaveCount(4);
   for (const account of await accounts.all()) {
     await expect(account).toBeVisible();
@@ -134,8 +134,8 @@ test("context loss returns to the matching editorial passage", { tag: "@critical
     (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
   });
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
-  await expect(page.locator("#voyage-editorial-heading")).toBeFocused();
-  await expect(page.locator("#fernando-de-noronha-title")).toBeVisible();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeFocused();
+  await expect(page.locator("#fernando-de-noronha-title")).toBeInViewport();
   // One restoration succeeds and offers an explicit return.
   await expect(returnToOceanButton(page)).toBeVisible();
   expect((await voyageState(page)).currentStop).toBe("fernando-de-noronha");

@@ -4,7 +4,7 @@ A .tsx component file should contain only what is needed to render it. Do not de
 
 # UI components
 
-New UI is built with Tailwind utility classes and [shadcn/ui](https://ui.shadcn.com) components (`components.json`, style `base-nova`, base `@base-ui/react`). Add components with `bunx --bun shadcn@latest add <component>`; they resolve through the `@/components/ui` alias. Legacy BEM rules in `app/globals.css` are untouched by this system and are deleted only as later issues rebuild each screen with these tokens.
+New UI is built with Tailwind utility classes and [shadcn/ui](https://ui.shadcn.com) components (`components.json`, style `base-nova`, base `@base-ui/react`). Add components with `bunx --bun shadcn@latest add <component>`; they resolve through the `@/components/ui` alias. All UI is built this way: `app/globals.css` holds only the tokens and a few element defaults in the base layer (link underlines, a `currentColor` focus ring, reduced-motion scrolling), with no component classes.
 
 ## Design tokens
 
@@ -21,7 +21,7 @@ Colour, radius, and font tokens are Tailwind v4 `@theme` tokens defined once in 
 | `--muted-foreground` | `--surface-neutral-600` `#5b6b70` | Secondary text on white surfaces (contrast 5.6:1). |
 | `--border`, `--input` | `--surface-neutral-300` `#dde4e6` | Neutral grey hairlines on white surfaces. |
 
-All text pairings above meet WCAG 2.2 AA (4.5:1 for body text). This is a separate system from the legacy `--petroleum` / `--salt` / `--ink` variables used by the pre-existing BEM CSS.
+All text pairings above meet WCAG 2.2 AA (4.5:1 for body text).
 
 **Radius** — one base scale in `--radius` (`0.625rem`), exposed as `--radius-sm` … `--radius-4xl`. Use the Tailwind `rounded-*` utilities; never a literal `border-radius`.
 
@@ -30,5 +30,4 @@ All text pairings above meet WCAG 2.2 AA (4.5:1 for body text). This is a separa
 - `--font-sans` (`font-sans`) — Manrope (grotesk, variable weight 400–800), for headlines and body copy.
 - `--font-mono` (`font-mono`) — Geist Mono, for small labels.
 
-Font files are also retained under `--font-body` / `--font-utility` / `--font-editorial` for the legacy BEM stylesheet, which now points at the same self-hosted families.
 
