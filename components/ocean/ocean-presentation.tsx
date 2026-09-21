@@ -410,7 +410,10 @@ export default function OceanPresentation({
 
   return (
     <>
-      <OceanLoading loading={!enhanced || (active && !unavailable && stage !== "ready")} />
+      <OceanLoading
+        loading={!enhanced || (active && !unavailable && stage !== "ready")}
+        reveal={ready}
+      />
       {enhanced && !active ? (
         <PresentationNotice
           explanation={explanation}

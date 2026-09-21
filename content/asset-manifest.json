@@ -469,6 +469,21 @@
       "sha256": "eb114a332bdbdfa84d7a9a7f1e3da8ec71c9f3517e21f1de9b703b690ea16b8b"
     },
     {
+      "path": "public/images/earth-intro.v1.webp",
+      "url": "/images/earth-intro.v1.webp",
+      "kind": "photographic-image",
+      "sourceKind": "ai-generated",
+      "creator": "OpenAI GPT Image, commissioned by the project owner",
+      "source": "OpenAI built-in image generation",
+      "retrieved": "2026-09-21",
+      "rights": "Generated under the project owner's OpenAI account; usage rights per OpenAI's terms for commissioned output",
+      "proof": "docs/third-party/ai-generated-images.md",
+      "transformations": "AI-generated 1254×1254 PNG re-encoded as WebP with Sharp at quality 90; no crop or other edits",
+      "essential": false,
+      "experience": true,
+      "sha256": "88346ae74d7b4f409ab415b955544ebdb79d2d4daa7f5da0733a4a9e20adfa55"
+    },
+    {
       "path": "public/images/ilha-grande-1.v1.webp",
       "url": "/images/ilha-grande-1.v1.webp",
       "kind": "photographic-image",

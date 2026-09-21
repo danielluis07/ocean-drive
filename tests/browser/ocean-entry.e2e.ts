@@ -30,17 +30,20 @@ test("a ready ocean opens without an entry step and shows no legacy controls", {
   await expect(page.locator(".presentation-bar, .ocean-caption, .stop-label")).toHaveCount(0);
 });
 
-test("loading shows only the logo fade", { tag: "@critical" }, async ({ page }) => {
+test("loading shows Earth and zooms into the ready ocean", { tag: "@critical" }, async ({ page }) => {
   const releaseVessel = await holdVesselAssets(page);
   await page.goto("/");
   await expect(loading(page)).toBeVisible();
-  await expect(loading(page)).toHaveText("Travessia");
+  await expect(loading(page)).toContainText("Travessia");
+  await expect(loading(page)).toContainText("Preparando a travessia");
+  await expect(loading(page).locator('img[src*="earth-intro"]')).toBeVisible();
   const main = page.locator("main");
   await expect(main.getByRole("button")).toHaveCount(0);
   await expect(main.getByRole("heading")).toHaveCount(0);
   await expect(page.getByText("Role para navegar")).toHaveCount(0);
   releaseVessel();
   await expectOceanReady(page);
+  await expect(loading(page)).toHaveAttribute("data-reveal", "true");
   await expect(loading(page)).toBeHidden();
   await expect(stopCard(page)).toBeVisible();
 });
