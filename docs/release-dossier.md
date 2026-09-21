@@ -76,8 +76,8 @@ row and cannot override a blocking one.
    tree comparison (`ci/reproducible-assets`), typecheck, lint, unit tests, the
    production build, a final tree comparison (`ci/generated-diff`), and the
    production gate (`e2e/production/production-assets`).
-2. **browser**: the full Chromium suite and the `@critical` journeys in Firefox and
-   WebKit, one job per engine.
+2. **browser**: the full Chromium suite and the `@critical` journeys in WebKit, one
+   job per engine.
 3. **dossier**: downloads every job's `evidence/`, writes the checklists and the
    dossier, adds the dossier to the run summary, and uploads both.
 
@@ -87,6 +87,12 @@ does not leave the other rows without evidence; the job still fails.
 In CI the manual rows (B–F, R) stay Unvalidated, and so does A12: runners have no
 GPU, and the lab suite withholds its result on a software renderer. A13 and B4
 wait for the ambient loop in [#42](https://github.com/danielluis07/ocean-drive/issues/42).
+
+Firefox is not in the CI matrix: on the runners it refuses WebGL 2, so every 3D
+journey falls back to reading mode ([#49](https://github.com/danielluis07/ocean-drive/issues/49)).
+The Firefox checks in A2–A9 therefore stay Unvalidated in a CI dossier. Run
+`bun run test:browser --project firefox` locally with a clean tree at the candidate
+and pass that evidence directory to `bun run dossier` alongside the CI one.
 
 ## Lab Core Web Vitals
 

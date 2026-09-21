@@ -16,17 +16,8 @@ export default defineConfig({
   use: { baseURL: "http://localhost:3000", trace: "retain-on-failure" },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"], launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] } } },
-    // CI runners have no GPU. Like Chromium's unsafe SwiftShader flag, these prefs let
-    // Firefox's software WebGL past the app's major-performance-caveat refusal; the
-    // refused-WebGL journey stubs that refusal itself.
-    {
-      name: "firefox",
-      grep: /@critical/,
-      use: {
-        ...devices["Desktop Firefox"],
-        launchOptions: { firefoxUserPrefs: { "webgl.force-enabled": true, "webgl.disable-fail-if-major-performance-caveat": true } },
-      },
-    },
+    // Runs locally only: on the CI runners Firefox refuses WebGL 2 (#49).
+    { name: "firefox", grep: /@critical/, use: { ...devices["Desktop Firefox"] } },
     { name: "webkit", grep: /@critical/, use: { ...devices["Desktop Safari"] } },
   ],
   webServer: { command: "bun run dev", url: "http://localhost:3000", reuseExistingServer: !process.env.CI, timeout: 120_000 },
