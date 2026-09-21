@@ -32,6 +32,11 @@ committed, such as the coastline and elevation records the island Landmarks are
 built from. Nothing under `data/` is served to the browser; generation scripts
 read it offline so builds stay reproducible. See [landmarks.md](landmarks.md).
 
+`evidence/` and `release-dossier/` are generated and ignored by git: the first
+holds candidate-bound evidence records written by checks and browser suites, the
+second the checklists and Release Dossier built from them. See
+[release-dossier.md](release-dossier.md).
+
 Put reusable logic that does not render JSX in `lib/`. For example,
 `lib/voyage-state.ts` owns Voyage State and its persistence,
 `lib/charted-route.ts` and `lib/route-motion.ts` own the Charted Route and the

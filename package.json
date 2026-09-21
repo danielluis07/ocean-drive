@@ -15,8 +15,13 @@
     "assets:identity": "bun scripts/generate-identity.mjs",
     "assets:record": "bun scripts/record-assets.mjs",
     "assets:audit": "bun scripts/audit-assets.ts",
-    "test:production": "playwright test --config playwright.production.config.ts",
-    "typecheck": "bun --bun next typegen && tsc --noEmit"
+    "test:production": "playwright test --config playwright.production.config.ts --project production",
+    "test:vitals": "playwright test --config playwright.production.config.ts --project lab-vitals",
+    "typecheck": "bun --bun next typegen && tsc --noEmit",
+    "evidence": "bun scripts/evidence.ts",
+    "acceptance:matrix": "bun scripts/release-dossier.ts matrix",
+    "dossier:checklists": "bun scripts/release-dossier.ts checklists",
+    "dossier": "bun scripts/release-dossier.ts build"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

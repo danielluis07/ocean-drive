@@ -1,0 +1,99 @@
+name: Acceptance evidence
+
+# Produces candidate-bound evidence for the Production Acceptance Matrix
+# (docs/acceptance-matrix.md) and assembles a Release Dossier for the commit.
+# Manual rows and lab Core Web Vitals (which need a GPU) stay Unvalidated here;
+# see docs/release-dossier.md.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun scripts/evidence.ts run ci/install -- bun install --frozen-lockfile
+      # Each check records its own evidence, so later checks still run after a failure.
+      - run: bun run evidence run ci/asset-audit -- bun run assets:audit
+        if: ${{ !cancelled() }}
+      - name: Regenerate the Ship and Landmark masters
+        if: ${{ !cancelled() }}
+        run: |
+          bun run assets:ship
+          bun run landmarks:build
+      - run: bun run evidence tree ci/reproducible-assets
+        if: ${{ !cancelled() }}
+      - run: bun run evidence run ci/typecheck -- bun run typecheck
+        if: ${{ !cancelled() }}
+      - run: bun run evidence run ci/lint -- bun run lint
+        if: ${{ !cancelled() }}
+      - run: bun run evidence run ci/unit-tests -- bun test
+        if: ${{ !cancelled() }}
+      - run: bun run evidence run ci/build --artifact .next/BUILD_ID -- bun run build
+        if: ${{ !cancelled() }}
+        env:
+          RELEASE_CANDIDATE: ${{ github.sha }}
+          BUILD_ID: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: bun run evidence tree ci/generated-diff
+        if: ${{ !cancelled() }}
+      - run: bunx playwright install --with-deps chromium
+        if: ${{ !cancelled() }}
+      - run: bun run test:production
+        if: ${{ !cancelled() }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-verify-${{ github.sha }}
+          path: evidence/
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps ${{ matrix.engine }}
+      - run: bun run test:browser --project ${{ matrix.engine }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-${{ matrix.engine }}-${{ github.sha }}
+          path: evidence/
+
+  dossier:
+    needs: [verify, browser]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: evidence-*-${{ github.sha }}
+          path: evidence/
+      - run: bun run dossier:checklists
+      - run: bun run dossier
+      - run: cat release-dossier/${{ github.sha }}/release-dossier.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-dossier-${{ github.sha }}
+          path: |
+            release-dossier/
+            evidence/
