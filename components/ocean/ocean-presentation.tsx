@@ -55,13 +55,13 @@ const OceanRuntime = dynamic(() => import("@/components/ocean/ocean-runtime"), {
 // One short line each; the Accessible Editorial Presentation carries the rest.
 const failureCopy: Record<ThreeDUnavailableReason, string> = {
   unsupported: "Este navegador não consegue exibir o oceano em 3D.",
-  refused: "O navegador não permitiu exibir o oceano em 3D.",
+  refused: "O navegador não permitiu iniciar o oceano em 3D.",
   "asset-failure": "Não foi possível carregar o oceano em 3D.",
-  "context-loss": "A exibição do oceano em 3D foi interrompida.",
+  "context-loss": "O oceano em 3D foi interrompido.",
   "unusable-quality": "O oceano em 3D não ficou estável neste dispositivo.",
 };
 const restoringCopy =
-  "A exibição do oceano em 3D foi interrompida. Tentando restaurá-la…";
+  "O oceano em 3D foi interrompido. Tentando restaurá-lo…";
 
 class RuntimeErrorBoundary extends Component<
   { children: ReactNode; onFailure: () => void },

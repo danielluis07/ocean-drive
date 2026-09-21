@@ -29,7 +29,7 @@ export default function RouteNavigation({ enhanced, voyage, onOpenStop }: RouteN
             id="route-title"
             tabIndex={-1}
             className={cn(editorialHeading, "mt-3 text-3xl font-semibold tracking-tight sm:text-4xl")}>
-            Quatro paradas. Uma travessia.
+            Quatro paradas, uma travessia.
           </h2>
         </div>
         {enhanced ? (

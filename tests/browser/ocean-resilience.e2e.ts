@@ -52,11 +52,11 @@ test("successful context restoration offers explicit return and a second loss lo
   await expect(page.locator("#voyage-ocean")).toBeFocused();
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "three-dimensional");
   await loseContext(page);
-  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(notice(page)).toContainText("O oceano em 3D foi interrompido.");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
-  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(notice(page)).toContainText("O oceano em 3D foi interrompido.");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await expect(page.locator("#voyage-ocean")).toHaveCount(0);
 });
@@ -89,11 +89,11 @@ test("a missing restoration event times out once while the matching text stays u
     extension.restoreContext = () => {};
     extension.loseContext();
   });
-  await expect(notice(page)).toContainText("Tentando restaurá-la");
+  await expect(notice(page)).toContainText("Tentando restaurá-lo");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await page.locator("#rota button").first().click();
   await page.clock.runFor(8500);
-  await expect(notice(page).locator("p")).toHaveText(["A exibição do oceano em 3D foi interrompida."]);
+  await expect(notice(page).locator("p")).toHaveText(["O oceano em 3D foi interrompido."]);
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await expect(page.locator("#fernando-de-noronha-title")).toBeVisible();
 });
@@ -146,19 +146,19 @@ test("a hidden recovery preserves its foreground deadline and never returns to 3
     extension.restoreContext = () => {};
     extension.loseContext();
   });
-  await expect(notice(page)).toContainText("Tentando restaurá-la");
+  await expect(notice(page)).toContainText("Tentando restaurá-lo");
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await page.clock.runFor(20_000);
-  await expect(notice(page)).toContainText("Tentando restaurá-la");
+  await expect(notice(page)).toContainText("Tentando restaurá-lo");
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => false });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await page.clock.runFor(8500);
-  await expect(notice(page)).toContainText("A exibição do oceano em 3D foi interrompida.");
+  await expect(notice(page)).toContainText("O oceano em 3D foi interrompido.");
   await expect(returnToOceanButton(page)).toHaveCount(0);
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "editorial");
 });
@@ -240,7 +240,7 @@ for (const failure of ["effects", "essential", "restored-frame"] as const) {
         await loseContext(page);
       }
       await expect(notice(page).locator("p")).toHaveText([
-        failure === "essential" ? "Não foi possível carregar o oceano em 3D." : "A exibição do oceano em 3D foi interrompida.",
+        failure === "essential" ? "Não foi possível carregar o oceano em 3D." : "O oceano em 3D foi interrompido.",
       ]);
       await expect(returnToOceanButton(page)).toHaveCount(0);
       await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();

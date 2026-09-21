@@ -104,7 +104,7 @@ for (const capability of ["unsupported", "refused"] as const) {
     await expect(notice(page).locator("p")).toHaveText([
       capability === "unsupported"
         ? "Este navegador não consegue exibir o oceano em 3D."
-        : "O navegador não permitiu exibir o oceano em 3D.",
+        : "O navegador não permitiu iniciar o oceano em 3D.",
     ]);
     await expect(loading(page)).toBeHidden();
     await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
