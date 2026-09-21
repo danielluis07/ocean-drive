@@ -7,7 +7,7 @@ source, retained rights record, transformation description and SHA-256 hash.
 `docs/third-party/dependencies.json` binds dependency notices to `bun.lock`.
 
 The six Stop Account images under `public/images/` are AI-generated
-illustrative visuals, allowed by the superseded asset policy in issue #33.
+photographic visuals, allowed by the superseded asset policy in issue #33.
 Their provenance is `docs/third-party/ai-generated-images.md`; regenerating
 the manifest after adding or replacing one still goes through
 `bun run assets:record`.

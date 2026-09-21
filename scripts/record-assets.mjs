@@ -46,7 +46,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
   continue;
  }
  if (illustrative) {
-  assets.push({path, url, kind: 'illustrative-image', sourceKind: 'ai-generated', creator: 'Higgsfield (Z Image), commissioned by the project owner', source: 'Higgsfield Z Image (z_image)', retrieved: '2026-09-17', rights: "Generated under the project owner's Higgsfield account; usage rights per Higgsfield's terms for commercial/commissioned output", proof: 'docs/third-party/ai-generated-images.md', transformations: 'AI-generated PNG resized to 960px width and re-encoded as WebP with Sharp; no other edits', essential: false, experience: true, sha256: await hash(path)});
+  assets.push({path, url, kind: 'photographic-image', sourceKind: 'ai-generated', creator: 'OpenAI GPT Image, commissioned by the project owner', source: 'OpenAI built-in image generation', retrieved: '2026-09-21', rights: "Generated under the project owner's OpenAI account; usage rights per OpenAI's terms for commissioned output", proof: 'docs/third-party/ai-generated-images.md', transformations: 'AI-generated PNG resized and cropped to 960×720 then re-encoded as WebP with Sharp; no other edits', essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  assets.push({path, url, kind: 'authored', sourceKind: 'project-source', creator: 'Ocean Drive project contributors', source: 'scripts/generate-identity.mjs', retrieved: '2026-09-15', rights: 'Project-authored source contribution; no imported artwork', proof: 'docs/third-party/project-assets.md', transformations: 'Deterministic SVG paths and Sharp PNG rasterization', essential: false, experience: false, sha256: await hash(path)});
