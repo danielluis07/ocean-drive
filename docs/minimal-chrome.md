@@ -6,8 +6,11 @@ scene is the default presentation and carries almost no interface.
 ## Entry and loading
 
 A new Voyage starts in the 3D presentation, with no entry step. Until the scene is
-ready, `components/ocean/ocean-loading.tsx` covers the page with a brief Travessia
-logo fade. It is server-rendered, so no other content flashes first, and hidden
+ready, `components/ocean/ocean-loading.tsx` covers the page with the Approach: the
+Earth, the Travessia logo, and the premise line “Uma viagem pela costa brasileira”,
+held for at least 2.5 seconds from navigation. Once the scene is ready it descends
+toward the northeastern Brazilian coast and the ocean fades in over the last third
+of the descent; under reduced motion it only fades. It is server-rendered, so no other content flashes first, and hidden
 through `<noscript>`, so visitors without JavaScript read the editorial content.
 Quality is chosen automatically (see [ocean-resilience.md](ocean-resilience.md)).
 
@@ -35,8 +38,8 @@ The chrome stays under the dim while a Sheet is open; the Sheet is modal.
 
 `components/ocean/stop-card.tsx` shows the settled Stop: a mono “Parada 0N” label,
 its context line, a large white title, one sentence, and a white “Saiba mais” pill
-with a coral dot. Stop 00 shows the Travessia name and the Core Promise without a
-button, plus a “Role para navegar” cue. `lib/use-scroll-cue.ts` dismisses that
+with a coral dot. Stop 00 shows the Core Promise as its title and the Voyage's premise
+(`brand.premise`) without a button, plus a “Role para navegar” cue. `lib/use-scroll-cue.ts` dismisses that
 cue on the first navigation for the rest of the tab, including after “Recomeçar
 viagem”.
 

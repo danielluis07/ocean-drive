@@ -10,14 +10,20 @@
   transition: none;
 }
 
+/* The ocean fades in over the last third of the descent, before the Earth
+   image is magnified far enough to soften. */
 .overlay[data-reveal="true"] {
-  transition: opacity 700ms ease 1050ms, visibility 0s linear 1750ms;
+  transition: opacity 800ms ease 1600ms, visibility 0s linear 2400ms;
 }
 
 .planet {
+  /* The rendered Earth's width, matching the image's width class. */
+  --earth: min(94vw, 76svh, 56rem);
   transform: scale(1);
-  transform-origin: center;
-  transition: transform 1750ms cubic-bezier(0.55, 0.05, 0.45, 1);
+  /* Just offshore of the northeastern tip of Brazil, toward Fernando de
+     Noronha: 49.5% across and 47.5% down the Earth image. */
+  transform-origin: calc(50% - var(--earth) * 0.005) calc(50% - var(--earth) * 0.025);
+  transition: transform 2400ms cubic-bezier(0.55, 0.05, 0.45, 1);
 }
 
 .earth {
@@ -25,7 +31,7 @@
 }
 
 .overlay[data-reveal="true"] .planet {
-  transform: scale(6.5);
+  transform: scale(14);
 }
 
 .chrome {

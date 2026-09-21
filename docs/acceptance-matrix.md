@@ -102,7 +102,7 @@ The observable criteria, target states, methods, required evidence, and pass thr
 
 ### A4 · Minimal chrome and Stop Cards
 
-**Criterion.** Only the Travessia logo, the sound toggle, “Capítulos”, and “Modo leitura” persist over the ocean; loading is a logo fade. Stop Cards fade in when the Ship settles and out when it sails, sit clear of the Ship, its Landmark, and the chrome, and the Stop 00 “Role para navegar” cue never returns in the tab.
+**Criterion.** Only the Travessia logo, the sound toggle, “Capítulos”, and “Modo leitura” persist over the ocean; the Approach shows the Travessia logo and the premise line for at least 2.5 seconds, then descends toward the northeastern Brazilian coast (or only fades under reduced motion) into Stop 00, whose card shows the Core Promise and the premise. Stop Cards fade in when the Ship settles and out when it sails, sit clear of the Ship, its Landmark, and the chrome, and the Stop 00 “Role para navegar” cue never returns in the tab.
 
 **Method.** Browser journeys over the chrome, card content and fading, the scroll cue across reload, announcements, and card placement.
 
@@ -406,7 +406,7 @@ The observable criteria, target states, methods, required evidence, and pass thr
 
 ### D2 · Evidence Boundary
 
-**Criterion.** Places, geography, marine life, seasons, and natural phenomena are real and plausible; Travessia, the Maré Mansa, its crew, and the itinerary are openly fictional and disclosed once per presentation.
+**Criterion.** Places, geography, marine life, seasons, and natural phenomena are real and plausible; Travessia, the Del Mar, its crew, and the itinerary are openly fictional and disclosed once per presentation.
 
 **Method.** Check each Stop's claims (species, best season, landscape) against reputable public sources and review every surface for implied real-world operation.
 

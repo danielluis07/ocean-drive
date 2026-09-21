@@ -237,7 +237,7 @@ test("“Recomeçar viagem” in Capítulos clears Voyage State and returns to S
   await openSheet(page).getByRole("button", { name: "Recomeçar viagem", exact: true }).click();
   await expectSheetClosed(page);
   await expectSettledAt(page, 0);
-  await expect(stopCard(page).getByRole("heading", { name: "Travessia" })).toBeVisible();
+  await expect(stopCard(page).getByRole("heading", { name: "O Brasil visto do mar." })).toBeVisible();
   expect(await voyageState(page)).toMatchObject({ currentStop: "partida", visitedStops: [], routeProgress: 0, complete: false });
   await expect(chaptersButton(page)).toBeFocused();
   await expect(page.locator("#voyage-announcer")).toHaveText("Viagem reiniciada. De volta ao início.");
@@ -290,7 +290,7 @@ test("the Arrival's closing card opens the itinerary and restarts the Voyage, wi
 
   await card.getByRole("button", { name: "Recomeçar viagem", exact: true }).click();
   await expectSettledAt(page, 0);
-  await expect(card.getByRole("heading", { name: "Travessia" })).toBeVisible();
+  await expect(card.getByRole("heading", { name: "O Brasil visto do mar." })).toBeVisible();
   await expect(page.locator("#voyage-ocean")).toBeFocused();
   expect(await voyageState(page)).toMatchObject({ currentStop: "partida", visitedStops: [], routeProgress: 0, complete: false });
 });

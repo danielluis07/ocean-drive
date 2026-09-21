@@ -1,4 +1,4 @@
-# Maré Mansa
+# Del Mar
 
 Issue #40 replaces the procedural research vessel with an adapted, licensed
 glTF passenger ship. The retained observation lounge, open foredeck, tenders,

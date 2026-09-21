@@ -55,7 +55,7 @@ export async function auditAssets() {
         const transfer = gzipSync(buffer).length;
         if (model.triangles > budget.triangles || buffer.byteLength > budget.bytes || transfer > budget.transfer || model.materials > budget.materials || model.draws > budget.draws || model.textures > budget.textures || model.imageSizes.some(({ width, height }) => width > budget.textureSize || height > budget.textureSize)) errors.push(`Ship budget exceeded: ${asset.path}`);
         if (`public${declared.url}` !== asset.path || declared.triangles !== model.triangles || declared.bytes !== buffer.byteLength || declared.transfer !== transfer || declared.materials !== model.materials || declared.textures !== model.textures || declared.draws !== model.draws || model.imageSizes.some(({ width, height }) => width !== declared.textureSize || height !== declared.textureSize)) errors.push(`Ship record does not match its mesh: ${asset.path}`);
-        if (!model.parts.includes("Maré Mansa") || model.placement?.forwardAxis !== "-Z" || model.placement.origin !== "waterline") errors.push(`Invalid Ship placement: ${asset.path}`);
+        if (!model.parts.includes("Del Mar") || model.placement?.forwardAxis !== "-Z" || model.placement.origin !== "waterline") errors.push(`Invalid Ship placement: ${asset.path}`);
         continue;
       }
       if (model.materials > 2 || model.textures) errors.push(`Invalid Landmark materials/resources: ${asset.path}`);

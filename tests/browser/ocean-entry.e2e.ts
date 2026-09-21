@@ -22,7 +22,7 @@ test("a ready ocean opens without an entry step and shows no legacy controls", {
   // host renders through SwiftShader, which is quieter than ANGLE's D3D compiler.
   expect(warnings.join("\n")).not.toContain("Program Info Log");
   await expect(loading(page)).toBeHidden();
-  await expect(stopCard(page).getByRole("heading", { name: "Travessia" })).toBeVisible();
+  await expect(stopCard(page).getByRole("heading", { name: "O Brasil visto do mar." })).toBeVisible();
   for (const legacy of [/expedição/i, /Virar/, "Controles", "Reorientar rota", "Explorar em 3D", "Preparar 3D"]) {
     await expect(page.getByRole("button", { name: legacy })).toHaveCount(0);
   }
@@ -30,12 +30,12 @@ test("a ready ocean opens without an entry step and shows no legacy controls", {
   await expect(page.locator(".presentation-bar, .ocean-caption, .stop-label")).toHaveCount(0);
 });
 
-test("loading shows Earth and zooms into the ready ocean", { tag: "@critical" }, async ({ page }) => {
+test("the Approach shows Earth and the premise, then descends into the ready ocean", { tag: "@critical" }, async ({ page }) => {
   const releaseVessel = await holdVesselAssets(page);
   await page.goto("/");
   await expect(loading(page)).toBeVisible();
   await expect(loading(page)).toContainText("Travessia");
-  await expect(loading(page)).toContainText("Preparando a travessia");
+  await expect(loading(page)).toContainText("Uma viagem pela costa brasileira");
   await expect(loading(page).locator('img[src*="earth-intro"]')).toBeVisible();
   const main = page.locator("main");
   await expect(main.getByRole("button")).toHaveCount(0);
@@ -78,7 +78,7 @@ test("reduced motion still opens the 3D voyage and loads the mobile vessel and L
   await enterOcean(page);
   // The Low tier fetches only its own simplified meshes: one vessel and one
   // mesh per island Landmark, never a Balanced one.
-  expect(models.filter((path) => path.includes("mare-mansa"))).toEqual(["/models/mare-mansa-low.v1.glb"]);
+  expect(models.filter((path) => path.includes("del-mar"))).toEqual(["/models/del-mar-low.v1.glb"]);
   expect(models.filter((path) => path.includes("/landmark-")).sort()).toEqual([
     "/models/landmark-abrolhos-low.v1.glb",
     "/models/landmark-boipeba-low.v1.glb",

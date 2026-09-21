@@ -162,7 +162,7 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   expect(diagnostics.timing.frames).toBeGreaterThan(0);
   expect(diagnostics.timing.windows.length).toBeGreaterThan(0);
   const complete = await Promise.all(requests);
-  expect(complete.some((request) => request.path.includes("mare-mansa-low.v1.glb"))).toBe(true);
+  expect(complete.some((request) => request.path.includes("del-mar-low.v1.glb"))).toBe(true);
   expect(external).toEqual([]);
   expect(failed).toEqual([]);
   for (const request of complete) {

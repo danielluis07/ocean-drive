@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
   title: "Travessia | Uma viagem pela costa brasileira",
   description:
-    "Uma viagem fictícia de Fernando de Noronha a Ilha Grande, a bordo do Maré Mansa, pelas ilhas, pela vida marinha e pelas temporadas reais da costa brasileira.",
+    "Uma viagem fictícia de Fernando de Noronha a Ilha Grande, a bordo do Del Mar, pelas ilhas, pela vida marinha e pelas temporadas reais da costa brasileira.",
   icons: {
     icon: [
       { url: "/identity/favicon.v1.svg", type: "image/svg+xml" },

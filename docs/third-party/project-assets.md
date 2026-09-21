@@ -3,7 +3,7 @@
 The Travessia symbol is retained from components/expedition/institute-mark.tsx
 at commit 050de01837e97f2a6fb1e23abc134e9ef6483986. The vessel geometry is a
 simplification of the repository master at that commit; that procedural vessel
-and its generator were replaced in issue #40. The current licensed Maré Mansa
+and its generator were replaced in issue #40. The current licensed Del Mar
 model is documented separately in [ship-model.md](ship-model.md).
 Identity derivatives and outlined lettering
 are deterministic code/vector work in scripts/generate-identity.mjs (the symbol now

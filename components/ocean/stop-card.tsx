@@ -7,7 +7,8 @@ import { stopNumber } from "@/lib/voyage-view";
 
 type StopCardProps = {
   stop: Stop;
-  // Stop 00 opens the Voyage: brand and Core Promise, without an account.
+  // Stop 00 opens the Voyage: the Core Promise and the premise, without an
+  // account. The logo in the chrome already names Travessia.
   variant: "opening" | "stop" | "arrival";
   visible: boolean;
   cueVisible: boolean;
@@ -80,10 +81,10 @@ export default function StopCard({
         className="pointer-events-auto invisible h-fit w-full max-w-[24rem] group-data-[card-side=beside]/ocean:my-auto translate-y-2 text-foreground opacity-0 [transition:opacity_500ms_ease-out,translate_500ms_ease-out,visibility_0s_linear_500ms] data-[visible=true]:[transition:opacity_500ms_ease-out,translate_500ms_ease-out,visibility_0s] text-shadow-md text-shadow-background/50 data-[visible=true]:visible data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 motion-reduce:translate-y-0">
         {variant === "opening" ? (
           <>
-            <h2 id="stop-card-title" className="text-[clamp(2.5rem,3vw+1.75rem,4.5rem)] leading-none font-semibold tracking-tight short:text-4xl">
-              {stop.name}
+            <h2 id="stop-card-title" className="text-[clamp(2.25rem,2.5vw+1.5rem,3.75rem)] leading-[1.02] font-semibold tracking-tight text-balance short:text-3xl">
+              {brand.tagline}
             </h2>
-            <p className="mt-4 text-[clamp(1.125rem,0.5vw+1rem,1.5rem)] leading-snug short:mt-2 short:text-base">{stop.introduction}</p>
+            <p className="mt-4 max-w-[34ch] text-[clamp(1.125rem,0.5vw+1rem,1.375rem)] leading-snug short:mt-2 short:text-base">{brand.premise}</p>
             {cueVisible ? (
               <p className="mt-8 inline-flex items-center gap-3 short:mt-4 font-mono text-xs tracking-[0.2em] text-foreground/85 uppercase">
                 <span aria-hidden="true" className="h-px w-8 bg-foreground/70 motion-safe:animate-pulse" />

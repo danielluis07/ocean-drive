@@ -4,6 +4,8 @@
 export type Brand = {
   name: string;
   tagline: string;
+  // The Voyage's concrete premise, set under the Core Promise at Stop 00.
+  premise: string;
   ship: string;
   disclosure: string;
   // Credits the open data the island Landmarks are built from. OpenStreetMap's
@@ -12,10 +14,13 @@ export type Brand = {
   nextDeparture: string;
 };
 
+const ship = "Del Mar";
+
 export const brand: Brand = {
   name: "Travessia",
   tagline: "O Brasil visto do mar.",
-  ship: "Maré Mansa",
+  premise: `Quatro ilhas, de Fernando de Noronha a Ilha Grande, a bordo do ${ship}.`,
+  ship,
   disclosure:
     "Travessia é uma comissão fictícia. Reúne lugares, paisagens, fauna e temporadas reais da costa brasileira com um navio, uma tripulação e um roteiro imaginados. As reservas, a tripulação e as partidas descritas aqui não existem.",
   dataCredit:
@@ -72,7 +77,7 @@ export const stops: Stop[] = [
     account: {
       day: "Dias 2 e 3",
       introduction:
-        "Depois de uma noite no mar, o Maré Mansa ancora ao pé do Morro do Pico, o paredão vulcânico que anuncia o arquipélago. Na água clara, o fundo continua visível muitos metros abaixo. A vida a bordo começa cedo e segue as marés da ilha.",
+        "Depois de uma noite no mar, o Del Mar ancora ao pé do Morro do Pico, o paredão vulcânico que anuncia o arquipélago. Na água clara, o fundo continua visível muitos metros abaixo. A vida a bordo começa cedo e segue as marés da ilha.",
       highlights: [
         {
           title: "Golfinhos-rotadores na Baía dos Golfinhos",
@@ -112,7 +117,7 @@ export const stops: Stop[] = [
     account: {
       day: "Dias 5 e 6",
       introduction:
-        "Na Costa do Dendê, o Maré Mansa fundeia ao largo e botes pequenos levam os viajantes a vilarejos sem carros, entre rios de água escura, coqueirais e areia branca e fina. Anda-se a pé, de bicicleta ou de canoa. Em terra, quem dá o ritmo é a maré.",
+        "Na Costa do Dendê, o Del Mar fundeia ao largo e botes pequenos levam os viajantes a vilarejos sem carros, entre rios de água escura, coqueirais e areia branca e fina. Anda-se a pé, de bicicleta ou de canoa. Em terra, quem dá o ritmo é a maré.",
       highlights: [
         {
           title: "Piscinas naturais de Moreré",
@@ -147,7 +152,7 @@ export const stops: Stop[] = [
     account: {
       day: "Dias 8 e 9",
       introduction:
-        "O Maré Mansa chega ao primeiro parque nacional marinho do Brasil, criado em 1983 para proteger seus recifes e sua vida marinha. As visitas seguem as regras do parque, e guias credenciados pelo ICMBio acompanham todos os passeios de bote.",
+        "O Del Mar chega ao primeiro parque nacional marinho do Brasil, criado em 1983 para proteger seus recifes e sua vida marinha. As visitas seguem as regras do parque, e guias credenciados pelo ICMBio acompanham todos os passeios de bote.",
       highlights: [
         {
           title: "Baleias-jubarte",

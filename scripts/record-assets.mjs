@@ -38,7 +38,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  const landmark = /\/landmark-(.+)-(balanced|low)\.v\d+\.glb$/.exec(path);
  const illustrative = path.startsWith('public/images/');
  if (vessel) {
-  assets.push({path, url, kind: 'authored', ...shipRights, transformations: 'Cruise ship adapted as Maré Mansa: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts', essential: true, experience: true, sha256: await hash(path)});
+  assets.push({path, url, kind: 'authored', ...shipRights, transformations: 'Cruise ship adapted as Del Mar: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts', essential: true, experience: true, sha256: await hash(path)});
   continue;
  }
  if (landmark) {

@@ -62,6 +62,8 @@ const failureCopy: Record<ThreeDUnavailableReason, string> = {
 };
 const restoringCopy =
   "O oceano em 3D foi interrompido. Tentando restaurá-lo…";
+// Minimum time the Approach's premise line stays up before the descent.
+const approachReadMs = 2500;
 
 class RuntimeErrorBoundary extends Component<
   { children: ReactNode; onFailure: () => void },
@@ -102,6 +104,9 @@ export default function OceanPresentation({
   const [stage, setStage] = useState<PreparationStage>("checking");
   const [eligible, setEligible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  // The Approach holds its premise line on screen long enough to read, however
+  // fast the scene prepares; the time counts from navigation, when it first paints.
+  const [approachRead, setApproachRead] = useState(false);
   const [quality, setQuality] = useState<OceanQuality>({
     tier: "balanced",
     dpr: 1.25,
@@ -136,6 +141,10 @@ export default function OceanPresentation({
         ? restoringCopy
         : null;
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => setApproachRead(true), Math.max(0, approachReadMs - performance.now()));
+    return () => window.clearTimeout(timer);
+  }, []);
   useEffect(() => {
     enableLocalDiagnostics();
     recordDiagnostic("readiness", "editorial-ready");
@@ -337,7 +346,7 @@ export default function OceanPresentation({
     };
   }, [enhanced, unavailable, eligible, voyage.qualityPreference, prepare]);
 
-  const ready = active && !restoring && stage === "ready";
+  const ready = active && !restoring && stage === "ready" && approachRead;
   const voyaging = ready && visible && !sheetOpen;
   useEffect(() => {
     inputEnabled.current = voyaging;
@@ -411,7 +420,7 @@ export default function OceanPresentation({
   return (
     <>
       <OceanLoading
-        loading={!enhanced || (active && !unavailable && stage !== "ready")}
+        loading={!enhanced || (active && !unavailable && (stage !== "ready" || !approachRead))}
         reveal={ready}
       />
       {enhanced && !active ? (

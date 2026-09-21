@@ -95,12 +95,12 @@ for (const tier of ["balanced", "low"] as const) {
   ];
   const imageIndex = append(texture);
   const gltf = {
-    asset: { version: "2.0", generator: "Ocean Drive ship adaptation", copyright: `Cruise ship by ${shipSource.creator}, ${shipSource.license}; adapted as Maré Mansa. ${shipSource.url}` },
+    asset: { version: "2.0", generator: "Ocean Drive ship adaptation", copyright: `Cruise ship by ${shipSource.creator}, ${shipSource.license}; adapted as Del Mar. ${shipSource.url}` },
     extensionsUsed: ["KHR_mesh_quantization"], extensionsRequired: ["KHR_mesh_quantization"],
     scene: 0, scenes: [{ nodes: [0] }],
-    nodes: [{ name: "Maré Mansa", mesh: 0, scale: [1 / 8192, 1 / 8192, 1 / 8192], extras: { forwardAxis: "-Z", origin: "waterline", source: shipSource.url, license: shipSource.licenseUrl } }],
+    nodes: [{ name: "Del Mar", mesh: 0, scale: [1 / 8192, 1 / 8192, 1 / 8192], extras: { forwardAxis: "-Z", origin: "waterline", source: shipSource.url, license: shipSource.licenseUrl } }],
     meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, TEXCOORD_0: 2 }, indices: 3, material: 0 }] }],
-    materials: [{ name: "Maré Mansa exterior", pbrMetallicRoughness: { baseColorTexture: { index: 0 }, roughnessFactor: 0.72, metallicFactor: 0 } }],
+    materials: [{ name: "Del Mar exterior", pbrMetallicRoughness: { baseColorTexture: { index: 0 }, roughnessFactor: 0.72, metallicFactor: 0 } }],
     textures: [{ source: 0, sampler: 0 }], samplers: [{ magFilter: 9729, minFilter: 9987, wrapS: 33071, wrapT: 33071 }],
     images: [{ bufferView: imageIndex, mimeType: "image/jpeg" }],
     accessors, bufferViews: views, buffers: [{ byteLength: offset }],
@@ -112,7 +112,7 @@ for (const tier of ["balanced", "low"] as const) {
   header.writeUInt32LE(padded.length, 12); header.writeUInt32LE(0x4e4f534a, 16);
   binHeader.writeUInt32LE(offset, 0); binHeader.writeUInt32LE(0x004e4942, 4);
   const glb = Buffer.concat([header, padded, binHeader, ...chunks]);
-  const url = `/models/mare-mansa-${tier}.v1.glb`;
+  const url = `/models/del-mar-${tier}.v1.glb`;
   const triangles = faces.length / 3;
   const transfer = gzipSync(glb).length;
   if (triangles > budget.triangles || glb.length > budget.bytes || transfer > budget.transfer) throw new Error(`${tier} exceeds budget: ${triangles} triangles, ${glb.length} bytes, ${transfer} gzip bytes`);
@@ -121,4 +121,4 @@ for (const tier of ["balanced", "low"] as const) {
   variants[tier] = { url, triangles, bytes: glb.length, transfer, materials: 1, textures: 1, textureSize: budget.textureSize, draws: 1 };
   console.log(tier, variants[tier]);
 }
-await Bun.write("content/ship.json", JSON.stringify({ name: "Maré Mansa", variants }, null, 2) + "\n");
+await Bun.write("content/ship.json", JSON.stringify({ name: "Del Mar", variants }, null, 2) + "\n");

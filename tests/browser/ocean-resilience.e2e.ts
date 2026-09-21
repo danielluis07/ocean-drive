@@ -101,7 +101,7 @@ test("a missing restoration event times out once while the matching text stays u
 test("font and optional vessel detail failures never gate a usable ocean", async ({ page }) => {
   test.setTimeout(120_000);
   await page.route("**/*.woff2", (route) => route.abort());
-  await page.route("**/mare-mansa-low.v1.glb", (route) => route.abort());
+  await page.route("**/del-mar-low.v1.glb", (route) => route.abort());
   // Steady 25 ms frames: slow enough to drop from Balanced to Low, never unusable.
   // The clock stays paused, so slow real frames from software rendering never count.
   await page.clock.install();

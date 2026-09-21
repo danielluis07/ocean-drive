@@ -1,4 +1,4 @@
-# Maré Mansa model provenance
+# Del Mar model provenance
 
 The Ship is an adaptation of **Cruise ship**, by **Poly by Google**, published
 September 25, 2017 and retrieved September 19, 2026 from
@@ -36,7 +36,7 @@ attributes are quantized with glTF's `KHR_mesh_quantization` extension (decoded
 by Three without a downloaded codec). Unreferenced vertices are removed. The
 2048px source atlas is resized to an opaque 512px / 256px JPEG embedded in each
 GLB. Both use one opaque material, one texture, one draw, and no animation or
-skin. The fictional adaptation is named **Maré Mansa** in its glTF node.
+skin. The fictional adaptation is named **Del Mar** in its glTF node.
 
 The adaptation remains available under CC BY 3.0. Preserve the attribution and
 licence when redistributing it. Budgets, reproduction and camera checks are in

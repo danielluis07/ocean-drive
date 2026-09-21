@@ -32,6 +32,10 @@ _Avoid_: Player, customer, lead
 Travessia's tagline, the single invitation that frames the Voyage for the Visitor on the opening screen.
 _Avoid_: Campaign slogan, instruction
 
+**Approach**:
+The Visitor's first moment in the 3D presentation: a descent from the whole Earth to the Brazilian coast that states the Voyage's premise and hands the Visitor into Voyage Waters at Stop 00.
+_Avoid_: Loading screen, splash, intro video
+
 **Voyage**:
 The Visitor's complete three-to-five-minute journey along one Travessia itinerary, from departure to Arrival.
 _Avoid_: Expedition, page visit, level

@@ -7,7 +7,7 @@ export default function ShipCredit() {
       <a className="underline underline-offset-4" href={shipSource.url}>{shipSource.title}</a>,
       de {shipSource.creator}, sob{" "}
       <a className="underline underline-offset-4" href={shipSource.licenseUrl}>CC BY 3.0</a>.
-      Proporções, geometria e textura foram adaptadas para o Maré Mansa.
+      Proporções, geometria e textura foram adaptadas para o Del Mar.
     </>
   );
 }

@@ -121,12 +121,12 @@ test("a Stop Card fades in when the Ship settles and out when scrolling resumes"
   await expect(card.getByRole("heading", { name: "Boipeba" })).toBeVisible();
 });
 
-test("Stop 00 opens with the brand and Core Promise, and its scroll cue never returns in the same tab", { tag: "@critical" }, async ({ page }) => {
+test("Stop 00 opens with the Core Promise and the premise, and its scroll cue never returns in the same tab", { tag: "@critical" }, async ({ page }) => {
   test.setTimeout(120_000);
   await enterOcean(page);
   const card = stopCard(page);
-  await expect(card.getByRole("heading", { level: 2, name: "Travessia" })).toBeVisible();
-  await expect(card.getByText("O Brasil visto do mar.", { exact: true })).toBeVisible();
+  await expect(card.getByRole("heading", { level: 2, name: "O Brasil visto do mar." })).toBeVisible();
+  await expect(card.getByText("Quatro ilhas, de Fernando de Noronha a Ilha Grande, a bordo do Del Mar.", { exact: true })).toBeVisible();
   await expect(card.getByRole("button")).toHaveCount(0);
   const cue = card.getByText("Role para navegar", { exact: true });
   await expect(cue).toBeVisible();
@@ -136,13 +136,13 @@ test("Stop 00 opens with the brand and Core Promise, and its scroll cue never re
   await expectSettledAt(page, 1);
   await page.keyboard.press("ArrowUp");
   await expectSettledAt(page, 0);
-  await expect(card.getByRole("heading", { name: "Travessia" })).toBeVisible();
+  await expect(card.getByRole("heading", { name: "O Brasil visto do mar." })).toBeVisible();
   await expect(cue).toHaveCount(0);
 
   await page.reload();
   await expectSettledAt(page, 0, 60_000);
   await expect(card).toHaveAttribute("data-visible", "true");
-  await expect(card.getByRole("heading", { name: "Travessia" })).toBeVisible();
+  await expect(card.getByRole("heading", { name: "O Brasil visto do mar." })).toBeVisible();
   await expect(page.getByText("Role para navegar")).toHaveCount(0);
 });
 

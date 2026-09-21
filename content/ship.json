@@ -1,21 +1,21 @@
 {
-  "name": "Maré Mansa",
+  "name": "Del Mar",
   "variants": {
     "balanced": {
-      "url": "/models/mare-mansa-balanced.v1.glb",
+      "url": "/models/del-mar-balanced.v1.glb",
       "triangles": 3986,
-      "bytes": 183648,
-      "transfer": 104781,
+      "bytes": 183636,
+      "transfer": 104771,
       "materials": 1,
       "textures": 1,
       "textureSize": 512,
       "draws": 1
     },
     "low": {
-      "url": "/models/mare-mansa-low.v1.glb",
+      "url": "/models/del-mar-low.v1.glb",
       "triangles": 3078,
-      "bytes": 107388,
-      "transfer": 49077,
+      "bytes": 107376,
+      "transfer": 49070,
       "materials": 1,
       "textures": 1,
       "textureSize": 256,

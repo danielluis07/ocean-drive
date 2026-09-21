@@ -15,7 +15,7 @@ test("production vessel variants preserve the same footprint within the approved
     expect(vessel.opaque).toBe(true);
     expect(vessel.externalResources).toEqual([]);
     expect(vessel.textures).toBe(1);
-    expect(vessel.parts).toContain("Maré Mansa");
+    expect(vessel.parts).toContain("Del Mar");
     expect(vessel.placement).toMatchObject({ forwardAxis: "-Z", origin: "waterline" });
     expect(vessel.animations).toBe(0);
     expect(vessel.skins).toBe(0);

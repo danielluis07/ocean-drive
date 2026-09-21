@@ -17,7 +17,7 @@ through `brand.dataCredit`.
 
 ## Graphics dependencies
 
-The Maré Mansa Ship model is adapted from **Cruise ship** by **Poly by Google**,
+The Del Mar Ship model is adapted from **Cruise ship** by **Poly by Google**,
 <https://poly.pizza/m/dgLCxDWhnZQ>, under **CC BY 3.0**
 (<https://creativecommons.org/licenses/by/3.0/>). Proportions, geometry and texture
 were adapted for this project. The source listing, original GLB and full legal

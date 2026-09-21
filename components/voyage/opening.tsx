@@ -18,7 +18,7 @@ export default function Opening() {
         {brand.tagline}
       </h1>
       <p className="mt-6 max-w-[38rem] text-lg leading-relaxed text-muted-foreground sm:text-xl">
-        Quatro ilhas, de Fernando de Noronha a Ilha Grande, a bordo do {brand.ship}.
+        {brand.premise}
       </p>
       <a href="#rota" className={cn(editorialAction, "mt-8 border-card-foreground")}>
         <span aria-hidden="true" className="size-2 rounded-full bg-primary" />

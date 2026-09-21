@@ -69,7 +69,7 @@
       "transformations": "Measured output from the offline Ship build",
       "essential": true,
       "experience": false,
-      "sha256": "cf72f38f20c5088e56a777d8b12c631c6c546fa187e68913084a4f8cfe7f2212"
+      "sha256": "da88e2cafcd2b5457e9214a1b35e6822f1be3dac11703483864015f6cbace445"
     },
     {
       "path": "data/landmarks/abrolhos.json",
@@ -529,6 +529,36 @@
       "sha256": "90dddac5e4efc1b91a2559fc76b987c15f2dc892d6a0791293656b27958c9b49"
     },
     {
+      "path": "public/models/del-mar-balanced.v1.glb",
+      "url": "/models/del-mar-balanced.v1.glb",
+      "kind": "authored",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Cruise ship adapted as Del Mar: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
+      "essential": true,
+      "experience": true,
+      "sha256": "6689e33b632e7480594a882d6359039d8c458c3ca1eb68066998688c116c1e5d"
+    },
+    {
+      "path": "public/models/del-mar-low.v1.glb",
+      "url": "/models/del-mar-low.v1.glb",
+      "kind": "authored",
+      "sourceKind": "licensed-model",
+      "creator": "Poly by Google",
+      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
+      "retrieved": "2026-09-19",
+      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
+      "proof": "docs/third-party/ship-model.md",
+      "transformations": "Cruise ship adapted as Del Mar: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
+      "essential": true,
+      "experience": true,
+      "sha256": "d489c8a68b50bac040e10cfb538f1eb4beb8177d033e5af6ae3eed69f35d1958"
+    },
+    {
       "path": "public/models/landmark-abrolhos-balanced.v1.glb",
       "url": "/models/landmark-abrolhos-balanced.v1.glb",
       "kind": "authored",
@@ -649,36 +679,6 @@
       "sha256": "92d47b4cbc8ae901ce7604ed2fc8f778934d5e709f40d3f8b635889fd2c4f2be"
     },
     {
-      "path": "public/models/mare-mansa-balanced.v1.glb",
-      "url": "/models/mare-mansa-balanced.v1.glb",
-      "kind": "authored",
-      "sourceKind": "licensed-model",
-      "creator": "Poly by Google",
-      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
-      "retrieved": "2026-09-19",
-      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
-      "proof": "docs/third-party/ship-model.md",
-      "transformations": "Cruise ship adapted as Maré Mansa: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
-      "essential": true,
-      "experience": true,
-      "sha256": "f2d17055c32fe853ce1e16ff2663a3342f4d5a3e13bb45434d947cac9136ddeb"
-    },
-    {
-      "path": "public/models/mare-mansa-low.v1.glb",
-      "url": "/models/mare-mansa-low.v1.glb",
-      "kind": "authored",
-      "sourceKind": "licensed-model",
-      "creator": "Poly by Google",
-      "source": "https://poly.pizza/m/dgLCxDWhnZQ",
-      "retrieved": "2026-09-19",
-      "rights": "CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google",
-      "proof": "docs/third-party/ship-model.md",
-      "transformations": "Cruise ship adapted as Maré Mansa: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas, one opaque material; built offline by scripts/build-ship.ts",
-      "essential": true,
-      "experience": true,
-      "sha256": "28d0b22bba8733da7f8abd62859a892e2d9f92b222234434854afe5d3e9a0a5f"
-    },
-    {
       "path": "scripts/build-ship.ts",
       "kind": "pipeline",
       "sourceKind": "project-source",
@@ -690,7 +690,7 @@
       "transformations": "Authored Ship configuration and reproducible glTF adaptation pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "f0309ca1619724729db0966b91ef82b527fe8c45d7202ee1fc628274f3a37a21"
+      "sha256": "162acd896fcb8749e36cd341bef467a2057412ac9657e0418bc759edecef7188"
     }
   ]
 }
