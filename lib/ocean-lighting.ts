@@ -27,8 +27,19 @@ export function createOceanEnvironment(renderer: WebGLRenderer, daylight: OceanD
   texture.mapping = EquirectangularReflectionMapping;
   texture.needsUpdate = true;
   const generator = new PMREMGenerator(renderer);
-  const environment = generator.fromEquirectangular(texture);
-  texture.dispose();
-  generator.dispose();
+  // Three's own convolution shader makes ANGLE's D3D compiler warn that a folded
+  // constant sum (X4122) is inexact. The program links and runs; the warning is
+  // only noise in the Visitor's console, so error checking is lifted for this
+  // one generation and restored immediately, leaving our own materials checked.
+  const checkShaderErrors = renderer.debug.checkShaderErrors;
+  renderer.debug.checkShaderErrors = false;
+  let environment;
+  try {
+    environment = generator.fromEquirectangular(texture);
+  } finally {
+    renderer.debug.checkShaderErrors = checkShaderErrors;
+    texture.dispose();
+    generator.dispose();
+  }
   return environment;
 }

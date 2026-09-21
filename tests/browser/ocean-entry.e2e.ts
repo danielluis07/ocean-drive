@@ -18,6 +18,9 @@ test("a ready ocean opens without an entry step and shows no legacy controls", {
   page.on("console", (message) => { if (message.type() === "warning") warnings.push(message.text()); });
   await enterOcean(page);
   expect(warnings.join("\n")).not.toContain("THREE.Clock");
+  // A linked program's info log reaches the Visitor's console as a warning. This
+  // host renders through SwiftShader, which is quieter than ANGLE's D3D compiler.
+  expect(warnings.join("\n")).not.toContain("Program Info Log");
   await expect(loading(page)).toBeHidden();
   await expect(stopCard(page).getByRole("heading", { name: "Travessia" })).toBeVisible();
   for (const legacy of [/expedição/i, /Virar/, "Controles", "Reorientar rota", "Explorar em 3D", "Preparar 3D"]) {
