@@ -65,12 +65,15 @@ packages from entering the browser runtime.
 
 ## Automated gate
 
-`.github/workflows/production-budgets.yml` checks rights/hash reconciliation,
-reproducible outputs, types, lint, unit tests, a production build and Chromium
-request/scene measurements. The production test uses cold browser storage,
-reduced-motion editorial entry, explicit 3D preparation, all four Stop Accounts,
-completion, Low substitution and context restoration.
-It saves JSON reports, build identity, traces and aerial screenshots.
+The `verify` job of `.github/workflows/acceptance.yml` checks rights/hash
+reconciliation, reproducible outputs, types, lint, unit tests, a production build
+and Chromium request/scene measurements, recording each as candidate-bound
+evidence for the [Release Dossier](release-dossier.md) (matrix rows A10 and A11).
+The production test uses cold browser storage, starts in reduced-motion reading
+mode so route JavaScript is measured before the lazy 3D runtime, returns to the
+ocean, opens all four Stop Accounts, and covers completion, Low substitution and
+context restoration. Its JSON reports, diagnostics and aerial screenshots are
+retained with its evidence record, bound to the served build.
 
 | Measurement                          |                   Maximum |
 | ------------------------------------ | ------------------------: |
@@ -124,9 +127,11 @@ bun run test:production
 ```
 
 This is software-rendered behavioral and payload evidence, not physical GPU
-performance certification. Camera-distance recognition while turning, target-device
-label clearance, five-minute thermal/frame behavior, rights/editorial review and
-release approval still require candidate-bound human evidence. No deployment or
+performance certification. Lab Core Web Vitals (`bun run test:vitals`, row A12)
+need a GPU host. Landmark recognition, target-device card clearance, five-minute
+thermal/frame behavior, rights/editorial review and release approval still require
+candidate-bound human evidence (rows B–F and R of the
+[Production Acceptance Matrix](acceptance-matrix.md)). No deployment or
 physical-device pass is implied by this gate.
 
 ## Local diagnostic export

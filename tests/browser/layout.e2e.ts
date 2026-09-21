@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { test } from "@/tests/browser/journey-fixture";
+import { settleAnimations } from "@/tests/browser/animations";
 import {
   enterOcean,
   expectSettledAt,
@@ -53,6 +54,7 @@ async function expectNoOverflowOrClipping(page: Page, state: string) {
 // A control is reachable when it can be scrolled to and receives the pointer at its center.
 async function expectReachable(locator: Locator, state: string) {
   await locator.scrollIntoViewIfNeeded();
+  await settleAnimations(locator.page());
   const box = (await locator.boundingBox())!;
   const viewport = locator.page().viewportSize()!;
   expect(box.x, state).toBeGreaterThanOrEqual(0);

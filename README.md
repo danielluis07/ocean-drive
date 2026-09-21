@@ -26,7 +26,16 @@ bun run build
 bun run test:browser
 ```
 
-Production browser checks require the Playwright browsers installed locally. Asset generation is deterministic and does not require a network connection:
+Production browser checks require the Playwright browsers installed locally. After `bun run build`, `bun run test:production` measures request and scene budgets, and `bun run test:vitals` measures lab Core Web Vitals on a machine with a GPU.
+
+Every check can be recorded as evidence for one exact commit and evaluated against the [Production Acceptance Matrix](docs/acceptance-matrix.md) in a Release Dossier; see [docs/release-dossier.md](docs/release-dossier.md):
+
+```sh
+bun run dossier:checklists
+bun run dossier
+```
+
+Asset generation is deterministic and does not require a network connection:
 
 ```sh
 bun run assets:ship

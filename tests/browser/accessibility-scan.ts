@@ -1,6 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, type TestInfo } from "@playwright/test";
+import { settleAnimations } from "@/tests/browser/animations";
 
 const wcagTags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa"];
 
@@ -11,6 +12,7 @@ export async function expectNoAxeViolations(page: Page, testInfo: TestInfo, stat
   // hover end states are still covered wherever the pointer rests in a journey.
   await page.mouse.move(0, 0);
   await page.waitForTimeout(250);
+  await settleAnimations(page);
   const results = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
   const incomplete = results.incomplete.map((rule) => ({
     rule: rule.id,

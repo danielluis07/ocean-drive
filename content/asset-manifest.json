@@ -257,7 +257,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "1832d1cfac2e9a8ecc35af884d24f2579f615449da0e2214d310f40f766a38be"
+      "sha256": "3b0fca412662d3f92f9cd0331127a3c633504005ce9fbbadaa20ab66a8bae3b6"
     },
     {
       "path": "lib/ocean-surface.ts",
