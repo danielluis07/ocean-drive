@@ -1,4 +1,4 @@
-name: Acceptance evidence
+name: Release acceptance
 
 # Produces candidate-bound evidence for the Production Acceptance Matrix
 # (docs/acceptance-matrix.md) and assembles a Release Dossier for the commit.
@@ -6,8 +6,14 @@ name: Acceptance evidence
 # see docs/release-dossier.md.
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-acceptance-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:

@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "bun test",
     "test:browser": "playwright test",
+    "test:smoke": "playwright test --config playwright.smoke.config.ts",
     "assets:ship": "bun scripts/build-ship.ts",
     "landmarks:fetch": "bun scripts/fetch-landmark-sources.ts",
     "landmarks:build": "bun scripts/generate-landmarks.ts",

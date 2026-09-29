@@ -29,6 +29,7 @@ import {
   type Ring,
 } from "@/lib/landmark-geometry";
 import { mottle, sampleElevation, shadeSurface, type ElevationGrid } from "@/lib/landmark-surface";
+import { bakeAccessibility, transferColours } from "@/scripts/asset-bake";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -244,7 +245,8 @@ for (const source of landmarkSources) {
   let radius = 0;
   let islands = 0;
   let scale = 0;
-  for (const tier of Object.keys(landmarkBudget) as Tier[]) {
+  let balancedBake: { geometry: BufferGeometry; colours: Uint8Array } | undefined;
+  for (const tier of ["balanced", "low"] satisfies Tier[]) {
     const budget = landmarkBudget[tier];
     // The surface, its skirt and its surf line all follow from one sample
     // spacing, so the budget is met by drawing the island more coarsely until
@@ -256,6 +258,19 @@ for (const source of landmarkSources) {
       spacing *= Math.sqrt((island.triangles + surf.triangles) / (budget.triangles * 0.92));
       island = buildIsland(source, record, spacing);
       surf = buildSurf(island.outlines, source.surfWidth, spacing);
+    }
+
+    if (tier === "balanced") {
+      const accessibility = bakeAccessibility(island.geometry, source.height * 1.5);
+      for (let vertex = 0; vertex < accessibility.length; vertex++) {
+        for (let channel = 0; channel < 3; channel++) {
+          island.colours[vertex * 4 + channel] = Math.round(island.colours[vertex * 4 + channel] * accessibility[vertex]);
+        }
+      }
+      balancedBake = { geometry: island.geometry, colours: island.colours };
+    } else {
+      if (!balancedBake) throw new Error("Balanced must be baked before Low");
+      island.colours = transferColours(balancedBake.geometry, balancedBake.colours, island.geometry);
     }
 
     // One mesh for the land and its skirt, one for the surf band.

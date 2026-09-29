@@ -6,7 +6,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests/browser",
   testMatch: "**/*.e2e.ts",
-  testIgnore: ["production-assets.e2e.ts", "lab-vitals.e2e.ts"],
+  testIgnore: ["production-assets.e2e.ts", "lab-vitals.e2e.ts", "low-detail.e2e.ts", "smoke.e2e.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   workers: 1,

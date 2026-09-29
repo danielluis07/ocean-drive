@@ -10,6 +10,16 @@ export default defineConfig({
   use: { baseURL: "http://localhost:3100", trace: "retain-on-failure" },
   projects: [
     {
+      name: "asset-art",
+      testMatch: "low-detail.e2e.ts",
+      timeout: 120_000,
+      expect: { timeout: 30_000 },
+      use: {
+        deviceScaleFactor: 1,
+        launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] },
+      },
+    },
+    {
       // Request, provenance, and scene budgets under software rendering.
       name: "production",
       testMatch: "production-assets.e2e.ts",

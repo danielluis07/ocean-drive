@@ -68,9 +68,39 @@ field is rejected and the row still blocks. The candidate is release-ready only
 when every row is Pass or a waived B2 Fail; the owner's verdict (R3) is itself a
 row and cannot override a blocking one.
 
-## Automated evidence in CI
+## Development CI
 
-`.github/workflows/acceptance.yml` runs on every push and pull request:
+`.github/workflows/development.yml` runs on pull requests and pushes to `main`.
+Feature-branch pushes do not start a second copy of a PR's checks, and newer
+commits cancel outdated runs for the same PR. The existing GitGuardian app
+continues to scan for secrets independently of these workflows.
+
+Every run checks the frozen install, asset provenance and model budgets,
+TypeScript, lint, unit tests and the production build. A small Chromium smoke
+suite then loads the ocean, navigates through Capítulos, opens and closes a Stop
+Account, switches to reading mode and back, and verifies the no-WebGL fallback.
+It uses reduced motion and real browser time against the production build.
+Run it locally with `bun run build` followed by `bun run test:smoke`.
+
+Ship/Landmark regeneration runs only when the commit range changes their source
+data, generated models, configuration, helpers, dependencies, or CI tooling.
+`scripts/asset-change-check.ts` compares the PR base to the tested merge commit
+(or the previous commit range for a push to `main`), including deleted paths.
+A missing base conservatively requests regeneration. The audit still runs on
+every PR even when regeneration is skipped.
+
+Development checks are not release certification: they do not generate a
+dossier or replace the complete browser, performance, and manual review suites.
+Full browser suites are retained with their existing assertions; moving them
+off routine PRs does not resolve their outstanding failures.
+
+## Release evidence in CI
+
+`.github/workflows/acceptance.yml` is the manually triggered **Release acceptance**
+workflow. Run it before release and for substantial navigation/rendering changes
+using Actions → Release acceptance → Run workflow, selecting the candidate branch.
+Once this workflow version is on the default branch, the CLI equivalent is
+`gh workflow run acceptance.yml --ref <candidate-branch>`. It always runs:
 
 1. **verify**: frozen install, asset audit, Ship and Landmark regeneration with a
    tree comparison (`ci/reproducible-assets`), typecheck, lint, unit tests, the
@@ -124,7 +154,8 @@ labelled lab evidence. It is never field data about real Visitors.
 
 ## Certifying a candidate
 
-1. Push the candidate and let the workflow finish. Download the
+1. Push the candidate, trigger **Release acceptance** for its branch, and let the
+   workflow finish. Download the
    `release-dossier-<commit>` artifact, which holds `evidence/` and
    `release-dossier/<commit>/`, into a clean checkout of that commit.
 2. On a GPU machine at the same commit: `bun run build && bun run test:vitals`.
