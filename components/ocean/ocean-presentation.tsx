@@ -15,7 +15,16 @@ import { connectRouteInput } from "@/lib/route-input";
 import {
   createQualityController,
   type OceanQuality,
+  type StartingQuality,
 } from "@/lib/ocean-quality";
+import {
+  classifyRenderer,
+  deviceKey,
+  readRenderer,
+  recallQuality,
+  rememberQuality,
+  startingQuality,
+} from "@/lib/starting-tier";
 import { useOceanLifecycle } from "@/lib/use-ocean-lifecycle";
 import { useOceanRecovery } from "@/lib/use-ocean-recovery";
 import { useScrollCue } from "@/lib/use-scroll-cue";
@@ -64,6 +73,13 @@ const restoringCopy =
   "O oceano em 3D foi interrompido. Tentando restaurá-lo…";
 // Minimum time the Approach's premise line stays up before the descent.
 const approachReadMs = 2500;
+// The quality warm-up times the ready ocean behind the Approach for up to a
+// second, and only while enough read time is left to recompile a changed tier
+// before the descent, so it never holds the Approach up.
+const warmUpMs = 1000;
+const warmUpMinimumMs = 400;
+const warmUpReserveMs = 800;
+const localStorageArea = () => window.localStorage;
 
 class RuntimeErrorBoundary extends Component<
   { children: ReactNode; onFailure: () => void },
@@ -115,6 +131,12 @@ export default function OceanPresentation({
   const qualityController = useRef<ReturnType<
     typeof createQualityController
   > | null>(null);
+  // This device's storage key, and the quality last remembered under it.
+  const qualityKey = useRef<string | null>(null);
+  const rememberedQuality = useRef<StartingQuality | null>(null);
+  const warmUpPending = useRef(false);
+  const warmingUpRef = useRef(false);
+  const [warmingUp, setWarmingUp] = useState(false);
   const [recoveryGeneration, setRecoveryGeneration] = useState(0);
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [surface, setSurface] = useState<HTMLElement | null>(null);
@@ -253,6 +275,10 @@ export default function OceanPresentation({
         controller.suspend();
         return;
       }
+      if (warmingUpRef.current) {
+        controller.benchmark(milliseconds, gpuMilliseconds);
+        return;
+      }
       const previous = controller.current();
       const next = controller.frame(milliseconds, gpuMilliseconds);
       if (next.fallback) {
@@ -262,6 +288,16 @@ export default function OceanPresentation({
       }
       if (previous.tier !== next.tier || previous.dpr !== next.dpr)
         setQuality(next);
+      // What this device settles on is where its next visit starts.
+      const remembered = rememberedQuality.current;
+      if (
+        qualityKey.current &&
+        controller.settled() &&
+        (remembered?.tier !== next.tier || remembered.dpr !== next.dpr)
+      ) {
+        rememberedQuality.current = { tier: next.tier, dpr: next.dpr };
+        rememberQuality(localStorageArea, qualityKey.current, rememberedQuality.current);
+      }
     },
     [fail],
   );
@@ -314,13 +350,27 @@ export default function OceanPresentation({
         fail("refused");
         return;
       }
+      // The renderer string stays on this page: it only picks a tier and is
+      // hashed into the storage key.
+      const renderer = readRenderer(context);
       context.getExtension("WEBGL_lose_context")?.loseContext();
-      // Quality is automatic: device hints pick the starting tier, measurements adjust it.
-      const controller = createQualityController({
+      // Quality is automatic: device signals pick the starting tier, measurements adjust it.
+      const device = {
         coarsePointer: window.matchMedia("(pointer: coarse)").matches,
         smallScreen: window.innerWidth < 768,
         deviceDpr: window.devicePixelRatio,
+      };
+      qualityKey.current = deviceKey(renderer, window.screen, device.deviceDpr);
+      rememberedQuality.current = recallQuality(localStorageArea, qualityKey.current);
+      const { start, source } = startingQuality({
+        ...device,
+        remembered: rememberedQuality.current,
+        gpuClass: classifyRenderer(renderer),
       });
+      recordDiagnostic("starting-quality", source);
+      // A remembered result is already measured; only a first visit warms up.
+      warmUpPending.current = source !== "remembered";
+      const controller = createQualityController({ ...device, start });
       qualityController.current = controller;
       setQuality(controller.choose(voyage.qualityPreference));
       setStage("loading");
@@ -348,6 +398,46 @@ export default function OceanPresentation({
 
   const ready = active && !restoring && stage === "ready" && approachRead;
   const voyaging = ready && visible && !sheetOpen;
+  // A first visit times its ocean behind the Approach, once it is ready, and
+  // starts the Voyage on the tier that timing picks. An interrupted warm-up
+  // keeps its turn while read time remains.
+  const warmUpOpen = active && !restoring && stage === "ready" && !approachRead && visible && !sheetOpen;
+  useEffect(() => {
+    if (!warmUpOpen || !warmUpPending.current) return;
+    const remaining = approachReadMs - warmUpReserveMs - performance.now();
+    if (remaining < warmUpMinimumMs) return;
+    let concluded = false;
+    let counting = 0;
+    const stop = () => {
+      warmingUpRef.current = false;
+      setWarmingUp(false);
+    };
+    // The scene draws the heaviest wake from its next render; frames count one
+    // frame later, so the timed frames are the heavy ones.
+    const start = requestAnimationFrame(() => {
+      setWarmingUp(true);
+      counting = requestAnimationFrame(() => { warmingUpRef.current = true; });
+    });
+    const finish = window.setTimeout(() => {
+      concluded = true;
+      warmUpPending.current = false;
+      stop();
+      const controller = qualityController.current;
+      if (!controller) return;
+      const previous = controller.current();
+      const next = controller.concludeBenchmark();
+      recordDiagnostic("warm-up", `${next.tier}@${next.dpr}`);
+      if (previous.tier !== next.tier || previous.dpr !== next.dpr) setQuality(next);
+    }, Math.min(warmUpMs, remaining));
+    return () => {
+      cancelAnimationFrame(start);
+      cancelAnimationFrame(counting);
+      window.clearTimeout(finish);
+      if (concluded) return;
+      stop();
+      qualityController.current?.suspend();
+    };
+  }, [warmUpOpen]);
   useEffect(() => {
     inputEnabled.current = voyaging;
     if (!voyaging) {
@@ -463,6 +553,7 @@ export default function OceanPresentation({
               reducedMotion={reducedMotion}
               active={active}
               reading={sheetOpen}
+              warmingUp={warmingUp}
               inputConnected={inputConnected}
               onStage={onStage}
               onFailure={failAsset}

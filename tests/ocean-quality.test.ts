@@ -154,6 +154,77 @@ test("without GPU timing every decision matches the frame-interval path", () => 
   }
 });
 
+const desktop = { coarsePointer: false, smallScreen: false };
+const warmUp = (quality: ReturnType<typeof createQualityController>, gpu: number | null, frames = 60, interval = REFRESH_60) => {
+  for (let frame = 0; frame < frames; frame++) quality.benchmark(interval, gpu);
+  return quality.concludeBenchmark();
+};
+
+test("a starting quality replaces the device defaults, still capped at raw DPR", () => {
+  expect(createQualityController({ ...desktop, deviceDpr: 2, start: { tier: "low", dpr: 1.25 } }).current())
+    .toEqual({ tier: "low", dpr: 1.25, fallback: false });
+  expect(createQualityController({ ...desktop, deviceDpr: 1, start: { tier: "high", dpr: 1.5 } }).current())
+    .toEqual({ tier: "high", dpr: 1, fallback: false });
+  expect(createQualityController({ ...desktop, deviceDpr: 2, start: null }).current())
+    .toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("the warm-up keeps a modest GPU on the tier its passages can hold", () => {
+  // Low effects at Balanced sharpness, as the reference Vega 10 laptop settles.
+  const vega = createQualityController({ ...desktop, deviceDpr: 1.25, start: { tier: "low", dpr: 1.25 } });
+  expect(warmUp(vega, 8)).toEqual({ tier: "low", dpr: 1.25, fallback: false });
+  // Once passages get cheap enough, the same laptop starts on Balanced.
+  const cheaper = createQualityController({ ...desktop, deviceDpr: 1.25, start: { tier: "low", dpr: 1.25 } });
+  expect(warmUp(cheaper, 4)).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("the warm-up starts a capable desktop on High without ten seconds of fast frames", () => {
+  const quality = createQualityController({ ...desktop, deviceDpr: 2 });
+  expect(warmUp(quality, 3)).toEqual({ tier: "high", dpr: 1.5, fallback: false });
+  // Between the fit and the pressure line, the warm-up keeps what it has.
+  expect(warmUp(createQualityController({ ...desktop, deviceDpr: 2 }), 7)).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("a passage over budget in the warm-up drops effects before the Visitor sails, keeping sharpness", () => {
+  const quality = createQualityController({ ...desktop, deviceDpr: 2, start: { tier: "high", dpr: 1.5 } });
+  expect(warmUp(quality, 26)).toEqual({ tier: "low", dpr: 1.5, fallback: false });
+  const nearly = createQualityController({ ...desktop, deviceDpr: 2, start: { tier: "high", dpr: 1.5 } });
+  expect(warmUp(nearly, 17)).toEqual({ tier: "balanced", dpr: 1.5, fallback: false });
+});
+
+test("without GPU timing, too few samples, or automatic quality, the warm-up changes nothing", () => {
+  expect(warmUp(createQualityController({ ...desktop, deviceDpr: 2 }), null, 60, 40).tier).toBe("balanced");
+  expect(warmUp(createQualityController({ ...desktop, deviceDpr: 2 }), 3, 19).tier).toBe("balanced");
+  const reduced = createQualityController({ ...desktop, deviceDpr: 2 });
+  reduced.choose("reduced-3d");
+  expect(warmUp(reduced, 1).tier).toBe("low");
+});
+
+test("warm-up frames never count as live windows, and its move starts no cooldown", () => {
+  const quality = createQualityController({ ...desktop, deviceDpr: 2 });
+  for (let frame = 0; frame < 400; frame++) quality.benchmark(30, null);
+  expect(quality.concludeBenchmark().tier).toBe("balanced");
+  expect(warmUp(quality, 3).tier).toBe("high");
+  // A wrong guess is corrected after three slow windows, not after ten seconds.
+  for (let frame = 0; frame < windows(3, 25); frame++) quality.frame(25);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.5, fallback: false });
+});
+
+test("a tier counts as settled after fifteen active seconds without an automatic change", () => {
+  const quality = createQualityController({ ...desktop, deviceDpr: 2 });
+  for (let frame = 0; frame < 899; frame++) quality.frame(REFRESH_60, 12);
+  expect(quality.settled()).toBe(false);
+  for (let frame = 0; frame < 2; frame++) quality.frame(REFRESH_60, 12);
+  expect(quality.settled()).toBe(true);
+  // The first slow window still carries the fast GPU-timed frames before it.
+  for (let frame = 0; frame < windows(4, 25); frame++) quality.frame(25);
+  expect(quality.current().tier).toBe("low");
+  expect(quality.settled()).toBe(false);
+  quality.choose("reduced-3d");
+  for (let frame = 0; frame < 2000; frame++) quality.frame(REFRESH_60, 12);
+  expect(quality.settled()).toBe(false);
+});
+
 test("sustained Low jank still opens text even when the GPU looks idle", () => {
   const quality = createQualityController({ coarsePointer: true, smallScreen: false, deviceDpr: 1 });
   for (let frame = 0; frame < 150; frame++) quality.frame(40, 3);

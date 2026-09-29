@@ -26,8 +26,8 @@ Low retains no environment target. Water uses analytic wind-wave normals,
 deep navy absorption with crest scattering, roughened Fresnel sky shading,
 wind whitecaps, patches of sun highlights, and a soft hull contact shadow
 in a single surface pass. Low runs at the browser's cadence;
-the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop or
-Low for coarse pointers/small screens once; subsequent changes use measurements.
+the optional 30 Hz cap is not enabled. The starting tier comes from the device
+(see [Starting tier](#starting-tier)); subsequent changes use measurements.
 
 Where the browser exposes `EXT_disjoint_timer_query_webgl2`, the ocean's render
 is wrapped in a `TIME_ELAPSED_EXT` query from a ring of four ([#53](https://github.com/danielluis07/ocean-drive/issues/53)).
@@ -95,6 +95,79 @@ Its texture is embedded in the
 same-origin GLB. Regenerate both detail levels with `bun run assets:ship`.
 These are behavioral checks in Chromium with software rendering;
 physical-device performance and release acceptance remain unvalidated.
+
+## Starting tier
+
+Implements [#54](https://github.com/danielluis07/ocean-drive/issues/54). The
+controller should start where the device will settle, so the Visitor never
+watches the first passage downgrade the water. `lib/starting-tier.ts` picks the
+start from three signals, most trusted first; live measurement stays
+authoritative after all of them, so a wrong start is still corrected either way.
+
+1. **Remembered result.** Once the controller has held a tier and DPR for 15
+   active seconds without an automatic change (and quality is automatic), that
+   pair is stored in `localStorage` under a key derived from the device. The
+   next visit on the same device starts there directly and skips the warm-up.
+   Changing screen size or DPR (zoom) gives a new key. A malformed entry, or
+   storage that throws on access or on write, is ignored: the visit starts as a
+   first visit.
+2. **Warm-up benchmark.** On a first visit, once the ocean is ready while the
+   Approach still covers it, the scene renders a synthetic full-length wake at
+   cruise (`cruiseWake` in `lib/ship-wake.ts`: every one of the 48 trail slots
+   live, the bow wave at full speed) for up to a second. These frames go to the
+   controller's warm-up only, never to its live windows. The warm-up decides only
+   on GPU timer queries (at least 20 timed frames covering half the frames):
+   frame intervals behind a loading screen are vsync-bound and cannot say how
+   close to the budget the GPU is. From the measured tier's GPU p90 it predicts
+   the others with a per-pixel cost prior (Low 1, Balanced 2.5, High 3.75,
+   scaled by DPR²) and picks the highest tier predicted within 75% of the
+   vsync-snapped budget. Under pressure (measured p90 above 90% of the budget) it
+   only moves down, keeping the current DPR; otherwise it only moves up, taking
+   the new tier's DPR ceiling. The move starts no cooldown. The cost prior is
+   conservative until the per-feature cost table of #57 replaces it.
+   The warm-up runs only while at least 1.2 s of the Approach's 2.5 s minimum read
+   time remain, and stops 0.8 s before it ends, so a changed tier recompiles
+   while the Approach still shows. It never extends the Approach: when the ocean
+   is ready too late, there is no warm-up. It renders the existing scene with
+   different uniforms, so it adds no draw call and no render target at any tier;
+   Low still retains none. Opening a Sheet, hiding the page, or leaving 3D
+   interrupts it without a verdict; it may run again if enough read time is left.
+3. **Coarse GPU class.** The renderer string sorts obvious cases: Intel HD/UHD/Iris,
+   Radeon Vega 3–11 and Radeon(TM) Graphics APUs, Mali-G1x–G5x, Adreno 1xx–5xx and
+   PowerVR are *modest*; GeForce RTX, Radeon RX 5000–9000 and Apple M-series
+   Pro/Max/Ultra are *capable*. A modest GPU starts on Low at Balanced's DPR
+   ceiling, which is where the controller took the reference Vega 10 laptop after
+   its first passage; on a handheld it starts on Low's own ceiling. A capable GPU
+   starts on High, except on a coarse-pointer or small screen, which keeps the
+   handheld default. Masked or generic strings ("WebKit WebGL", "Apple GPU",
+   Firefox's resist-fingerprinting "Mozilla"), unknown GPUs, and software
+   renderers give no class. Software rendering never reaches a Visitor, since
+   the eligibility probe sets `failIfMajorPerformanceCaveat`; leaving it
+   unclassified also keeps the SwiftShader browser suites on today's defaults.
+   The class is only a prior: it never locks 3D or opens text mode. Only three
+   measured Low windows above 33.3 ms can.
+
+With no remembered result, a masked renderer, and no GPU timing, the start is
+exactly the device hints above: Balanced for desktop, Low for coarse pointers
+and small screens. The source picked is recorded in local diagnostics as
+`starting-quality` (`remembered`, `gpu-class` or `default`), and the warm-up's
+outcome as `warm-up`; neither records the renderer string.
+
+### Privacy
+
+The renderer string is a fingerprinting surface. It is read once, in the
+eligibility probe, and used only on the page to pick a tier. Chrome masks the
+plain `RENDERER` parameter, so `WEBGL_debug_renderer_info` is requested only
+when that parameter reads "WebKit WebGL"; Firefox's plain string is used
+as is, which also avoids its deprecation warning for the extension. The string
+is never sent anywhere, never written to diagnostics, and never stored: the
+storage key is `ocean-drive:quality:` followed by a 32-bit FNV-1a hash of the
+renderer, screen size and DPR together, and the stored value holds only the
+tier and DPR.
+
+`tests/starting-tier.test.ts` covers the classes, the masked-renderer path,
+the key hashing, throwing and malformed storage, and the order of the signals;
+`tests/ocean-quality.test.ts` covers the warm-up verdicts and settling.
 
 ## Surface detail and renderer timing
 
