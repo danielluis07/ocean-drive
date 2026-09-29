@@ -7,6 +7,7 @@ import {
   returnToOceanButton,
 } from "@/tests/browser/editorial-route";
 import { test as journey } from "@/tests/browser/journey-fixture";
+import { observeWater } from "@/tests/browser/ocean-water-probe";
 
 // Several scenarios fast-forward hundreds of frames at once. At full scale the
 // software renderer is still drawing them long after a test ends, which stalls
@@ -43,7 +44,12 @@ async function enterPaused(page: Page) {
 }
 
 test("successful context restoration offers explicit return and a second loss locks the visit", async ({ page }) => {
+  await observeWater(page);
   await enter(page);
+  const kinds = () => page.evaluate(() => window.__waterSamples().map((sample) => sample.kind));
+  // High and Balanced draw the wake from its field pass; Low has none.
+  const fielded = (await page.locator("#voyage-ocean").getAttribute("data-quality")) !== "low";
+  expect((await kinds()).includes("field")).toBe(fielded);
   await loseContext(page);
   await expect(page.getByRole("heading", { name: /O Brasil visto do mar/ })).toBeVisible();
   await expect(page.locator("#voyage-editorial-heading")).toBeFocused();
@@ -51,6 +57,8 @@ test("successful context restoration offers explicit return and a second loss lo
   await returnToOceanButton(page).click();
   await expect(page.locator("#voyage-ocean")).toBeFocused();
   await expect(page.locator(".voyage")).toHaveAttribute("data-presentation", "three-dimensional");
+  // The restored context rebuilt the field with the water.
+  await expect.poll(async () => (await kinds()).includes("field")).toBe(fielded);
   await loseContext(page);
   await expect(notice(page)).toContainText("O oceano em 3D foi interrompido.");
   await expect(returnToOceanButton(page)).toHaveCount(0);

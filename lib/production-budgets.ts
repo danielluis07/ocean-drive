@@ -9,7 +9,9 @@ export const productionBudgets = {
   drawCalls: 99,
   triangles: 149_999,
   oceanDraws: 1,
-  renderTargets: 1,
+  // High/Balanced retain the vessel's environment and the wake field; Low retains
+  // neither. See docs/ocean-resilience.md.
+  renderTargets: 2,
 } as const;
 
 export function checkBudgets(measurements: Partial<Record<keyof typeof productionBudgets, number>>) {

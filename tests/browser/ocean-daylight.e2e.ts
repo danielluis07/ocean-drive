@@ -43,6 +43,8 @@ for (const tier of ["balanced", "high", "low"] as const) {
     expect(surf.time).toBe(water.time);
     expect(surf.white).toEqual(water.white);
     expect(water.white.every((channel) => channel > .8)).toBe(true);
+    // High and Balanced rank the wake's segments in a field pass; Low walks its short trail.
+    expect(normal.some((sample) => sample.kind === "field")).toBe(tier !== "low");
     await page.screenshot({ path: testInfo.outputPath(`${tier}-daylight.png`) });
 
     await page.emulateMedia({ reducedMotion: "reduce" });
@@ -69,7 +71,8 @@ for (const tier of ["balanced", "high", "low"] as const) {
     const report = await page.evaluate(() => JSON.parse(window.__oceanDiagnostics!.exportJSON()));
     const counts = report.scenes[tier];
     expect(counts.oceanDraws).toBe(1);
-    expect(counts.renderTargets).toBe(tier === "low" ? 0 : 1);
+    // The vessel's environment and the wake field; Low retains neither.
+    expect(counts.renderTargets).toBe(tier === "low" ? 0 : 2);
     expect(counts.drawCalls).toBeLessThanOrEqual(productionBudgets.drawCalls);
     expect(counts.triangles).toBeLessThanOrEqual(productionBudgets.triangles);
     await testInfo.attach("scene-budgets", { body: JSON.stringify(report.scenes, null, 2), contentType: "application/json" });

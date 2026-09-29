@@ -13,8 +13,8 @@ capped at 50 ms. React receives quality updates only when the settings change.
 
 | Tier | DPR ceiling range | Presentation |
 | --- | --- | --- |
-| High | 1.25–1.5 | Navy water, moving wind whitecaps, fine ripples and glints, a 48-point wake trail, 160 water subdivisions |
-| Balanced | 1.0–1.25 | Navy water, moving wind whitecaps and glints, a 32-point wake trail, 120 water subdivisions |
+| High | 1.25–1.5 | Navy water, moving wind whitecaps, fine ripples and glints, a 48-point wake trail drawn through a 512² wake field, 160 water subdivisions |
+| Balanced | 1.0–1.25 | Navy water, moving wind whitecaps and glints, a 32-point wake trail drawn through a 448² wake field, 120 water subdivisions |
 | Low | 0.75–1.0 | Same navy daylight, two ripple layers and subdued glints, an eight-point foam wake, 48 water subdivisions, low vessel LOD; no wind whitecaps |
 
 Effective DPR never exceeds the device's raw DPR. All tiers use canvas antialiasing
@@ -22,7 +22,8 @@ and omit shadow maps, live scene reflections, and post-processing. A small local
 sky texture is prefiltered once at High/Balanced into an environment render target for the vessel's
 paint, glass, and metal, and rebuilt after context restoration. Its GPU handles
 are released during context loss so cleanup cannot invalidate the restored frame.
-Low retains no environment target. Water uses analytic wind-wave normals,
+High/Balanced retain one more target, the wake field (see [Wake field](#wake-field)),
+rebuilt and released the same way. Low retains neither. Water uses analytic wind-wave normals,
 deep navy absorption with crest scattering, roughened Fresnel sky shading,
 wind whitecaps, patches of sun highlights, and a soft hull contact shadow
 in a single surface pass. Low runs at the browser's cadence;
@@ -33,7 +34,10 @@ Where the browser exposes `EXT_disjoint_timer_query_webgl2`, the ocean's render
 is wrapped in a `TIME_ELAPSED_EXT` query from a ring of four ([#53](https://github.com/danielluis07/ocean-drive/issues/53)).
 Results are polled a few frames late without stalling, and discarded when
 `GPU_DISJOINT_EXT` is set or when they span a pause. No draw call or render target
-is added. A window with GPU times for at least half of its frames is judged on GPU
+is added. The query also covers the wake field pass, which is part of the ocean's
+cost. Like render targets, the ring is released while a lost context is still
+lost: deleting its queries after restoration raised `INVALID_OPERATION`, which
+failed the restored frame's validation and kept the Visitor in text mode. A window with GPU times for at least half of its frames is judged on GPU
 p90, because frame intervals alone cannot tell an idle GPU waiting on vsync from one
 barely making it, and they also carry main-thread stalls the ocean did not cause.
 The budget is the most whole refresh intervals that fit 20 ms (16.7 ms at 60 Hz,
@@ -128,9 +132,9 @@ authoritative after all of them, so a wrong start is still corrected either way.
    The warm-up runs only while at least 1.2 s of the Approach's 2.5 s minimum read
    time remain, and stops 0.8 s before it ends, so a changed tier recompiles
    while the Approach still shows. It never extends the Approach: when the ocean
-   is ready too late, there is no warm-up. It renders the existing scene with
-   different uniforms, so it adds no draw call and no render target at any tier;
-   Low still retains none. Opening a Sheet, hiding the page, or leaving 3D
+   is ready too late, there is no warm-up. It renders the existing scene, wake
+   field included, with different uniforms, so it adds no draw call and no render
+   target at any tier; Low still retains none. Opening a Sheet, hiding the page, or leaving 3D
    interrupts it without a verdict; it may run again if enough read time is left.
 3. **Coarse GPU class.** The renderer string sorts obvious cases: Intel HD/UHD/Iris,
    Radeon Vega 3–11 and Radeon(TM) Graphics APUs, Mali-G1x–G5x, Adreno 1xx–5xx and
@@ -198,8 +202,10 @@ glints broaden as waves become smaller than a pixel to reduce aliasing. Low
 uses a finer second ripple layer and 45% glint intensity to break up broad
 metallic highlights on portrait screens. It compiles out the whitecaps together
 with the detailed wake and additional ripple layers.
-The existing grid sizes, wake point counts, DPR controller, one ocean draw,
-and retained-target budget (one at High/Balanced, zero at Low) are unchanged.
+The existing grid sizes, wake point counts, DPR controller, and one ocean draw
+are unchanged. The retained-target budget rose from one to two at High/Balanced
+for the wake field ([#55](https://github.com/danielluis07/ocean-drive/issues/55));
+Low still retains none.
 
 For a Landmark or another mesh that must meet the water:
 
@@ -262,8 +268,67 @@ was made and dissipates over nine seconds. A resting Ship lays no new water, and
 a cut, such as a chapter jump or a reduced-motion Stop change, clears the trail.
 
 A bounding box of the water the trail can still disturb lets pixels outside it
-skip the per-segment loop, so a settled Ship adds no wake cost. Around the hull,
+skip the wake entirely, so a settled Ship adds no wake cost. Around the hull,
 a bow wave and broken water along the sides follow the direction of travel and
 grow with speed. The hull squats as it drives, lifts its bow when accelerating,
 dips it when braking, and heels outward in turns. Reduced motion keeps the hull
 level.
+
+### Wake field
+
+Implements [#55](https://github.com/danielluis07/ocean-drive/issues/55). The
+water used to walk every trail segment at every pixel inside that box: 31
+segments at Balanced and 47 at High, many of them evaluated in full because an
+aging wake's crests reach far. Its cost was trail length times covered screen,
+so it peaked during and just after passages, exactly when the Balanced → Low
+downgrade fired on the reference Vega 10 laptop.
+
+At High and Balanced, `lib/wake-field.ts` now keeps a square of water 448 world
+units a side (512² texels at High, 448² at Balanced, RGBA8) that follows the
+Ship. Its origin snaps to whole texels, so it stays anchored to the water rather
+than swimming with the Ship. The heaviest wake, High's full trail laid at cruise
+and left to age out, disturbs at most about 410 units across, so the whole wake
+fits at every tier; if the water ever outgrows the field, the field keeps the 96
+units around the Ship. Each frame one quad over the disturbed water (a single
+draw into the field) ranks, per texel, the four segments whose crests, wash or
+slick reach it most strongly, and writes their indices. It judges the world noise
+that bends the arms at its worst and pads by half a texel's diagonal, so no pixel
+misses a segment it can see. Segments under 1% strength, or under a tenth of the
+strongest there, are left out. The water weighs crests by the square of their
+strength, so these change nothing visible.
+
+The water shader reads one texel and runs the unchanged per-segment code for at
+most those four segments, strongest first, stopping at the first empty slot.
+Kelvin-arm phase, foam tearing, turn bias and the strongest-wins blending are
+therefore computed exactly as before, per pixel and from the same uniforms. The
+field only chooses which segments to evaluate. The field pass is part of the
+decorative water: a shader failure there falls back to baseline water like the
+water's own, and baseline water draws no field. Low keeps its eight-point loop
+and no field.
+
+Context loss releases the field's handles while the context is lost; restoration
+rebuilds it and clears the trail (`ShipWake.forget`), so the restored ocean starts
+without a wake. Reduced motion still places the Ship every frame, which clears
+the trail; a placed Ship has no energy, so the field names no segment.
+
+Measured on the reference AMD Radeon RX Vega 10 (Chrome, ANGLE/D3D11, 1903×790
+drawing buffer at Balanced, 2283×948 at High). This used a standalone harness
+that renders only the water with the warm-up's cruise wake held at a fixed age
+and interleaves the old and new shaders. The figures are median GPU milliseconds
+per render; the minimum is in brackets.
+
+| Wake | Balanced before | Balanced after | High before | High after |
+| --- | --- | --- | --- | --- |
+| None (settled) | 9.6 (7.4) | 9.4 (7.8) | 19.4 (6.5) | 19.5 (6.8) |
+| Under way (cruise) | 14.8 (11.9) | 9.7 (8.4) | 43.5 (19.4) | 22.8 (9.2) |
+| Stopped 2 s ago | 26.4 (22.8) | 13.0 (11.1) | 54.0 (47.4) | 26.5 (18.8) |
+| Stopped 4 s ago | 35.3 (29.6) | 15.5 (12.6) | 73.0 (61.6) | 29.9 (23.7) |
+| Stopped 7 s ago | 47.8 (41.7) | 12.5 (11.5) | 90.4 (72.0) | 22.8 (9.8) |
+
+At Balanced, a passage now costs within about 8% of settled water (by minimum),
+and the widest aging wake stays well inside a 16.7 ms frame. Of what remains, the
+field pass itself takes 0.3–1 ms. GPU clocks on this shared iGPU vary widely
+under light load, hence the gap between median and minimum. Captures of both
+shaders at the same state differ by at most 3 of 255 levels for straight and
+turning wakes. A Ship backing along its own trail differs in 0.05–0.06% of
+pixels, where more than four segments overlap.

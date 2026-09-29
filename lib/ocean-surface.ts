@@ -55,6 +55,61 @@ export const oceanVertexShader = `
   }
 `;
 
+// One segment of the Ship's trail as the water sees it, shared by the water and
+// the wake field pass that ranks segments for it. Expects `time`, `wakePoints`
+// and `wakeForces`, written by lib/ship-wake.ts oldest point first and the
+// Ship's live point last.
+const wakeSegmentShader = `
+  // Mirror lib/ship-wake.ts. Speeds are world units per second.
+  const float WAKE_LIFETIME = 9.;
+  const float CRUISE_SPEED = 60.;
+
+  float wakeEnergy(float shipSpeed) {
+    return min(sqrt(max(shipSpeed, 0.) / CRUISE_SPEED), 1.1);
+  }
+
+  struct WakeSpan {
+    // From the nearest point of the segment to the water, and its length.
+    vec2 away;
+    float d;
+    // The unit direction the segment was sailed, and how far the water lies
+    // beyond either end of it, along that direction.
+    vec2 forward;
+    float beyond;
+    // Speed, thrust, turn and tail fade at the nearest point, and its age.
+    vec4 force;
+    float age;
+    // How far the divergent crests have spread, their packet's width, and the wash lane's.
+    float reach;
+    float width;
+    float lane;
+  };
+
+  // False when segment \`i\` is spent, spans a long idle, or lies more than
+  // \`slack\` further from \`p\` than any of its water can reach.
+  bool wakeSpan(int i, vec2 p, float slack, out WakeSpan s) {
+    vec4 a = wakePoints[i];
+    vec4 b = wakePoints[i + 1];
+    float ageA = time - a.z;
+    float ageB = time - b.z;
+    if (min(ageA, ageB) > WAKE_LIFETIME || max(ageA, ageB) > WAKE_LIFETIME * 2.) return false;
+    vec2 track = b.xy - a.xy;
+    float span = dot(track, track);
+    float along = dot(p - a.xy, track) / max(span, 1e-4);
+    float t = clamp(along, 0., 1.);
+    s.away = p - a.xy - track * t;
+    s.d = length(s.away);
+    s.forward = track * inversesqrt(max(span, 1e-8));
+    s.beyond = abs(along - t) * sqrt(span);
+    s.force = mix(wakeForces[i], wakeForces[i + 1], t);
+    s.age = max(mix(ageA, ageB, t), 0.);
+    s.reach = 1.05 + .354 * s.force.x / (1. + s.force.x / 35.) * s.age;
+    s.width = .7 + s.age * .42 + s.reach * .05;
+    s.lane = .55 + sqrt(s.age) * .95;
+    return s.d <= max(s.reach + s.width * 3.8, s.lane * 3. + 1.2 + sqrt(s.age) * .7) + slack;
+  }
+`;
+
 export const oceanFragmentShader = `
   ${oceanSwellShader}
   ${oceanDaylightShader}
@@ -90,24 +145,23 @@ export const oceanFragmentShader = `
   }
 
   #ifndef LOW_QUALITY
-  // Written by lib/ship-wake.ts, oldest point first and the Ship's live point last.
   uniform float speed;
   uniform float thrust;
   uniform vec2 course;
-
-  // Mirror lib/ship-wake.ts. Speeds are world units per second.
-  const float WAKE_LIFETIME = 9.;
-  const float CRUISE_SPEED = 60.;
-
-  float wakeEnergy(float shipSpeed) {
-    return min(sqrt(max(shipSpeed, 0.) / CRUISE_SPEED), 1.1);
-  }
+  // Up to four trail segments per texel, strongest first, ranked by the wake
+  // field pass (lib/wake-field.ts); 255 marks an empty slot. \`wakeField\` holds
+  // the field's world origin and the reciprocal of its size.
+  uniform sampler2D wakeCandidates;
+  uniform vec3 wakeField;
+  ${wakeSegmentShader}
 
   // Every trail segment leaves divergent crests that travel outward (the Kelvin
   // arms), transverse crests between them, and a lane of turbulent prop wash
   // that widens and tears apart as it ages. Where segments overlap, at joints or
   // where the Ship doubles back, the strongest contribution wins instead of
-  // adding up, so the trail never shows its seams.
+  // adding up, so the trail never shows its seams. Only the segments the wake
+  // field names for this stretch of water are drawn, so the cost per pixel no
+  // longer grows with the length of the trail.
   void shipWake(vec2 p, inout vec2 slope, out float surface, out float slick, out float wash, out float washAge, out float breaking) {
     surface = 0.;
     slick = 0.;
@@ -115,6 +169,10 @@ export const oceanFragmentShader = `
     washAge = 0.;
     breaking = 0.;
     if (any(lessThan(p, wakeBounds.xy)) || any(greaterThan(p, wakeBounds.zw))) return;
+    vec2 cell = (p - wakeField.xy) * wakeField.z;
+    if (any(lessThan(cell, vec2(0.))) || any(greaterThanEqual(cell, vec2(1.)))) return;
+    vec4 candidates = floor(texture2D(wakeCandidates, cell) * 255. + .5);
+    if (candidates.x >= float(WAKE_POINTS - 1)) return;
     // World-anchored noise bends the arms and frays the lane, so the wake
     // deforms where it lies rather than sliding along with the Ship.
     float warp = noise(p * .085 + vec2(time * .021, -time * .013)) - .5;
@@ -122,66 +180,55 @@ export const oceanFragmentShader = `
     vec2 waveSlope = vec2(0.);
     float waveSurface = 0.;
     float waveWeight = 1e-5;
-    for (int i = 0; i < WAKE_POINTS - 1; i++) {
-      vec4 a = wakePoints[i];
-      vec4 b = wakePoints[i + 1];
-      float ageA = time - a.z;
-      float ageB = time - b.z;
-      if (min(ageA, ageB) > WAKE_LIFETIME || max(ageA, ageB) > WAKE_LIFETIME * 2.) continue;
-      vec2 track = b.xy - a.xy;
-      float span = dot(track, track);
-      float along = dot(p - a.xy, track) / max(span, 1e-4);
-      float t = clamp(along, 0., 1.);
-      vec2 away = p - a.xy - track * t;
-      float d = length(away);
-      vec4 force = mix(wakeForces[i], wakeForces[i + 1], t);
-      float age = max(mix(ageA, ageB, t), 0.);
-      float reach = 1.05 + .354 * force.x / (1. + force.x / 35.) * age;
-      float width = .7 + age * .42 + reach * .05;
-      float lane = .55 + sqrt(age) * .95;
-      if (d > max(reach + width * 3.8, lane * 3. + 1.2 + sqrt(age) * .7)) continue;
+    for (int k = 0; k < 4; k++) {
+      // Candidates are ranked strongest first, so the first empty slot ends them.
+      // Rotating rather than indexing the vector keeps ANGLE from emitting a
+      // dynamic-index helper that Direct3D warns about.
+      int i = int(candidates.x);
+      if (i >= WAKE_POINTS - 1) break;
+      candidates = candidates.yzwx;
+      WakeSpan s;
+      if (!wakeSpan(i, p, 0., s)) continue;
 
-      float energy = wakeEnergy(force.x) * force.w;
-      vec2 outward = d > 1e-3 ? away / d : vec2(0.);
-      vec2 forward = track * inversesqrt(max(span, 1e-8));
-      vec2 abeam = vec2(-forward.y, forward.x);
-      float side = dot(away, abeam) >= 0. ? 1. : -1.;
+      float energy = wakeEnergy(s.force.x) * s.force.w;
+      vec2 outward = s.d > 1e-3 ? s.away / s.d : vec2(0.);
+      vec2 abeam = vec2(-s.forward.y, s.forward.x);
+      float side = dot(s.away, abeam) >= 0. ? 1. : -1.;
       // Water piles up on the outside of a turn and slackens on the inside.
-      float bias = 1. - side * clamp(force.z * .5, -.45, .45);
+      float bias = 1. - side * clamp(s.force.z * .5, -.45, .45);
       // Crests only span their own stretch of trail. Rings wrapping past each
       // end would otherwise chain along the wake, where real water cancels them.
-      float beyond = abs(along - t) * sqrt(span);
-      float stretch = 1. - smoothstep(0., 1. + reach * .3, beyond);
+      float stretch = 1. - smoothstep(0., 1. + s.reach * .3, s.beyond);
 
       // Divergent crests ride just inside the cusp line. Their phase outruns
       // the packet, as in deep water, so crests drift outward through it.
-      float u = (d - reach - warp * width * 1.6) / width;
-      float packet = exp(-u * u * 1.3) * energy * bias * stretch * exp(-age * .36) * (.55 + .9 * fray);
-      float phase = u * 3.4 - age * 1.9;
+      float u = (s.d - s.reach - warp * s.width * 1.6) / s.width;
+      float packet = exp(-u * u * 1.3) * energy * bias * stretch * exp(-s.age * .36) * (.55 + .9 * fray);
+      float phase = u * 3.4 - s.age * 1.9;
       float crest = cos(phase);
-      vec2 waves = outward * packet * (-2.6 * u * crest - 3.4 * sin(phase)) / width;
+      vec2 waves = outward * packet * (-2.6 * u * crest - 3.4 * sin(phase)) / s.width;
       // Transverse crests span the V behind the stern and keep moving once it has passed.
-      float wavenumber = 6.2832 / max(3.5, force.x * .3);
-      float transverse = energy * stretch * (1. - smoothstep(reach * .45, reach * .95, d)) * exp(-age * .5) * .2;
-      float transversePhase = age * force.x * wavenumber;
-      waves += forward * transverse * wavenumber * sin(transversePhase) * .1;
+      float wavenumber = 6.2832 / max(3.5, s.force.x * .3);
+      float transverse = energy * stretch * (1. - smoothstep(s.reach * .45, s.reach * .95, s.d)) * exp(-s.age * .5) * .2;
+      float transversePhase = s.age * s.force.x * wavenumber;
+      waves += s.forward * transverse * wavenumber * sin(transversePhase) * .1;
       float envelope = packet + transverse;
       float weight = envelope * envelope;
       waveSlope += waves * weight;
       waveSurface += (packet * crest + transverse * cos(transversePhase)) * weight;
       waveWeight += weight;
-      breaking = max(breaking, smoothstep(.3, .85, packet * crest) * exp(-age * .9));
+      breaking = max(breaking, smoothstep(.3, .85, packet * crest) * exp(-s.age * .9));
 
       // The wash lane is thrown to the outside of a turn as the stern skids, and
       // meanders as it ages. Shifting the lane's centre rather than the distance
       // keeps it continuous around the ends of each segment.
-      float churn = (energy * .42 + force.y * .45 * force.w) * exp(-age * .42);
-      float drift = clamp(force.z, -2., 2.) * .4 * min(age, 1.5) + warp * sqrt(age) * 1.4;
-      float laneShape = dot(away + abeam * drift, away + abeam * drift) / (lane * lane);
+      float churn = (energy * .42 + s.force.y * .45 * s.force.w) * exp(-s.age * .42);
+      float drift = clamp(s.force.z, -2., 2.) * .4 * min(s.age, 1.5) + warp * sqrt(s.age) * 1.4;
+      float laneShape = dot(s.away + abeam * drift, s.away + abeam * drift) / (s.lane * s.lane);
       float washHere = exp(-laneShape) * churn;
-      washAge = washHere > wash ? age : washAge;
+      washAge = washHere > wash ? s.age : washAge;
       wash = max(wash, washHere);
-      slick = max(slick, exp(-laneShape / 2.2) * min(energy * 1.6, 1.) * exp(-age * .2));
+      slick = max(slick, exp(-laneShape / 2.2) * min(energy * 1.6, 1.) * exp(-s.age * .2));
     }
     slope += waveSlope / waveWeight * .3;
     surface = waveSurface / waveWeight;
@@ -343,5 +390,83 @@ export const baselineOceanFragmentShader = `
     gl_FragColor = vec4(oceanHaze(oceanDeep, world), 1.);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
+  }
+`;
+
+// The wake field (lib/wake-field.ts): a world-anchored square of water following
+// the Ship, where each texel names the four trail segments whose water reaches
+// it most strongly. One quad covers the disturbed water plus a texel all round,
+// so every pixel the water looks up this frame lands on a texel written this frame.
+export const wakeFieldVertexShader = `
+  uniform vec4 wakeBounds;
+  uniform vec3 wakeField;
+  varying vec2 world;
+  void main() {
+    float texel = 1. / (wakeField.z * float(WAKE_FIELD_TEXELS));
+    world = mix(wakeBounds.xy - texel, wakeBounds.zw + texel, position.xy * .5 + .5);
+    gl_Position = vec4((world - wakeField.xy) * wakeField.z * 2. - 1., 0., 1.);
+  }
+`;
+
+export const wakeFieldFragmentShader = `
+  uniform float time;
+  uniform vec4 wakePoints[WAKE_POINTS];
+  uniform vec4 wakeForces[WAKE_POINTS];
+  uniform vec3 wakeField;
+  varying vec2 world;
+  ${wakeSegmentShader}
+
+  // The most a segment adds anywhere within \`slack\` of this texel's centre: its
+  // crest packet and transverse crests, its wash, and its slick. It mirrors
+  // shipWake in the water, except that the world noise, which bends the arms by
+  // up to .8 of a packet width and moves the lane by its drift, is taken at its worst.
+  float wakeInfluence(WakeSpan s, float slack) {
+    float energy = wakeEnergy(s.force.x) * s.force.w;
+    float side = dot(s.away, vec2(-s.forward.y, s.forward.x)) >= 0. ? 1. : -1.;
+    float bias = 1. - side * clamp(s.force.z * .5, -.45, .45);
+    float stretch = 1. - smoothstep(0., 1. + s.reach * .3, max(s.beyond - slack, 0.));
+    float near = max(s.d - slack, 0.);
+    float u = max(max(abs(s.d - s.reach) - slack, 0.) / s.width - .8, 0.);
+    float packet = exp(-u * u * 1.3) * energy * bias * stretch * exp(-s.age * .36) * 1.45;
+    float transverse = energy * stretch * (1. - smoothstep(s.reach * .45, s.reach * .95, near)) * exp(-s.age * .5) * .2;
+    float churn = (energy * .42 + s.force.y * .45 * s.force.w) * exp(-s.age * .42);
+    float drift = abs(clamp(s.force.z, -2., 2.)) * .4 * min(s.age, 1.5) + .7 * sqrt(s.age);
+    float lane = max(near - drift, 0.) / s.lane;
+    float wash = exp(-lane * lane) * churn;
+    float slick = exp(-lane * lane / 2.2) * min(energy * 1.6, 1.) * exp(-s.age * .2);
+    return max(packet + transverse, max(wash, slick));
+  }
+
+  void main() {
+    // The water reads this texel for pixels up to half its diagonal away.
+    float slack = .7072 / (wakeField.z * float(WAKE_FIELD_TEXELS));
+    vec4 strongest = vec4(0.);
+    vec4 segments = vec4(255.);
+    for (int i = 0; i < WAKE_POINTS - 1; i++) {
+      WakeSpan s;
+      if (!wakeSpan(i, world, slack, s)) continue;
+      float influence = wakeInfluence(s, slack);
+      if (influence < 1e-4) continue;
+      float segment = float(i);
+      if (influence > strongest.x) {
+        strongest = vec4(influence, strongest.xyz);
+        segments = vec4(segment, segments.xyz);
+      } else if (influence > strongest.y) {
+        strongest.yzw = vec3(influence, strongest.yz);
+        segments.yzw = vec3(segment, segments.yz);
+      } else if (influence > strongest.z) {
+        strongest.zw = vec2(influence, strongest.z);
+        segments.zw = vec2(segment, segments.z);
+      } else if (influence > strongest.w) {
+        strongest.w = influence;
+        segments.w = segment;
+      }
+    }
+    // Leave out water a segment barely touches. The water weighs crests by the
+    // square of their strength, so a segment at a tenth of the strongest moves
+    // them by about a hundredth, and under .01 a segment shows nowhere at all.
+    // Every segment left out is one the water skips at every pixel of this texel.
+    vec4 faint = vec4(lessThan(strongest, vec4(max(.01, strongest.x * .1))));
+    gl_FragColor = mix(segments, vec4(255.), faint) / 255.;
   }
 `;

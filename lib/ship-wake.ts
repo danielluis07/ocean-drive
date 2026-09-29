@@ -102,6 +102,14 @@ export function createShipWake() {
   return {
     frame,
     place,
+    // Drops the whole trail, such as after the GPU lost the water that drew it;
+    // the next frame places the Ship afresh wherever it is.
+    forget() {
+      for (const point of points) point.birth = DEAD;
+      head.birth = DEAD;
+      count = 0;
+      placed = false;
+    },
     // Records one frame in which `seconds` of sailing brought the Ship to `position`
     // at shader `time`. Movement without elapsed time is a cut.
     sail(position: RoutePoint, heading: number, seconds: number, time: number): WakeFrame {

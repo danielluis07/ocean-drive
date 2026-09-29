@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
+import { qualityEnvelope } from "@/lib/ocean-quality";
 import { createShipWake, cruiseWake, CRUISE_SPEED, WAKE_CAPACITY, WAKE_LIFETIME } from "@/lib/ship-wake";
+import { placeWakeField, WAKE_FIELD_SIZE } from "@/lib/wake-field";
 
 const FRAME = 1 / 60;
 const POINTS = 32;
@@ -95,6 +97,21 @@ describe("Ship wake", () => {
     expect(bounds[3]).toBeGreaterThan(0);
   });
 
+  test("a forgotten trail leaves no water behind and the next frame places the Ship afresh", () => {
+    const wake = createShipWake();
+    wake.sail({ x: 0, z: 0 }, 0, 0, 0);
+    const state = sail(wake, { z: 0, time: 0 }, 40, 1.5);
+    wake.forget();
+    const forgotten = written(wake, state.time);
+    expect(forgotten.live).toHaveLength(0);
+    expect(forgotten.bounds[0]).toBeGreaterThan(forgotten.bounds[2]);
+    wake.sail({ x: 0, z: state.z - 0.5 }, 0, FRAME, state.time + FRAME);
+    expect(wake.frame().speed).toBe(0);
+    const placed = written(wake, state.time + FRAME).live;
+    expect(placed.length).toBeGreaterThan(0);
+    for (const point of placed) expect(point).toMatchObject({ z: Math.fround(state.z - 0.5), speed: 0 });
+  });
+
   test("a cut leaves no wake behind", () => {
     const wake = createShipWake();
     wake.sail({ x: 0, z: 0 }, 0, 0, 0);
@@ -138,4 +155,63 @@ test("the warm-up's cruise wake fills every trail slot astern of the Ship", () =
   expect(live.every((point) => point.age < WAKE_LIFETIME)).toBe(true);
   expect(wake.frame().speed).toBeGreaterThan(CRUISE_SPEED * 0.95);
   expect(bounds[2]).toBeGreaterThan(bounds[0]);
+});
+
+describe("wake field", () => {
+  const tiers = ["high", "balanced"] as const;
+  // The field covers the disturbed water with the texel the field pass pads it by on every side.
+  function covers(origin: { x: number; z: number }, bounds: Float32Array, texels: number) {
+    const texel = WAKE_FIELD_SIZE / texels;
+    return bounds[0] - texel >= origin.x && bounds[1] - texel >= origin.z
+      && bounds[2] + texel <= origin.x + WAKE_FIELD_SIZE && bounds[3] + texel <= origin.z + WAKE_FIELD_SIZE;
+  }
+  function boundsOf(wake: ReturnType<typeof createShipWake>, time: number, points: number) {
+    const bounds = new Float32Array(4);
+    wake.write(new Float32Array(points * 4), new Float32Array(points * 4), bounds, time);
+    return bounds;
+  }
+
+  for (const tier of tiers) {
+    test(`${tier} holds the heaviest wake whole, in any direction and as it ages`, () => {
+      const { wakePoints, wakeTexels } = qualityEnvelope[tier];
+      for (const heading of [0, Math.PI / 4, Math.PI / 2, 2.4]) {
+        const ship = { x: 130.4, z: -71.9 };
+        const wake = cruiseWake(ship, heading, 50);
+        for (let time = 50; time < 60; time += 0.25) {
+          const bounds = boundsOf(wake, time, wakePoints);
+          if (bounds[0] > bounds[2]) continue;
+          expect(covers(placeWakeField(bounds, ship, wakeTexels)!, bounds, wakeTexels)).toBe(true);
+        }
+      }
+      // A slow Ship lays a short trail that lives its whole nine seconds.
+      const slow = createShipWake();
+      slow.sail({ x: 0, z: 0 }, 0, 0, 0);
+      const state = sail(slow, { z: 0, time: 0 }, 12, 8);
+      const bounds = boundsOf(slow, state.time, wakePoints);
+      expect(covers(placeWakeField(bounds, { x: 0, z: state.z }, wakeTexels)!, bounds, wakeTexels)).toBe(true);
+    });
+  }
+
+  test("the field snaps to whole texels, so the ranking holds still in the water", () => {
+    const texels = qualityEnvelope.balanced.wakeTexels;
+    const texel = WAKE_FIELD_SIZE / texels;
+    const first = placeWakeField([-40.3, -120.2, 12.6, 3.1], { x: 0, z: 0 }, texels)!;
+    const nudged = placeWakeField([-40.1, -120.5, 12.9, 2.9], { x: 0, z: -0.3 }, texels)!;
+    for (const origin of [first, nudged]) {
+      expect(Math.abs(origin.x / texel - Math.round(origin.x / texel))).toBeLessThan(1e-9);
+      expect(Math.abs(origin.z / texel - Math.round(origin.z / texel))).toBeLessThan(1e-9);
+    }
+    expect(Math.abs(first.x - nudged.x)).toBeLessThanOrEqual(texel);
+    expect(Math.abs(first.z - nudged.z)).toBeLessThanOrEqual(texel);
+  });
+
+  test("water larger than the field keeps the stretch around the Ship", () => {
+    const texels = qualityEnvelope.high.wakeTexels;
+    const ship = { x: 480, z: 10 };
+    const origin = placeWakeField([-20, 0, 500, 20], ship, texels)!;
+    // Snapping moves the field down by less than a texel.
+    expect(ship.x - origin.x).toBeGreaterThanOrEqual(96);
+    expect(origin.x + WAKE_FIELD_SIZE - ship.x).toBeGreaterThanOrEqual(96 - WAKE_FIELD_SIZE / texels);
+    expect(placeWakeField([1, 1, -1, -1], ship, texels)).toBeNull();
+  });
 });

@@ -24,8 +24,10 @@ export function useSceneDiagnostics(renderer: WebGLRenderer) {
       retained.clear();
     };
   }, [renderer]);
-  return (tier: QualityTier, oceanDraws: number) => recordScene(tier, {
-    drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
+  // `passes` counts what was drawn into render targets before the scene this
+  // frame, since rendering the scene resets the renderer's own counts.
+  return (tier: QualityTier, oceanDraws: number, passes = { calls: 0, triangles: 0 }) => recordScene(tier, {
+    drawCalls: renderer.info.render.calls + passes.calls, triangles: renderer.info.render.triangles + passes.triangles,
     oceanDraws, renderTargets: targets.current.size,
   });
 }
