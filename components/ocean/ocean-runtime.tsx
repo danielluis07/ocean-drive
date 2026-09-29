@@ -212,12 +212,22 @@ function SailableScene(props: RuntimeProps) {
   }, [setFrameloop, onFrame]);
 
   // Timer queries belong to one context, so a restored context gets a fresh ring.
+  // Like render targets, the old ring is released while its context is still
+  // lost: deleting it after restoration raises an error that fails the new frame.
   useEffect(() => {
     const timer = createGpuTimer(gl.getContext() as WebGL2RenderingContext);
     gpuTimer.current = timer;
-    return () => {
-      gpuTimer.current = null;
+    let disposed = false;
+    const release = () => {
+      if (disposed) return;
+      disposed = true;
+      if (gpuTimer.current === timer) gpuTimer.current = null;
       timer?.dispose();
+    };
+    gl.domElement.addEventListener("webglcontextlost", release);
+    return () => {
+      gl.domElement.removeEventListener("webglcontextlost", release);
+      release();
     };
   }, [gl, recoveryGeneration]);
 
