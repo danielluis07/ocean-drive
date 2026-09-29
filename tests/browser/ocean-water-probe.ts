@@ -7,7 +7,10 @@ declare global {
 }
 
 // Observe real GPU uniforms after drawing, without changing the scene or exposing
-// a production test API. Retired quality programs disappear from the samples.
+// a production test API. Retired quality programs, and every program of a lost
+// context, disappear from the samples. The wake field pass (lib/wake-field.ts)
+// is sampled as "field" once linked, drawn or not, since a settled Ship leaves
+// it idle.
 export async function observeWater(page: Page) {
   await page.addInitScript(() => {
     const programs: { gl: WebGL2RenderingContext; program: WebGLProgram; kind: string }[] = [];
@@ -15,6 +18,10 @@ export async function observeWater(page: Page) {
     WebGL2RenderingContext.prototype.linkProgram = function (program) {
       original.call(this, program);
       const source = this.getAttachedShaders(program)?.map((shader) => this.getShaderSource(shader)).join("\n") ?? "";
+      if (source.includes("#define WAKE_FIELD_TEXELS")) {
+        programs.push({ gl: this, program, kind: "field" });
+        return;
+      }
       if (!source.includes("uniform float waveStrength;")) return;
       const kind = source.includes("uniform float wakeDetail;")
         ? source.includes("#define LOW_QUALITY") ? "low" : source.includes("#define HIGH_QUALITY") ? "high" : "balanced"
@@ -28,6 +35,7 @@ export async function observeWater(page: Page) {
         return location ? gl.getUniform(program, location) : null;
       };
       const time = uniform("time");
+      if (kind === "field") return [{ kind, time: time ?? 0, strength: 1, white: [], sun: null }];
       if (!time) return [];
       return [{ kind, time, strength: uniform("waveStrength"), white: Array.from(uniform("oceanWhite") ?? []),
         sun: uniform("sunDirection") ? Array.from(uniform("sunDirection")) : null }];

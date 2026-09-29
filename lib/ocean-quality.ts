@@ -5,9 +5,11 @@ export type OceanQuality = { tier: QualityTier; dpr: number; fallback: boolean }
 export type StartingQuality = { tier: QualityTier; dpr: number };
 export const qualityEnvelope = {
   // `wakePoints` is how much of the Ship's remembered trail the water shader reads.
-  high: { minDpr: 1.25, maxDpr: 1.5, segments: 160, wake: 2, wakePoints: 48 },
-  balanced: { minDpr: 1, maxDpr: 1.25, segments: 120, wake: 1, wakePoints: 32 },
-  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0.8, wakePoints: 8 },
+  // `wakeTexels` is the wake field's resolution (lib/wake-field.ts); Low has no
+  // field and walks its short trail directly.
+  high: { minDpr: 1.25, maxDpr: 1.5, segments: 160, wake: 2, wakePoints: 48, wakeTexels: 512 },
+  balanced: { minDpr: 1, maxDpr: 1.25, segments: 120, wake: 1, wakePoints: 32, wakeTexels: 448 },
+  low: { minDpr: 0.75, maxDpr: 1, segments: 48, wake: 0.8, wakePoints: 8, wakeTexels: 0 },
 } as const;
 
 // The rungs the plainest water steps down, once there is no effect left to shed.

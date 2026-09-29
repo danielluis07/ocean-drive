@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/immutability -- Three owns mutable GPU objects; frame updates and ref writes deliberately bypass React rendering. */
 import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Group, ShaderMaterial, Vector2, Vector3 } from "three";
+import { Group, ShaderMaterial, Vector2, Vector3, type Texture } from "three";
 import { useModelScene } from "@/lib/use-model-scene";
 import { qualityEnvelope, type OceanQuality } from "@/lib/ocean-quality";
 import type { OceanConfiguration } from "@/lib/ocean-config";
@@ -13,6 +13,7 @@ import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sa
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
 import { createShipWake, cruiseWake, CRUISE_SPEED, type ShipWake } from "@/lib/ship-wake";
+import { createWakeField, isWakeFieldShader, placeWakeField, WAKE_FIELD_SIZE, type WakeField } from "@/lib/wake-field";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { createGpuTimer, type GpuTimer } from "@/lib/gpu-timer";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
@@ -52,6 +53,8 @@ const SQUAT = 0.012;
 const SURGE_PITCH = 0.03;
 const HEEL = 0.035;
 const MAXIMUM_HEEL = 0.06;
+// An empty box of disturbed water, which the water shader skips entirely.
+const NO_WAKE = [1, 1, -1, -1];
 
 
 function SailableScene(props: RuntimeProps) {
@@ -89,6 +92,7 @@ function SailableScene(props: RuntimeProps) {
   const projection = useMemo(() => new Vector3(), []);
   const [shipWake] = useState(createShipWake);
   const cruise = useRef<ShipWake | null>(null);
+  const wakeField = useRef<WakeField | null>(null);
   const material = useMemo(() => {
     const { wakePoints } = qualityEnvelope[props.quality.tier];
     return new ShaderMaterial({
@@ -101,6 +105,7 @@ function SailableScene(props: RuntimeProps) {
         wakePoints: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
         wakeForces: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
         wakeBounds: { value: new Float32Array([1, 1, -1, -1]) },
+        wakeCandidates: { value: null as Texture | null }, wakeField: { value: new Vector3() },
       },
       vertexShader: oceanVertexShader,
       fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
@@ -141,6 +146,45 @@ function SailableScene(props: RuntimeProps) {
     };
   }, [gl, scene, recoveryGeneration, props.quality.tier, daylight]);
 
+  // High and Balanced draw the wake from a field of ranked trail segments, one
+  // more retained render target. Like the environment, it is rebuilt after
+  // context restoration, and its handles are released while the old context is lost.
+  useLayoutEffect(() => {
+    const { wakePoints, wakeTexels } = qualityEnvelope[props.quality.tier];
+    if (!wakeTexels || baselineWater) return;
+    const uniforms = material.uniforms;
+    const field = createWakeField(wakeTexels, wakePoints, {
+      time: uniforms.time, wakePoints: uniforms.wakePoints, wakeForces: uniforms.wakeForces,
+      wakeBounds: uniforms.wakeBounds, wakeField: uniforms.wakeField,
+    });
+    field.clear(gl);
+    uniforms.wakeCandidates.value = field.texture;
+    wakeField.current = field;
+    const retiring = retired.current;
+    let disposed = false;
+    const release = () => {
+      if (disposed) return;
+      disposed = true;
+      if (wakeField.current === field) wakeField.current = null;
+      if (uniforms.wakeCandidates.value === field.texture) uniforms.wakeCandidates.value = null;
+      field.dispose();
+    };
+    gl.domElement.addEventListener("webglcontextlost", release);
+    return () => {
+      gl.domElement.removeEventListener("webglcontextlost", release);
+      release();
+      retiring.add(field.material);
+      queueMicrotask(releaseRetired);
+    };
+  }, [gl, material, recoveryGeneration, props.quality.tier, baselineWater]);
+
+  // The water that drew the old trail is gone with the context, so the restored
+  // ocean starts without one.
+  useEffect(() => {
+    shipWake.forget();
+    cruise.current = null;
+  }, [shipWake, recoveryGeneration]);
+
   // Three checks a program for errors once, on its first use, and that can be
   // the first frame, before any passive effect runs. So the handler is in place
   // before a frame can draw and never lapses while the scene is mounted.
@@ -149,7 +193,8 @@ function SailableScene(props: RuntimeProps) {
   }, [baselineWater]);
   useLayoutEffect(() => {
     gl.debug.onShaderError = (context, program, vertex, fragment) => {
-      if (!baselineActive.current && context.getShaderSource(fragment)?.includes("uniform float wakeDetail;")) {
+      const source = context.getShaderSource(fragment) ?? "";
+      if (!baselineActive.current && (source.includes("uniform float wakeDetail;") || isWakeFieldShader(source))) {
         fallbackPending.current = true;
         setBaselineWater(true);
         return;
@@ -179,7 +224,8 @@ function SailableScene(props: RuntimeProps) {
     }
     onStage("preparing");
     compilations.current++;
-    const compilation = gl.compileAsync(scene, camera);
+    const field = wakeField.current;
+    const compilation = Promise.all([gl.compileAsync(scene, camera), field && gl.compileAsync(field.scene, field.camera)]);
     void compilation.catch(() => undefined).then(() => {
       compilations.current--;
       releaseRetired();
@@ -292,7 +338,13 @@ function SailableScene(props: RuntimeProps) {
       if (!(measuring && props.warmingUp)) cruise.current = null;
       else cruise.current ??= cruiseWake(pose.position, pose.heading, elapsed.current);
       const water = cruise.current ?? shipWake;
-      water.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
+      const bounds = material.uniforms.wakeBounds.value;
+      water.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, bounds, elapsed.current);
+      const field = wakeField.current;
+      // Without its field, High or Balanced water draws no wake rather than a stale one.
+      if (!field && props.quality.tier !== "low") bounds.set(NO_WAKE);
+      const fieldOrigin = field && placeWakeField(bounds, pose.position, qualityEnvelope[props.quality.tier].wakeTexels);
+      if (fieldOrigin) material.uniforms.wakeField.value.set(fieldOrigin.x, fieldOrigin.z, 1 / WAKE_FIELD_SIZE);
       if (props.quality.tier !== "low") {
         const drawn = cruise.current?.frame() ?? wake;
         material.uniforms.speed.value = drawn.speed;
@@ -342,12 +394,17 @@ function SailableScene(props: RuntimeProps) {
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       oceanDraws.current = 0;
       const timing = measuring && gpuTimer.current?.begin();
+      let fieldCounts = { calls: 0, triangles: 0 };
       try {
+        if (field && fieldOrigin) {
+          field.render(gl);
+          fieldCounts = { calls: gl.info.render.calls, triangles: gl.info.render.triangles };
+        }
         gl.render(scene, camera);
       } finally {
         if (timing) gpuTimer.current?.end();
       }
-      measureScene(props.quality.tier, oceanDraws.current);
+      measureScene(props.quality.tier, oceanDraws.current, fieldCounts);
       if (fallbackPending.current) return;
       if (prepared.current && !announced.current && props.inputConnected.current) {
         const context = gl.getContext();
