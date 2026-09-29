@@ -205,7 +205,7 @@ export const acceptanceMatrix: AcceptanceRow[] = [
     criterion: "Production transfer and actual renderer counts for the Ship, the Landmarks, and the water stay within the approved budgets at Balanced and Low.",
     method: "The production gate measures gzip-conservative transfer and renderer draws, triangles, and retained targets; unit tests inspect the shipped Ship and Landmark GLBs; the daylight suite compiles every tier with a Landmark visible.",
     evidence: "The production budget report, local diagnostics, and evidence records.",
-    threshold: "Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤500 KiB; all authored visuals ≤750 KiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles and 76 KiB (Balanced) or ≤1,300 and 28 KiB (Low), two draws, no textures. A missing measurement fails.",
+    threshold: "Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤500 KiB; all authored visuals ≤1 MiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles and 76 KiB (Balanced) or ≤1,300 and 28 KiB (Low), two draws, no textures. A missing measurement fails.",
     waivable: false,
     checks: ["ci/unit-tests", "e2e/production/production-assets", "e2e/chromium/ocean-daylight"],
     captures: [],
