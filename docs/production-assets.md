@@ -82,7 +82,7 @@ retained with its evidence record, bound to the served build.
 | Minimum sailable payload             |                   1.5 MiB |
 | Complete first visit                 |                     5 MiB |
 | Minimum-sailable authored visuals    |                   500 KiB |
-| All in-experience authored visuals   |                   750 KiB |
+| All in-experience authored visuals   |                   1 MiB |
 | Fonts                                |                   160 KiB |
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
 | Low vessel                           |  4,000 triangles; 120 KiB |

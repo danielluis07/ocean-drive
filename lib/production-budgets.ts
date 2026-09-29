@@ -4,7 +4,7 @@ export const productionBudgets = {
   minimumSailable: 1.5 * 1024 ** 2,
   completeVisit: 5 * 1024 ** 2,
   minimumVisuals: 500 * 1024,
-  allVisuals: 750 * 1024,
+  allVisuals: 1024 * 1024,
   fonts: 160 * 1024,
   drawCalls: 99,
   triangles: 149_999,

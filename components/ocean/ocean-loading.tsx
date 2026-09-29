@@ -27,7 +27,7 @@ export default function OceanLoading({
             height={1254}
             alt=""
             preload
-            sizes="(max-width: 640px) 94vw, min(76svh, 56rem)"
+            unoptimized
             className={`${styles.earth} block h-auto w-[min(94vw,76svh,56rem)] max-w-none select-none`}
           />
         </div>
