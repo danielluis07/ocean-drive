@@ -38,6 +38,15 @@ by Three without a downloaded codec). Unreferenced vertices are removed. The
 GLB. Both use one opaque material, one texture, one draw, and no animation or
 skin. The fictional adaptation is named **Del Mar** in its glTF node.
 
+Issue #56 adds project-authored Low feature constraints in `content/ship-art.ts`
+and an offline AO/lighting bake in `scripts/ship-texture-bake.ts`, using the
+shared ray sampler in `scripts/asset-bake.ts`. These operate on the retained
+source mesh and UVs; no additional artwork or external service is used.
+The source texture is shaded in linear light and encoded into the existing
+Low atlas. Shared UV texels receive average shading. The scripts and art
+configuration are SHA-256 pinned alongside the outputs in the provenance
+ledger. Reproduction and limitations are documented in `docs/ship.md`.
+
 The adaptation remains available under CC BY 3.0. Preserve the attribution and
 licence when redistributing it. Budgets, reproduction and camera checks are in
 `docs/ship.md`; measured bytes are recorded in `content/ship.json`.

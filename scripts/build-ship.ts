@@ -3,6 +3,8 @@ import { MeshoptSimplifier } from "meshoptimizer/simplifier";
 import { shipBudget, shipSource } from "@/content/ship-source";
 import { inspectModel } from "@/lib/asset-audit";
 import { gzipSync } from "node:zlib";
+import { shipLowArt } from "@/content/ship-art";
+import { bakeShipTexture } from "@/scripts/ship-texture-bake";
 
 // Adapt the retained glTF, preserving the source's UV seams and deck details.
 // No modelling primitives, browser globals, remote resources or runtime decoder.
@@ -51,14 +53,25 @@ for (let vertex = 0; vertex < locked.length; vertex++) {
 const variants: Record<string, unknown> = {};
 for (const tier of ["balanced", "low"] as const) {
   const budget = shipBudget[tier];
+  const protectedVertices = locked.slice();
+  if (tier === "low") {
+    for (let vertex = 0; vertex < protectedVertices.length; vertex++) {
+      if (shipLowArt.regions.some(({ min, max }) => min.every((value, axis) =>
+        positions[vertex * 3 + axis] >= value && positions[vertex * 3 + axis] <= max[axis],
+      ))) protectedVertices[vertex] = 1;
+    }
+  }
   // UV-aware simplification protects the windows, tenders, and observation deck.
-  const selected = MeshoptSimplifier.simplifyWithAttributes(indices, positions, 3, uv, 2, [0.1, 0.1], locked, (tier === "low" ? 2800 : 4000) * 3, tier === "low" ? 0.02 : 0.004, ["Permissive"])[0];
+  const uvWeight = tier === "low" ? shipLowArt.uvWeight : 0.1;
+  const selected = MeshoptSimplifier.simplifyWithAttributes(indices, positions, 3, uv, 2, [uvWeight, uvWeight], protectedVertices, (tier === "low" ? shipLowArt.targetTriangles : 4000) * 3, tier === "low" ? shipLowArt.error : 0.004, ["Permissive"])[0];
   // Weld identical complete vertices, then discard every unreferenced vertex.
   const vertices = new Map<string, number>();
   const p: number[] = [], n: number[] = [], t: number[] = [], faces: number[] = [];
   for (const index of selected) {
     const values = [...positions.slice(index * 3, index * 3 + 3), ...normals.slice(index * 3, index * 3 + 3), ...uv.slice(index * 2, index * 2 + 2)];
-    const key = values.map((value) => value.toFixed(6)).join(",");
+    const key = tier === "low"
+      ? values.map((value, component) => Math.round(value * (component < 3 ? 8192 : component < 6 ? 127 : 65535))).join(",")
+      : values.map((value) => value.toFixed(6)).join(",");
     let vertex = vertices.get(key);
     if (vertex === undefined) {
       vertex = vertices.size;
@@ -67,7 +80,9 @@ for (const tier of ["balanced", "low"] as const) {
     }
     faces.push(vertex);
   }
-  const texture = await sharp(sourceTexture).resize(budget.textureSize, budget.textureSize).removeAlpha().jpeg({ quality: 85, chromaSubsampling: "4:4:4" }).toBuffer();
+  const texture = tier === "low"
+    ? await bakeShipTexture(sourceTexture, positions, normals, uv, indices, budget.textureSize)
+    : await sharp(sourceTexture).resize(budget.textureSize, budget.textureSize).removeAlpha().jpeg({ quality: 85, chromaSubsampling: "4:4:4" }).toBuffer();
   const chunks: Buffer[] = [];
   const views: { buffer: number; byteOffset: number; byteLength: number; target?: number; byteStride?: number }[] = [];
   let offset = 0;

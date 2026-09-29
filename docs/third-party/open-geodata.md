@@ -79,3 +79,12 @@ island is scaled on its own so that a 2 km archipelago and a 30 km island both
 read from the same camera. The Landmarks are recognisable portraits of real
 places inside an openly fictional voyage, not a chart, and nothing in the
 experience should be used for navigation.
+
+Issue #56 adds an offline surface bake to `scripts/generate-landmarks.ts`.
+The Balanced mesh supplies both tiers' slope/cliff colours and distance-weighted
+ambient occlusion, sampled by `scripts/asset-bake.ts` and transferred to Low
+through surface projection. This is authored presentation shading, not new
+survey data. It introduces no third-party artwork, texture or service.
+The generator, geometry and palette helpers, shared bake helper, source records
+and outputs are recorded in `content/asset-manifest.json`; reproduce with
+`bun run landmarks:build` and verify with `bun run assets:audit`.

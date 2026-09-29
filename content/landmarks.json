@@ -92,7 +92,7 @@
         "balanced": {
           "url": "/models/landmark-ilha-grande-balanced.v1.glb",
           "triangles": 3976,
-          "bytes": 68792
+          "bytes": 68788
         },
         "low": {
           "url": "/models/landmark-ilha-grande-low.v1.glb",

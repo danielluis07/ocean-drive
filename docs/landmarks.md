@@ -57,7 +57,8 @@ and needs no network. Per island and per tier it:
    the island;
 5. shades every vertex by height, slope and distance inland — sand on low,
    flat coastal ground within the configured `beachWidth`, bare rock where it
-   is steep, vegetation inland — and bakes that into vertex colours;
+   is steep, vegetation inland — using the Balanced surface as the shading
+   source for both tiers, then bakes ambient occlusion into vertex colours;
 6. builds the surf band around the shoreline; and
 7. exports `island` and `surf` as one glTF, then records what it actually wrote
    in `content/landmarks.json`.
@@ -65,6 +66,21 @@ and needs no network. Per island and per tier it:
 The sample spacing is not tuned by hand. The build estimates it from the
 island's area, measures what came out, and coarsens until the Landmark fits its
 tier's budget — which is why a new island needs no more than its config entry.
+
+The offline bake in `scripts/asset-bake.ts` casts 24 fixed cosine-weighted rays
+from each Balanced surface vertex, within 1.5 times the island's configured
+height. Distance-weighted occlusion darkens the existing linear vertex colours
+by at most 50%. Low vertices project vertically onto the Balanced triangles and
+interpolate those baked colours, carrying the Balanced slope/cliff palette
+instead of recomputing it from Low's coarser normals. Where the two shoreline
+tessellations differ, the closest Balanced surface point supplies the colour.
+Skirts retain their existing rock treatment. No new attributes, textures,
+triangles, draws or runtime bake are introduced. Fine detail remains limited
+by Low's vertex spacing; this does not restore geometry that Low omits.
+
+The bake is part of `bun run landmarks:build`, needs no Blender installation,
+and reads only committed source data. The generator, geometry/shading helpers,
+shared bake helper and output records are pinned in the provenance ledger.
 
 At runtime, `lib/landmark-material.ts` adds stationary procedural canopy and
 rock grain to the existing land material, including subtle normal variation.
@@ -136,3 +152,7 @@ cover the four Landmarks together with the ocean and the Ship.
 - `bun run assets:audit` checks provenance, budgets and the build record.
 - `tests/browser/stop-cards.e2e.ts` checks in the running app that the card
   never covers a Landmark.
+- `tests/asset-bake.test.ts` checks exposed and occluded surfaces, repeatability,
+  colour interpolation and the coastline fallback.
+- The `asset-art` production browser project captures all four Stops in desktop
+  Balanced/Low and phone Low for visual review; see [ship.md](ship.md).

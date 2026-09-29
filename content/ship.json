@@ -13,9 +13,9 @@
     },
     "low": {
       "url": "/models/del-mar-low.v1.glb",
-      "triangles": 3078,
-      "bytes": 107376,
-      "transfer": 49070,
+      "triangles": 3614,
+      "bytes": 120996,
+      "transfer": 50454,
       "materials": 1,
       "textures": 1,
       "textureSize": 256,
