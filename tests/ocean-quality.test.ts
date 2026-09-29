@@ -31,7 +31,7 @@ test("continued pressure drops effects one tier at a time, then steps Low's DPR 
   expect(quality.current()).toEqual({ tier: "low", dpr: 1, fallback: false });
   for (let frame = 0; frame < 400; frame++) quality.frame(25);
   expect(quality.current()).toEqual({ tier: "low", dpr: 0.75, fallback: false });
-  for (let frame = 0; frame < 1000; frame++) quality.frame(14);
+  for (let frame = 0; frame < 1000; frame++) quality.frame(20);
   expect(quality.current()).toEqual({ tier: "low", dpr: 0.75, fallback: false });
 });
 
@@ -89,6 +89,43 @@ test("automatic can reach High, text freezes measurements, and quality never exc
 const REFRESH_60 = 1000 / 60;
 const windows = (count: number, interval: number) => Math.ceil((count * 2000) / interval);
 
+for (const hz of [60, 120, 144]) {
+  test(`${hz} Hz vsync recovers the previous tier and DPR after sustained pressure`, () => {
+    const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25 });
+    const refresh = 1000 / hz;
+    for (let frame = 0; frame < windows(2, refresh); frame++) quality.frame(refresh);
+    quality.suspend();
+    for (let frame = 0; frame < 1120; frame++) quality.frame(25);
+    expect(quality.current()).toEqual({ tier: "low", dpr: 0.75, fallback: false });
+    quality.suspend();
+    // Two promotions restore Low's DPR, then Balanced; allow window rounding.
+    for (let frame = 0; frame < windows(13, refresh); frame++) quality.frame(refresh);
+    expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+  });
+
+  test(`${hz} Hz missed vsyncs do not earn promotions or oscillate tiers`, () => {
+    const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25 });
+    const refresh = 1000 / hz;
+    for (let frame = 0; frame < windows(2, refresh); frame++) quality.frame(refresh);
+    quality.suspend();
+    for (let frame = 0; frame < 320; frame++) quality.frame(25);
+    expect(quality.current().tier).toBe("low");
+    // Alternate one and two vsyncs: under 20 ms on fast displays, but no headroom.
+    for (let frame = 0; frame < Math.ceil(300_000 / refresh); frame++) {
+      expect(quality.frame(refresh * (frame % 2 + 1)).tier).toBe("low");
+    }
+  });
+}
+
+test("60 Hz recovery tolerates vsync jitter and isolated stalls", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25 });
+  for (let frame = 0; frame < 178; frame++) quality.frame(45);
+  expect(quality.current().tier).toBe("low");
+  quality.suspend();
+  for (let frame = 0; frame < 700; frame++) quality.frame(frame % 50 === 0 ? 40 : frame % 2 === 0 ? 16.5 : 17.5);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
 test("GPU time near the vsync budget sheds effects even while frames still hold vsync", () => {
   const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   for (let frame = 0; frame < windows(3, REFRESH_60) - 1; frame++) quality.frame(REFRESH_60, 16);
@@ -108,7 +145,7 @@ test("main-thread stalls do not downgrade when the GPU has headroom", () => {
   expect(untimed.current().tier).toBe("low");
 });
 
-test("GPU headroom promotes on a 60 Hz display, where frame intervals never can", () => {
+test("GPU timing decides headroom when available, even at steady 60 Hz vsync", () => {
   const timed = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   const untimed = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   for (let frame = 0; frame < windows(5, REFRESH_60); frame++) {
@@ -116,7 +153,7 @@ test("GPU headroom promotes on a 60 Hz display, where frame intervals never can"
     untimed.frame(REFRESH_60);
   }
   expect(timed.current()).toEqual({ tier: "high", dpr: 1.5, fallback: false });
-  expect(untimed.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+  expect(untimed.current()).toEqual({ tier: "high", dpr: 1.5, fallback: false });
   // Between headroom and pressure, the GPU earns no change either way.
   const steady = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   for (let frame = 0; frame < 3000; frame++) steady.frame(REFRESH_60, 12);
