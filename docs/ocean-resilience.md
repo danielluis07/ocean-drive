@@ -29,6 +29,20 @@ in a single surface pass. Low runs at the browser's cadence;
 the optional 30 Hz cap is not enabled. Device hints select Balanced for desktop or
 Low for coarse pointers/small screens once; subsequent changes use measurements.
 
+Where the browser exposes `EXT_disjoint_timer_query_webgl2`, the ocean's render
+is wrapped in a `TIME_ELAPSED_EXT` query from a ring of four ([#53](https://github.com/danielluis07/ocean-drive/issues/53)).
+Results are polled a few frames late without stalling, and discarded when
+`GPU_DISJOINT_EXT` is set or when they span a pause. No draw call or render target
+is added. A window with GPU times for at least half of its frames is judged on GPU
+p90, because frame intervals alone cannot tell an idle GPU waiting on vsync from one
+barely making it, and they also carry main-thread stalls the ocean did not cause.
+The budget is the most whole refresh intervals that fit 20 ms (16.7 ms at 60 Hz,
+13.9 ms at 144 Hz), with the refresh interval read from the window's fastest
+frames. A window is slow when GPU p90 exceeds 90% of that budget, and fast when it
+stays below 60% of one refresh interval. Without the extension (Safari, some
+Firefox builds, many phones), or with too few samples, the frame-interval rules
+below decide unchanged. The unusable-Low lock always reads frame intervals.
+
 Two-second p90 windows above 20 ms must occur three times consecutively before
 degradation. Resolution is the last thing the ocean gives up: first drop effects
 by one tier, keeping the sharpness the scene already has; only once the water is

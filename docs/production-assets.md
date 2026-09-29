@@ -153,7 +153,8 @@ To stop, remove the session key and reload. No URL switch, public UI, endpoint,
 remote analytics, upload, session replay, input trace or persistent diagnostic
 storage exists. Only this tab's explicit opt-in creates the export object.
 The report carries the candidate commit, a stable source fingerprint/build ID,
-current quality, tier/DPR/preference changes, two-second active-frame p90 windows,
+current quality, tier/DPR/preference changes, two-second active-frame p90 windows
+(each with the ocean's GPU p90 as `gpuP90Ms`, or null without timer queries),
 per-tier scene maxima, preparation milestones, lifecycle and context events.
 Hidden/paused time never enters active frame samples. History is bounded to 512
 events and 180 timing windows; event eviction is reported. Exported local JSON

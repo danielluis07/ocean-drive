@@ -14,6 +14,7 @@ import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
 import { createShipWake, CRUISE_SPEED } from "@/lib/ship-wake";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
+import { createGpuTimer, type GpuTimer } from "@/lib/gpu-timer";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
 import { createSurfMaterial } from "@/lib/landmark-surf";
 import type { StageLayout } from "@/lib/stage-layout";
@@ -27,7 +28,8 @@ type RuntimeProps = {
   visible: boolean;
   suspended: RefObject<boolean>;
   recoveryGeneration: number;
-  onFrame: (milliseconds: number | null) => void;
+  // `gpuMilliseconds` is a GPU render time that finished this frame, when the browser can time it.
+  onFrame: (milliseconds: number | null, gpuMilliseconds?: number | null) => void;
   reducedMotion: boolean;
   active: boolean;
   reading: boolean;
@@ -55,6 +57,7 @@ function SailableScene(props: RuntimeProps) {
   const daylight = useMemo(() => readOceanDaylight(gl.domElement), [gl]);
   const measureScene = useSceneDiagnostics(gl);
   const oceanDraws = useRef(0);
+  const gpuTimer = useRef<GpuTimer | null>(null);
   const vesselScene = useModelScene(props.vesselUrl);
   const vesselGroup = useRef<Group>(null);
   const prepared = useRef(false);
@@ -204,6 +207,16 @@ function SailableScene(props: RuntimeProps) {
     };
   }, [setFrameloop, onFrame]);
 
+  // Timer queries belong to one context, so a restored context gets a fresh ring.
+  useEffect(() => {
+    const timer = createGpuTimer(gl.getContext() as WebGL2RenderingContext);
+    gpuTimer.current = timer;
+    return () => {
+      gpuTimer.current = null;
+      timer?.dispose();
+    };
+  }, [gl, recoveryGeneration]);
+
   useEffect(() => {
     lastFrame.current = null;
     frameWasActive.current = false;
@@ -232,7 +245,10 @@ function SailableScene(props: RuntimeProps) {
     try {
       const measuring = announced.current && props.active && !props.reading;
       const now = performance.now();
-      if (measuring && frameWasActive.current && lastFrame.current !== null) props.onFrame(now - lastFrame.current);
+      const gpuMilliseconds = gpuTimer.current?.poll() ?? null;
+      // Renders from preparation, a pause or a Sheet never reach the controller.
+      if (!measuring) gpuTimer.current?.reset();
+      if (measuring && frameWasActive.current && lastFrame.current !== null) props.onFrame(now - lastFrame.current, gpuMilliseconds);
       // The first frame after entry/resume anchors time without moving the Ship.
       const seconds = measuring && frameWasActive.current ? Math.min(delta, 0.05) : 0;
       lastFrame.current = measuring ? now : null;
@@ -305,7 +321,12 @@ function SailableScene(props: RuntimeProps) {
       }
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       oceanDraws.current = 0;
-      gl.render(scene, camera);
+      const timing = measuring && gpuTimer.current?.begin();
+      try {
+        gl.render(scene, camera);
+      } finally {
+        if (timing) gpuTimer.current?.end();
+      }
       measureScene(props.quality.tier, oceanDraws.current);
       if (fallbackPending.current) return;
       if (prepared.current && !announced.current && props.inputConnected.current) {
