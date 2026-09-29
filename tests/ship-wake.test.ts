@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createShipWake, WAKE_LIFETIME } from "@/lib/ship-wake";
+import { createShipWake, cruiseWake, CRUISE_SPEED, WAKE_CAPACITY, WAKE_LIFETIME } from "@/lib/ship-wake";
 
 const FRAME = 1 / 60;
 const POINTS = 32;
@@ -124,4 +124,18 @@ describe("Ship wake", () => {
     for (let frame = 0; frame < 30; frame++) wake.sail({ x: 20, z: -20 + frame * 0.2 }, 0, FRAME, (time += FRAME));
     expect(wake.frame().course.z).toBeCloseTo(1, 5);
   });
+});
+
+test("the warm-up's cruise wake fills every trail slot astern of the Ship", () => {
+  const time = 42;
+  const wake = cruiseWake({ x: 10, z: 20 }, Math.PI / 2, time);
+  const { live, bounds } = written(wake, time, WAKE_CAPACITY);
+  expect(live).toHaveLength(WAKE_CAPACITY);
+  // Heading π/2 faces +X, so the trail lies to the Ship's -X and ends under it.
+  expect(live.at(-1)).toMatchObject({ x: 10, z: 20, age: 0 });
+  expect(live.every((point) => point.x <= 10 + 1e-3 && Math.abs(point.z - 20) < 1e-3)).toBe(true);
+  expect(Math.min(...live.map((point) => point.x))).toBeLessThan(10 - 200);
+  expect(live.every((point) => point.age < WAKE_LIFETIME)).toBe(true);
+  expect(wake.frame().speed).toBeGreaterThan(CRUISE_SPEED * 0.95);
+  expect(bounds[2]).toBeGreaterThan(bounds[0]);
 });

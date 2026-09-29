@@ -183,3 +183,25 @@ export function createShipWake() {
     },
   };
 }
+
+// How long the synthetic cruise sails: long enough at CRUISE_SPEED to fill every
+// slot of the trail, well inside WAKE_LIFETIME so none of it is spent.
+const CRUISE_TRAIL_SECONDS = 5;
+
+// The heaviest wake the ocean draws: a straight passage at full cruise that ends
+// under the Ship at `position` at shader `time`, with every trail slot live. The
+// quality warm-up renders it to time a passage before the Visitor sails one.
+export function cruiseWake(position: RoutePoint, heading: number, time: number): ShipWake {
+  const wake = createShipWake();
+  const step = 1 / 60;
+  const steps = Math.round(CRUISE_TRAIL_SECONDS / step);
+  const forwardX = Math.sin(heading);
+  const forwardZ = -Math.cos(heading);
+  const at = (index: number) => {
+    const astern = CRUISE_SPEED * step * (steps - index);
+    return { x: position.x - forwardX * astern, z: position.z - forwardZ * astern };
+  };
+  wake.place(at(0), heading, time - steps * step);
+  for (let index = 1; index <= steps; index++) wake.sail(at(index), heading, step, time - (steps - index) * step);
+  return wake;
+}

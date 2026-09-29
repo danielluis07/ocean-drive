@@ -12,7 +12,7 @@ import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-ca
 import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
-import { createShipWake, CRUISE_SPEED } from "@/lib/ship-wake";
+import { createShipWake, cruiseWake, CRUISE_SPEED, type ShipWake } from "@/lib/ship-wake";
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { createGpuTimer, type GpuTimer } from "@/lib/gpu-timer";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
@@ -33,6 +33,9 @@ type RuntimeProps = {
   reducedMotion: boolean;
   active: boolean;
   reading: boolean;
+  // While the Approach covers the ready ocean, it renders the heaviest wake so the
+  // quality controller can time a passage before the Visitor sails one.
+  warmingUp: boolean;
   chartedRoute: ChartedRoute;
   route: RouteMotion;
   inputConnected: RefObject<boolean>;
@@ -85,6 +88,7 @@ function SailableScene(props: RuntimeProps) {
   const cameraPosition = useMemo(() => new Vector3(), []);
   const projection = useMemo(() => new Vector3(), []);
   const [shipWake] = useState(createShipWake);
+  const cruise = useRef<ShipWake | null>(null);
   const material = useMemo(() => {
     const { wakePoints } = qualityEnvelope[props.quality.tier];
     return new ShaderMaterial({
@@ -273,11 +277,17 @@ function SailableScene(props: RuntimeProps) {
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
       if (props.reducedMotion) shipWake.place(pose.position, pose.heading, elapsed.current);
       const wake = shipWake.sail(pose.position, pose.heading, seconds, elapsed.current);
-      shipWake.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
+      // The quality warm-up times the heaviest water, a full wake at cruise, while
+      // the Approach still covers it. The Ship itself keeps its real motion.
+      if (!(measuring && props.warmingUp)) cruise.current = null;
+      else cruise.current ??= cruiseWake(pose.position, pose.heading, elapsed.current);
+      const water = cruise.current ?? shipWake;
+      water.write(material.uniforms.wakePoints.value, material.uniforms.wakeForces.value, material.uniforms.wakeBounds.value, elapsed.current);
       if (props.quality.tier !== "low") {
-        material.uniforms.speed.value = wake.speed;
-        material.uniforms.thrust.value = Math.max(wake.surge, 0);
-        material.uniforms.course.value.set(wake.course.x, wake.course.z);
+        const drawn = cruise.current?.frame() ?? wake;
+        material.uniforms.speed.value = drawn.speed;
+        material.uniforms.thrust.value = Math.max(drawn.surge, 0);
+        material.uniforms.course.value.set(drawn.course.x, drawn.course.z);
       }
       if (vesselGroup.current) {
         const { x, z } = pose.position;
