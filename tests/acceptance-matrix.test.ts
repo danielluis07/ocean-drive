@@ -10,7 +10,7 @@ const spec = (name: string) => `tests/browser/${name}.e2e.ts`;
 // Which suite each Playwright project runs, per playwright.config.ts and
 // playwright.production.config.ts.
 const projects: Record<string, (name: string) => boolean> = {
-  chromium: (name) => !["production-assets", "lab-vitals"].includes(name),
+  chromium: (name) => !["production-assets", "lab-vitals", "low-detail", "smoke"].includes(name),
   firefox: (name) => readFileSync(spec(name), "utf8").includes("@critical"),
   webkit: (name) => readFileSync(spec(name), "utf8").includes("@critical"),
   production: (name) => name === "production-assets",

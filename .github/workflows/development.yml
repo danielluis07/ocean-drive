@@ -1,0 +1,52 @@
+name: Development checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: development-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun install --frozen-lockfile
+      - run: bun run assets:audit
+      - name: Detect asset pipeline changes
+        id: assets
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: bun scripts/asset-change-check.ts
+      - name: Check asset reproducibility
+        if: steps.assets.outputs.changed == 'true'
+        run: |
+          bun run assets:ship
+          bun run landmarks:build
+          bun run evidence tree ci/reproducible-assets
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun test
+      - run: bun run build
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:smoke
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: development-failures-${{ github.run_id }}
+          path: |
+            test-results/
+            evidence/
