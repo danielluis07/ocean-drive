@@ -34,6 +34,8 @@ const tierCost: Record<QualityTier, number> = { low: 1, balanced: 2.5, high: 3.7
 const tierOrder: QualityTier[] = ["low", "balanced", "high"];
 // Active time without an automatic change after which the tier counts as settled.
 const SETTLED_MS = 15_000;
+// Allow ordinary vsync jitter without counting a missed refresh as headroom.
+const REFRESH_TOLERANCE = 1.1;
 
 const percentile = (values: number[], rank: number) => {
   values.sort((a, b) => a - b);
@@ -83,6 +85,10 @@ export function createQualityController(hints: {
   let slowWindows = 0;
   let unusableWindows = 0;
   let fastMs = 0;
+  // Keep the fastest window median across pauses and changes. Slower rendering
+  // must not teach the controller that missed vsyncs are the display's cadence.
+  // Without an observed cadence, assume no slower than a 60 Hz display.
+  let refreshMs = 1000 / 60;
   let benchmarkSamples: number[] = [];
   let benchmarkGpu: number[] = [];
   const current = (): OceanQuality => ({ tier, dpr, fallback });
@@ -160,11 +166,12 @@ export function createQualityController(hints: {
       if (gpuMilliseconds !== null && Number.isFinite(gpuMilliseconds) && gpuMilliseconds >= 0) gpuSamples.push(gpuMilliseconds);
       if (windowMs < 2000) return current();
       const gpu = gpuSamples.length >= samples.length * GPU_COVERAGE ? gpuVerdict(samples, gpuSamples) : null;
+      refreshMs = Math.min(refreshMs, Math.max(percentile(samples, 0.5), 1000 / 240));
       const p90 = percentile(samples, 0.9);
       slowWindows = (gpu ? gpu.slow : p90 > FRAME_BUDGET_MS) ? slowWindows + 1 : 0;
       // Unusable is about what the Visitor sees, so it stays on frame intervals.
       unusableWindows = tier === "low" && p90 > 33.3 ? unusableWindows + 1 : 0;
-      fastMs = (gpu ? gpu.fast : p90 < 14) ? fastMs + windowMs : 0;
+      fastMs = (gpu ? gpu.fast : p90 <= refreshMs * REFRESH_TOLERANCE) ? fastMs + windowMs : 0;
       windowMs = 0;
       samples = [];
       gpuSamples = [];

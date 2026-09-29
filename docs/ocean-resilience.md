@@ -45,7 +45,7 @@ The budget is the most whole refresh intervals that fit 20 ms (16.7 ms at 60 Hz,
 frames. A window is slow when GPU p90 exceeds 90% of that budget, and fast when it
 stays below 60% of one refresh interval. Without the extension (Safari, some
 Firefox builds, many phones), or with too few samples, the frame-interval rules
-below decide unchanged. The unusable-Low lock always reads frame intervals.
+below decide. The unusable-Low lock always reads frame intervals.
 
 Two-second p90 windows above 20 ms must occur three times consecutively before
 degradation. Resolution is the last thing the ocean gives up: first drop effects
@@ -53,7 +53,16 @@ by one tier, keeping the sharpness the scene already has; only once the water is
 as plain as it gets does DPR step down, 1.25 to 1 to 0.75. A blurred ocean is more
 conspicuous than a calmer one, and a passage keeps the wake shader busy from Stop
 to Stop, so pressure lasts as long as the sailing does. Promotions require ten consecutive active
-seconds below 14 ms. Automatic changes are at least ten active seconds apart.
+seconds whose window p90 is within 10% of the estimated display refresh interval
+([#51](https://github.com/danielluis07/ocean-drive/issues/51)). The estimate is the
+fastest median of completed two-second active windows, bounded between 240 Hz
+and 60 Hz; it starts at 60 Hz until faster frames are observed. Keeping it across
+pauses and tier/DPR changes prevents sustained missed vsyncs from redefining
+the display cadence. Isolated stalls do not distort the median or p90. A slow
+window resets promotion evidence, so recovery needs ten consecutive seconds
+at vsync cadence; this works at 60, 120 and 144 Hz. GPU-timed windows still use
+GPU headroom instead. Promotions restore DPR within the current tier first,
+then raise effects one tier at a time. Automatic changes are at least ten active seconds apart.
 Three consecutive Low windows above 33.3 ms lock 3D and open the preserved text
 presentation, including during cooldown. Quality is always automatic since #36:
 the Visitor has no quality control. The stored preference remains in Voyage State
