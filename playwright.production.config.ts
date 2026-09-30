@@ -10,6 +10,11 @@ export default defineConfig({
   use: { baseURL: "http://localhost:3100", trace: "retain-on-failure" },
   projects: [
     {
+      name: "ocean-features",
+      testMatch: "ocean-features.e2e.ts",
+      use: { channel: "chrome" },
+    },
+    {
       name: "asset-art",
       testMatch: "low-detail.e2e.ts",
       timeout: 120_000,
@@ -29,6 +34,26 @@ export default defineConfig({
         viewport: { width: 1280, height: 800 },
         deviceScaleFactor: 0.5,
         launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] },
+      },
+    },
+    {
+      name: "ocean-voyage-chrome",
+      testMatch: "ocean-voyage.e2e.ts",
+      use: { channel: "chrome", viewport: { width: 1522, height: 632 }, deviceScaleFactor: 1.25, trace: "off" },
+    },
+    {
+      name: "ocean-voyage-firefox",
+      testMatch: "ocean-voyage.e2e.ts",
+      // Firefox explicitly disables hardware compositing in headless mode,
+      // even with a physical WebGL renderer. This physical-device lab needs
+      // a normal browser window; software suites remain headless.
+      use: {
+        browserName: "firefox", headless: false,
+        viewport: { width: 1522, height: 632 }, deviceScaleFactor: 1.25, trace: "off",
+        // Windows occlusion backs off RAF by 1/2/4/8/... seconds while the
+        // foreground tab still reports visible. Keep this active-rendering lab
+        // comparable to Chromium's disable-backgrounding-occluded-windows flag.
+        launchOptions: { firefoxUserPrefs: { "widget.windows.window_occlusion_tracking.enabled": false } },
       },
     },
     {

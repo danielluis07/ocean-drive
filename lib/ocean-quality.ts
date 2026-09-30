@@ -1,7 +1,7 @@
 import type { VoyageQualityPreference } from "@/lib/voyage-state";
 
 export type QualityTier = "high" | "balanced" | "low";
-export type OceanQuality = { tier: QualityTier; dpr: number; fallback: boolean };
+export type OceanQuality = { tier: QualityTier; dpr: number; fallback: boolean; wakeSamples?: 2 };
 export type StartingQuality = { tier: QualityTier; dpr: number };
 export const qualityEnvelope = {
   // `wakePoints` is how much of the Ship's remembered trail the water shader reads.
@@ -23,6 +23,9 @@ const GPU_COVERAGE = 0.5;
 const GPU_PRESSURE = 0.9;
 // Below this share of the refresh interval, the GPU has room for more.
 const GPU_HEADROOM = 0.6;
+// Without timer queries, steady vsync proves cadence, not GPU reserve. A laptop
+// must hold it for a minute before trying more pixels or a more expensive tier.
+const UNTIMED_LAPTOP_RECOVERY_MS = 60_000;
 // A tier the warm-up predicts at or under this share of the budget may be chosen.
 const BENCHMARK_FIT = 0.75;
 // The fewest GPU-timed frames a warm-up needs before it may decide anything.
@@ -43,16 +46,17 @@ const percentile = (values: number[], rank: number) => {
 };
 
 // Frames can only be shown on a vsync, so the budget is the longest whole
-// number of refresh intervals that still fits E2's 20 ms. The fastest frames
-// approximate the refresh interval; displays slower than 60 Hz are read as 60 Hz,
+// number of refresh intervals that still fits E2's 20 ms. The median avoids
+// mistaking paired early/late callbacks for a faster display. Displays slower
+// than 60 Hz are read as 60 Hz,
 // which only tightens the budget.
 function frameBudget(intervals: number[]) {
-  const refresh = Math.min(Math.max(percentile(intervals, 0.1), 1000 / 240), 1000 / 60);
+  const refresh = Math.min(Math.max(percentile(intervals, 0.5), 1000 / 240), 1000 / 60);
   return { refresh, budget: Math.max(1, Math.floor(FRAME_BUDGET_MS / refresh)) * refresh };
 }
 
-function gpuVerdict(intervals: number[], gpu: number[]) {
-  const { refresh, budget } = frameBudget(intervals);
+function gpuVerdict(gpu: number[], refresh: number) {
+  const budget = Math.max(1, Math.floor(FRAME_BUDGET_MS / refresh)) * refresh;
   const p90 = percentile(gpu, 0.9);
   return { slow: p90 > budget * GPU_PRESSURE, fast: p90 < refresh * GPU_HEADROOM };
 }
@@ -71,11 +75,21 @@ export function createQualityController(hints: {
   smallScreen: boolean;
   deviceDpr: number;
   start?: StartingQuality | null;
+  // Modest laptops sustain the reference Balanced look. Settled headroom must
+  // not promote them to High and spend the reserve their next passage needs.
+  maxTier?: QualityTier;
+  // Laptop safety net: shed wake work and resolution before the reference tier.
+  preserveTier?: boolean;
 }) {
   const rawDpr = Number.isFinite(hints.deviceDpr) && hints.deviceDpr > 0 ? hints.deviceDpr : 1;
+  const maximumRank = tierOrder.indexOf(hints.maxTier ?? "high");
   let tier: QualityTier = hints.start?.tier ?? (hints.coarsePointer || hints.smallScreen ? "low" : "balanced");
-  let dpr = Math.min(rawDpr, hints.start?.dpr ?? qualityEnvelope[tier].maxDpr);
+  const aboveCeiling = tierOrder.indexOf(tier) > maximumRank;
+  if (tierOrder.indexOf(tier) > maximumRank) tier = tierOrder[maximumRank];
+  let dpr = Math.min(rawDpr, hints.start?.dpr ?? qualityEnvelope[tier].maxDpr, aboveCeiling ? qualityEnvelope[tier].maxDpr : Infinity);
   let preference: VoyageQualityPreference = "automatic";
+  let wakeSamples: 2 | 4 = 4;
+  let pressureFrames = 0;
   let fallback = false;
   let activeMs = 0;
   let lastChange = -Infinity;
@@ -91,15 +105,17 @@ export function createQualityController(hints: {
   let refreshMs = 1000 / 60;
   let benchmarkSamples: number[] = [];
   let benchmarkGpu: number[] = [];
-  const current = (): OceanQuality => ({ tier, dpr, fallback });
+  const current = (): OceanQuality => ({ tier, dpr, fallback, ...(wakeSamples === 2 ? { wakeSamples } : {}) });
   const suspend = () => {
     samples = [];
     gpuSamples = [];
     benchmarkSamples = [];
     benchmarkGpu = [];
     windowMs = slowWindows = unusableWindows = fastMs = 0;
+    pressureFrames = 0;
   };
-  const change = (nextTier: QualityTier, nextDpr: number) => {
+  const change = (nextTier: QualityTier, nextDpr: number, nextWakeSamples: 2 | 4 = wakeSamples) => {
+    wakeSamples = nextTier === tier ? nextWakeSamples : 4;
     tier = nextTier;
     dpr = Math.min(rawDpr, nextDpr);
     lastChange = activeMs;
@@ -147,7 +163,7 @@ export function createQualityController(hints: {
         measured * (tierCost[candidate] / tierCost[tier]) * (dprFor(candidate) / dpr) ** 2;
       const pressed = measured > budget * GPU_PRESSURE;
       // Highest first: under pressure only lower tiers, otherwise only higher ones.
-      const candidates = tierOrder.filter((_, index) => (pressed ? index < rank : index > rank)).reverse();
+      const candidates = tierOrder.filter((_, index) => index <= maximumRank && (pressed ? index < rank : index > rank)).reverse();
       const chosen = candidates.find((candidate) => predicted(candidate) <= budget * BENCHMARK_FIT)
         ?? (pressed && rank > 0 ? "low" : null);
       if (chosen) {
@@ -161,17 +177,39 @@ export function createQualityController(hints: {
     frame(milliseconds: number, gpuMilliseconds: number | null = null) {
       if (fallback || preference === "text" || !Number.isFinite(milliseconds) || milliseconds <= 0) return current();
       activeMs += milliseconds;
+      if (hints.preserveTier && tier !== "low" && preference === "automatic") {
+        // Reserve the same GPU margin needed for recovery, including the
+        // compositor. Missed intervals also reveal queue/compositing pressure
+        // that a cheap ocean timer cannot see. Downward safety steps need only
+        // two consecutive frames; tier changes and recovery keep the cooldown.
+        const timed = gpuMilliseconds !== null && Number.isFinite(gpuMilliseconds) && gpuMilliseconds >= 0;
+        pressureFrames = (milliseconds > FRAME_BUDGET_MS || (timed && gpuMilliseconds > refreshMs * GPU_HEADROOM)) ? pressureFrames + 1 : 0;
+        if (pressureFrames >= 2) {
+          if (wakeSamples === 4) { change(tier, dpr, 2); return current(); }
+          if (dpr > Math.min(rawDpr, qualityEnvelope[tier].minDpr)) {
+            change(tier, qualityEnvelope[tier].minDpr);
+            return current();
+          }
+        }
+      }
       windowMs += milliseconds;
       samples.push(milliseconds);
       if (gpuMilliseconds !== null && Number.isFinite(gpuMilliseconds) && gpuMilliseconds >= 0) gpuSamples.push(gpuMilliseconds);
       if (windowMs < 2000) return current();
-      const gpu = gpuSamples.length >= samples.length * GPU_COVERAGE ? gpuVerdict(samples, gpuSamples) : null;
       refreshMs = Math.min(refreshMs, Math.max(percentile(samples, 0.5), 1000 / 240));
+      const gpu = gpuSamples.length >= samples.length * GPU_COVERAGE ? gpuVerdict(gpuSamples, refreshMs) : null;
       const p90 = percentile(samples, 0.9);
       slowWindows = (gpu ? gpu.slow : p90 > FRAME_BUDGET_MS) ? slowWindows + 1 : 0;
       // Unusable is about what the Visitor sees, so it stays on frame intervals.
       unusableWindows = tier === "low" && p90 > 33.3 ? unusableWindows + 1 : 0;
-      fastMs = (gpu ? gpu.fast : p90 <= refreshMs * REFRESH_TOLERANCE) ? fastMs + windowMs : 0;
+      const recoveringDpr = wakeSamples === 4 && dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr);
+      // Estimate the cost at the proposed resolution before raising it. Merely
+      // holding vsync with a smaller buffer does not justify a 56% pixel increase.
+      const dprHeadroom = !hints.preserveTier || !recoveringDpr || !gpu
+        || percentile(gpuSamples, 0.9) * (Math.min(rawDpr, qualityEnvelope[tier].maxDpr) / dpr) ** 2 < refreshMs * GPU_HEADROOM;
+      fastMs = (gpu ? gpu.fast && dprHeadroom : p90 <= refreshMs * REFRESH_TOLERANCE) ? fastMs + windowMs : 0;
+      const recoveryMs = hints.preserveTier && !gpu && wakeSamples === 4
+        ? UNTIMED_LAPTOP_RECOVERY_MS : 10_000;
       windowMs = 0;
       samples = [];
       gpuSamples = [];
@@ -181,6 +219,13 @@ export function createQualityController(hints: {
       }
       if (activeMs - lastChange < 10_000) return current();
       if (slowWindows >= 3) {
+        if (hints.preserveTier && tier !== "low") {
+          if (wakeSamples === 4) { change(tier, dpr, 2); return current(); }
+          if (dpr > Math.min(rawDpr, qualityEnvelope[tier].minDpr)) {
+            change(tier, qualityEnvelope[tier].minDpr);
+            return current();
+          }
+        }
         // Resolution is the last thing the ocean gives up: under pressure it
         // drops effects a tier at a time, keeping the sharpness it has, and only
         // steps DPR down once the water is as plain as it gets. A blurred ocean
@@ -191,9 +236,10 @@ export function createQualityController(hints: {
           const step = dprLadder.find((rung) => rung < dpr);
           if (step !== undefined) change(tier, step);
         }
-      } else if (fastMs >= 10_000 && preference === "automatic") {
-        if (dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr)) change(tier, qualityEnvelope[tier].maxDpr);
-        else if (tier !== "high") {
+      } else if (fastMs >= recoveryMs && preference === "automatic") {
+        if (wakeSamples === 2) change(tier, dpr, 4);
+        else if (dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr)) change(tier, qualityEnvelope[tier].maxDpr);
+        else if (tierOrder.indexOf(tier) < maximumRank) {
           const nextTier = tier === "low" ? "balanced" : "high";
           change(nextTier, qualityEnvelope[nextTier].maxDpr);
         }

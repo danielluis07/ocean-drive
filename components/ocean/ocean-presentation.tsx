@@ -20,6 +20,7 @@ import {
 import {
   classifyRenderer,
   deviceKey,
+  promotionCeiling,
   readRenderer,
   recallQuality,
   rememberQuality,
@@ -286,7 +287,7 @@ export default function OceanPresentation({
         fail("unusable-quality");
         return;
       }
-      if (previous.tier !== next.tier || previous.dpr !== next.dpr)
+      if (previous.tier !== next.tier || previous.dpr !== next.dpr || previous.wakeSamples !== next.wakeSamples)
         setQuality(next);
       // What this device settles on is where its next visit starts.
       const remembered = rememberedQuality.current;
@@ -353,6 +354,7 @@ export default function OceanPresentation({
       // The renderer string stays on this page: it only picks a tier and is
       // hashed into the storage key.
       const renderer = readRenderer(context);
+      const gpuTimingAvailable = context.getExtension("EXT_disjoint_timer_query_webgl2") !== null;
       context.getExtension("WEBGL_lose_context")?.loseContext();
       // Quality is automatic: device signals pick the starting tier, measurements adjust it.
       const device = {
@@ -362,15 +364,17 @@ export default function OceanPresentation({
       };
       qualityKey.current = deviceKey(renderer, window.screen, device.deviceDpr);
       rememberedQuality.current = recallQuality(localStorageArea, qualityKey.current);
+      const gpuClass = classifyRenderer(renderer);
       const { start, source } = startingQuality({
         ...device,
         remembered: rememberedQuality.current,
-        gpuClass: classifyRenderer(renderer),
+        gpuClass,
       });
       recordDiagnostic("starting-quality", source);
       // A remembered result is already measured; only a first visit warms up.
       warmUpPending.current = source !== "remembered";
-      const controller = createQualityController({ ...device, start });
+      const maxTier = promotionCeiling(gpuClass, gpuTimingAvailable);
+      const controller = createQualityController({ ...device, start, maxTier, preserveTier: maxTier === "balanced" });
       qualityController.current = controller;
       setQuality(controller.choose(voyage.qualityPreference));
       setStage("loading");

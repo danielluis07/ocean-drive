@@ -37,10 +37,11 @@ async function enterPaused(page: Page) {
       // Read without auto-waiting: the ocean cannot get ready while the clock is held.
       return page.evaluate(() => {
         const ocean = document.getElementById("voyage-ocean");
-        return `${ocean?.dataset.stage}:${ocean?.dataset.settledStop}`;
+        const approach = document.querySelector('[data-slot="ocean-loading"]');
+        return `${ocean?.dataset.stage}:${ocean?.dataset.settledStop}:${approach ? getComputedStyle(approach).visibility : "missing"}`;
       });
     }, { timeout: 60_000 })
-    .toBe("ready:0");
+    .toBe("ready:0:hidden");
 }
 
 test("successful context restoration offers explicit return and a second loss locks the visit", async ({ page }) => {

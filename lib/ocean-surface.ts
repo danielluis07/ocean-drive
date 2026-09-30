@@ -153,6 +153,7 @@ export const oceanFragmentShader = `
   // the field's world origin and the reciprocal of its size.
   uniform sampler2D wakeCandidates;
   uniform vec3 wakeField;
+  uniform float wakeCandidatesLimit;
   ${wakeSegmentShader}
 
   // Every trail segment leaves divergent crests that travel outward (the Kelvin
@@ -181,6 +182,7 @@ export const oceanFragmentShader = `
     float waveSurface = 0.;
     float waveWeight = 1e-5;
     for (int k = 0; k < 4; k++) {
+      if (float(k) >= wakeCandidatesLimit) break;
       // Candidates are ranked strongest first, so the first empty slot ends them.
       // Rotating rather than indexing the vector keeps ANGLE from emitting a
       // dynamic-index helper that Direct3D warns about.
@@ -329,6 +331,11 @@ export const oceanFragmentShader = `
     float contact = exp(-pow(side / 1.35, 4.) - pow((aft + .1) / 3.15, 4.));
     water *= 1. - contact * .46;
     #ifndef LOW_QUALITY
+    // Reject foam noise only when every contributing envelope is exactly zero.
+    float whitecapStrength = smoothstep(.32, .55, length(ripples)) * smoothstep(-.08, .24, height) * detail * waveStrength;
+    float skirtStrength = exp(-ridge * ridge * 9.) * energy * smoothstep(-3.4, 1.6, ahead);
+    float stem = exp(-pow(abeam / .6, 2.) - pow((ahead - 2.9 - energy * .35) / .8, 2.)) * energy;
+    if (whitecapStrength > 0. || wash > 0. || breaking > 0. || skirtStrength > 0. || stem > 0.) {
     // Foam is sampled where the water is, so the Ship sails through it rather than towing it.
     float lather = noise(p * 1.3 + vec2(time * .06, -time * .045));
     float bubbles = noise(p * 4.2 + lather * 2.3 - time * .02);
@@ -344,13 +351,13 @@ export const oceanFragmentShader = `
     float foam = min(wash, 1.) * smoothstep(tear, tear + .3, froth);
     foam += breaking * smoothstep(.45, .8, froth) * .5;
     // Water broken along the hull, and spray heaped at the stem.
-    float skirt = exp(-ridge * ridge * 9.) * energy * smoothstep(-3.4, 1.6, ahead) * smoothstep(.4, .75, froth);
-    float stem = exp(-pow(abeam / .6, 2.) - pow((ahead - 2.9 - energy * .35) / .8, 2.)) * energy;
+    float skirt = skirtStrength * smoothstep(.4, .75, froth);
     foam += skirt * .6 + stem * smoothstep(.25, .7, froth) * .7;
     #ifdef HIGH_QUALITY
     foam += min(wash, 1.) * (noise(p * 13. + time * .3) - .5) * .18;
     #endif
     water = mix(water, oceanWhite, clamp(max(foam * min(wakeDetail, 1.), whitecaps * .85), 0., .9));
+    }
     #else
     // Eight remembered points give phones a world-anchored wake in the same
     // ocean draw. No slope derivatives, extra noise octaves, or render targets.

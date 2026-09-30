@@ -101,7 +101,7 @@ function SailableScene(props: RuntimeProps) {
         ...oceanDaylightUniforms(daylight),
         waveStrength: { value: 1 },
         time: { value: 0 }, vessel: { value: new Vector2() }, heading: { value: 0 }, wakeDetail: { value: 1 },
-        speed: { value: 0 }, thrust: { value: 0 }, course: { value: new Vector2(0, -1) },
+        speed: { value: 0 }, thrust: { value: 0 }, course: { value: new Vector2(0, -1) }, wakeCandidatesLimit: { value: 4 },
         wakePoints: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
         wakeForces: { value: new Float32Array(Math.max(wakePoints, 2) * 4) },
         wakeBounds: { value: new Float32Array([1, 1, -1, -1]) },
@@ -304,6 +304,7 @@ function SailableScene(props: RuntimeProps) {
     if (failed.current || document.hidden || props.suspended.current || gl.getContext().isContextLost()) return;
     try {
       const measuring = announced.current && props.active && !props.reading;
+      material.uniforms.wakeCandidatesLimit.value = props.quality.wakeSamples ?? 4;
       const now = performance.now();
       const gpuMilliseconds = gpuTimer.current?.poll() ?? null;
       // Renders from preparation, a pause or a Sheet never reach the controller.
