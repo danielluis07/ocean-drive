@@ -313,7 +313,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": true,
       "experience": true,
-      "sha256": "3fc27455a98ed98bd19764e837d5c03fc3d2caad6275771d095b0882e97633a6"
+      "sha256": "ae287030f8bbe7e5158844c8880d897bdc38d8108bf43f578847fb4ae809483c"
     },
     {
       "path": "public/identity/apple-touch-icon.v1.png",

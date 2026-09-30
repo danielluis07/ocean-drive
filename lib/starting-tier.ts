@@ -14,7 +14,8 @@ export type StartingSource = "remembered" | "gpu-class" | "default";
 const STORAGE_PREFIX = "ocean-drive:quality:";
 const tiers: QualityTier[] = ["low", "balanced", "high"];
 
-// Integrated and mobile GPUs that hold Balanced at rest but not through a passage.
+// Integrated and mobile GPUs with modest throughput. The wake field now keeps
+// integrated laptop passages close to the cost of their settled water.
 const modestRenderers = [
   /\bIntel\b.*\b(U?HD|Iris)\b/i,
   /\bVega\s*\d{1,2}\s+Graphics\b/i,
@@ -34,6 +35,12 @@ export function classifyRenderer(renderer: string | null): GpuClass | null {
   if (capableRenderers.some((pattern) => pattern.test(renderer))) return "capable";
   if (modestRenderers.some((pattern) => pattern.test(renderer))) return "modest";
   return null;
+}
+
+// When a GPU is redacted and cannot be timed, vsync alone cannot prove High
+// headroom. Modest GPUs retain the reference Balanced look between passages.
+export function promotionCeiling(gpuClass: GpuClass | null, gpuTimingAvailable: boolean): QualityTier {
+  return gpuClass === "modest" || (gpuClass === null && !gpuTimingAvailable) ? "balanced" : "high";
 }
 
 // Chrome masks RENDERER as "WebKit WebGL" and needs the debug extension, which
@@ -86,8 +93,7 @@ export function rememberQuality(storage: () => Storage, key: string, quality: St
   }
 }
 
-// A modest GPU starts where the controller would take it after its first
-// passage: Low effects at Balanced sharpness. A capable one starts on High, but
+// A modest laptop starts on Balanced; a modest handheld keeps Low. A capable one starts on High, but
 // not on a phone-sized or touch-first screen. The hint never forces text mode:
 // only measured Low frames can.
 export function startingQuality(device: {
@@ -100,7 +106,7 @@ export function startingQuality(device: {
   if (device.remembered) return { start: device.remembered, source: "remembered" };
   const handheld = device.coarsePointer || device.smallScreen;
   if (device.gpuClass === "modest")
-    return { start: { tier: "low", dpr: handheld ? qualityEnvelope.low.maxDpr : qualityEnvelope.balanced.maxDpr }, source: "gpu-class" };
+    return { start: { tier: handheld ? "low" : "balanced", dpr: handheld ? qualityEnvelope.low.maxDpr : qualityEnvelope.balanced.maxDpr }, source: "gpu-class" };
   if (device.gpuClass === "capable" && !handheld)
     return { start: { tier: "high", dpr: qualityEnvelope.high.maxDpr }, source: "gpu-class" };
   return { start: null, source: "default" };

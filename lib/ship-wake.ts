@@ -1,4 +1,5 @@
 import type { RoutePoint } from "@/lib/charted-route";
+import { simplifyWakeTrail, type WakePoint } from "@/lib/wake-trail";
 
 // The Ship's wake as the ocean remembers it: a trail of world-space points, each
 // recording how fast and how hard the Ship was driving as it passed. The ocean
@@ -28,8 +29,6 @@ const IDLE_EMISSION_SECONDS = 0.4;
 const IDLE_EMISSION_DISTANCE = 0.2;
 // Slots without a point are stamped long dead so the shader skips them.
 const DEAD = -1e6;
-
-type WakePoint = { x: number; z: number; birth: number; speed: number; thrust: number; turn: number };
 
 export type WakeFrame = {
   // World units per second, smoothed so the water answers speed changes with inertia.
@@ -66,9 +65,11 @@ function wakeReach(speed: number, age: number) {
 }
 
 export function createShipWake() {
-  const points: WakePoint[] = Array.from({ length: WAKE_CAPACITY }, () => ({ x: 0, z: 0, birth: DEAD, speed: 0, thrust: 0, turn: 0 }));
+  const points: WakePoint[] = Array.from({ length: WAKE_CAPACITY }, () => ({ x: 0, z: 0, birth: DEAD, speed: 0, thrust: 0, turn: 0, tail: 0 }));
   // The live point under the Ship, which is never older than the current frame.
-  const head: WakePoint = { x: 0, z: 0, birth: DEAD, speed: 0, thrust: 0, turn: 0 };
+  const head: WakePoint = { x: 0, z: 0, birth: DEAD, speed: 0, thrust: 0, turn: 0, tail: 0 };
+  const samples: WakePoint[] = [];
+  const simplified: WakePoint[] = [];
   let newest = 0;
   let count = 0;
   let placed = false;
@@ -148,17 +149,26 @@ export function createShipWake() {
     write(trail: Float32Array, forces: Float32Array, bounds: Float32Array, time: number) {
       const length = trail.length / 4;
       const available = Math.min(count, length - 1);
+      samples.length = 0;
+      for (let back = available - 1; back >= 0; back--) {
+        const point = committed(back);
+        point.tail = Math.min(1, (available - back - 1) / 3);
+        samples.push(point);
+      }
+      if (placed) { head.tail = Math.min(1, available / 3); samples.push(head); }
+      // Low keeps its calibrated eight-point foam trail. High/Balanced rank
+      // fewer spans in their field while retaining the same history and arrays.
+      if (length >= 32) simplifyWakeTrail(samples, simplified, time - WAKE_LIFETIME);
+      const live = length >= 32 ? simplified : samples;
+      const deadSlots = length - live.length;
       let minX = Infinity;
       let minZ = Infinity;
       let maxX = -Infinity;
       let maxZ = -Infinity;
       let previous: WakePoint | null = null;
       for (let slot = 0; slot < length; slot++) {
-        const back = length - 2 - slot;
-        const real = slot === length - 1 || back < available;
-        const point = slot === length - 1 ? head : committed(Math.min(back, available - 1));
-        // The oldest points fade in so the trail never ends on a hard edge.
-        const tail = Math.min(1, (available - (slot === length - 1 ? -1 : back) - 1) / 3);
+        const real = slot >= deadSlots;
+        const point = real ? live[slot - deadSlots] : head;
         const offset = slot * 4;
         trail[offset] = point.x;
         trail[offset + 1] = point.z;
@@ -167,7 +177,7 @@ export function createShipWake() {
         forces[offset] = point.speed;
         forces[offset + 1] = point.thrust;
         forces[offset + 2] = point.turn;
-        forces[offset + 3] = real ? Math.max(tail, 0) : 0;
+        forces[offset + 3] = real ? point.tail : 0;
         if (!real) continue;
         if (previous) {
           const age = time - Math.min(previous.birth, point.birth);
@@ -193,11 +203,11 @@ export function createShipWake() {
 }
 
 // How long the synthetic cruise sails: long enough at CRUISE_SPEED to fill every
-// slot of the trail, well inside WAKE_LIFETIME so none of it is spent.
+// slot of the recorded trail, well inside WAKE_LIFETIME so none of it is spent.
 const CRUISE_TRAIL_SECONDS = 5;
 
 // The heaviest wake the ocean draws: a straight passage at full cruise that ends
-// under the Ship at `position` at shader `time`, with every trail slot live. The
+// under the Ship at `position` at shader `time`, with the full recorded trail. The
 // quality warm-up renders it to time a passage before the Visitor sails one.
 export function cruiseWake(position: RoutePoint, heading: number, time: number): ShipWake {
   const wake = createShipWake();

@@ -65,7 +65,7 @@ describe("Ship wake", () => {
     wake.sail({ x: 0, z: 0 }, 0, 0, 0);
     const state = sail(wake, { z: 0, time: 0 }, 20, 2);
     const moving = written(wake, state.time).live;
-    expect(moving.length).toBeGreaterThan(10);
+    expect(moving.length).toBeGreaterThan(2);
     // Oldest first, live head last, every point on the course behind the Ship.
     for (let index = 1; index < moving.length; index++) expect(moving[index].z).toBeLessThanOrEqual(moving[index - 1].z);
     expect(moving.at(-1)!.z).toBeCloseTo(state.z, 3);
@@ -143,11 +143,11 @@ describe("Ship wake", () => {
   });
 });
 
-test("the warm-up's cruise wake fills every trail slot astern of the Ship", () => {
+test("the warm-up's full cruise history compresses straight spans astern of the Ship", () => {
   const time = 42;
   const wake = cruiseWake({ x: 10, z: 20 }, Math.PI / 2, time);
   const { live, bounds } = written(wake, time, WAKE_CAPACITY);
-  expect(live).toHaveLength(WAKE_CAPACITY);
+  expect(live.length).toBeLessThanOrEqual(6);
   // Heading π/2 faces +X, so the trail lies to the Ship's -X and ends under it.
   expect(live.at(-1)).toMatchObject({ x: 10, z: 20, age: 0 });
   expect(live.every((point) => point.x <= 10 + 1e-3 && Math.abs(point.z - 20) < 1e-3)).toBe(true);

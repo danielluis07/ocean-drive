@@ -87,6 +87,96 @@ test("automatic can reach High, text freezes measurements, and quality never exc
 });
 
 const REFRESH_60 = 1000 / 60;
+
+test("the laptop safety net sheds wake work before a missed-vsync window and restores it at 60 Hz", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  quality.frame(REFRESH_60, 13);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+  quality.frame(REFRESH_60, 13);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false, wakeSamples: 2 });
+  for (let frame = 0; frame < 800; frame++) quality.frame(REFRESH_60, 8);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("untimed laptop pressure sheds wake, then DPR, then tier if even those cannot hold", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  quality.frame(25);
+  quality.frame(25);
+  expect(quality.current().wakeSamples).toBe(2);
+  quality.frame(25);
+  quality.frame(25);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+  for (let frame = 0; frame < 500; frame++) quality.frame(25);
+  expect(quality.current().tier).toBe("low");
+});
+
+test("laptop safety steps reserve compositing time before a slow window accumulates", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  // This 11 ms render fits the old 15 ms slow-window threshold, but leaves
+  // too little room for compositing on the reference integrated laptop.
+  quality.frame(REFRESH_60, 11);
+  quality.frame(REFRESH_60, 11);
+  expect(quality.current().wakeSamples).toBe(2);
+  quality.frame(REFRESH_60, 11);
+  quality.frame(REFRESH_60, 11);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+});
+
+test("missed laptop frames can shed compositing pixels even with cheap timed ocean draws", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 4; frame++) quality.frame(25, 8);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+});
+
+test("isolated GPU stalls and suspensions cannot accumulate laptop safety-net pressure", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  quality.frame(REFRESH_60, 30);
+  quality.frame(REFRESH_60, 8);
+  quality.frame(REFRESH_60, 30);
+  quality.suspend();
+  quality.frame(REFRESH_60, 30);
+  expect(quality.current().wakeSamples).toBeUndefined();
+});
+
+test("untimed laptop resolution recovery requires a full minute of stable cadence", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 4; frame++) quality.frame(25);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+  // Vsync at a reduced resolution does not measure reserve for more pixels.
+  // Restore wake detail first, then require sustained stability before a trial.
+  for (let frame = 0; frame < 1800; frame++) quality.frame(REFRESH_60);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false });
+  for (let frame = 0; frame < 3600; frame++) quality.frame(REFRESH_60);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("timed laptop DPR recovery must have headroom for the larger drawing buffer", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 4; frame++) quality.frame(REFRESH_60, 16);
+  expect(quality.current().dpr).toBe(1);
+  for (let frame = 0; frame < 1800; frame++) quality.frame(REFRESH_60, 8);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false });
+  for (let frame = 0; frame < 800; frame++) quality.frame(REFRESH_60, 5);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+});
+
+test("the integrated-laptop ceiling preserves Balanced through settled headroom and recovery", () => {
+  expect(createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2, maxTier: "balanced", start: { tier: "high", dpr: 1.5 } }).current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced" });
+  for (let frame = 0; frame < 60; frame++) quality.benchmark(REFRESH_60, 3);
+  expect(quality.concludeBenchmark().tier).toBe("balanced");
+  // Five minutes of cheap frames cannot promote into expensive High water.
+  for (let frame = 0; frame < 18_001; frame++) quality.frame(REFRESH_60, 8);
+  expect(quality.current().tier).toBe("balanced");
+  // A GPU that cannot sustain even settled Balanced can still step down.
+  for (let frame = 0; frame < 420; frame++) quality.frame(REFRESH_60, 17);
+  expect(quality.current().tier).toBe("low");
+  for (let frame = 0; frame < 1800; frame++) quality.frame(REFRESH_60, 8);
+  expect(quality.current().tier).toBe("balanced");
+  const untimed = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced" });
+  for (let frame = 0; frame < 18_001; frame++) untimed.frame(REFRESH_60);
+  expect(untimed.current().tier).toBe("balanced");
+});
 const windows = (count: number, interval: number) => Math.ceil((count * 2000) / interval);
 
 for (const hz of [60, 120, 144]) {
@@ -145,6 +235,18 @@ test("main-thread stalls do not downgrade when the GPU has headroom", () => {
   expect(untimed.current().tier).toBe("low");
 });
 
+test("GPU budgets use sustained display cadence rather than early callbacks in a jittery window", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25 });
+  // Paired early/late callbacks preserve 60 Hz on average and at the median.
+  // A p10-based estimate mistakes the 10.5 ms callbacks for a 95 Hz display,
+  // snaps its budget down to 10.5 ms, and falsely demotes a 13.5 ms GPU render.
+  for (let frame = 0; frame < 1800; frame++) {
+    const phase = frame % 7;
+    quality.frame(phase === 0 ? 10.5 : phase === 1 ? 2 * REFRESH_60 - 10.5 : REFRESH_60, 13.5);
+  }
+  expect(quality.current().tier).toBe("balanced");
+});
+
 test("GPU timing decides headroom when available, even at steady 60 Hz vsync", () => {
   const timed = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
   const untimed = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 2 });
@@ -197,6 +299,15 @@ const warmUp = (quality: ReturnType<typeof createQualityController>, gpu: number
   return quality.concludeBenchmark();
 };
 
+test("warm-up callback jitter cannot downgrade a GPU that fits Balanced at 60 Hz", () => {
+  const quality = createQualityController({ ...desktop, deviceDpr: 1.25 });
+  for (let frame = 0; frame < 60; frame++) {
+    const phase = frame % 7;
+    quality.benchmark(phase === 0 ? 10.5 : phase === 1 ? 2 * REFRESH_60 - 10.5 : REFRESH_60, 13.5);
+  }
+  expect(quality.concludeBenchmark().tier).toBe("balanced");
+});
+
 test("a starting quality replaces the device defaults, still capped at raw DPR", () => {
   expect(createQualityController({ ...desktop, deviceDpr: 2, start: { tier: "low", dpr: 1.25 } }).current())
     .toEqual({ tier: "low", dpr: 1.25, fallback: false });
@@ -206,11 +317,11 @@ test("a starting quality replaces the device defaults, still capped at raw DPR",
     .toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
 });
 
-test("the warm-up keeps a modest GPU on the tier its passages can hold", () => {
-  // Low effects at Balanced sharpness, as the reference Vega 10 laptop settles.
+test("the warm-up keeps a GPU on the tier its passages can hold", () => {
+  // A GPU unable to hold Balanced keeps Low effects at the current sharpness.
   const vega = createQualityController({ ...desktop, deviceDpr: 1.25, start: { tier: "low", dpr: 1.25 } });
   expect(warmUp(vega, 8)).toEqual({ tier: "low", dpr: 1.25, fallback: false });
-  // Once passages get cheap enough, the same laptop starts on Balanced.
+  // Once passages get cheap enough, the same device can start on Balanced.
   const cheaper = createQualityController({ ...desktop, deviceDpr: 1.25, start: { tier: "low", dpr: 1.25 } });
   expect(warmUp(cheaper, 4)).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
 });

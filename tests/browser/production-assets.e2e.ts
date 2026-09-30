@@ -12,6 +12,7 @@ type RequestRecord = {
   type: string;
   bytes: number;
   sha256: string;
+  optimizedFrom?: { url: string; sha256: string };
 };
 
 async function measureResponse(response: Response): Promise<RequestRecord> {
@@ -20,11 +21,22 @@ async function measureResponse(response: Response): Promise<RequestRecord> {
   const compressed = /javascript|json|text|svg/.test(
     response.headers()["content-type"] ?? "",
   );
+  const url = new URL(response.url());
+  // Next resizes and re-encodes local images. Their transfer hash differs from
+  // the authored source, whose identity must still reconcile with the manifest.
+  const original = url.pathname === "/_next/image"
+    ? manifest.assets.find((asset) => asset.url === url.searchParams.get("url") && asset.path.startsWith("public/"))
+    : undefined;
+  const optimizedFrom = original?.url ? {
+    url: original.url,
+    sha256: createHash("sha256").update(await readFile(original.path)).digest("hex"),
+  } : undefined;
   return {
-    path: new URL(response.url()).pathname,
+    path: url.pathname,
     type,
     bytes: compressed ? gzipSync(body).length : body.length,
     sha256: createHash("sha256").update(body).digest("hex"),
+    ...(optimizedFrom ? { optimizedFrom } : {}),
   };
 }
 
@@ -172,7 +184,8 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     )
       continue;
     const asset = manifest.assets.find(
-      (asset) => asset.sha256 === request.sha256,
+      (asset) => asset.sha256 === request.sha256 ||
+        (request.optimizedFrom !== undefined && asset.url === request.optimizedFrom.url && asset.sha256 === request.optimizedFrom.sha256),
     );
     expect(
       asset,

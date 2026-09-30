@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import {
   classifyRenderer,
   deviceKey,
+  promotionCeiling,
   readRenderer,
   recallQuality,
   rememberQuality,
@@ -86,6 +87,15 @@ test("storage that throws, on access or on use, degrades to no memory", () => {
 });
 
 const laptop = { coarsePointer: false, smallScreen: false, deviceDpr: 1.25 };
+
+test("promotion requires credible GPU headroom above Balanced", () => {
+  expect(promotionCeiling("modest", true)).toBe("balanced");
+  expect(promotionCeiling("modest", false)).toBe("balanced");
+  expect(promotionCeiling(null, false)).toBe("balanced");
+  expect(promotionCeiling(null, true)).toBe("high");
+  expect(promotionCeiling("capable", false)).toBe("high");
+  expect(promotionCeiling("capable", true)).toBe("high");
+});
 const phone = { coarsePointer: true, smallScreen: true, deviceDpr: 3 };
 
 test("a remembered result outranks the GPU class, which outranks today's defaults", () => {
@@ -93,9 +103,10 @@ test("a remembered result outranks the GPU class, which outranks today's default
     .toEqual({ start: { tier: "balanced", dpr: 1 }, source: "remembered" });
   expect(startingQuality({ ...phone, remembered: { tier: "balanced", dpr: 1.25 }, gpuClass: null }))
     .toEqual({ start: { tier: "balanced", dpr: 1.25 }, source: "remembered" });
-  // A modest laptop starts where its first passage used to take it: Low effects, Balanced sharpness.
+  // Integrated laptops start on the reference look now that the wake field
+  // bounds passage cost. Live measurements can still demote a weak GPU.
   expect(startingQuality({ ...laptop, remembered: null, gpuClass: "modest" }))
-    .toEqual({ start: { tier: "low", dpr: 1.25 }, source: "gpu-class" });
+    .toEqual({ start: { tier: "balanced", dpr: 1.25 }, source: "gpu-class" });
   expect(startingQuality({ ...phone, remembered: null, gpuClass: "modest" }))
     .toEqual({ start: { tier: "low", dpr: 1 }, source: "gpu-class" });
   expect(startingQuality({ ...laptop, remembered: null, gpuClass: "capable" }))
