@@ -20,6 +20,7 @@ Colour, radius, and font tokens are Tailwind v4 `@theme` tokens defined once in 
 | `--secondary`, `--muted`, `--accent` / `-foreground` | `--surface-neutral-100` `#eef2f3` / `--surface-ink` | Neutral grey fills on white surfaces. |
 | `--muted-foreground` | `--surface-neutral-600` `#5b6b70` | Secondary text on white surfaces (contrast 5.6:1). |
 | `--border`, `--input` | `--surface-neutral-300` `#dde4e6` | Neutral grey hairlines on white surfaces. |
+| `--shallows-400` | `#2fb6b2` | The turquoise of the shallows around a Landmark. Read by the ocean scene only (`lib/ocean-daylight.ts`); not a UI colour. |
 
 All text pairings above meet WCAG 2.2 AA (4.5:1 for body text).
 

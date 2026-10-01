@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import { landmarkBudget, landmarkSources } from "@/content/landmark-sources";
+import landmarks from "@/content/landmarks.json";
 import { inspectModel } from "@/lib/asset-audit";
 import { auditAssets } from "@/scripts/audit-assets";
 import ship from "@/content/ship.json";
@@ -41,7 +42,12 @@ test("every island Landmark stays within its tier's triangle, transfer, draw and
       const landmark = inspectModel(buffer);
       expect(landmark.triangles).toBeLessThanOrEqual(landmarkBudget[tier].triangles);
       expect(buffer.byteLength).toBeLessThanOrEqual(landmarkBudget[tier].bytes);
-      expect(landmark.draws).toBeLessThanOrEqual(landmarkBudget[tier].draws);
+      // The mesh draws its island and its shallows; Balanced and High spend
+      // their third draw on whatever stands on the island, and Low has none.
+      const standing = landmarks.landmarks.find((entry) => entry.id === source.id)!.features.instances;
+      expect(landmark.draws).toBe(2);
+      expect(landmark.draws + (tier === "balanced" && standing ? 1 : 0)).toBeLessThanOrEqual(landmarkBudget[tier].draws);
+      expect(landmark.parts).toEqual(expect.arrayContaining(["island", "surf"]));
       expect(landmark.textures).toBe(0);
     }
   }

@@ -58,7 +58,7 @@ export type LandmarkPalette = {
   highland: string;
 };
 
-function channels(hex: string): [number, number, number] {
+export function channels(hex: string): [number, number, number] {
   const value = Number.parseInt(hex.slice(1), 16);
   // Authored in sRGB, as CSS; Three renders in linear-sRGB.
   const linear = (byte: number) => {

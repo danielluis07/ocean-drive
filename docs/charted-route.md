@@ -63,9 +63,17 @@ roll.
 ## Camera
 
 `lib/route-camera.ts` frames a near top-down view at 80° with a fixed north-up
-orientation. The Ship sits left of centre on landscape viewports and above
-centre on portrait viewports, leaving room beside it for a Stop Card (see
+orientation. The Ship sits left of and below centre on landscape viewports and
+above centre on portrait viewports, leaving room beside it for a Stop Card (see
 [minimal-chrome.md](minimal-chrome.md)) and, above it, for the Stop's Landmark.
+
+The camera rides 64 world units above the water on landscape and 114 on
+portrait. [#67](https://github.com/danielluis07/ocean-drive/issues/67) enlarged
+the Landmarks about 1.4 times, which the earlier framing could not hold whole:
+it moved the landscape Ship from the frame's middle row to about two thirds of
+the way down and a little further left, and raised the portrait camera from 92,
+because a portrait phone is narrower than the widest island at that height. See
+[landmarks.md](landmarks.md#size).
 
 ## Voyage State
 

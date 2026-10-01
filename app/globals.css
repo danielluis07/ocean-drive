@@ -9,9 +9,11 @@
 :root {
   /* Travessia palette: a near-black navy ocean ground carries white type;
      white surfaces (card, popover, sheet) carry near-black ink and neutral
-     greys; coral is the single accent and never carries meaning alone. */
+     greys; coral is the single accent and never carries meaning alone. The
+     shallows turquoise belongs to the ocean scene, not to the interface. */
   --ocean-950: #071019;
   --ocean-050: #f4f7f8;
+  --shallows-400: #2fb6b2;
   --coral-500: #ff6b4a;
   --surface-ink: #0b1b22;
   --surface-neutral-100: #eef2f3;

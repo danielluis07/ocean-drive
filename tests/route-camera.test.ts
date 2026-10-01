@@ -44,9 +44,11 @@ test.each(viewports)("$name: the Ship is framed on screen with room beside it fo
   expect(Math.abs(x)).toBeLessThan(0.8);
   expect(Math.abs(y)).toBeLessThan(0.8);
   if (aspect >= 1) {
-    // Landscape: the Ship sits left of centre, leaving the right side free.
+    // Landscape: the Ship sits left of and below centre, leaving the right
+    // side free for the card and the upper frame for the Landmark.
     expect(x).toBeLessThan(-0.2);
-    expect(Math.abs(y)).toBeLessThan(0.1);
+    expect(y).toBeLessThan(-0.15);
+    expect(y).toBeGreaterThan(-0.4);
   } else {
     // Portrait: the Ship sits above centre, leaving the lower part free.
     expect(y).toBeGreaterThan(0.2);
@@ -58,6 +60,7 @@ test("the camera follows the Ship without turning with it", () => {
   const viewport = { width: 1440, height: 1000 };
   const here = frameRouteCamera({ x: 0, z: 0 }, viewport);
   const there = frameRouteCamera({ x: 10, z: -30 }, viewport);
-  expect(subtract(there.position, here.position)).toEqual([10, 0, -30]);
-  expect(subtract(there.target, here.target)).toEqual([10, 0, -30]);
+  for (const moved of [subtract(there.position, here.position), subtract(there.target, here.target)]) {
+    [10, 0, -30].forEach((expected, axis) => expect(moved[axis]).toBeCloseTo(expected, 9));
+  }
 });

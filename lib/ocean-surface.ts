@@ -13,6 +13,38 @@ export function sampleOceanHeight(x: number, z: number, time: number, waveStreng
   return height * waveStrength;
 }
 
+// The water is one square plane whose grid is squeezed toward the Ship, where
+// swell contact matters most. `OCEAN_SIZE` is the plane's side before that.
+export const OCEAN_SIZE = 1200;
+
+function squeeze(grid: number, vessel: number) {
+  return (Math.sign(grid) * grid * grid) / (OCEAN_SIZE / 2) + vessel;
+}
+
+// The height of the water as it is drawn: the swell at the corners of the grid
+// triangle over (x, z), interpolated across it. Between its vertices the drawn
+// surface is flat, so it leaves the swell by more as a tier's grid coarsens.
+// `cell` is the side of one grid cell before the squeeze: `OCEAN_SIZE` over
+// the tier's segments. Mirrored by `oceanSheetShader`.
+export function sampleOceanSheet(x: number, z: number, time: number, waveStrength: number, vessel: { x: number; z: number }, cell: number) {
+  const corner = (offset: number, origin: number) => {
+    const grid = Math.sign(offset) * Math.sqrt(Math.abs(offset) * (OCEAN_SIZE / 2));
+    const low = Math.floor(grid / cell) * cell;
+    const from = squeeze(low, origin);
+    const to = squeeze(low + cell, origin);
+    return { from, to, share: (offset + origin - from) / (to - from) };
+  };
+  const across = corner(x - vessel.x, vessel.x);
+  const along = corner(z - vessel.z, vessel.z);
+  const at = (cornerX: number, cornerZ: number) => sampleOceanHeight(cornerX, cornerZ, time, waveStrength);
+  // Each cell is split along the diagonal from its (from, to) corner to its
+  // (to, from) corner, as Three's PlaneGeometry indexes it.
+  const diagonal = [at(across.from, along.to), at(across.to, along.from)];
+  return across.share + along.share <= 1
+    ? at(across.from, along.from) * (1 - across.share - along.share) + diagonal[1] * across.share + diagonal[0] * along.share
+    : at(across.to, along.to) * (across.share + along.share - 1) + diagonal[0] * (1 - across.share) + diagonal[1] * (1 - along.share);
+}
+
 const swellShader = swells.map((wave) =>
   `wave(p, vec2(${wave.x}, ${wave.z}), ${wave.amplitude}, ${wave.speed}, height, slope);`,
 ).join("\n");
@@ -20,7 +52,7 @@ const swellShader = swells.map((wave) =>
 // The shoreline hook: any mesh that has to sit on the water includes this chunk
 // and displaces its world Y by `swell(world.xz, height, slope)` with the same
 // `time` and `waveStrength` the ocean is given, so it rides the same surface.
-// The Landmark surf line in `lib/landmark-surf.ts` is the first caller;
+// The Landmark shallows band in `lib/landmark-surf.ts` is the first caller;
 // see docs/ocean-resilience.md for the complete material contract.
 export const oceanSwellShader = `
   uniform float time;
@@ -39,14 +71,51 @@ export const oceanSwellShader = `
   }
 `;
 
+// The squeeze that concentrates the water's grid near the Ship, shared by the
+// water and by anything that has to reproduce the surface the water draws.
+const oceanGridShader = `
+  uniform vec2 vessel;
+  vec2 oceanGrid(vec2 grid) {
+    return sign(grid) * grid * grid / ${OCEAN_SIZE / 2}. + vessel;
+  }
+`;
+
+// The drawn surface, for a mesh whose fragments must lie exactly on the water
+// at every tier: `oceanSheet(p)` is the height the water's own triangles have
+// over `p`, which the swell alone only approximates on a coarse grid. Expects
+// `oceanSwellShader`, the ocean's `vessel`, and `oceanCell`: `OCEAN_SIZE` over
+// the tier's segments. Mirrors `sampleOceanSheet`.
+export const oceanSheetShader = `
+  ${oceanGridShader}
+  uniform float oceanCell;
+  float swellHeight(vec2 p) {
+    float height;
+    vec2 slope;
+    swell(p, height, slope);
+    return height;
+  }
+  float oceanSheet(vec2 p) {
+    vec2 offset = p - vessel;
+    vec2 low = floor(sign(offset) * sqrt(abs(offset) * ${OCEAN_SIZE / 2}.) / oceanCell) * oceanCell;
+    vec2 from = oceanGrid(low);
+    vec2 to = oceanGrid(low + oceanCell);
+    vec2 share = (p - from) / (to - from);
+    float diagonalNear = swellHeight(vec2(from.x, to.y));
+    float diagonalFar = swellHeight(vec2(to.x, from.y));
+    return share.x + share.y <= 1.
+      ? swellHeight(from) * (1. - share.x - share.y) + diagonalFar * share.x + diagonalNear * share.y
+      : swellHeight(to) * (share.x + share.y - 1.) + diagonalNear * (1. - share.x) + diagonalFar * (1. - share.y);
+  }
+`;
+
 export const oceanVertexShader = `
   ${oceanSwellShader}
-  uniform vec2 vessel;
+  ${oceanGridShader}
   varying vec3 world;
   void main() {
     world = (modelMatrix * vec4(position, 1.)).xyz;
     // Concentrate the existing grid near the boat, where swell contact matters.
-    world.xz = sign(world.xz) * world.xz * world.xz / 600. + vessel;
+    world.xz = oceanGrid(world.xz);
     float height;
     vec2 slope;
     swell(world.xz, height, slope);

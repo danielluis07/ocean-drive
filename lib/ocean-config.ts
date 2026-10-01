@@ -16,6 +16,9 @@ export type Landmark = {
   islands: number;
   summitMetres: number;
   surfWidth: number;
+  shallowsWidth: number;
+  // What stands on the island at Balanced and High, expanded into one draw.
+  features: { instances: number; triangles: number };
   variants: { balanced: LandmarkVariant; low: LandmarkVariant };
 };
 
@@ -29,6 +32,9 @@ export type OceanStop = {
 
 export type OceanConfiguration = {
   vessels: { balanced: string; low: string };
+  // The shared Feature file: every model placed on a Landmark and where each
+  // instance stands. Balanced and High request it; Low never does.
+  features: string;
   stops: OceanStop[];
   landmarks: Record<string, Landmark>;
 };
@@ -46,12 +52,13 @@ export const oceanConfiguration: OceanConfiguration = {
     balanced: ship.variants.balanced.url,
     low: ship.variants.low.url,
   },
+  features: landmarks.features.url,
   stops: [
     { id: "partida", anchorage: [0, 0], landmark: null },
-    { id: "fernando-de-noronha", anchorage: [-112, -12], landmark: [-112, -26.1] },
-    { id: "boipeba", anchorage: [-224, 10], landmark: [-224, -4.3] },
-    { id: "abrolhos", anchorage: [-336, -8], landmark: [-336, -12.4] },
-    { id: "ilha-grande", anchorage: [-448, 12], landmark: [-448, -0.3] },
+    { id: "fernando-de-noronha", anchorage: [-112, -12], landmark: [-112, -30] },
+    { id: "boipeba", anchorage: [-224, 10], landmark: [-224, -9] },
+    { id: "abrolhos", anchorage: [-336, -8], landmark: [-336, -15] },
+    { id: "ilha-grande", anchorage: [-448, 12], landmark: [-448, -2.5] },
   ],
   landmarks: Object.fromEntries(landmarks.landmarks.map((landmark) => [landmark.id, landmark as Landmark])),
 };

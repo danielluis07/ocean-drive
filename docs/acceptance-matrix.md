@@ -206,7 +206,7 @@ The observable criteria, target states, methods, required evidence, and pass thr
 
 **Required evidence.** The production budget report, local diagnostics, and evidence records.
 
-**Pass threshold.** Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤500 KiB; all authored visuals ≤750 KiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles and 76 KiB (Balanced) or ≤1,300 and 28 KiB (Low), two draws, no textures. A missing measurement fails.
+**Pass threshold.** Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤530 KiB; all authored visuals ≤780 KiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles, 76 KiB and three draws (Balanced) or ≤1,300, 28 KiB and two draws (Low), no textures; the shared Feature file ≤30 KiB, with ≤160 instances and ≤3,000 triangles standing on a Landmark, and none at Low. A missing measurement fails.
 
 **Waiver.** Not waivable.
 

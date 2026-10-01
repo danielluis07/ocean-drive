@@ -3,7 +3,8 @@ import manifest from "@/content/asset-manifest.json";
 import dependencies from "@/docs/third-party/dependencies.json";
 import { inspectModel } from "@/lib/asset-audit";
 import landmarks from "@/content/landmarks.json";
-import { landmarkBudget, landmarkSources } from "@/content/landmark-sources";
+import { featureFile, featureModels, landmarkBudget, landmarkSources } from "@/content/landmark-sources";
+import { decodePlacements, PLACEMENT_FIELDS } from "@/lib/landmark-features";
 import { gzipSync } from "node:zlib";
 import ship from "@/content/ship.json";
 import { shipBudget, shipSource } from "@/content/ship-source";
@@ -26,12 +27,13 @@ export async function auditAssets() {
   for (const source of landmarkSources) {
     const landmark = landmarks.landmarks.find((entry) => entry.id === source.id);
     if (!landmark) { errors.push(`Unbuilt Landmark: ${source.id}`); continue; }
-    if (landmark.span !== source.span) errors.push(`Landmark record is stale: ${source.id}`);
+    if (landmark.span !== source.span || landmark.shallowsWidth !== source.shallowsWidth) errors.push(`Landmark record is stale: ${source.id}`);
     if (!paths.has(`data/landmarks/${source.id}.json`)) errors.push(`Unregistered Landmark source data: ${source.id}`);
     for (const tier of ["balanced", "low"] as const) {
       if (!paths.has(`public${landmark.variants[tier].url}`)) errors.push(`Unregistered Landmark mesh: ${source.id} ${tier}`);
     }
   }
+  if (landmarks.features.url !== featureFile.url || !paths.has(`public${featureFile.url}`)) errors.push("Unregistered Feature file");
   let fonts = 0;
   for (const asset of manifest.assets) {
     if (!["project-source", "ofl-font", "ai-generated", "open-data", "licensed-model"].includes(asset.sourceKind)) errors.push(`Unapproved source: ${asset.path}`);
@@ -47,6 +49,29 @@ export async function auditAssets() {
       const model = inspectModel(buffer);
       const low = asset.path.includes("-low.");
       if (!model.opaque || model.animations || model.skins || model.externalResources.length) errors.push(`Invalid model materials/resources: ${asset.path}`);
+      if (asset.path === `public${featureFile.url}`) {
+        // The shared Feature file: its own transfer budget, and each Landmark's
+        // allowance for what its placements expand to in that Landmark's draw.
+        if (buffer.byteLength > featureFile.bytes) errors.push(`Feature file budget exceeded: ${buffer.byteLength} bytes`);
+        if (model.materials > 1 || model.textures) errors.push(`Invalid Feature materials/resources: ${asset.path}`);
+        if (buffer.byteLength !== landmarks.features.bytes) errors.push(`Feature record does not match its file: ${asset.path}`);
+        const names = model.features?.models ?? [];
+        const declared: Record<string, { triangles: number }> = landmarks.features.models;
+        if (names.join() !== featureModels.join() || names.some((name) => model.partTriangles[name] !== declared[name]?.triangles))
+          errors.push(`Feature models do not match their record: ${asset.path}`);
+        const placed = model.features?.placements ?? {};
+        for (const id of Object.keys(placed)) if (!landmarkSources.some((source) => source.id === id)) errors.push(`Features placed on an unknown Landmark: ${id}`);
+        for (const landmark of landmarks.landmarks) {
+          const record = placed[landmark.id] ?? [];
+          const placements = decodePlacements(record);
+          if (record.length % PLACEMENT_FIELDS || placements.some((placement) => !names[placement.model])) { errors.push(`Invalid Feature placements: ${landmark.id}`); continue; }
+          const triangles = placements.reduce((total, placement) => total + model.partTriangles[names[placement.model]], 0);
+          const budget = landmarkBudget.balanced;
+          if (placements.length > budget.instances || triangles > budget.featureTriangles) errors.push(`Landmark Feature budget exceeded: ${landmark.id} (${placements.length} instances, ${triangles} triangles)`);
+          if (landmark.features.instances !== placements.length || landmark.features.triangles !== triangles) errors.push(`Landmark record does not match its Features: ${landmark.id}`);
+        }
+        continue;
+      }
       const island = /\/landmark-(.+)-(balanced|low)\.v\d+\.glb$/.exec(asset.path);
       if (!island) {
         const tier = low ? "low" : "balanced";
@@ -63,7 +88,11 @@ export async function auditAssets() {
       // with the record the scene reads its triangle and byte counts from.
       const tier = island[2] as keyof typeof landmarkBudget;
       const budget = landmarkBudget[tier];
-      if (model.triangles > budget.triangles || buffer.byteLength > budget.bytes || model.draws > budget.draws) errors.push(`Landmark budget exceeded: ${asset.path} (${model.triangles} triangles, ${buffer.byteLength} bytes, ${model.draws} draws)`);
+      // Low draws its own two meshes only. Balanced and High add one draw when
+      // anything stands on the island, whatever the number of instances.
+      const standing = landmarks.landmarks.find((entry) => entry.id === island[1])?.features.instances;
+      const draws = model.draws + (tier === "balanced" && standing ? 1 : 0);
+      if (model.triangles > budget.triangles || buffer.byteLength > budget.bytes || draws > budget.draws) errors.push(`Landmark budget exceeded: ${asset.path} (${model.triangles} triangles, ${buffer.byteLength} bytes, ${draws} draws)`);
       if (!model.parts.includes("island") || !model.parts.includes("surf")) errors.push(`Landmark is missing its island or surf mesh: ${asset.path}`);
       const declared = landmarks.landmarks.find((entry) => entry.id === island[1])?.variants[tier];
       if (!declared || declared.triangles !== model.triangles || declared.bytes !== buffer.byteLength) errors.push(`Landmark record does not match its mesh: ${asset.path}`);

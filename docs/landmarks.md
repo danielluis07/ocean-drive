@@ -6,6 +6,9 @@ Ilha de Boipeba, the Arquipélago de Abrolhos and Ilha Grande. The Landmarks
 carry no label, marker or light; the shape of the land is the identification.
 
 One pipeline builds all four, and adding a fifth island is a config entry.
+[#67](https://github.com/danielluis07/ocean-drive/issues/67) enlarged the
+islands, turned the surf band into a shallows band, and added the mechanism that
+places vegetation and named Features on them.
 
 ## The pipeline
 
@@ -17,15 +20,19 @@ data/landmarks/<id>.json      recorded coastline rings + elevation grid
         │  bun run landmarks:build          (offline, deterministic)
         ▼
 public/models/landmark-<id>-<tier>.v1.glb   the shipped meshes
+public/models/landmark-features.v1.glb      the models placed on them, once
 content/landmarks.json        what the scene and CI read back
 ```
 
 **`content/landmark-sources.ts`** is the only place an island is described: its
 query box in degrees, the zoom and grid of its elevation samples, which
 coastline rings belong to it, how many world units it spans, how high it
-stands, how wide its surf line is, and the sand/rock/vegetation palette it is
-shaded with. `landmarkBudget` in the same file holds the triangle and transfer
-budget each quality tier may spend on one Landmark.
+stands, how wide its surf line and its shallows are, the sand/rock/vegetation
+palette it is shaded with, and what stands on it: the terrain rules that scatter
+vegetation and the coordinates of its named Features. `landmarkBudget` in the
+same file holds the triangle, transfer, draw and instance budget each quality
+tier may spend on one Landmark, and `featureFile` the budget of the one file
+their models ship in.
 
 **`bun run landmarks:fetch`** is a maintenance command and the only step that
 uses the network. It queries OpenStreetMap through the Overpass API for
@@ -59,9 +66,14 @@ and needs no network. Per island and per tier it:
    flat coastal ground within the configured `beachWidth`, bare rock where it
    is steep, vegetation inland — using the Balanced surface as the shading
    source for both tiers, then bakes ambient occlusion into vertex colours;
-6. builds the surf band around the shoreline; and
-7. exports `island` and `surf` as one glTF, then records what it actually wrote
+6. builds the shallows band around the shoreline;
+7. on the Balanced surface, scatters instances by terrain rules and stands each
+   named Feature at its coordinates; and
+8. exports `island` and `surf` as one glTF, then records what it actually wrote
    in `content/landmarks.json`.
+
+Once every island is built it writes the shared Feature file: each model once,
+and every Landmark's placements.
 
 The sample spacing is not tuned by hand. The build estimates it from the
 island's area, measures what came out, and coarsens until the Landmark fits its
@@ -80,7 +92,8 @@ by Low's vertex spacing; this does not restore geometry that Low omits.
 
 The bake is part of `bun run landmarks:build`, needs no Blender installation,
 and reads only committed source data. The generator, geometry/shading helpers,
-shared bake helper and output records are pinned in the provenance ledger.
+Feature models and placement, shared bake helper and output records are pinned
+in the provenance ledger.
 
 At runtime, `lib/landmark-material.ts` adds stationary procedural canopy and
 rock grain to the existing land material, including subtle normal variation.
@@ -97,55 +110,160 @@ island's southern shore instead of sailing at it, and the near top-down camera
 frames the whole island above the Ship with the Stop Card clear to the side.
 `content/landmarks.json` records each island's extent and the radius of the
 square about its centre that holds it; the scene projects that every frame as
-`--landmark-*`, which is what keeps the Stop Card off the island (the surf band
-beyond it is water the card may stand over) (see
+`--landmark-*`, which is what keeps the Stop Card off the island (the shallows
+beyond it are water the card may stand over) (see
 [minimal-chrome.md](minimal-chrome.md)).
 
 Distances in Voyage Waters are deliberately compressed, and each island is
 scaled on its own so that a 2 km archipelago and a 30 km island both read from
 the same camera. The outlines are true; the sizes and the distances are not.
 
-## The surf line
+### Size
 
-`lib/landmark-surf.ts` draws the band the build lays around each shoreline. Its
-vertices include `oceanSwellShader` from `lib/ocean-surface.ts` — the documented
-shoreline hook — and displace by the same swell the water uses, with the same
-clock and `waveStrength`, so the foam stays attached to the water rather than floating at a fixed
-height. That holds at every quality tier: the band is its own mesh and its own
-program, so it does not depend on the ocean's decorative shader. The complete
-material contract is in [ocean-resilience.md](ocean-resilience.md#navy-daylight-and-shoreline-contract).
+| Landmark            | Span | Before #67 |
+| ------------------- | ---: | ---------: |
+| Fernando de Noronha |   34 |         24 |
+| Boipeba             |   27 |         19 |
+| Abrolhos            |   31 |         22 |
+| Ilha Grande         |   39 |         28 |
 
-The band's UVs carry world-unit arc length along the shore and the distance out
-from it. Foam breakup uses object coordinates to keep one scale on every island
-without an arc-length seam. Narrow, broken sets of breakers roll shoreward
-over mottled pale navy shallows, using the ocean's daylight palette. With
-`prefers-reduced-motion`, the `motion` uniform drops to zero and the sets hold
-still: the same band, as a static foam ring.
+Each island is about 1.4 times its earlier size in world units. The camera that
+framed the smaller islands could not hold these whole: the water north of the
+Ship was about 27 world units deep on either orientation, and a portrait phone
+was narrower than Ilha Grande. So `lib/route-camera.ts` was reframed with them
+(see [charted-route.md](charted-route.md#camera)). On landscape the camera keeps
+its height and the Ship rests lower and further left, so the islands are 1.4
+times larger on screen. On portrait the camera rides higher to hold the widest
+island, so the islands are about 1.13 times larger there and the Ship about a
+fifth smaller; a portrait phone was already filled side to side by Ilha Grande
+and has no more width to give. `height`, `beachWidth` and `surfWidth` grew with
+the spans so relief, beaches and surf keep their proportions.
 
-One material serves all four Landmarks, so the shoreline costs one program and
-one draw per island.
+`tests/landmark-placement.test.ts` holds the result: every production viewport
+frames each island whole with room for the Stop Card, and the Ship passes
+between 3 and 12 world units off each shore.
+
+## The shallows
+
+Each island stands in a band of shallow water: turquoise against the land,
+falling off to the ocean's navy at the band's outer edge, with the surf line
+breaking along its shoreward side. The falloff is an authored treatment. No
+depth data is recorded for any island, so the band says where the shore is and
+nothing about the real sea floor. `shallowsWidth` sets how far it reaches on
+each island and `surfWidth` how much of that the surf covers.
+
+The build lays the band as one sheet per Landmark (`shoreBand` in
+`lib/landmark-geometry.ts`): a line tucked under the land's edge, a line where
+the surf ends, and a staggered grid over the water beyond, triangulated
+together. Every vertex carries its true distance from the nearest shore of any
+of the Landmark's islands, so the islets of an archipelago share one band
+rather than laying a band each over the other's, and a narrow cove or a sliver
+of rock cannot fold it. The sheet runs one grid step past the band's reach,
+where it has already faded out, so its outer edge is never seen. Its UVs hold
+that distance twice: `u` in surf widths and `v` in shallows widths, both zero at
+the waterline. A coarser tier's land comes up through the water further inland,
+so its band tucks further under it.
+
+`lib/landmark-surf.ts` draws it. Its vertices include `oceanSwellShader` from
+`lib/ocean-surface.ts` and displace by the same swell the water uses, with the
+same clock and `waveStrength`. Its fragments take their depth from
+`oceanSheet`, the surface the water's own triangles draw, a little above it. On
+a coarse grid that surface leaves the swell by more than any fixed clearance, so
+a band that only rode the swell would dip under the water's flat triangles in
+places; taking the drawn surface keeps the band attached to the water at every
+quality tier. It is its own mesh and its own program, so it does not depend on
+the ocean's decorative shader. The complete material contract is in
+[ocean-resilience.md](ocean-resilience.md#navy-daylight-and-shoreline-contract).
+
+Foam and the mottled bed use object coordinates, which keep one scale on every
+island. Narrow, broken sets of breakers roll shoreward inside the surf width.
+With `prefers-reduced-motion`, the `motion` uniform drops to zero and the sets
+hold still: the same band, with a static foam ring.
+
+One material serves all four Landmarks, and the band is one mesh, so the
+shoreline costs one program and one draw per island.
+
+## Scatter and Features
+
+What stands on an island is described in its config entry and placed by the
+build, on the Balanced surface.
+
+- **`scatter`** places a model wherever the terrain allows: a rule gives the
+  model, the spacing of its candidate sites, a size range, and any of an
+  elevation range in metres, a slope range and a range of distance inland.
+  `scatterSites` in `lib/landmark-features.ts` draws the sites from a jittered
+  grid with a fixed hash, so the same record always scatters the same
+  instances. This is for vegetation such as palms.
+- **`features`** stands a model at a real coordinate, for a named Feature (see
+  `CONTEXT.md`). The build projects the coordinate through the same projection
+  as the coastline and refuses a Feature that does not land on the island.
+
+Models are generated in code by `scripts/landmark-feature-models.ts`: low-poly,
+vertex-coloured, unindexed so each face shades flat, with sides modelled all the
+way round and a footing that reaches below the ground. There is no Blender
+step. `featureModels` in `content/landmark-sources.ts` lists them.
+
+All of it ships in one shared file, `public/models/landmark-features.v1.glb`:
+each model once, and per Landmark a record of its instances as whole numbers
+(model, position in hundredths of a world unit, heading in degrees, scale in
+percent). Balanced and High request the file after entry, so it never gates the
+voyage; a failed request leaves the islands as they are. The scene expands each
+Landmark's record into one mesh (`expandFeatures`), so everything standing on an
+island is a single draw however many models it mixes. A GPU-instanced mesh
+would need one draw per model, which the budget below does not allow. Low never
+requests the file and draws nothing on its islands.
+
+The one placement today is a placeholder: a plain banded marker where the
+lighthouse stands on Ilha de Santa Bárbara in Abrolhos. It proves the mechanism
+end to end and stands for no real structure. The island issues replace it with
+their own models or remove it; `tests/landmark-features.test.ts` expects exactly
+one instance until they do. No vegetation is scattered yet; the rules are
+covered by unit tests, including against Ilha Grande's recorded terrain.
+
+## Ready for the Close View
+
+A later issue adds the Close View: an optional look from about 45–50° and half
+the distance. This issue leaves the Landmarks ready for it. Feature models have
+sides and a footing. Relief was scaled with the spans, and the land's shading
+comes from smooth normals and baked occlusion rather than from the camera's
+angle. The skirt still hangs 3.2 world units below the shoreline, under opaque
+water, so no pitch above the horizon looks beneath an island. The shallows band
+takes its depth from the drawn water surface, which holds from any angle.
 
 ## Budgets
 
-| Per Landmark      | Triangles | Transfer | Draws |
-| ----------------- | --------: | -------: | ----: |
-| Balanced and High |     4,400 |   76 KiB |     2 |
-| Low               |     1,300 |   28 KiB |     2 |
+| Per Landmark      | Triangles | Transfer | Draws | Instances | Instance triangles |
+| ----------------- | --------: | -------: | ----: | --------: | -----------------: |
+| Balanced and High |     4,400 |   76 KiB |     3 |       160 |              3,000 |
+| Low               |     1,300 |   28 KiB |     2 |         0 |                  0 |
 
-Textures: none, at any tier. The two draws are the island and its surf band.
-The triangle and transfer budgets are enforced twice — the build refuses to
-write a mesh that exceeds them, and `bun run assets:audit` re-measures the
-shipped GLB. The audit also counts the GLB's primitives, one draw each, against
-the draw budget, rejects any texture, checks that it still carries an `island`
-and a `surf` part, and reconciles its triangle and byte counts with
-`content/landmarks.json`.
+Shared Feature file: 30 KiB, requested once by Balanced and High.
+
+Textures: none, at any tier. The draws are the island, its shallows band and,
+at Balanced and High, everything standing on it. The triangle and transfer
+budgets are enforced twice — the build refuses to write a mesh that exceeds
+them, and `bun run assets:audit` re-measures the shipped GLB. The audit also
+counts the GLB's primitives, one draw each, adds the Landmark's Feature draw
+when anything stands on it, and holds the total to the draw budget; it rejects
+any texture, checks that the mesh still carries an `island` and a `surf` part,
+and reconciles its triangle and byte counts with `content/landmarks.json`.
+
+The Feature budgets are enforced the same way. The build refuses a Landmark
+whose instances or their expanded triangles exceed its allowance, and a Feature
+file over 30 KiB. The audit reads the shipped file back: its size, its models
+and their triangle counts against the record, and each Landmark's placements
+against its allowance and against what `content/landmarks.json` says stands
+there.
+
 The scene-wide draw-call and triangle budgets in `lib/production-budgets.ts`
-cover the four Landmarks together with the ocean and the Ship.
+cover the four Landmarks together with the ocean and the Ship, and are
+unchanged. Its two authored-visuals transfer budgets each rose by the 30 KiB of
+the Feature file.
 
 ## Verification
 
-- `bun test` covers the geometry conversions in `lib/landmark-geometry.ts` and
-  the shading in `lib/landmark-surface.ts`, and
+- `bun test` covers the geometry conversions and the shallows band in
+  `lib/landmark-geometry.ts` and the shading in `lib/landmark-surface.ts`, and
   `tests/landmark-placement.test.ts` checks, against each island's real
   outline, that the Ship passes beside it and never through it and that every
   production viewport frames the whole island with room left for the Stop Card.
@@ -154,5 +272,13 @@ cover the four Landmarks together with the ocean and the Ship.
   never covers a Landmark.
 - `tests/asset-bake.test.ts` checks exposed and occluded surfaces, repeatability,
   colour interpolation and the coastline fallback.
+- `tests/landmark-features.test.ts` checks scattering against terrain rules and
+  its repeatability, the placeholder Feature against its real coordinate and the
+  shipped file, the placement record, the single expanded geometry, the models'
+  sides, and the Feature budgets, including that Low carries nothing.
+- `tests/ocean-surface.test.ts` checks that `sampleOceanSheet` is the surface
+  the water's grid draws at every tier.
+- `tests/browser/ocean-entry.e2e.ts` checks that a Low visit requests only the
+  four Low Landmark meshes and never the Feature file.
 - The `asset-art` production browser project captures all four Stops in desktop
   Balanced/Low and phone Low for visual review; see [ship.md](ship.md).

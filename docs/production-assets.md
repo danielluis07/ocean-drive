@@ -16,7 +16,10 @@ The eight island Landmark GLBs under `public/models/` are built from open
 coastline and elevation data recorded under `data/landmarks/`, also allowed by
 issue #33. Their provenance is `docs/third-party/open-geodata.md`, the recorded
 source data carries its own ledger entries, and the pipeline is described in
-[landmarks.md](landmarks.md).
+[landmarks.md](landmarks.md). The shared Feature file beside them,
+`landmark-features.v1.glb`, holds the models placed on the islands, generated in
+code by the same build with no imported artwork, and where each instance stands
+(`docs/third-party/project-assets.md`).
 
 ## Reproduce and govern assets
 
@@ -81,15 +84,20 @@ retained with its evidence record, bound to the served build.
 | Additional lazy 3D JavaScript        |                   350 KiB |
 | Minimum sailable payload             |                   1.5 MiB |
 | Complete first visit                 |                     5 MiB |
-| Minimum-sailable authored visuals    |                   500 KiB |
-| All in-experience authored visuals   |                   750 KiB |
+| Minimum-sailable authored visuals    |                   530 KiB |
+| All in-experience authored visuals   |                   780 KiB |
 | Fonts                                |                   160 KiB |
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
 | Low vessel                           |  4,000 triangles; 120 KiB |
 | Landmark, High/Balanced              |  4,400 triangles; 76 KiB; |
-|                                      |     2 draws; no textures  |
+|                                      |     3 draws; no textures  |
+| Landmark Features, High/Balanced     |  160 instances and 3,000  |
+|                                      |  triangles per Landmark,  |
+|                                      |     in its third draw     |
+| Shared Feature file, High/Balanced   |      30 KiB; no textures  |
 | Landmark, Low                        |  1,300 triangles; 28 KiB; |
-|                                      |     2 draws; no textures  |
+|                                      |     2 draws; no textures; |
+|                                      |              no Features  |
 | Balanced visible draws               |            Fewer than 100 |
 | Balanced visible triangles           |        Fewer than 150,000 |
 | Ocean draws                          |               Exactly one |
@@ -108,7 +116,13 @@ with per-tier maxima spanning rendered states; they are not estimates from JSX.
 Each Landmark's budget is enforced twice: the build refuses to write a mesh over
 it, and `bun run assets:audit` re-measures the shipped GLB, checks that it still
 carries its `island` and `surf` parts, and reconciles its triangle and byte
-counts with `content/landmarks.json`.
+counts with `content/landmarks.json`. A Landmark's third draw is everything
+standing on it, expanded from the shared Feature file; the build and the audit
+both hold that file to 30 KiB and each Landmark's instances to its allowance,
+and the audit reconciles them with the same record. The two authored-visuals
+budgets each rose by 30 KiB to admit the file
+([#67](https://github.com/danielluis07/ocean-drive/issues/67)). Low never
+requests it.
 
 The production gate records desktop and phone requests separately. The phone
 tab verifies Low's initial transfer and scene counts; its responses are audited

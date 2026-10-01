@@ -36,7 +36,7 @@ export async function measureOceanFeatures(captureOnly = false) {
   camera.lookAt(...framing.target);
   const { wakePoints, wakeTexels, segments } = qualityEnvelope.balanced;
   const uniforms = {
-    ...oceanDaylightUniforms(createOceanDaylight("#071019", "#f4f7f8")),
+    ...oceanDaylightUniforms(createOceanDaylight("#071019", "#f4f7f8", "#2fb6b2")),
     time: { value: 50 }, waveStrength: { value: 1 }, vessel: { value: new Vector2() }, heading: { value: -Math.PI / 2 },
     wakeDetail: { value: 1 }, wakeCandidatesLimit: { value: 4 }, speed: { value: 60 }, thrust: { value: 0 }, course: { value: new Vector2(-1, 0) },
     wakePoints: { value: new Float32Array(wakePoints * 4) }, wakeForces: { value: new Float32Array(wakePoints * 4) },
