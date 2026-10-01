@@ -72,6 +72,14 @@ _Avoid_: Sheet, reader panel, Voz da estação
 The physical feature in Voyage Waters that identifies a Stop, drawn from its real geography, such as a volcanic peak, a low reef-fringed archipelago, or a forested island. It carries no floating label or light marker.
 _Avoid_: marker, waypoint, map pin
 
+**Feature**:
+A real, named place on a Landmark, such as a peak, a lighthouse, or a village, drawn larger than life so it reads from the camera. A Landmark carries only Features that exist on the real island.
+_Avoid_: prop, decoration, building
+
+**Close View**:
+The Visitor's optional nearer, lower look at a Landmark while the Ship rests at its Stop. The Visitor chooses to enter and leave it but never directs the camera, and it does not make the Stop visited.
+_Avoid_: orbit, free camera, zoom
+
 **Visited Stop**:
 A Stop whose Stop Account the Visitor has opened at least once. Visiting is a record of what the Visitor has seen, never a gate: every Stop on the Charted Route is always reachable.
 _Avoid_: collected checkpoint, unlocked stop
