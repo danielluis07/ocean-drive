@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/immutability -- Three owns mutable GPU objects; frame updates and ref writes deliberately bypass React rendering. */
 import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Group, ShaderMaterial, Vector2, Vector3, type Texture } from "three";
+import { Group, MeshStandardMaterial, ShaderMaterial, Vector2, Vector3, type Material, type Texture } from "three";
 import { useModelScene } from "@/lib/use-model-scene";
 import { qualityEnvelope, type OceanQuality } from "@/lib/ocean-quality";
 import type { OceanConfiguration } from "@/lib/ocean-config";
@@ -9,7 +9,7 @@ import StopLandmark from "@/components/ocean/stop-landmark";
 import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
 import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
-import { baselineOceanFragmentShader, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
+import { baselineOceanFragmentShader, OCEAN_SIZE, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
 import { createShipWake, cruiseWake, CRUISE_SPEED, type ShipWake } from "@/lib/ship-wake";
@@ -17,7 +17,8 @@ import { createWakeField, isWakeFieldShader, placeWakeField, WAKE_FIELD_SIZE, ty
 import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { createGpuTimer, type GpuTimer } from "@/lib/gpu-timer";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
-import { createSurfMaterial } from "@/lib/landmark-surf";
+import { createShallowsMaterial } from "@/lib/landmark-surf";
+import { useLandmarkFeatures } from "@/lib/use-landmark-features";
 import type { StageLayout } from "@/lib/stage-layout";
 
 export type PreparationStage = "checking" | "loading" | "preparing" | "frame" | "ready";
@@ -71,8 +72,8 @@ function SailableScene(props: RuntimeProps) {
   const failed = useRef(false);
   const compilations = useRef(0);
   const liveMaterial = useRef<ShaderMaterial | null>(null);
-  const retired = useRef(new Set<ShaderMaterial>());
-  // Dispose the water and surf materials the scene no longer uses, once nothing polls them.
+  const retired = useRef(new Set<Material>());
+  // Dispose the water, shallows and Feature materials the scene no longer uses, once nothing polls them.
   const releaseRetired = () => {
     if (compilations.current > 0) return;
     for (const old of retired.current) {
@@ -111,19 +112,25 @@ function SailableScene(props: RuntimeProps) {
       fragmentShader: baselineWater ? baselineOceanFragmentShader : oceanFragmentShader,
     });
   }, [baselineWater, props.quality.tier, daylight]);
-  // One surf material for every Landmark: they all read the same swell, and one
-  // program keeps the shoreline inside the scene's draw and program budgets.
-  const surfMaterial = useMemo(() => createSurfMaterial(daylight), [daylight]);
-  // Every compilation polls the surf program too, so it is released like a
+  // One shallows material for every Landmark: they all read the same swell, and
+  // one program keeps the shoreline inside the scene's draw and program budgets.
+  const shallowsMaterial = useMemo(() => createShallowsMaterial(daylight), [daylight]);
+  // Likewise one material for everything that stands on the islands. Low draws
+  // none of it and never requests the file it comes from.
+  const featureMaterial = useMemo(() => new MeshStandardMaterial({ vertexColors: true, roughness: 0.9, metalness: 0, envMapIntensity: 0.3 }), []);
+  const features = useLandmarkFeatures(props.quality.tier === "low" ? null : props.configuration.features);
+  // Every compilation polls these programs too, so they are released like a
   // retired water material: only once no compilation is still in flight.
   useEffect(() => {
     const retiring = retired.current;
-    retiring.delete(surfMaterial);
+    retiring.delete(shallowsMaterial);
+    retiring.delete(featureMaterial);
     return () => {
-      retiring.add(surfMaterial);
+      retiring.add(shallowsMaterial);
+      retiring.add(featureMaterial);
       queueMicrotask(releaseRetired);
     };
-  }, [surfMaterial]);
+  }, [shallowsMaterial, featureMaterial]);
 
   useLayoutEffect(() => {
     if (props.quality.tier === "low") return;
@@ -329,11 +336,13 @@ function SailableScene(props: RuntimeProps) {
       const waveStrength = props.reducedMotion ? CALM_WAVE_STRENGTH : 1;
       material.uniforms.waveStrength.value = waveStrength;
       material.uniforms.time.value = elapsed.current;
-      // The surf line shares the ocean's clock, so its band never drifts out of
-      // the swell it sits on. Reduced motion holds the sets still.
-      surfMaterial.uniforms.time.value = elapsed.current;
-      surfMaterial.uniforms.waveStrength.value = waveStrength;
-      surfMaterial.uniforms.motion.value = props.reducedMotion ? 0 : 1;
+      // The shallows share the ocean's clock and its grid, so the band never
+      // drifts out of the water it lies on. Reduced motion holds the surf still.
+      shallowsMaterial.uniforms.time.value = elapsed.current;
+      shallowsMaterial.uniforms.waveStrength.value = waveStrength;
+      shallowsMaterial.uniforms.motion.value = props.reducedMotion ? 0 : 1;
+      shallowsMaterial.uniforms.vessel.value.set(pose.position.x, pose.position.z);
+      shallowsMaterial.uniforms.oceanCell.value = OCEAN_SIZE / qualityEnvelope[props.quality.tier].segments;
       material.uniforms.vessel.value.set(pose.position.x, pose.position.z);
       material.uniforms.heading.value = pose.heading;
       material.uniforms.wakeDetail.value = qualityEnvelope[props.quality.tier].wake;
@@ -439,15 +448,18 @@ function SailableScene(props: RuntimeProps) {
       <hemisphereLight args={[daylight.white, daylight.deep, .65]} />
       <directionalLight position={oceanSunPosition} intensity={3.1} color={daylight.white} />
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={material} onBeforeRender={() => { oceanDraws.current++; }}>
-        <planeGeometry args={[1200, 1200, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
+        <planeGeometry args={[OCEAN_SIZE, OCEAN_SIZE, qualityEnvelope[props.quality.tier].segments, qualityEnvelope[props.quality.tier].segments]} />
       </mesh>
       <group ref={vesselGroup}><primitive object={vesselScene} /></group>
       {props.configuration.stops.map((stop) => stop.landmark ? (
         <StopLandmark
           key={stop.id}
+          id={stop.id}
           url={props.configuration.landmarks[stop.id].variants[props.quality.tier === "low" ? "low" : "balanced"].url}
           position={stop.landmark}
-          surf={surfMaterial}
+          shallows={shallowsMaterial}
+          features={features}
+          featureMaterial={featureMaterial}
         />
       ) : null)}
     </>

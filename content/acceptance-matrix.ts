@@ -205,7 +205,7 @@ export const acceptanceMatrix: AcceptanceRow[] = [
     criterion: "Production transfer and actual renderer counts for the Ship, the Landmarks, and the water stay within the approved budgets at Balanced and Low.",
     method: "The production gate measures gzip-conservative transfer and renderer draws, triangles, and retained targets; unit tests inspect the shipped Ship and Landmark GLBs; the daylight suite compiles every tier with a Landmark visible.",
     evidence: "The production budget report, local diagnostics, and evidence records.",
-    threshold: "Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤500 KiB; all authored visuals ≤750 KiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles and 76 KiB (Balanced) or ≤1,300 and 28 KiB (Low), two draws, no textures. A missing measurement fails.",
+    threshold: "Route JS ≤200 KiB; lazy 3D JS ≤350 KiB; minimum sailable ≤1.5 MiB; complete first visit ≤5 MiB; minimum-sailable authored visuals ≤530 KiB; all authored visuals ≤780 KiB; fonts ≤160 KiB; Balanced <100 draws and <150,000 triangles with one ocean draw and ≤1 retained target; Low retains no target; Ship ≤12,000 triangles and 250 KiB (Balanced), ≤4,000 and 120 KiB (Low); each Landmark ≤4,400 triangles, 76 KiB and three draws (Balanced) or ≤1,300, 28 KiB and two draws (Low), no textures; the shared Feature file ≤30 KiB, with ≤160 instances and ≤3,000 triangles standing on a Landmark, and none at Low. A missing measurement fails.",
     waivable: false,
     checks: ["ci/unit-tests", "e2e/production/production-assets", "e2e/chromium/ocean-daylight"],
     captures: [],
@@ -276,7 +276,7 @@ export const acceptanceMatrix: AcceptanceRow[] = [
     checklist: [
       "Ocean ground is navy to near-black; type is white; coral appears only as the single accent and never carries meaning alone.",
       "Headlines use Manrope and labels Geist Mono; nothing falls back to a system font once fonts load.",
-      "The camera looks almost straight down, north up, with the Ship left of centre on landscape and above centre on portrait.",
+      "The camera looks almost straight down, north up, with the Ship left of and below centre on landscape and above centre on portrait.",
       "Only the logo, sound toggle, “Capítulos”, “Modo leitura”, and the current Stop Card stand over the ocean.",
       "Sheets and the editorial page share the white editorial language: ink type, grey hairlines, mono labels, coral dots.",
     ],
@@ -294,7 +294,7 @@ export const acceptanceMatrix: AcceptanceRow[] = [
     captures: desktopAndPhone,
     checklist: [
       "Fernando de Noronha shows its volcanic peak; Boipeba a low, forested island; Abrolhos a low archipelago; Ilha Grande a mountainous island.",
-      "Each island's surf line meets the moving water with no gap, flicker, or seam.",
+      "Each island's shallows and surf line meet the moving water with no gap, flicker, or seam.",
       "No Stop carries a floating label, beacon, or light marker.",
       "The Del Mar reads as a detailed expedition vessel at Balanced (desktop) and Low (phone).",
       "The water keeps its navy daylight colour, whitecaps (Balanced), glints, and wake; under reduced motion the waves calm and the hull stays level.",

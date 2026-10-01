@@ -203,15 +203,19 @@ and the reduced-quality mobile view.
 
 ## Navy daylight and shoreline contract
 
-`lib/ocean-daylight.ts` reads `--ocean-950` and `--ocean-050` from the Canvas's
-inherited CSS tokens once on mount. Three converts these sRGB colours to linear
-light. The water body, crest scattering, whitecaps, wake, surf, background,
-hemisphere light, directional light, and local sky environment derive their
-colours from that pair. One high sun at `[-25, 88, -40]` supplies the directional
+`lib/ocean-daylight.ts` reads `--ocean-950`, `--ocean-050` and `--shallows-400`
+from the Canvas's inherited CSS tokens once on mount. Three converts these sRGB
+colours to linear light. The water body, crest scattering, whitecaps, wake,
+surf, background, hemisphere light, directional light, and local sky environment
+derive their colours from the first pair. The third is the one hue the pair
+cannot make: the turquoise of the shallows a Landmark stands in
+([#67](https://github.com/danielluis07/ocean-drive/issues/67)). Only the
+shallows band uses it, and the band falls off from it to the navy water body,
+so open water keeps the navy daylight look everywhere else. One high sun at `[-25, 88, -40]` supplies the directional
 light, analytic glints, and environment highlight throughout Stops 00–04.
 There are no per-Stop lighting changes. The scene fog and shader haze share the
-navy colour and the 140–420 world-unit distance range; the water and surf use a
-smooth haze transition. Baseline shader recovery uses the same navy body and haze.
+navy colour and the 140–420 world-unit distance range; the water and the
+shallows use a smooth haze transition. Baseline shader recovery uses the same navy body and haze.
 
 High/Balanced wind whitecaps use the existing ripple slopes and foam noise,
 concentrating broken white flecks on steep swell crests even when the Ship rests.
@@ -233,18 +237,34 @@ For a Landmark or another mesh that must meet the water:
    Call `swell(world.xz, height, slope)` after transforming to world coordinates,
    then add `height` to world Y. Do not scale the returned height a second time.
    CPU buoyancy uses `sampleOceanHeight(x, z, time, waveStrength)`.
-2. `createSurfMaterial(daylight)` in `lib/landmark-surf.ts` is the ready-made
-   shoreline implementation. Its flat band has UV `u` in world-unit arc length
-   along the shore, and `v` from zero at the coast to one at the outer edge.
-   The band adds a 0.03 world-unit clearance over the displaced surface.
-3. Use `oceanDaylightUniforms(daylight)` and `oceanDaylightShader` for the shared
+2. The swell is the water's shape, not the surface it draws. The water is a grid
+   squeezed toward the Ship, flat between its vertices, and on a coarse grid
+   (Low, or far from the Ship) those flat triangles leave the swell by more than
+   a few hundredths of a world unit. A mesh that lies on the water over any
+   width therefore takes its **depth** from the drawn surface: include
+   `oceanSheetShader` in its fragment shader, pass the ocean's `vessel` and
+   `oceanCell` (`OCEAN_SIZE` over the tier's segments), and write
+   `gl_FragDepth` from `oceanSheet(world.xz)` plus a small clearance.
+   `sampleOceanSheet` is the same function on the CPU, and
+   `tests/ocean-surface.test.ts` holds it to the water's own triangles.
+3. `createShallowsMaterial(daylight)` in `lib/landmark-surf.ts` is the ready-made
+   shoreline implementation: the shallows band, with the surf line on its
+   shoreward side. Its flat sheet has UVs that both measure the distance out
+   from the waterline, `u` in widths of the surf line and `v` in widths of the
+   shallows, from zero at the waterline to one where each ends. It is
+   turquoise (`oceanShallows`) against the land and falls off to the navy water
+   body and to nothing at `v = 1`, so the band has no rim. It rides 0.04 world
+   units above the drawn surface. The falloff is authored, not surveyed: no
+   depth data is recorded.
+4. Use `oceanDaylightUniforms(daylight)` and `oceanDaylightShader` for the shared
    linear-light colours and `oceanHaze(colour, worldPosition)`. Apply Three's
    tone-mapping and colour-space chunks once at fragment output.
-4. Share one surf material across Landmarks, draw it after the opaque ocean
-   (`renderOrder = 1`), enable transparency, and disable depth writes. The surf
-   adds one draw per visible island and no render target. Update its clock and
-   strength with the ocean; set its `motion` uniform to zero for reduced motion.
-   The band works at every tier and survives decorative-water shader fallback.
+5. Share one shallows material across Landmarks, draw it after the opaque ocean
+   (`renderOrder = 1`), enable transparency, and disable depth writes. The band
+   adds one draw per visible island and no render target. Update its clock,
+   strength, `vessel` and `oceanCell` with the ocean; set its `motion` uniform
+   to zero for reduced motion, which holds the surf still. The band works at
+   every tier and survives decorative-water shader fallback.
 
 `tests/browser/ocean-daylight.e2e.ts` compiles and draws all three tiers with a
 Landmark visible, reads the actual GPU uniforms to check the shared foam colour,

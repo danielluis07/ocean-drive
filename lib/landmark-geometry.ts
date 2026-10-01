@@ -70,7 +70,8 @@ export function fitToSpan(rings: PlanarPoint[][], span: number) {
 }
 
 // One Landmark's outlines in Voyage Waters units, with the inverse that takes a
-// world point back to the degrees its recorded elevation grid is indexed by.
+// world point back to the degrees its recorded elevation grid is indexed by and
+// the same projection for a single coordinate, which places a named Feature.
 export function projectLandmark(rings: Ring[], span: number) {
   const projected = projectToMetres(rings);
   const fitted = fitToSpan(projected.rings, span);
@@ -78,6 +79,10 @@ export function projectLandmark(rings: Ring[], span: number) {
     rings: fitted.rings,
     // World units per metre of real ground.
     scale: fitted.scale,
+    toWorld: ({ lon, lat }: { lon: number; lat: number }): PlanarPoint => ({
+      x: ((lon - projected.origin.lon) * projected.perLon - fitted.centre.x) * fitted.scale,
+      z: (-(lat - projected.origin.lat) * METRES_PER_DEGREE - fitted.centre.z) * fitted.scale,
+    }),
     toDegrees: (point: PlanarPoint) => ({
       lon: projected.origin.lon + (point.x / fitted.scale + fitted.centre.x) / projected.perLon,
       lat: projected.origin.lat - (point.z / fitted.scale + fitted.centre.z) / METRES_PER_DEGREE,
@@ -272,6 +277,100 @@ export function islandSurface(rings: PlanarPoint[][], spacing: number) {
   return { points, shoreCount, outlines, triangles };
 }
 
+// The water around a Landmark, out to `reach` from its shore, as one sheet: the
+// shallows band. Its points are a line tucked under the land's edge, a second
+// line where the surf ends, and a staggered grid over the water beyond,
+// triangulated together. Every point carries its true distance from the
+// nearest shore of any of the Landmark's islands, so neighbouring islets share
+// one band instead of laying a band each over the other's, and a cove or a
+// sliver of rock cannot fold it the way a ring pushed outward can.
+//
+// The sheet runs one grid step past `reach`, where the band has already faded
+// out, so its ragged outer edge is never seen.
+export function shoreBand(
+  rings: PlanarPoint[][],
+  { tuck, surf, reach, shore, field }: {
+    // World units the inner edge sits inside the shoreline.
+    tuck: number;
+    // World units from the shore to the end of the surf line.
+    surf: number;
+    // World units from the shore to the band's outer edge.
+    reach: number;
+    // Spacing of the points along the shore, and of the grid beyond the surf.
+    shore: number;
+    field: number;
+  },
+) {
+  const points: PlanarPoint[] = [];
+  const distance: number[] = [];
+  // Points closer than this add slivers, not shape.
+  const crowded = Math.min(shore, surf) * 0.3;
+  const add = (point: PlanarPoint, from: number) => {
+    if (points.some((other) => Math.hypot(other.x - point.x, other.z - point.z) < crowded)) return;
+    points.push(point);
+    distance.push(from);
+  };
+  const walks = rings.map((ring) => {
+    const bounds = boundsOf([ring]);
+    const across = Math.min(bounds.maxX - bounds.minX, bounds.maxZ - bounds.minZ);
+    // The band cannot follow a cove narrower than its surf line, so the shore
+    // it is laid along is simplified — but never past what the island itself is.
+    const simple = simplifyRing(ring, Math.min(surf * 0.45, across * 0.08));
+    const perimeter = simple.reduce((sum, point, index) => {
+      const next = simple[(index + 1) % simple.length];
+      return sum + Math.hypot(next.x - point.x, next.z - point.z);
+    }, 0);
+    // Enough of a walk to carry the band's shape around even a small island.
+    return resampleRing(simple, Math.min(shore, perimeter / 28));
+  });
+  // The inner edge has to lie under the land all the way round, or open water
+  // shows between the band and the shore. The walk follows a simplified shore,
+  // so each of its points moves inland until the real one is `tuck` behind it —
+  // or, on a rock too slight for that, to the deepest ground on its way across.
+  const inland = (point: PlanarPoint) => (insideRings(point, rings) ? distanceToRings(point, rings) : 0);
+  for (const walk of walks) {
+    for (const [index, point] of walk.entries()) {
+      const normal = averagedNormal(walk, index);
+      let deepest = point;
+      for (let step = -tuck; step <= tuck * 8; step += tuck / 4) {
+        const candidate = { x: point.x - normal.x * step, z: point.z - normal.z * step };
+        if (inland(candidate) > inland(deepest)) deepest = candidate;
+        if (inland(deepest) >= tuck) break;
+      }
+      add(deepest, -tuck);
+    }
+  }
+  for (const walk of walks) {
+    for (const point of offsetRing(walk, surf)) {
+      const from = distanceToRings(point, rings);
+      if (!insideRings(point, rings) && from > surf * 0.5) add(point, from);
+    }
+  }
+  const bounds = boundsOf(rings);
+  const margin = reach + field;
+  for (let row = 0; bounds.minZ - margin + row * field * 0.866 <= bounds.maxZ + margin; row++) {
+    const z = bounds.minZ - margin + row * field * 0.866;
+    for (let column = 0; bounds.minX - margin + column * field <= bounds.maxX + margin; column++) {
+      const point = { x: bounds.minX - margin + column * field + (row % 2 ? field / 2 : 0), z };
+      if (insideRings(point, rings)) continue;
+      const from = distanceToRings(point, rings);
+      if (from > surf * 1.15 && from <= margin) add(point, from);
+    }
+  }
+  const triangles = triangulate(points).filter((triangle) => {
+    // Nothing of a triangle wholly past the band's edge is ever drawn.
+    if (triangle.every((vertex) => distance[vertex] >= reach)) return false;
+    // The sheet stops under the land's edge rather than spanning the island:
+    // a triangle stays only if some of it lies over water or over the shore,
+    // sampled at its centre and toward each corner so a cove is not missed.
+    const [a, b, c] = triangle.map((vertex) => points[vertex]);
+    return [[1, 1, 1], [4, 1, 1], [1, 4, 1], [1, 1, 4]].some(([u, v, w]) =>
+      inland({ x: (a.x * u + b.x * v + c.x * w) / (u + v + w), z: (a.z * u + b.z * v + c.z * w) / (u + v + w) }) < tuck * 0.6,
+    );
+  });
+  return { points, distance, triangles };
+}
+
 // Round a closed ring off, keeping it closed. Each pass moves every vertex a
 // share of the way toward the midpoint of its neighbours, then (Taubin's
 // method) a slightly larger share back out, which rounds away spikes without
@@ -291,7 +390,7 @@ export function smoothRing(ring: PlanarPoint[], passes: number): PlanarPoint[] {
   return smoothed;
 }
 
-// Push a closed ring outward for the band of water the surf line occupies.
+// Push a closed ring outward for the line the surf ends on.
 // Island rings run counter-clockwise on the map, so the outward normal of an
 // edge is its direction turned to the right. The band's edge is where the
 // water lies `distance` from the shore: each point walks out along its normal,

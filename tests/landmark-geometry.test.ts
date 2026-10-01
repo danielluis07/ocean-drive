@@ -8,6 +8,7 @@ import {
   projectLandmark,
   resampleRing,
   ringArea,
+  shoreBand,
   simplifyRing,
   triangulate,
   type PlanarPoint,
@@ -124,6 +125,62 @@ describe("Landmark triangulation", () => {
       expect(insideRings(point, [cove])).toBe(false);
       expect(distanceToRings(point, [cove])).toBeGreaterThan(1);
     }
+  });
+});
+
+describe("Landmark shallows band", () => {
+  // The cove island and a rock a little way off its east shore, close enough
+  // that their shallows meet.
+  const rock: PlanarPoint[] = [
+    { x: 13, z: -1 },
+    { x: 14, z: -1 },
+    { x: 14, z: -2 },
+    { x: 13, z: -2 },
+  ];
+  const islands = [cove, rock];
+  const band = shoreBand(islands, { tuck: 0.4, surf: 1, reach: 3, shore: 0.9, field: 1.4 });
+  const inside = (point: PlanarPoint, [a, b, c]: PlanarPoint[]) => {
+    const side = (p: PlanarPoint, q: PlanarPoint) => (q.x - p.x) * (point.z - p.z) - (q.z - p.z) * (point.x - p.x);
+    const [u, v, w] = [side(a, b), side(b, c), side(c, a)];
+    return (u >= 0 && v >= 0 && w >= 0) || (u <= 0 && v <= 0 && w <= 0);
+  };
+  const covering = (point: PlanarPoint) =>
+    band.triangles.filter((triangle) => inside(point, triangle.map((vertex) => band.points[vertex]))).length;
+
+  test("every point carries its true distance from the nearest shore of any island", () => {
+    for (const [index, point] of band.points.entries()) {
+      if (band.distance[index] < 0) {
+        // The inner edge lies under the land, where the water meets it.
+        expect(insideRings(point, islands)).toBe(true);
+        expect(distanceToRings(point, islands)).toBeLessThan(0.6);
+      } else {
+        expect(insideRings(point, islands)).toBe(false);
+        expect(band.distance[index]).toBeCloseTo(distanceToRings(point, islands), 9);
+      }
+    }
+    expect(Math.max(...band.distance)).toBeGreaterThan(3);
+  });
+
+  test("the water out to the band's reach is covered once, coves and channels included", () => {
+    // In the cove, off a headland, in the channel between the islands, and
+    // beyond the rock: one sheet, with no band laid over another's.
+    for (const point of [{ x: 7, z: -7 }, { x: 5, z: -5 }, { x: 11.5, z: -1.5 }, { x: 15.5, z: -1.3 }, { x: -1.7, z: 1.2 }, { x: 2.1, z: -12.3 }]) {
+      expect(insideRings(point, islands)).toBe(false);
+      expect(covering(point)).toBe(1);
+    }
+    for (let step = 0; step < 200; step++) {
+      const point = { x: -3 + ((step * 7.31) % 20), z: -13 + ((step * 3.77) % 16) };
+      if (insideRings(point, islands) || distanceToRings(point, islands) > 2.7) continue;
+      expect(covering(point)).toBe(1);
+    }
+  });
+
+  test("the sheet stops under the land's edge and past its reach", () => {
+    // Deep inland, and well out to sea.
+    expect(covering({ x: 2, z: -3 })).toBe(0);
+    expect(covering({ x: 7, z: -2 })).toBe(0);
+    expect(covering({ x: 22, z: -9 })).toBe(0);
+    for (const triangle of band.triangles) expect(triangle.some((vertex) => band.distance[vertex] < 3)).toBe(true);
   });
 });
 

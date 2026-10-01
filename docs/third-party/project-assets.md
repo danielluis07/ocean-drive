@@ -12,10 +12,17 @@ water, wake and lighting are repository-authored procedural code. These identity
 and procedural assets contain no imported artwork. They are project source contributions, not commissioned external
 artwork; there is no third-party artwork transfer agreement to invent.
 
-Island surface grain and the surf material are also project-authored procedural
-code in `lib/landmark-material.ts` and `lib/landmark-surf.ts`. They use no imported
-textures. The underlying island geometry uses the separately attributed open
-geodata documented in `open-geodata.md`.
+Island surface grain and the shallows material are also project-authored
+procedural code in `lib/landmark-material.ts` and `lib/landmark-surf.ts`. They
+use no imported textures. The underlying island geometry uses the separately
+attributed open geodata documented in `open-geodata.md`.
+
+The models in `public/models/landmark-features.v1.glb` are generated in code by
+`scripts/landmark-feature-models.ts`: project-authored, vertex-coloured, with no
+imported mesh or texture. Where each instance stands is computed by
+`scripts/generate-landmarks.ts` from terrain rules and configured coordinates
+over that same open geodata. The one model today is a placeholder marker that
+depicts no real structure.
 
 The project owner's instruction to implement issue #29 authorizes creating and
 modifying these repository assets for the Live Experience. The retained sources

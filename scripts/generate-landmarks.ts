@@ -5,24 +5,34 @@
 // Each Landmark is one glTF with two meshes. `island` is the land itself,
 // triangulated to follow its real coastline, lifted by its real elevation and
 // shaded by height and slope. `surf` is the band of water around the shoreline
-// the surf line is drawn on; the runtime gives it the ocean's own swell.
+// that its shallows and its surf line are drawn on; the runtime gives it the
+// ocean's own swell.
+//
+// What stands on the islands ships apart from them, once: the shared Feature
+// file holds every model generated in `scripts/landmark-feature-models.ts` and,
+// per Landmark, where the build placed each instance.
 import { mkdir } from "node:fs/promises";
 import {
   BufferAttribute,
   BufferGeometry,
+  DoubleSide,
   Group,
   Mesh,
+  MeshBasicMaterial,
   MeshStandardMaterial,
+  Raycaster,
   Vector3,
 } from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
-import { landmarkBudget, landmarkSources, type LandmarkSource } from "@/content/landmark-sources";
+import { featureFile, featureModels, landmarkBudget, landmarkSources, type LandmarkSource } from "@/content/landmark-sources";
+import { encodePlacements, scatterSites, type Placement, type Terrain } from "@/lib/landmark-features";
+import { featureModelBuilders } from "@/scripts/landmark-feature-models";
 import {
   distanceToRings,
+  insideRings,
   islandSurface,
-  offsetRing,
   projectLandmark,
-  resampleRing,
+  shoreBand,
   simplifyRing,
   boundsOf,
   type PlanarPoint,
@@ -58,6 +68,10 @@ const SHORE_DIP = 0.6;
 const SKIRT_DEPTH = 3.2;
 // World units over which the land climbs out of the water behind its shoreline.
 const SHORE_RAMP = 0.5;
+// World units inside the shoreline at which the land climbs through the water:
+// where the shallows band's distances are measured from, so the wash breaks on
+// the land's wet edge.
+const WATERLINE = 0.35;
 // Compressed lowlands must clear the 0.395-unit swell envelope. This display
 // offset preserves their recorded relief instead of letting the sea erase it.
 const LOWLAND_CLEARANCE = 0.44;
@@ -89,12 +103,16 @@ function polygonArea(rings: PlanarPoint[][]) {
   );
 }
 
-function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: number) {
-  const elevation: ElevationGrid = {
+function elevationOf(record: LandmarkRecord): ElevationGrid {
+  return {
     bounds: record.elevation.bounds,
     grid: record.elevation.grid,
     metres: new Int16Array(Buffer.from(record.elevation.metres, "base64").buffer.slice(0)),
   };
+}
+
+function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: number) {
+  const elevation = elevationOf(record);
   const { rings, toDegrees, scale } = projectLandmark(
     record.coastline.islands.map((island) => island.ring),
     source.span,
@@ -182,62 +200,96 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   };
 }
 
-// The surf band: a ring of water hugging the shoreline, carrying the distance
-// from shore in its UVs so the runtime shader can break the foam on it.
-function buildSurf(outlines: PlanarPoint[][], width: number, spacing: number) {
-  const positions: number[] = [];
-  const uvs: number[] = [];
-  const indices: number[] = [];
-  // The inner ring tucks a little under the land's edge; the outer two carry the
-  // band out across the water, and `v` runs 0 at the shore to 1 at its edge.
-  const bands: [number, number][] = [[-0.35, 0], [width * 0.38, 0.38], [width, 1]];
-  let triangles = 0;
-  for (const outline of outlines) {
-    const island = boundsOf([outline]);
-    const across = Math.min(island.maxX - island.minX, island.maxZ - island.minZ);
-    // A band cannot follow a cove narrower than itself, so the shoreline it is
-    // laid along is simplified — but never past what the island itself is.
-    const ring = simplifyRing(outline, Math.min(width * 0.45, across * 0.08));
-    // Enough of a walk to carry the band's shape around even a small island.
-    const perimeter = ring.reduce((sum, point, index) => {
-      const next = ring[(index + 1) % ring.length];
-      return sum + Math.hypot(next.x - point.x, next.z - point.z);
-    }, 0);
-    const walk = resampleRing(ring, Math.min(Math.max(spacing * 1.6, width * 0.85), perimeter / 28));
-    if (walk.length < 3) continue;
-    const first = positions.length / 3;
-    // Arc length around the shore, so the foam keeps one scale on every island.
-    let travelled = 0;
-    const along = walk.map((point, index) => {
-      if (index > 0) travelled += Math.hypot(point.x - walk[index - 1].x, point.z - walk[index - 1].z);
-      return travelled;
-    });
-    for (const [offset, v] of bands) {
-      const pushed = offsetRing(walk, offset);
-      for (const [index, point] of pushed.entries()) {
-        positions.push(point.x, 0, point.z);
-        uvs.push(along[index], v);
-      }
-    }
-    for (let band = 0; band < bands.length - 1; band++) {
-      for (let index = 0; index < walk.length; index++) {
-        const next = (index + 1) % walk.length;
-        const inner = first + band * walk.length;
-        const outer = inner + walk.length;
-        indices.push(inner + index, inner + next, outer + index, inner + next, outer + next, outer + index);
-        triangles += 2;
-      }
-    }
+// The shallows band: the water around the shoreline, carrying the distance from
+// shore in its UVs so the runtime shader can fall off from turquoise to navy
+// across it and break the surf line on its shoreward side.
+function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacing: number, tier: Tier) {
+  const { surfWidth, shallowsWidth } = source;
+  const band = shoreBand(outlines, {
+    // A coarser surface comes up through the water further inland, so the band
+    // reaches further under it: no swell opens a gap between the two.
+    tuck: Math.max(WATERLINE + 0.1, spacing * 0.8),
+    surf: surfWidth,
+    reach: shallowsWidth,
+    shore: Math.max(spacing * 1.6, surfWidth * 0.85),
+    // Low keeps its triangles for the land: the falloff is smooth enough to
+    // cross the band in a single step.
+    field: Math.max(spacing * 2, shallowsWidth * (tier === "low" ? 0.9 : 0.5)),
+  });
+  const positions = new Float32Array(band.points.length * 3);
+  const uvs = new Float32Array(band.points.length * 2);
+  for (const [index, point] of band.points.entries()) {
+    positions.set([point.x, 0, point.z], index * 3);
+    // Both measure out from the waterline: `u` in surf widths, `v` in shallows
+    // widths, so each reaches 1 where its own line ends. Under the land they
+    // run negative, and the shader holds them at 0.
+    const out = band.distance[index] + WATERLINE;
+    uvs.set([out / (surfWidth + WATERLINE), out / (shallowsWidth + WATERLINE)], index * 2);
   }
   const geometry = new BufferGeometry();
-  geometry.setAttribute("position", new BufferAttribute(new Float32Array(positions), 3));
-  geometry.setAttribute("uv", new BufferAttribute(new Float32Array(uvs), 2));
-  geometry.setIndex(indices);
-  return { geometry, triangles };
+  geometry.setAttribute("position", new BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new BufferAttribute(uvs, 2));
+  geometry.setIndex(band.triangles.flatMap(([a, b, c]) => [a, c, b]));
+  return { geometry, triangles: band.triangles.length };
+}
+
+const models = featureModels.map((id) => ({ id, geometry: featureModelBuilders[id]() }));
+const modelTriangles = (index: number) => models[index].geometry.getAttribute("position").count / 3;
+
+// Everything that stands on one Landmark, on the Balanced surface: instances
+// scattered by terrain rules, then the named Features at their coordinates.
+function placeFeatures(source: LandmarkSource, record: LandmarkRecord, island: ReturnType<typeof buildIsland>) {
+  const elevation = elevationOf(record);
+  const { toWorld, toDegrees, scale } = projectLandmark(record.coastline.islands.map((entry) => entry.ring), source.span);
+  const metresAt = (point: PlanarPoint) => {
+    const { lon, lat } = toDegrees(point);
+    return Math.max(0, sampleElevation(elevation, lon, lat));
+  };
+  // The ground's real steepness, from the recorded elevation either side of a
+  // point rather than from the mesh, whose relief is exaggerated.
+  const terrainAt = (point: PlanarPoint): Terrain => {
+    const step = 0.2;
+    const rise = Math.hypot(
+      metresAt({ x: point.x + step, z: point.z }) - metresAt({ x: point.x - step, z: point.z }),
+      metresAt({ x: point.x, z: point.z + step }) - metresAt({ x: point.x, z: point.z - step }),
+    ) / ((2 * step) / scale);
+    return { metres: metresAt(point), slope: rise / Math.hypot(1, rise), inland: distanceToRings(point, island.outlines) };
+  };
+  const surface = new Mesh(island.geometry, new MeshBasicMaterial({ side: DoubleSide }));
+  island.geometry.computeBoundingBox();
+  const top = island.geometry.boundingBox!.max.y + 1;
+  const ray = new Raycaster();
+  const down = new Vector3(0, -1, 0);
+  const standing = (point: PlanarPoint): [number, number, number] | null => {
+    ray.set(new Vector3(point.x, top, point.z), down);
+    const hit = ray.intersectObject(surface, false)[0];
+    return hit ? [point.x, hit.point.y, point.z] : null;
+  };
+
+  const placements: Placement[] = [];
+  for (const [seed, rule] of (source.scatter ?? []).entries()) {
+    for (const site of scatterSites(island.outlines, rule, terrainAt, seed * 4)) {
+      const position = standing(site);
+      if (position) placements.push({ model: featureModels.indexOf(rule.model), position, heading: site.heading, scale: site.scale });
+    }
+  }
+  for (const feature of source.features ?? []) {
+    const point = toWorld(feature);
+    const position = insideRings(point, island.outlines) ? standing(point) : null;
+    if (!position) throw new Error(`${feature.name} does not stand on ${source.id}: check its coordinates`);
+    placements.push({ model: featureModels.indexOf(feature.model), position, heading: feature.heading ?? 0, scale: feature.scale });
+  }
+  surface.material.dispose();
+  const triangles = placements.reduce((total, placement) => total + modelTriangles(placement.model), 0);
+  const budget = landmarkBudget.balanced;
+  if (placements.length > budget.instances || triangles > budget.featureTriangles)
+    throw new Error(`${source.id} exceeds its Feature budget: ${placements.length} instances, ${triangles} triangles`);
+  return { record: encodePlacements(placements), instances: placements.length, triangles };
 }
 
 await mkdir("public/models", { recursive: true });
 const manifest: Record<string, unknown>[] = [];
+const placed: Record<string, number[]> = {};
 for (const source of landmarkSources) {
   const record: LandmarkRecord = await Bun.file(`data/landmarks/${source.id}.json`).json();
   const variants: Record<string, unknown> = {};
@@ -245,19 +297,20 @@ for (const source of landmarkSources) {
   let radius = 0;
   let islands = 0;
   let scale = 0;
+  let features = { instances: 0, triangles: 0 };
   let balancedBake: { geometry: BufferGeometry; colours: Uint8Array } | undefined;
   for (const tier of ["balanced", "low"] satisfies Tier[]) {
     const budget = landmarkBudget[tier];
-    // The surface, its skirt and its surf line all follow from one sample
+    // The surface, its skirt and its shallows all follow from one sample
     // spacing, so the budget is met by drawing the island more coarsely until
     // it fits rather than by hand-tuning each island.
     let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * budget.triangles * 0.68));
     let island = buildIsland(source, record, spacing);
-    let surf = buildSurf(island.outlines, source.surfWidth, spacing);
+    let surf = buildShallows(island.outlines, source, spacing, tier);
     for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {
       spacing *= Math.sqrt((island.triangles + surf.triangles) / (budget.triangles * 0.92));
       island = buildIsland(source, record, spacing);
-      surf = buildSurf(island.outlines, source.surfWidth, spacing);
+      surf = buildShallows(island.outlines, source, spacing, tier);
     }
 
     if (tier === "balanced") {
@@ -268,12 +321,16 @@ for (const source of landmarkSources) {
         }
       }
       balancedBake = { geometry: island.geometry, colours: island.colours };
+      // Instances stand on the Balanced surface, the only one they are drawn on.
+      const standing = placeFeatures(source, record, island);
+      if (standing.instances) placed[source.id] = standing.record;
+      features = { instances: standing.instances, triangles: standing.triangles };
     } else {
       if (!balancedBake) throw new Error("Balanced must be baked before Low");
       island.colours = transferColours(balancedBake.geometry, balancedBake.colours, island.geometry);
     }
 
-    // One mesh for the land and its skirt, one for the surf band.
+    // One mesh for the land and its skirt, one for the shallows band.
     const land = island.geometry;
     const landPositions = land.getAttribute("position").array as Float32Array;
     const landIndices = Array.from(land.getIndex()!.array);
@@ -299,6 +356,7 @@ for (const source of landmarkSources) {
       place: source.place,
       span: source.span,
       surfWidth: source.surfWidth,
+      shallowsWidth: source.shallowsWidth,
       master: "scripts/generate-landmarks.ts",
       sources: "data/landmarks",
     };
@@ -307,9 +365,9 @@ for (const source of landmarkSources) {
       new MeshStandardMaterial({ vertexColors: true, roughness: 0.92, metalness: 0 }),
     );
     shore.name = "island";
-    const foam = new Mesh(surf.geometry, new MeshStandardMaterial({ name: "surf" }));
-    foam.name = "surf";
-    landmark.add(shore, foam);
+    const shallows = new Mesh(surf.geometry, new MeshStandardMaterial({ name: "surf" }));
+    shallows.name = "surf";
+    landmark.add(shore, shallows);
 
     const glb = (await new GLTFExporter().parseAsync(landmark, { binary: true })) as ArrayBuffer;
     const url = `/models/landmark-${source.id}-${tier}.v1.glb`;
@@ -326,8 +384,8 @@ for (const source of landmarkSources) {
       const bounds = boundsOf(island.outlines);
       extent = { x: Number((size.x / 2).toFixed(3)), z: Number((size.z / 2).toFixed(3)) };
       // The Stop Card reads this as a square about the centre, so the larger
-      // half-extent is enough to hold the whole island; the surf beyond it is
-      // water the card may stand over.
+      // half-extent is enough to hold the whole island; the shallows beyond it
+      // are water the card may stand over.
       radius = Number(
         (Math.max(bounds.maxX - bounds.minX, bounds.maxZ - bounds.minZ) / 2 + 0.5).toFixed(3),
       );
@@ -335,8 +393,8 @@ for (const source of landmarkSources) {
       scale = island.summit;
     }
     console.log(
-      `${source.id} ${tier}: ${triangles} triangles, ${(glb.byteLength / 1024).toFixed(1)} KiB, ` +
-        `${island.outlines.length} outlines at ${spacing.toFixed(2)} units`,
+      `${source.id} ${tier}: ${triangles} triangles (${surf.triangles} in the shallows), ` +
+        `${(glb.byteLength / 1024).toFixed(1)} KiB, ${island.outlines.length} outlines at ${spacing.toFixed(2)} units`,
     );
   }
   manifest.push({
@@ -350,8 +408,45 @@ for (const source of landmarkSources) {
     islands,
     summitMetres: scale,
     surfWidth: source.surfWidth,
+    shallowsWidth: source.shallowsWidth,
+    // What stands on the Landmark at Balanced and High, expanded into one draw.
+    features,
     variants,
   });
 }
-await Bun.write("content/landmarks.json", JSON.stringify({ schema: 1, landmarks: manifest }, null, 2) + "\n");
+
+// The shared Feature file: each model once, and every Landmark's placements in
+// the record `lib/landmark-features.ts` reads back.
+const library = new Group();
+library.name = "Travessia Landmark Features";
+library.userData = { master: "scripts/generate-landmarks.ts", models: featureModels, placements: placed };
+const paint = new MeshStandardMaterial({ name: "features", vertexColors: true, roughness: 0.9, metalness: 0 });
+for (const model of models) {
+  const mesh = new Mesh(model.geometry, paint);
+  mesh.name = model.id;
+  library.add(mesh);
+}
+const featureGlb = (await new GLTFExporter().parseAsync(library, { binary: true })) as ArrayBuffer;
+if (featureGlb.byteLength > featureFile.bytes)
+  throw new Error(`The Feature file exceeds its budget: ${featureGlb.byteLength} bytes`);
+await Bun.write(`public${featureFile.url}`, featureGlb);
+const instances = manifest.reduce((total, landmark) => total + (landmark.features as { instances: number }).instances, 0);
+console.log(`Features: ${models.length} models, ${instances} instances, ${(featureGlb.byteLength / 1024).toFixed(1)} KiB`);
+
+await Bun.write(
+  "content/landmarks.json",
+  JSON.stringify(
+    {
+      schema: 2,
+      features: {
+        url: featureFile.url,
+        bytes: featureGlb.byteLength,
+        models: Object.fromEntries(models.map((model, index) => [model.id, { triangles: modelTriangles(index) }])),
+      },
+      landmarks: manifest,
+    },
+    null,
+    2,
+  ) + "\n",
+);
 console.log(`Recorded ${manifest.length} Landmarks in content/landmarks.json.`);

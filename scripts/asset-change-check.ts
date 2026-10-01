@@ -2,7 +2,7 @@ import { appendFileSync } from "node:fs";
 
 // Conservative: dependency/runtime changes can alter binary encoder output too.
 export function affectsGeneratedAssets(path: string) {
-  return /^(data\/(ship|landmarks)\/|public\/models\/|content\/(ship|landmark)[^/]*\.(ts|json)$|scripts\/(build-ship|generate-landmarks|asset-bake|ship-texture-bake|asset-change-check)\.ts$|lib\/landmark-(geometry|surface)\.ts$|package\.json$|bun\.lock$|tsconfig\.json$|\.github\/workflows\/)/.test(path);
+  return /^(data\/(ship|landmarks)\/|public\/models\/|content\/(ship|landmark)[^/]*\.(ts|json)$|scripts\/(build-ship|generate-landmarks|landmark-feature-models|asset-bake|ship-texture-bake|asset-change-check)\.ts$|lib\/landmark-(geometry|surface|features)\.ts$|package\.json$|bun\.lock$|tsconfig\.json$|\.github\/workflows\/)/.test(path);
 }
 
 if (import.meta.main) {

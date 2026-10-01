@@ -4,7 +4,7 @@ type Accessor = { count: number; min?: number[]; max?: number[] };
 type Gltf = {
   accessors: Accessor[];
   meshes: { primitives: { indices?: number; attributes: { POSITION: number }; mode?: number }[] }[];
-  nodes?: { name?: string; mesh?: number; children?: number[]; matrix?: number[]; translation?: number[]; rotation?: number[]; scale?: number[]; extras?: { forwardAxis?: string; origin?: string } }[];
+  nodes?: { name?: string; mesh?: number; children?: number[]; matrix?: number[]; translation?: number[]; rotation?: number[]; scale?: number[]; extras?: { forwardAxis?: string; origin?: string; models?: string[]; placements?: Record<string, number[]> } }[];
   scenes?: { nodes?: number[] }[];
   scene?: number;
   materials?: { alphaMode?: string }[];
@@ -27,6 +27,8 @@ export function inspectModel(buffer: ArrayBuffer) {
   let triangles = 0;
   // Three draws each primitive as its own mesh, so a primitive is one draw call.
   let draws = 0;
+  // Triangles per named part, for a file whose parts are drawn on their own.
+  const partTriangles: Record<string, number> = {};
   const visit = (index: number, parent: Matrix4) => {
     const node = gltf.nodes![index];
     const local = node.matrix ? new Matrix4().fromArray(node.matrix) : new Matrix4().compose(
@@ -39,7 +41,9 @@ export function inspectModel(buffer: ArrayBuffer) {
       if (primitive.mode !== undefined && primitive.mode !== 4) throw new Error("Model must use triangles");
       draws++;
       const positions = gltf.accessors[primitive.attributes.POSITION];
-      triangles += gltf.accessors[primitive.indices ?? primitive.attributes.POSITION].count / 3;
+      const count = gltf.accessors[primitive.indices ?? primitive.attributes.POSITION].count / 3;
+      triangles += count;
+      if (node.name) partTriangles[node.name] = (partTriangles[node.name] ?? 0) + count;
       // Quantized positions carry their decode scale on the node. Bounds must
       // describe what Three renders, including every instance in the active scene.
       for (let corner = 0; corner < 8; corner++) {
@@ -83,6 +87,8 @@ export function inspectModel(buffer: ArrayBuffer) {
     opaque: gltf.materials?.every((material) => !material.alphaMode || material.alphaMode === "OPAQUE") ?? false,
     textures: gltf.textures?.length ?? 0, imageSizes, animations: gltf.animations?.length ?? 0, skins: gltf.skins?.length ?? 0,
     placement: gltf.nodes?.find((node) => node.extras?.forwardAxis)?.extras,
+    // The shared Feature file's record of its models and where each stands.
+    partTriangles, features: gltf.nodes?.find((node) => node.extras?.placements)?.extras,
     externalResources: [...gltf.buffers ?? [], ...gltf.images ?? []].flatMap((resource) => resource.uri ? [resource.uri] : []),
   };
 }

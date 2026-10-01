@@ -13,15 +13,18 @@ export function readOceanDaylight(element: Element) {
   return createOceanDaylight(
     tokens.getPropertyValue("--ocean-950").trim(),
     tokens.getPropertyValue("--ocean-050").trim(),
+    tokens.getPropertyValue("--shallows-400").trim(),
   );
 }
 
-export function createOceanDaylight(navyToken: string, whiteToken: string) {
+export function createOceanDaylight(navyToken: string, whiteToken: string, shallowsToken: string) {
   const navy = new Color(navyToken);
   const white = new Color(whiteToken);
   return {
     background: navy,
     white,
+    // Sunlit water over pale sand, where a Landmark stands in its shallows.
+    shallows: new Color(shallowsToken),
     deep: navy.clone().multiplyScalar(2.6),
     crest: navy.clone().multiplyScalar(3),
     horizon: navy.clone().lerp(white, 0.26),
@@ -38,6 +41,7 @@ export function oceanDaylightUniforms(daylight: OceanDaylight) {
     oceanDeep: { value: daylight.deep },
     oceanCrest: { value: daylight.crest },
     oceanWhite: { value: daylight.white },
+    oceanShallows: { value: daylight.shallows },
     oceanHorizon: { value: daylight.horizon },
     oceanZenith: { value: daylight.zenith },
     oceanFog: { value: daylight.background },
@@ -50,6 +54,7 @@ export const oceanDaylightShader = `
   uniform vec3 oceanDeep;
   uniform vec3 oceanCrest;
   uniform vec3 oceanWhite;
+  uniform vec3 oceanShallows;
   uniform vec3 oceanHorizon;
   uniform vec3 oceanZenith;
   uniform vec3 oceanFog;

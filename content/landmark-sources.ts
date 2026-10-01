@@ -5,12 +5,43 @@
 // those records into the shipped meshes without touching the network.
 import type { StopId } from "@/content/editorial";
 import type { LandmarkPalette } from "@/lib/landmark-surface";
+import type { TerrainRange, TerrainRule } from "@/lib/landmark-features";
 
 export type GeographicBounds = {
   west: number;
   south: number;
   east: number;
   north: number;
+};
+
+// The models the build generates in code, in `scripts/landmark-feature-models.ts`,
+// and ships once in the shared Feature file for every Landmark to place.
+//
+// `placeholder` proves the mechanism and stands for no real structure: the
+// island issues replace it with their own models or remove it.
+export const featureModels = ["placeholder"] as const;
+export type FeatureModel = (typeof featureModels)[number];
+
+// Vegetation and other repeated models, placed wherever the terrain allows.
+export type LandmarkScatter = TerrainRule & {
+  model: FeatureModel;
+  // World units between candidate sites.
+  spacing: number;
+  // Smallest and largest instance, in multiples of the model's authored size.
+  scale: TerrainRange;
+};
+
+// A real, named place on the island, drawn larger than life at its own
+// coordinates. The build refuses a Feature that does not stand on the land.
+export type LandmarkFeature = {
+  name: string;
+  model: FeatureModel;
+  lon: number;
+  lat: number;
+  // Multiples of the model's authored size.
+  scale: number;
+  // Degrees clockwise from north the model's front faces.
+  heading?: number;
 };
 
 export type LandmarkSource = {
@@ -45,17 +76,31 @@ export type LandmarkSource = {
   beachWidth: number;
   // World units of water the surf line covers outside the shoreline.
   surfWidth: number;
+  // World units from the shoreline to where the shallows have deepened to the
+  // ocean's navy. An authored treatment: no depth data is recorded.
+  shallowsWidth: number;
+  // Instances scattered over the island by terrain rules. Balanced and High only.
+  scatter?: LandmarkScatter[];
+  // Named Features at their real coordinates. Balanced and High only.
+  features?: LandmarkFeature[];
   // How the island is shaded by height and slope.
   palette: LandmarkPalette;
 };
 
 // Triangles each quality tier may spend on one Landmark, shared between the
-// island surface, the skirt that hides its underside, and the surf line, and
-// the draws it may add to the scene: one for the land, one for its surf line.
+// island surface, the skirt that hides its underside, and the shallows band,
+// and the draws it may add to the scene: one for the land, one for its
+// shallows and, at Balanced and High, one for everything placed on it. That
+// third draw has its own allowance of instances and of the triangles they
+// expand to. Low carries no instances at all.
 export const landmarkBudget = {
-  balanced: { triangles: 4_400, bytes: 76 * 1024, draws: 2 },
-  low: { triangles: 1_300, bytes: 28 * 1024, draws: 2 },
+  balanced: { triangles: 4_400, bytes: 76 * 1024, draws: 3, instances: 160, featureTriangles: 3_000 },
+  low: { triangles: 1_300, bytes: 28 * 1024, draws: 2, instances: 0, featureTriangles: 0 },
 } as const;
+
+// The one file every Landmark's models and placements ship in. Low never
+// requests it.
+export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 30 * 1024 } as const;
 
 export const landmarkSources: LandmarkSource[] = [
   {
@@ -66,11 +111,12 @@ export const landmarkSources: LandmarkSource[] = [
     elevationGrid: 192,
     smallestRing: 0.004,
     group: 0.6,
-    span: 24,
-    height: 3.2,
+    span: 34,
+    height: 4.5,
     shoreHeight: 14,
-    beachWidth: 0.85,
-    surfWidth: 1.35,
+    beachWidth: 1.2,
+    surfWidth: 1.5,
+    shallowsWidth: 4.2,
     // Volcanic: dark basalt headlands, dry scrub, pale coral sand.
     palette: { sand: "#e8d8b4", rock: "#655e50", lowland: "#657747", highland: "#7b8050" },
   },
@@ -82,11 +128,12 @@ export const landmarkSources: LandmarkSource[] = [
     elevationGrid: 192,
     smallestRing: 0.01,
     group: 0.25,
-    span: 19,
-    height: 0.9,
+    span: 27,
+    height: 1.3,
     shoreHeight: 8,
-    beachWidth: 1.05,
-    surfWidth: 1.65,
+    beachWidth: 1.5,
+    surfWidth: 1.8,
+    shallowsWidth: 5.6,
     // Low and sandy: long beaches, mangrove and restinga behind them.
     palette: { sand: "#ecdfbe", rock: "#847a69", lowland: "#416745", highland: "#6a8050" },
   },
@@ -98,11 +145,15 @@ export const landmarkSources: LandmarkSource[] = [
     elevationGrid: 192,
     smallestRing: 0.01,
     group: 4,
-    span: 22,
-    height: 1.8,
+    span: 31,
+    height: 2.5,
     shoreHeight: 3,
-    beachWidth: 0.45,
-    surfWidth: 1.8,
+    beachWidth: 0.65,
+    surfWidth: 1.9,
+    shallowsWidth: 6,
+    // The lighthouse on Ilha de Santa Bárbara, standing in as the placeholder
+    // Feature until the Abrolhos issue models it.
+    features: [{ name: "Farol de Abrolhos", model: "placeholder", lon: -38.6942, lat: -17.9647, scale: 1 }],
     // Reef-fringed basalt tables: bare rock, thin grass, almost no beach.
     palette: { sand: "#e0d2af", rock: "#54504a", lowland: "#8d9260", highland: "#7a8156" },
   },
@@ -114,11 +165,12 @@ export const landmarkSources: LandmarkSource[] = [
     elevationGrid: 192,
     smallestRing: 0.006,
     group: 0.2,
-    span: 28,
-    height: 3.1,
+    span: 39,
+    height: 4.3,
     shoreHeight: 14,
-    beachWidth: 0.65,
-    surfWidth: 1.3,
+    beachWidth: 0.9,
+    surfWidth: 1.45,
+    shallowsWidth: 3.6,
     // Atlantic forest to the waterline, with granite showing on the ridges.
     palette: { sand: "#e5d5b6", rock: "#6f675e", lowland: "#365d3d", highland: "#60774c" },
   },
