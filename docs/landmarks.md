@@ -79,28 +79,29 @@ The sample spacing is not tuned by hand. The build estimates it from the
 island's area, measures what came out, and coarsens until the Landmark fits its
 tier's budget — which is why a new island needs no more than its config entry.
 
-The offline bake in `scripts/asset-bake.ts` casts 24 fixed cosine-weighted rays
-from each Balanced surface vertex, within 1.5 times the island's configured
-height. Distance-weighted occlusion darkens the existing linear vertex colours
-by at most 50%. Low vertices project vertically onto the Balanced triangles and
-interpolate those baked colours, carrying the Balanced slope/cliff palette
-instead of recomputing it from Low's coarser normals. Where the two shoreline
-tessellations differ, the closest Balanced surface point supplies the colour.
-Skirts retain their existing rock treatment. No new attributes, textures,
-triangles, draws or runtime bake are introduced. Fine detail remains limited
-by Low's vertex spacing; this does not restore geometry that Low omits.
+Terrain colour and normal textures are baked offline by
+`scripts/landmark-texture-bake.ts` from recorded elevation, its gradients,
+distance inland and the island's palette. A 256 px survey field is resampled to
+1024 px colour and normal WebPs for Balanced/High and 512 px colour for Low.
+The normal map carries authored weathering; mesh normals carry recorded relief.
+No satellite imagery or runtime bake is used. Rebuilding must produce identical
+bytes. Projected X/Z UVs align both LODs with the same survey extent.
 
-The bake is part of `bun run landmarks:build`, needs no Blender installation,
-and reads only committed source data. The generator, geometry/shading helpers,
-Feature models and placement, shared bake helper and output records are pinned
-in the provenance ledger.
+Vertex colours and their existing occlusion bake remain an immediate fallback
+for missing textures. Once colour is prepared, the material disables vertex
+colours rather than multiplying two terrain treatments. Procedural fragment
+grain has been removed. Textures never participate in the entry Suspense gate.
 
-At runtime, `lib/landmark-material.ts` adds stationary procedural canopy and
-rock grain to the existing land material, including subtle normal variation.
-The detail follows object coordinates and fades below pixel size to avoid
-shimmering. It adds no textures, geometry or draws, and both tiers use it.
-The vegetation pattern is an authored surface treatment, not surveyed land
-cover. The coastlines and large-scale relief still come from recorded data.
+`lib/landmark-textures.ts` retains only the current and next Landmark's maps.
+Transfer may complete during sailing; decode starts only while settled, and
+upload rechecks the sailing state after asynchronous decode. Late maps wait at
+the next Stop. Upload is explicitly initialized before maps enter the scene.
+Eviction aborts requests, disposes GPU textures and closes decoded bitmaps.
+Forward/backward travel determines the next prefetch; missing detail never
+blocks movement. A tier or context recovery change releases the old cache.
+Modest GPUs omit the normal map while remaining on Balanced; denser meshes are
+permitted by the budgets but this foundation preserves the existing Balanced
+sampling density pending the four island reworks.
 
 ## Placement
 
@@ -198,10 +199,17 @@ build, on the Balanced surface.
   `CONTEXT.md`). The build projects the coordinate through the same projection
   as the coastline and refuses a Feature that does not land on the island.
 
-Models are generated in code by `scripts/landmark-feature-models.ts`: low-poly,
-vertex-coloured, unindexed so each face shades flat, with sides modelled all the
-way round and a footing that reaches below the ground. There is no Blender
-step. `featureModels` in `content/landmark-sources.ts` lists them.
+The placeholder is generated in `scripts/landmark-feature-models.ts`.
+To supply human-finished models, set `featureFile.source` in
+`content/landmark-sources.ts` to a retained GLB under
+`data/landmarks/features/`, plus creator, source, rights, proof and retrieved
+fields. Retain the rights document at the proof path. List its named meshes in
+`featureModels`; each name must occur exactly once. Use one opaque standard
+material and at most one embedded 1024 px atlas, no animation, skins or external
+resources. Indexed geometry, atlas UVs and authored mesh transforms are accepted.
+The build preserves the artist's GLB binary and atlas, adding only deterministic
+placement metadata. Runtime expansion carries atlas UVs into the single draw.
+`assets:record` pins the source and output with the supplied provenance.
 
 All of it ships in one shared file, `public/models/landmark-features.v1.glb`:
 each model once, and per Landmark a record of its instances as whole numbers
@@ -234,31 +242,32 @@ takes its depth from the drawn water surface, which holds from any angle.
 
 | Per Landmark      | Triangles | Transfer | Draws | Instances | Instance triangles |
 | ----------------- | --------: | -------: | ----: | --------: | -----------------: |
-| Balanced and High |     4,400 |   76 KiB |     3 |       160 |              3,000 |
+| Balanced and High |     15,000 |  250 KiB |     3 |       160 |              3,000 |
 | Low               |     1,300 |   28 KiB |     2 |         0 |                  0 |
 
-Shared Feature file: 30 KiB, requested once by Balanced and High.
+Shared Feature file: 200 KiB, requested once by Balanced and High, with at most one embedded 1024 px colour atlas.
 
-Textures: none, at any tier. The draws are the island, its shallows band and,
+Textures: Balanced/High use one 1024 px colour plus one 1024 px normal, at most 150 KiB together. Low uses one 512 px colour and no normal. The draws are the island, its shallows band and,
 at Balanced and High, everything standing on it. The triangle and transfer
 budgets are enforced twice — the build refuses to write a mesh that exceeds
 them, and `bun run assets:audit` re-measures the shipped GLB. The audit also
 counts the GLB's primitives, one draw each, adds the Landmark's Feature draw
 when anything stands on it, and holds the total to the draw budget; it rejects
-any texture, checks that the mesh still carries an `island` and a `surf` part,
+embedded terrain textures (optional maps ship separately), checks that the mesh still carries an `island` and a `surf` part,
 and reconciles its triangle and byte counts with `content/landmarks.json`.
 
 The Feature budgets are enforced the same way. The build refuses a Landmark
 whose instances or their expanded triangles exceed its allowance, and a Feature
-file over 30 KiB. The audit reads the shipped file back: its size, its models
+file over 200 KiB. The audit reads the shipped file back: its size, its models
 and their triangle counts against the record, and each Landmark's placements
 against its allowance and against what `content/landmarks.json` says stands
 there.
 
 The scene-wide draw-call and triangle budgets in `lib/production-budgets.ts`
 cover the four Landmarks together with the ocean and the Ship, and are
-unchanged. Its two authored-visuals transfer budgets each rose by the 30 KiB of
-the Feature file.
+unchanged. All authored visuals may transfer 1.8 MiB. Minimum-sailable visuals remain
+at 530 KiB, and the complete first visit stays at 5 MiB. Terrain maps and
+Features are classified as non-essential in payload reports.
 
 ## Verification
 
@@ -282,3 +291,26 @@ the Feature file.
   four Low Landmark meshes and never the Feature file.
 - The `asset-art` production browser project captures all four Stops in desktop
   Balanced/Low and phone Low for visual review; see [ship.md](ship.md).
+
+### Issue #74 local hardware capture
+
+On 2026-10-01, Chrome on the AMD Radeon RX Vega 10 completed the production
+five-minute Voyage before and after the texture changes. The baseline had 159
+windows, worst frame p90 19.6 ms and worst GPU p90 10.54 ms. The final capture
+had 159 windows over 322,997 ms of active sailing, worst frame p90 17.0 ms and
+worst GPU p90 8.83 ms, with no tier changes or windows over 20 ms. Scene maxima
+remained eight draws, 41,195 triangles and two render targets. All four map
+preparations started while settled, with at most two Landmarks retained. Modest
+GPU normal maps were shed; Balanced mesh density stayed at its foundation level.
+
+Local exports are retained at `evidence/issue74/before.json` and
+`evidence/issue74/after.json`. An intermediate capture with one 20.5 ms window
+is retained at `evidence/issue74/initial-after.json`; after that capture the
+recurring preparation timer was replaced by Stop-change and completion events.
+These are local measurements of an uncommitted tree, bound to the build
+fingerprint in each export; clean-candidate release sign-off remains separate.
+
+Reviewable copies of the [baseline](verification/issue74/before.json),
+[final capture](verification/issue74/after.json), and
+[intermediate capture](verification/issue74/initial-after.json) are committed
+under `docs/verification/issue74/`.

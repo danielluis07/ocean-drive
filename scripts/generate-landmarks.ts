@@ -11,6 +11,8 @@
 // What stands on the islands ships apart from them, once: the shared Feature
 // file holds every model generated in `scripts/landmark-feature-models.ts` and,
 // per Landmark, where the build placed each instance.
+import { featureSourceRecord, readFeatureSource } from "@/scripts/landmark-feature-source";
+import { bakeLandmarkTextures } from "@/scripts/landmark-texture-bake";
 import { mkdir } from "node:fs/promises";
 import {
   BufferAttribute,
@@ -40,6 +42,7 @@ import {
 } from "@/lib/landmark-geometry";
 import { mottle, sampleElevation, shadeSurface, type ElevationGrid } from "@/lib/landmark-surface";
 import { bakeAccessibility, transferColours } from "@/scripts/asset-bake";
+import { productionBudgets } from "@/lib/production-budgets";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -233,7 +236,12 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
   return { geometry, triangles: band.triangles.length };
 }
 
-const models = featureModels.map((id) => ({ id, geometry: featureModelBuilders[id]() }));
+const authored = featureFile.source ? await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize) : null;
+const models = authored?.models ?? featureModels.map((id) => {
+  const build = featureModelBuilders[id];
+  if (!build) throw new Error(`Feature ${id} needs a recorded human source or a procedural builder`);
+  return { id, geometry: build() };
+});
 const modelTriangles = (index: number) => models[index].geometry.getAttribute("position").count / 3;
 
 // Everything that stands on one Landmark, on the Balanced surface: instances
@@ -288,11 +296,26 @@ function placeFeatures(source: LandmarkSource, record: LandmarkRecord, island: R
 }
 
 await mkdir("public/models", { recursive: true });
+await mkdir("public/textures", { recursive: true });
 const manifest: Record<string, unknown>[] = [];
 const placed: Record<string, number[]> = {};
 for (const source of landmarkSources) {
   const record: LandmarkRecord = await Bun.file(`data/landmarks/${source.id}.json`).json();
   const variants: Record<string, unknown> = {};
+  const baked = await bakeLandmarkTextures(source, record.coastline.islands.map((island) => island.ring), elevationOf(record));
+  const textures: Record<string, unknown> = {};
+  for (const tier of ["balanced", "low"] as const) {
+    const entries: Record<string, unknown> = {};
+    let bytes = 0;
+    for (const [kind, buffer] of Object.entries(baked[tier])) {
+      const url = `/textures/landmark-${source.id}-${tier}-${kind}.v1.webp`;
+      await Bun.write(`public${url}`, buffer);
+      entries[kind] = { url, bytes: buffer.length, size: tier === "low" ? 512 : 1024 };
+      bytes += buffer.length;
+    }
+    if (bytes > 150 * 1024) throw new Error(`${source.id} ${tier} texture budget exceeded`);
+    textures[tier] = entries;
+  }
   let extent = { x: 0, z: 0 };
   let radius = 0;
   let islands = 0;
@@ -304,7 +327,7 @@ for (const source of landmarkSources) {
     // The surface, its skirt and its shallows all follow from one sample
     // spacing, so the budget is met by drawing the island more coarsely until
     // it fits rather than by hand-tuning each island.
-    let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * budget.triangles * 0.68));
+    let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * Math.min(budget.triangles, tier === "low" ? 1200 : 4400) * 0.68));
     let island = buildIsland(source, record, spacing);
     let surf = buildShallows(island.outlines, source, spacing, tier);
     for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {
@@ -346,6 +369,13 @@ for (const source of landmarkSources) {
       true,
     );
     merged.setAttribute("color", colour);
+    const points = merged.getAttribute("position");
+    const uvs = new Uint16Array(points.count * 2);
+    for (let vertex = 0; vertex < points.count; vertex++) {
+      uvs[vertex * 2] = Math.round((points.getX(vertex) - baked.bounds.minX) / (baked.bounds.maxX - baked.bounds.minX) * 65535);
+      uvs[vertex * 2 + 1] = Math.round((points.getZ(vertex) - baked.bounds.minZ) / (baked.bounds.maxZ - baked.bounds.minZ) * 65535);
+    }
+    merged.setAttribute("uv", new BufferAttribute(uvs, 2, true));
     merged.setIndex([...landIndices, ...island.skirt.indices.map((index) => index + vertices)]);
     merged.computeVertexNormals();
     merged.deleteAttribute("normal");
@@ -412,6 +442,7 @@ for (const source of landmarkSources) {
     // What stands on the Landmark at Balanced and High, expanded into one draw.
     features,
     variants,
+    textures,
   });
 }
 
@@ -426,7 +457,7 @@ for (const model of models) {
   mesh.name = model.id;
   library.add(mesh);
 }
-const featureGlb = (await new GLTFExporter().parseAsync(library, { binary: true })) as ArrayBuffer;
+const featureGlb = authored ? featureSourceRecord(authored.buffer, library.userData) : (await new GLTFExporter().parseAsync(library, { binary: true })) as ArrayBuffer;
 if (featureGlb.byteLength > featureFile.bytes)
   throw new Error(`The Feature file exceeds its budget: ${featureGlb.byteLength} bytes`);
 await Bun.write(`public${featureFile.url}`, featureGlb);
@@ -450,3 +481,10 @@ await Bun.write(
   ) + "\n",
 );
 console.log(`Recorded ${manifest.length} Landmarks in content/landmarks.json.`);
+// Count every shipped tier conservatively before compression, including the
+// vessel. Optional textures remain outside the minimum-sailable budget.
+let authoredBytes = 0;
+for (const directory of ["public/models", "public/textures"]) {
+  for await (const path of new Bun.Glob("**/*").scan({ cwd: directory, onlyFiles: true })) authoredBytes += Bun.file(`${directory}/${path}`).size;
+}
+if (authoredBytes > productionBudgets.allVisuals) throw new Error("All authored model/texture visuals exceed 1.8 MiB");

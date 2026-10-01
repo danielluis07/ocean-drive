@@ -27,7 +27,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "0e75760f677e9ea6a0c9d0ff786086e7a8851d4ad330f186e68d20afba1d33ca"
+      "sha256": "c7d705d2dd41c7f07369ff55216d09daf4f5e5c3837b362834648ba140d758e7"
     },
     {
       "path": "content/landmarks.json",
@@ -41,7 +41,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "5735471b4fc4a882ed379be0dbc72ede8abc93def979a4aff52f2cc5bd0c1035"
+      "sha256": "9a078494a34391c23f864f1d5593e782e4cd3b1a223a8c75a111ea43a8501faa"
     },
     {
       "path": "content/ship-art.ts",
@@ -229,7 +229,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "9cd73224b07a4e78c570d53bb424d22ffef70b7ff58a89fb9903708ef4480668"
+      "sha256": "95986a9c0f034f88288b67af09a60d1ec5349e7aaf97810b95b88587415c99e7"
     },
     {
       "path": "lib/landmark-geometry.ts",
@@ -257,7 +257,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "5c10113717387c330f856c74dd9e04ca32d1ddeb2ec97bec9bbd0fd3f9ef06f5"
+      "sha256": "99a9ba2c324b7bef7144db02b296bda370026d6195a04f7ac16e5f55ea265710"
     },
     {
       "path": "lib/landmark-surf.ts",
@@ -627,7 +627,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "140b2045295992ef3316ff03c02958e81b58eef307bb4f3ce23a6ecaf27ac70e"
+      "sha256": "353546413c14a5cd1ae2de07a122c8f87cf6cfc9f8e1117612c30ecec21a1a90"
     },
     {
       "path": "public/models/landmark-abrolhos-low.v1.glb",
@@ -642,7 +642,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "c6aa3e438c0338f54949264b49ad32d8c1bb1b5b94c572fb64f6ee92c0634624"
+      "sha256": "ddb17c3757e8f7e9fcd32d738129d39fdc1d1d6a0cfeaeccb7d3cc7d94cd661c"
     },
     {
       "path": "public/models/landmark-boipeba-balanced.v1.glb",
@@ -657,7 +657,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "823c18112ba57b2e4f3b78df2378adf379399c152a9639a3024515b207aa1ad2"
+      "sha256": "8202947cc364d7f5d114687e9712efcfc13be4c125e4c36771ec0df4a6b23be9"
     },
     {
       "path": "public/models/landmark-boipeba-low.v1.glb",
@@ -672,7 +672,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "11a351a6123f934e1d7691ca454c0bb8c82cd12139664a15c185de55051b9424"
+      "sha256": "baf0c2765fd203104348ceea086dcd56d1366dbcb5639f3cd350818fae4ee70d"
     },
     {
       "path": "public/models/landmark-features.v1.glb",
@@ -702,7 +702,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "378e57ed91b67bb72b209b9ad4fcc4001cb9ecd95bbcc52e13c413c837d3dc3a"
+      "sha256": "cbe31fad9039f57474e6ac5603c5232f1100287f20be6f35fcf770052d49431c"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
@@ -717,7 +717,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "65eb75c706b80606e3c653644760f182c7851abad3b61bef8f0f024ca3bf8bc5"
+      "sha256": "b79862495dbf897895b31b9af8900202c0087d81f2bd1902bba86e281bd552cf"
     },
     {
       "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
@@ -732,7 +732,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "1adfb782bd3b0742212a8ab3a13b94f392eb38c1d2b16ddfe2abb19ca15fffe8"
+      "sha256": "8697971afb85b98860b02a0006dc9bad4b9dc098059b61940ac44dd0bcf415f3"
     },
     {
       "path": "public/models/landmark-ilha-grande-low.v1.glb",
@@ -747,7 +747,187 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "f23bf708ac4bc8bb875fc6222795347b5a14cc04ad8e22e3b5ff30d2782f4f87"
+      "sha256": "ffad00274b8ca09ccfd337003abc16a1c2f4ca60d7e6d11dcdacbfef56d9e7a7"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
+      "url": "/textures/landmark-abrolhos-balanced-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "2661a4ab453d201ecd20ce444a5a9bb4496b66ad038112680951a4153371c34e"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
+      "url": "/textures/landmark-abrolhos-balanced-normal.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "db6e5362444ac6985a2859be965490e00467e96ecca304005855837cb6e17c4e"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
+      "url": "/textures/landmark-abrolhos-low-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "31304ad85c418fb66638808e11ebf84daeff6dabe9d1aeed21300a9b7a9d4173"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-balanced-colour.v1.webp",
+      "url": "/textures/landmark-boipeba-balanced-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "f47876683caf3d3ab83b520e480bd5e32b6a2bc7538a953317d5a6c5a415ac26"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-balanced-normal.v1.webp",
+      "url": "/textures/landmark-boipeba-balanced-normal.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "e7f4598e99de5d8215a5ceacac0a5ca94809df1ebcb970cd34184beb8c85c405"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-low-colour.v1.webp",
+      "url": "/textures/landmark-boipeba-low-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "1dcd474ef9dec18f3b5074cf8bcfdc16784887027138d08fd5951d3f650a6a1c"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+      "url": "/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "cfb9263a3f694e308ee3cd14fa5b88f11fa65c97c27a6716cab995c7510c1ec8"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+      "url": "/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "0937116b05fbeae4f0e4cf6367a00b064abdb7023a213b4598a3678002db661c"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+      "url": "/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "2fa465648cba63e727880437553265f8eb0d1c344f4a0dcb68ac7bd170ef5b8b"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+      "url": "/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "6af6e914082f7f20d7b94ed618f4281405a2423a673aefde784cc2b693f3315d"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+      "url": "/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "66828b3098f24197f90f12ef788151f46627386fa5323dc4917052338517b0b5"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-low-colour.v1.webp",
+      "url": "/textures/landmark-ilha-grande-low-colour.v1.webp",
+      "kind": "authored",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors (coastline); U.S. Geological Survey (SRTM elevation), redistributed as Terrain Tiles on AWS",
+      "source": "scripts/landmark-texture-bake.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery",
+      "essential": false,
+      "experience": true,
+      "sha256": "6e54b15bc8a793583147cffdebf9228bed8692c245b25dd6595749a6b8cc404f"
     },
     {
       "path": "scripts/asset-bake.ts",
@@ -789,7 +969,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "743da1c432c444b1809360f06ff023032d6833b74335716d2ea65c0e78640279"
+      "sha256": "99055f77d710e0b1fa62d0b98d7ee54d966f70b5399ca2324d42cb541699b8cd"
     },
     {
       "path": "scripts/landmark-feature-models.ts",
@@ -803,7 +983,35 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "2adab3b2a46156cc5f4a54dbe87875b00fb1f6fc30194733af851b282693db89"
+      "sha256": "0550f948fc43e2978a8d52cbaae5cf7ec367157942018012b54f39d01e75a6ef"
+    },
+    {
+      "path": "scripts/landmark-feature-source.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Project-authored source contribution; no imported artwork",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
+      "essential": true,
+      "experience": false,
+      "sha256": "a39f52c1fd7d623c297ff95d1aba2e1a1e06d82abc7b14ef36bf98e397365dd9"
+    },
+    {
+      "path": "scripts/landmark-texture-bake.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-09-17",
+      "rights": "Project-authored source contribution; no imported artwork",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
+      "essential": true,
+      "experience": false,
+      "sha256": "801f1448d06faadd1c423d876ced63651a3502a354bdcd08ff3e25f37b6602bd"
     },
     {
       "path": "scripts/ship-texture-bake.ts",

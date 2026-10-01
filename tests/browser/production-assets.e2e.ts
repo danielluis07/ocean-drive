@@ -12,6 +12,7 @@ type RequestRecord = {
   type: string;
   bytes: number;
   sha256: string;
+  essential: boolean;
   optimizedFrom?: { url: string; sha256: string };
 };
 
@@ -36,6 +37,7 @@ async function measureResponse(response: Response): Promise<RequestRecord> {
     type,
     bytes: compressed ? gzipSync(body).length : body.length,
     sha256: createHash("sha256").update(body).digest("hex"),
+    essential: (original ?? manifest.assets.find((asset) => asset.url === url.pathname))?.essential ?? true,
     ...(optimizedFrom ? { optimizedFrom } : {}),
   };
 }
@@ -200,10 +202,10 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     records.reduce((total, request) => total + request.bytes, 0);
   const js = (records: RequestRecord[]) =>
     records.filter((request) => request.type === "script");
-  const visuals = (records: RequestRecord[]) =>
+  const visuals = (records: RequestRecord[], essentialOnly = false) =>
     records.filter((request) =>
       manifest.assets.some(
-        (asset) => asset.kind === "authored" && asset.sha256 === request.sha256,
+        (asset) => asset.kind === "authored" && asset.sha256 === request.sha256 && (!essentialOnly || asset.essential),
       ),
     );
   const measurements = {
@@ -215,19 +217,21 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     ),
     minimumSailable: sum(minimum),
     completeVisit: sum(complete),
-    minimumVisuals: sum(visuals(minimum)),
+    minimumVisuals: sum(visuals(minimum, true)),
     allVisuals: sum(visuals(complete)),
     fonts: sum(complete.filter((request) => request.type === "font")),
     ...(diagnostics.scenes.balanced as SceneCounts),
   };
   const phoneMeasurements = {
     minimumSailable: sum(phoneVisit),
-    minimumVisuals: sum(visuals(phoneVisit)),
+    minimumVisuals: sum(visuals(phoneVisit, true)),
     ...(phoneDiagnostics.scenes.low as SceneCounts),
   };
   expect(diagnostics.scenes.balanced.oceanDraws).toBe(1);
   expect(phoneDiagnostics.scenes.low.oceanDraws).toBe(1);
   expect(phoneDiagnostics.scenes.low.renderTargets).toBe(0);
+  expect([...complete, ...phoneVisit].filter((request) => request.path.startsWith("/textures/landmark-"))
+    .every((request) => !request.essential)).toBe(true);
   const reportPath = testInfo.outputPath("production-budget-report.json");
   await writeFile(
     reportPath,

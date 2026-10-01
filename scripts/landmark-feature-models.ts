@@ -5,7 +5,6 @@
 // scale of 1, and reaches a little below the origin so it never floats over
 // sloping ground.
 import { BufferAttribute, BufferGeometry } from "three";
-import type { FeatureModel } from "@/content/landmark-sources";
 import { channels } from "@/lib/landmark-surface";
 
 type Point = [number, number, number];
@@ -44,7 +43,7 @@ function builder() {
   return { face, frustum, geometry };
 }
 
-export const featureModelBuilders: Record<FeatureModel, () => BufferGeometry> = {
+export const featureModelBuilders: Record<string, () => BufferGeometry> = {
   // A plain banded marker on a footing: tall enough to find from the route
   // camera, and deliberately no real structure.
   placeholder: () => {

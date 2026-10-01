@@ -10,6 +10,14 @@ export default defineConfig({
   use: { baseURL: "http://localhost:3100", trace: "retain-on-failure" },
   projects: [
     {
+      name: "landmark-textures",
+      testMatch: "landmark-textures.e2e.ts",
+      timeout: 120_000,
+      expect: { timeout: 30_000 },
+      use: { viewport: { width: 1280, height: 800 }, deviceScaleFactor: .5,
+        launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] } },
+    },
+    {
       name: "ocean-features",
       testMatch: "ocean-features.e2e.ts",
       use: { channel: "chrome" },

@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo } from "react";
 import { Mesh, MeshStandardMaterial, type ShaderMaterial } from "three";
 import { useModelScene } from "@/lib/use-model-scene";
+import type { PreparedLandmarkTextures } from "@/lib/landmark-textures";
 import { detailLandmarkMaterial } from "@/lib/landmark-material";
 import { expandFeatures } from "@/lib/landmark-features";
 import type { FeatureLibrary } from "@/lib/use-landmark-features";
@@ -17,7 +18,9 @@ export default function StopLandmark({
   shallows,
   features,
   featureMaterial,
+  textures,
 }: {
+  textures: PreparedLandmarkTextures | null;
   id: string;
   url: string;
   position: [number, number];
@@ -45,13 +48,13 @@ export default function StopLandmark({
       if (!object.geometry.getAttribute("normal")) object.geometry.computeVertexNormals();
       if (object.material instanceof MeshStandardMaterial) {
         object.material.flatShading = false;
-        restores.push(detailLandmarkMaterial(object.material));
+        restores.push(detailLandmarkMaterial(object.material, textures));
       }
     });
     // A scene replaced by another tier is disposed with its materials, so it
     // gets its own band material back rather than taking the shared one along.
     return () => restores.forEach((restore) => restore());
-  }, [scene, shallows]);
+  }, [scene, shallows, textures]);
   // Every instance on this island as one geometry, so any number of models
   // costs the Landmark a single draw.
   const placed = features?.placements[id];
@@ -64,7 +67,7 @@ export default function StopLandmark({
     <group position={[position[0], 0, position[1]]}>
       <primitive object={scene} />
       {/* The material is the scene's and the geometry is released above. */}
-      {standing ? <mesh name="features" geometry={standing} material={featureMaterial} dispose={null} /> : null}
+      {standing ? <mesh name="features" geometry={standing} material={features?.material ?? featureMaterial} dispose={null} /> : null}
     </group>
   );
 }

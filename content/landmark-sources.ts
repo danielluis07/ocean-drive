@@ -3,6 +3,7 @@
 // `lib/ocean-config.ts`. `bun run landmarks:fetch` records the open source data
 // for every entry under `data/landmarks/`, and `bun run landmarks:build` turns
 // those records into the shipped meshes without touching the network.
+import type { FeatureSource } from "@/scripts/landmark-feature-source";
 import type { StopId } from "@/content/editorial";
 import type { LandmarkPalette } from "@/lib/landmark-surface";
 import type { TerrainRange, TerrainRule } from "@/lib/landmark-features";
@@ -94,13 +95,13 @@ export type LandmarkSource = {
 // third draw has its own allowance of instances and of the triangles they
 // expand to. Low carries no instances at all.
 export const landmarkBudget = {
-  balanced: { triangles: 4_400, bytes: 76 * 1024, draws: 3, instances: 160, featureTriangles: 3_000 },
+  balanced: { triangles: 15_000, bytes: 250 * 1024, draws: 3, instances: 160, featureTriangles: 3_000 },
   low: { triangles: 1_300, bytes: 28 * 1024, draws: 2, instances: 0, featureTriangles: 0 },
 } as const;
 
 // The one file every Landmark's models and placements ship in. Low never
 // requests it.
-export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 30 * 1024 } as const;
+export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 200 * 1024, textureSize: 1024, source: null as FeatureSource | null } as const;
 
 export const landmarkSources: LandmarkSource[] = [
   {

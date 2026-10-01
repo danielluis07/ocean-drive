@@ -18,6 +18,7 @@ import { useSceneDiagnostics } from "@/lib/use-scene-diagnostics";
 import { createGpuTimer, type GpuTimer } from "@/lib/gpu-timer";
 import { projectWaterCircle, SHIP_EXTENT } from "@/lib/scene-projection";
 import { createShallowsMaterial } from "@/lib/landmark-surf";
+import { useLandmarkTextures } from "@/lib/use-landmark-textures";
 import { useLandmarkFeatures } from "@/lib/use-landmark-features";
 import type { StageLayout } from "@/lib/stage-layout";
 
@@ -118,6 +119,7 @@ function SailableScene(props: RuntimeProps) {
   // Likewise one material for everything that stands on the islands. Low draws
   // none of it and never requests the file it comes from.
   const featureMaterial = useMemo(() => new MeshStandardMaterial({ vertexColors: true, roughness: 0.9, metalness: 0, envMapIntensity: 0.3 }), []);
+  const textures = useLandmarkTextures(props.configuration, props.route, props.quality.tier, props.recoveryGeneration);
   const features = useLandmarkFeatures(props.quality.tier === "low" ? null : props.configuration.features);
   // Every compilation polls these programs too, so they are released like a
   // retired water material: only once no compilation is still in flight.
@@ -455,6 +457,7 @@ function SailableScene(props: RuntimeProps) {
         <StopLandmark
           key={stop.id}
           id={stop.id}
+          textures={textures.get(stop.id)}
           url={props.configuration.landmarks[stop.id].variants[props.quality.tier === "low" ? "low" : "balanced"].url}
           position={stop.landmark}
           shallows={shallowsMaterial}

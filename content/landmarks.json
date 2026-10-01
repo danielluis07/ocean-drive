@@ -31,12 +31,33 @@
         "balanced": {
           "url": "/models/landmark-fernando-de-noronha-balanced.v1.glb",
           "triangles": 4138,
-          "bytes": 71092
+          "bytes": 80684
         },
         "low": {
           "url": "/models/landmark-fernando-de-noronha-low.v1.glb",
-          "triangles": 1228,
-          "bytes": 24724
+          "triangles": 1223,
+          "bytes": 27440
+        }
+      },
+      "textures": {
+        "balanced": {
+          "colour": {
+            "url": "/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+            "bytes": 29240,
+            "size": 1024
+          },
+          "normal": {
+            "url": "/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+            "bytes": 33692,
+            "size": 1024
+          }
+        },
+        "low": {
+          "colour": {
+            "url": "/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+            "bytes": 11752,
+            "size": 512
+          }
         }
       }
     },
@@ -61,12 +82,33 @@
         "balanced": {
           "url": "/models/landmark-boipeba-balanced.v1.glb",
           "triangles": 3898,
-          "bytes": 65288
+          "bytes": 73980
         },
         "low": {
           "url": "/models/landmark-boipeba-low.v1.glb",
-          "triangles": 1234,
-          "bytes": 23980
+          "triangles": 1211,
+          "bytes": 26348
+        }
+      },
+      "textures": {
+        "balanced": {
+          "colour": {
+            "url": "/textures/landmark-boipeba-balanced-colour.v1.webp",
+            "bytes": 34592,
+            "size": 1024
+          },
+          "normal": {
+            "url": "/textures/landmark-boipeba-balanced-normal.v1.webp",
+            "bytes": 34636,
+            "size": 1024
+          }
+        },
+        "low": {
+          "colour": {
+            "url": "/textures/landmark-boipeba-low-colour.v1.webp",
+            "bytes": 14680,
+            "size": 512
+          }
         }
       }
     },
@@ -91,12 +133,33 @@
         "balanced": {
           "url": "/models/landmark-abrolhos-balanced.v1.glb",
           "triangles": 4157,
-          "bytes": 72428
+          "bytes": 82260
         },
         "low": {
           "url": "/models/landmark-abrolhos-low.v1.glb",
-          "triangles": 1278,
-          "bytes": 26064
+          "triangles": 1248,
+          "bytes": 28536
+        }
+      },
+      "textures": {
+        "balanced": {
+          "colour": {
+            "url": "/textures/landmark-abrolhos-balanced-colour.v1.webp",
+            "bytes": 28110,
+            "size": 1024
+          },
+          "normal": {
+            "url": "/textures/landmark-abrolhos-balanced-normal.v1.webp",
+            "bytes": 35058,
+            "size": 1024
+          }
+        },
+        "low": {
+          "colour": {
+            "url": "/textures/landmark-abrolhos-low-colour.v1.webp",
+            "bytes": 11470,
+            "size": 512
+          }
         }
       }
     },
@@ -121,12 +184,33 @@
         "balanced": {
           "url": "/models/landmark-ilha-grande-balanced.v1.glb",
           "triangles": 4160,
-          "bytes": 71892
+          "bytes": 81444
         },
         "low": {
           "url": "/models/landmark-ilha-grande-low.v1.glb",
-          "triangles": 1273,
-          "bytes": 25616
+          "triangles": 1253,
+          "bytes": 28268
+        }
+      },
+      "textures": {
+        "balanced": {
+          "colour": {
+            "url": "/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+            "bytes": 34178,
+            "size": 1024
+          },
+          "normal": {
+            "url": "/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+            "bytes": 33142,
+            "size": 1024
+          }
+        },
+        "low": {
+          "colour": {
+            "url": "/textures/landmark-ilha-grande-low-colour.v1.webp",
+            "bytes": 14792,
+            "size": 512
+          }
         }
       }
     }
