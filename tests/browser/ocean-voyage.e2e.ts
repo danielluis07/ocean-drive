@@ -83,6 +83,8 @@ test("Balanced holds every passage through five active minutes on the host GPU",
     expect.soft(messages.filter(message => message.kind === "error" || message.kind === "pageerror"), "The Voyage must not hide renderer or page failures").toEqual([]);
     expect.soft(report.timing.activeMs - start.activeMs).toBeGreaterThanOrEqual(300_000);
     expect.soft(windows.length).toBeGreaterThanOrEqual(150);
+    expect.soft(windows.some((window: { wakeActive: boolean }) => window.wakeActive), "Passage windows must carry the runtime's live-wake signal").toBe(true);
+    expect.soft(windows.some((window: { wakeActive: boolean }) => !window.wakeActive), "Settled windows must stop carrying expired wake pressure").toBe(true);
     expect.soft(tierChanges, "Balanced must not change tier during the Voyage").toEqual([]);
     expect.soft(windows.filter((window: { quality: { tier: string } | null }) => window.quality?.tier !== "balanced"), "Every window, passages included, must sustain Balanced").toEqual([]);
     // Issue #57 specifies the per-window E2 interval threshold for Chrome;

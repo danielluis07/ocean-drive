@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { readFile, writeFile } from "node:fs/promises";
 import manifest from "@/content/asset-manifest.json";
-import { checkBudgets } from "@/lib/production-budgets";
+import { checkBudgets, productionBudgets } from "@/lib/production-budgets";
 import { createInitialVoyageState, serializeVoyageState } from "@/lib/voyage-state";
 import type { SceneCounts } from "@/lib/local-diagnostics";
 
@@ -49,6 +49,7 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     "Requires the production build and port 3100 config",
   );
   const requests: Promise<RequestRecord>[] = [];
+  const phoneRequests: Promise<RequestRecord>[] = [];
   const external: string[] = [];
   const failed: string[] = [];
   context.on("request", (request) => {
@@ -63,7 +64,9 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     // bytes are already counted in the GLB; they are not network transfers,
     // and Chromium cannot read them back through response.body().
     if (new URL(response.url()).protocol === "blob:") return;
-    if (response.ok()) requests.push(measureResponse(response));
+    // The phone is a separate visit, not another transfer in the desktop's
+    // byte budget. Retain and audit both, including shared cached assets.
+    if (response.ok()) (response.request().frame().page() === page ? requests : phoneRequests).push(measureResponse(response));
     else failed.push(`${response.status()} ${response.url()}`);
   });
   await context.addInitScript(() => {
@@ -142,6 +145,7 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   const phoneDiagnostics = await phone.evaluate(() =>
     JSON.parse(window.__oceanDiagnostics!.exportJSON()),
   );
+  const phoneVisit = await Promise.all(phoneRequests);
   await phone.close();
 
   const diagnosticPath = testInfo.outputPath("local-diagnostics.json");
@@ -174,10 +178,10 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   expect(diagnostics.timing.frames).toBeGreaterThan(0);
   expect(diagnostics.timing.windows.length).toBeGreaterThan(0);
   const complete = await Promise.all(requests);
-  expect(complete.some((request) => request.path.includes("del-mar-low.v1.glb"))).toBe(true);
+  expect(phoneVisit.some((request) => request.path.includes("del-mar-low.v1.glb"))).toBe(true);
   expect(external).toEqual([]);
   expect(failed).toEqual([]);
-  for (const request of complete) {
+  for (const request of [...complete, ...phoneVisit]) {
     if (
       request.path === "/" ||
       /\/_next\/static\/.*\.(js|css)$/.test(request.path)
@@ -216,19 +220,26 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     fonts: sum(complete.filter((request) => request.type === "font")),
     ...(diagnostics.scenes.balanced as SceneCounts),
   };
+  const phoneMeasurements = {
+    minimumSailable: sum(phoneVisit),
+    minimumVisuals: sum(visuals(phoneVisit)),
+    ...(phoneDiagnostics.scenes.low as SceneCounts),
+  };
   expect(diagnostics.scenes.balanced.oceanDraws).toBe(1);
   expect(phoneDiagnostics.scenes.low.oceanDraws).toBe(1);
   expect(phoneDiagnostics.scenes.low.renderTargets).toBe(0);
   const reportPath = testInfo.outputPath("production-budget-report.json");
   await writeFile(
     reportPath,
-    JSON.stringify({ measurements, requests: complete, diagnostics: { desktop: diagnostics, phone: phoneDiagnostics } }, null, 2),
+    JSON.stringify({ measurements, requests: complete, phone: { measurements: phoneMeasurements, requests: phoneVisit }, diagnostics: { desktop: diagnostics, phone: phoneDiagnostics } }, null, 2),
   );
   await testInfo.attach("production-budget-report", {
     path: reportPath,
     contentType: "application/json",
   });
   expect(checkBudgets(measurements)).toEqual([]);
+  expect(phoneMeasurements.minimumSailable).toBeLessThanOrEqual(productionBudgets.minimumSailable);
+  expect(phoneMeasurements.minimumVisuals).toBeLessThanOrEqual(productionBudgets.minimumVisuals);
 });
 
 test("diagnostic export is absent without an explicit local opt-in", async ({

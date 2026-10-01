@@ -31,6 +31,17 @@ function written(wake: ReturnType<typeof createShipWake>, time: number, points =
 }
 
 describe("Ship wake", () => {
+  test("resting placement leaves no disturbed water at any tier", () => {
+    const wake = createShipWake();
+    for (const points of [8, 32, 48]) {
+      for (let frame = 0; frame < 3; frame++) {
+        const time = frame * FRAME;
+        wake.place({ x: 0, z: -frame }, 0, time);
+        const { bounds } = written(wake, time, points);
+        expect(bounds[0]).toBeGreaterThan(bounds[2]);
+      }
+    }
+  });
   test("Low retains a short fading trail and reduced-motion placement clears even a nearby cut", () => {
     const wake = createShipWake();
     wake.sail({ x: 0, z: 0 }, 0, 0, 0);

@@ -17,6 +17,8 @@ const dprLadder = [qualityEnvelope.balanced.maxDpr, qualityEnvelope.low.maxDpr, 
 
 // The p90 frame interval a tier must hold (acceptance criterion E2).
 const FRAME_BUDGET_MS = 20;
+// Passage pressure above Low's usable frame budget is too severe to protect.
+const SEVERE_FRAME_MS = 33.3;
 // A window trusts GPU time once at least this share of its frames were timed.
 const GPU_COVERAGE = 0.5;
 // GPU time this close to the budget is about to miss frames, so effects go before they do.
@@ -26,6 +28,9 @@ const GPU_HEADROOM = 0.6;
 // Without timer queries, steady vsync proves cadence, not GPU reserve. A laptop
 // must hold it for a minute before trying more pixels or a more expensive tier.
 const UNTIMED_LAPTOP_RECOVERY_MS = 60_000;
+// One final 10% resolution step reserves room for the compositor before a
+// laptop loses its reference tier, even at that tier's ordinary DPR floor.
+const LAPTOP_DPR_RESERVE = 0.9;
 // A tier the warm-up predicts at or under this share of the budget may be chosen.
 const BENCHMARK_FIT = 0.75;
 // The fewest GPU-timed frames a warm-up needs before it may decide anything.
@@ -96,6 +101,7 @@ export function createQualityController(hints: {
   let samples: number[] = [];
   let gpuSamples: number[] = [];
   let windowMs = 0;
+  let windowHasWake = false;
   let slowWindows = 0;
   let unusableWindows = 0;
   let fastMs = 0;
@@ -112,6 +118,7 @@ export function createQualityController(hints: {
     benchmarkSamples = [];
     benchmarkGpu = [];
     windowMs = slowWindows = unusableWindows = fastMs = 0;
+    windowHasWake = false;
     pressureFrames = 0;
   };
   const change = (nextTier: QualityTier, nextDpr: number, nextWakeSamples: 2 | 4 = wakeSamples) => {
@@ -120,6 +127,13 @@ export function createQualityController(hints: {
     dpr = Math.min(rawDpr, nextDpr);
     lastChange = activeMs;
     suspend();
+  };
+  const shedLaptopResolution = () => {
+    const floor = qualityEnvelope[tier].minDpr;
+    const next = [floor, floor * LAPTOP_DPR_RESERVE].find((rung) => Math.min(rawDpr, rung) < dpr);
+    if (next === undefined) return false;
+    change(tier, next);
+    return true;
   };
   return {
     current,
@@ -174,7 +188,8 @@ export function createQualityController(hints: {
     },
     // `gpuMilliseconds` is a GPU render time that finished this frame, if any; it
     // may belong to a frame a few intervals back.
-    frame(milliseconds: number, gpuMilliseconds: number | null = null) {
+    // `wakeActive` describes the rendered trail, including decay after arrival.
+    frame(milliseconds: number, gpuMilliseconds: number | null = null, wakeActive = false) {
       if (fallback || preference === "text" || !Number.isFinite(milliseconds) || milliseconds <= 0) return current();
       activeMs += milliseconds;
       if (hints.preserveTier && tier !== "low" && preference === "automatic") {
@@ -186,31 +201,37 @@ export function createQualityController(hints: {
         pressureFrames = (milliseconds > FRAME_BUDGET_MS || (timed && gpuMilliseconds > refreshMs * GPU_HEADROOM)) ? pressureFrames + 1 : 0;
         if (pressureFrames >= 2) {
           if (wakeSamples === 4) { change(tier, dpr, 2); return current(); }
-          if (dpr > Math.min(rawDpr, qualityEnvelope[tier].minDpr)) {
-            change(tier, qualityEnvelope[tier].minDpr);
-            return current();
-          }
+          if (shedLaptopResolution()) return current();
         }
       }
       windowMs += milliseconds;
+      windowHasWake ||= wakeActive;
       samples.push(milliseconds);
       if (gpuMilliseconds !== null && Number.isFinite(gpuMilliseconds) && gpuMilliseconds >= 0) gpuSamples.push(gpuMilliseconds);
       if (windowMs < 2000) return current();
       refreshMs = Math.min(refreshMs, Math.max(percentile(samples, 0.5), 1000 / 240));
       const gpu = gpuSamples.length >= samples.length * GPU_COVERAGE ? gpuVerdict(gpuSamples, refreshMs) : null;
       const p90 = percentile(samples, 0.9);
-      slowWindows = (gpu ? gpu.slow : p90 > FRAME_BUDGET_MS) ? slowWindows + 1 : 0;
+      // Live passage wake is temporary load, including its decay after arrival.
+      // Keep the cheaper safety steps, but judge moderate tier pressure only
+      // once that water has expired. Severe stalls can still demote immediately
+      // after the normal sustained-window threshold and cooldown.
+      const passagePressure = hints.preserveTier && tier !== "low" && windowHasWake && p90 <= SEVERE_FRAME_MS;
+      slowWindows = (gpu ? gpu.slow : p90 > FRAME_BUDGET_MS) && !passagePressure ? slowWindows + 1 : 0;
       // Unusable is about what the Visitor sees, so it stays on frame intervals.
-      unusableWindows = tier === "low" && p90 > 33.3 ? unusableWindows + 1 : 0;
+      unusableWindows = tier === "low" && p90 > SEVERE_FRAME_MS ? unusableWindows + 1 : 0;
       const recoveringDpr = wakeSamples === 4 && dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr);
+      const recoveryDpr = Math.min(rawDpr, hints.preserveTier && dpr < qualityEnvelope[tier].minDpr
+        ? qualityEnvelope[tier].minDpr : qualityEnvelope[tier].maxDpr);
       // Estimate the cost at the proposed resolution before raising it. Merely
       // holding vsync with a smaller buffer does not justify a 56% pixel increase.
       const dprHeadroom = !hints.preserveTier || !recoveringDpr || !gpu
-        || percentile(gpuSamples, 0.9) * (Math.min(rawDpr, qualityEnvelope[tier].maxDpr) / dpr) ** 2 < refreshMs * GPU_HEADROOM;
+        || percentile(gpuSamples, 0.9) * (recoveryDpr / dpr) ** 2 < refreshMs * GPU_HEADROOM;
       fastMs = (gpu ? gpu.fast && dprHeadroom : p90 <= refreshMs * REFRESH_TOLERANCE) ? fastMs + windowMs : 0;
       const recoveryMs = hints.preserveTier && !gpu && wakeSamples === 4
         ? UNTIMED_LAPTOP_RECOVERY_MS : 10_000;
       windowMs = 0;
+      windowHasWake = false;
       samples = [];
       gpuSamples = [];
       if (unusableWindows >= 3) {
@@ -221,10 +242,7 @@ export function createQualityController(hints: {
       if (slowWindows >= 3) {
         if (hints.preserveTier && tier !== "low") {
           if (wakeSamples === 4) { change(tier, dpr, 2); return current(); }
-          if (dpr > Math.min(rawDpr, qualityEnvelope[tier].minDpr)) {
-            change(tier, qualityEnvelope[tier].minDpr);
-            return current();
-          }
+          if (shedLaptopResolution()) return current();
         }
         // Resolution is the last thing the ocean gives up: under pressure it
         // drops effects a tier at a time, keeping the sharpness it has, and only
@@ -238,7 +256,7 @@ export function createQualityController(hints: {
         }
       } else if (fastMs >= recoveryMs && preference === "automatic") {
         if (wakeSamples === 2) change(tier, dpr, 4);
-        else if (dpr < Math.min(rawDpr, qualityEnvelope[tier].maxDpr)) change(tier, qualityEnvelope[tier].maxDpr);
+        else if (recoveringDpr) change(tier, recoveryDpr);
         else if (tierOrder.indexOf(tier) < maximumRank) {
           const nextTier = tier === "low" ? "balanced" : "high";
           change(nextTier, qualityEnvelope[nextTier].maxDpr);

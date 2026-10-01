@@ -110,6 +110,37 @@ test("untimed laptop pressure sheds wake, then DPR, then tier if even those cann
   expect(quality.current().tier).toBe("low");
 });
 
+test.each([null, 16])("a laptop keeps Balanced through moderate passage wake pressure (GPU time %s)", (gpuMilliseconds) => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  // Firefox's reference-device failure: 26–31 ms windows outlast the safety
+  // steps and cooldown, then settle back to vsync once the passage wake fades.
+  for (let frame = 0; frame < 500; frame++) quality.frame(30, gpuMilliseconds, true);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 0.9, fallback: false, wakeSamples: 2 });
+  for (let frame = 0; frame < 800; frame++) quality.frame(REFRESH_60);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 0.9, fallback: false });
+});
+
+test("passage protection still demotes a laptop that is slow after the wake expires", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 500; frame++) quality.frame(30, null, true);
+  for (let frame = 0; frame < 400; frame++) quality.frame(30);
+  expect(quality.current().tier).toBe("low");
+});
+
+test("severe passage pressure retains tier demotion and unusable Low fallback", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 500; frame++) quality.frame(40, null, true);
+  expect(quality.current()).toEqual({ tier: "low", dpr: 0.9, fallback: true });
+});
+
+test("a pause discards passage protection with its partial timing window", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 50; frame++) quality.frame(30, null, true);
+  quality.suspend();
+  for (let frame = 0; frame < 500; frame++) quality.frame(30);
+  expect(quality.current().tier).toBe("low");
+});
+
 test("laptop safety steps reserve compositing time before a slow window accumulates", () => {
   const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
   // This 11 ms render fits the old 15 ms slow-window threshold, but leaves
@@ -126,6 +157,24 @@ test("missed laptop frames can shed compositing pixels even with cheap timed oce
   const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
   for (let frame = 0; frame < 4; frame++) quality.frame(25, 8);
   expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+});
+
+test("a laptop sheds one small extra DPR step before changing tier", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, maxTier: "balanced", preserveTier: true });
+  for (let frame = 0; frame < 4; frame++) quality.frame(REFRESH_60, 13);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false, wakeSamples: 2 });
+  quality.frame(REFRESH_60, 13);
+  quality.frame(REFRESH_60, 13);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 0.9, fallback: false, wakeSamples: 2 });
+});
+
+test("laptop DPR recovery predicts the next rung and restores resolution in reverse order", () => {
+  const quality = createQualityController({ coarsePointer: false, smallScreen: false, deviceDpr: 1.25, start: { tier: "balanced", dpr: 0.9 }, maxTier: "balanced", preserveTier: true });
+  // 8 ms has reserve for DPR 1.0, but not for jumping straight to 1.25.
+  for (let frame = 0; frame < 1400; frame++) quality.frame(REFRESH_60, 8);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1, fallback: false });
+  for (let frame = 0; frame < 800; frame++) quality.frame(REFRESH_60, 5);
+  expect(quality.current()).toEqual({ tier: "balanced", dpr: 1.25, fallback: false });
 });
 
 test("isolated GPU stalls and suspensions cannot accumulate laptop safety-net pressure", () => {

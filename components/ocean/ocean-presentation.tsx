@@ -268,8 +268,8 @@ export default function OceanPresentation({
     [setVoyage],
   );
   const measureFrame = useCallback(
-    (milliseconds: number | null, gpuMilliseconds: number | null = null) => {
-      recordFrame(milliseconds, gpuMilliseconds);
+    (milliseconds: number | null, gpuMilliseconds: number | null = null, wakeActive = false) => {
+      recordFrame(milliseconds, gpuMilliseconds, wakeActive);
       const controller = qualityController.current;
       if (!controller) return;
       if (milliseconds === null) {
@@ -281,7 +281,7 @@ export default function OceanPresentation({
         return;
       }
       const previous = controller.current();
-      const next = controller.frame(milliseconds, gpuMilliseconds);
+      const next = controller.frame(milliseconds, gpuMilliseconds, wakeActive);
       if (next.fallback) {
         recordDiagnostic("quality", next);
         fail("unusable-quality");

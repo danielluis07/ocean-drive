@@ -181,8 +181,9 @@ export function createShipWake() {
         if (!real) continue;
         if (previous) {
           const age = time - Math.min(previous.birth, point.birth);
-          // Mirrors the shader, which skips segments that are spent or span a long idle.
-          if (time - Math.max(previous.birth, point.birth) < WAKE_LIFETIME && age < WAKE_LIFETIME * 2) {
+          const powered = previous.speed > 0 || point.speed > 0 || previous.thrust > 0 || point.thrust > 0;
+          // Resting placement has no energy; spent segments and long idle spans also leave no water.
+          if (powered && time - Math.max(previous.birth, point.birth) < WAKE_LIFETIME && age < WAKE_LIFETIME * 2) {
             // Speed and age interpolate separately along a segment, so bound it by both maxima.
             const radius = wakeReach(Math.max(previous.speed, point.speed), Math.max(age, 0));
             minX = Math.min(minX, previous.x - radius, point.x - radius);

@@ -110,6 +110,12 @@ it, and `bun run assets:audit` re-measures the shipped GLB, checks that it still
 carries its `island` and `surf` parts, and reconciles its triangle and byte
 counts with `content/landmarks.json`.
 
+The production gate records desktop and phone requests separately. The phone
+tab verifies Low's initial transfer and scene counts; its responses are audited
+against the same manifest but do not add a second visit to the desktop's
+complete-visit byte totals. Shared assets requested by both tabs are retained
+in both reports rather than counted twice against one Visitor's budget.
+
 The general sailing regression fixture advances each 16 ms browser frame at no
 more than real-time pace and uses quarter-resolution software rendering. Its
 pacing accounts for time already spent rendering rather than doubling that wait.

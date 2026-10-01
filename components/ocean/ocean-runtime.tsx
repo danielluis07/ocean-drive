@@ -30,7 +30,7 @@ type RuntimeProps = {
   suspended: RefObject<boolean>;
   recoveryGeneration: number;
   // `gpuMilliseconds` is a GPU render time that finished this frame, when the browser can time it.
-  onFrame: (milliseconds: number | null, gpuMilliseconds?: number | null) => void;
+  onFrame: (milliseconds: number | null, gpuMilliseconds?: number | null, wakeActive?: boolean) => void;
   reducedMotion: boolean;
   active: boolean;
   reading: boolean;
@@ -309,7 +309,12 @@ function SailableScene(props: RuntimeProps) {
       const gpuMilliseconds = gpuTimer.current?.poll() ?? null;
       // Renders from preparation, a pause or a Sheet never reach the controller.
       if (!measuring) gpuTimer.current?.reset();
-      if (measuring && frameWasActive.current && lastFrame.current !== null) props.onFrame(now - lastFrame.current, gpuMilliseconds);
+      if (measuring && frameWasActive.current && lastFrame.current !== null) {
+        // These bounds describe the previous render being measured, including
+        // the trail that keeps aging after the Ship arrives at a Stop.
+        const bounds = material.uniforms.wakeBounds.value;
+        props.onFrame(now - lastFrame.current, gpuMilliseconds, bounds[0] <= bounds[2] && bounds[1] <= bounds[3]);
+      }
       // The first frame after entry/resume anchors time without moving the Ship.
       const seconds = measuring && frameWasActive.current ? Math.min(delta, 0.05) : 0;
       lastFrame.current = measuring ? now : null;

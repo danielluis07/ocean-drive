@@ -380,16 +380,71 @@ capture queue/compositing pressure that an inexpensive ocean draw cannot time.
 This first step preserves the settled water shader and full DPR. The field still
 ranks four candidates; a new uniform limits evaluation in the water pass without
 recompilation or new resources. Two further pressured frames lower DPR to the
-current tier's minimum before a whole slow window accumulates. These downward
+current tier's minimum before a whole slow window accumulates; another pair
+can take one final 10% resolution step (Balanced DPR 1.0 to 0.9) before losing
+the tier. This reserve is limited to the laptop safety net, below the ordinary
+tier envelope. These downward
 safety steps do not wait for the ten-second recovery/tier cooldown. A GPU unable
 to hold even that can still reach Low. Ten seconds of headroom restores full wake
 evaluation. Timed resolution recovery also requires predicted headroom for the
-larger drawing buffer, using the square of the proposed DPR ratio. Without GPU
+next larger drawing buffer, using the square of the proposed DPR ratio.
+Resolution recovers in reverse order: the reserve step returns to the ordinary
+floor before trying the tier ceiling. Without GPU
 queries, a modest laptop must hold a full minute of stable cadence before trying
 more pixels or a higher tier: vsync at a smaller buffer does not measure reserve.
 Tier changes and recovery retain the ten-active-second cooldown. Three slow
 windows remain the backup trigger when pressure is not consecutive per frame.
 Single stalls and evidence spanning a pause cannot trigger the early safety net.
+
+The runtime also reports whether the measured render's powered wake bounds are live,
+including the nine-second decay after arrival. A laptop timing window that
+overlaps that wake and has frame p90 at or below 33.3 ms does not accumulate
+tier-demotion evidence. It still triggers the wake-detail and DPR safety steps,
+and its full frame/GPU measurements remain in the diagnostics and Chrome's
+20 ms regression gate. A severe window above 33.3 ms keeps the normal sustained
+demotion rule; once the wake expires, even moderate sustained pressure can
+demote a GPU that cannot hold Balanced at rest. Partial-window wake evidence
+clears on suspension like the timing samples. This distinguishes passage load
+from settled device weakness without changing the shader or resource budgets.
+Diagnostic windows record the same overlap as `wakeActive` for review.
+
+This follow-up was prompted by a clean-candidate rerun of `08a8026` on the
+reference Vega 10: Chrome held Balanced through 324.41 active seconds and 160
+windows (maximum p90 17.4 ms), while foreground Firefox completed 318.50 active
+seconds but changed to Low during the third passage's wake. Its moderate
+26–31 ms windows outlasted both cheaper safety steps and the cooldown. The
+controller regression replays that bounded pressure and separately checks
+settled weakness, severe passage pressure, recovery and suspension. Those
+clean-candidate captures describe the implementation before this follow-up;
+they do not certify the modified sources.
+
+With passage protection alone, the subsequent idle/plugged-in reference run
+held Balanced in both browsers. Chrome completed 323.05 active seconds and
+159 windows but still failed the interval gate in two windows (24.9 and 21.1
+ms, GPU p90 15.20 and 11.74 ms), already at DPR 1.0 and two-candidate wake
+evaluation. Firefox completed 318.02 active seconds and 157 windows without
+tier changes (maximum frame p90 29 ms), meeting its tier criterion. That
+remaining Chrome pressure motivated the final DPR 0.9 reserve and recovery
+tests. Earlier runs overlapped other applications according to the tester;
+they remain retained measurements and are not substitutes for idle acceptance.
+
+The completed safety ladder then passed both idle/plugged-in browser journeys
+on 2026-10-01, using development build
+`08a8026afea28eb74b8f5bbe98bab0cff0ec631d-1d47306244261ca2`:
+
+| Browser | Active seconds | Windows | Maximum frame p90 | Tier changes | Recorded DPR |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Chrome 154.0.8037.58 | 322.65 | 159 | 17.0 ms | 0 | 0.9–1.0 |
+| Firefox 146.0.1 | 319.05 | 157 | 20.0 ms | 0 | 0.9–1.25 |
+
+Every window held Balanced; there were no renderer errors. Both scenes peaked
+at seven draws, 41,043 triangles, one ocean draw and two targets. The retained
+records are `evidence/e2e/ocean-voyage-chrome/ocean-voyage.2026-10-01T12-54-28-285Z.evidence.json`
+and the corresponding Firefox record at the same timestamp. These are
+development evidence, not the clean-candidate E2 capture. The current review
+gallery is `evidence/issue-57-followup/index.html`, pairing the original
+Balanced captures with this build's five Stops and four passages. Automatic
+DPR and capture timing are labelled; wave phases and wake ages differ.
 
 #### Per-feature GPU costs
 
