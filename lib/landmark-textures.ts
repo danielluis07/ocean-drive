@@ -67,7 +67,8 @@ export class LandmarkTextureCache {
       if (!entry.decoded) {
         entry.busy = true;
         this.trace("decode", id, this.entries.size);
-        Promise.allSettled(entry.blobs.map((blob) => createImageBitmap(blob, { imageOrientation: "flipY", colorSpaceConversion: "none" })))
+        // Baked row zero and mesh v=0 both correspond to bounds.minZ.
+        Promise.allSettled(entry.blobs.map((blob) => createImageBitmap(blob, { imageOrientation: "none", colorSpaceConversion: "none" })))
           .then((results) => {
             const decoded = results.flatMap((result) => result.status === "fulfilled" ? [result.value] : []);
             if (decoded.length !== results.length) { decoded.forEach((bitmap) => bitmap.close()); entry.blobs = undefined; return; }

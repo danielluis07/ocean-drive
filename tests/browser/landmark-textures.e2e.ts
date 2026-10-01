@@ -10,6 +10,13 @@ for (const tier of ["balanced", "low"] as const) {
     await page.addInitScript((state) => {
       sessionStorage.setItem("ocean-drive:diagnostics", "enabled");
       sessionStorage.setItem("ocean-drive:voyage:v1", state);
+      const decode = window.createImageBitmap.bind(window);
+      const orientations: ImageOrientation[] = [];
+      Object.assign(window, { terrainOrientations: orientations });
+      window.createImageBitmap = ((source: ImageBitmapSource, options?: ImageBitmapOptions) => {
+        if (source instanceof Blob && source.type === "image/webp") orientations.push(options?.imageOrientation ?? "from-image");
+        return decode(source, options);
+      }) as typeof createImageBitmap;
     }, serializeVoyageState({ ...createInitialVoyageState(), qualityPreference: tier === "low" ? "reduced-3d" : "automatic" }));
     let release!: () => void;
     const held = new Promise<void>((resolve) => { release = resolve; });
@@ -34,6 +41,40 @@ for (const tier of ["balanced", "low"] as const) {
       .filter((event: { kind: string }) => event.kind === "landmark-texture").map((event: { detail: string }) => JSON.parse(event.detail)));
     expect(events.every((event: { retained: number }) => event.retained <= 2)).toBe(true);
     expect(events.some((event: { action: string }) => event.action === "release")).toBe(true);
+    // Use the app's decode options on an asymmetric bake: row zero is minZ,
+    // whose mesh UV is v=0. Read the uploaded texture at that coordinate.
+    const sampledRows = await page.evaluate(async () => {
+      const orientations = (window as unknown as { terrainOrientations: ImageOrientation[] }).terrainOrientations;
+      const source = document.createElement("canvas");
+      source.width = 1; source.height = 2;
+      const paint = source.getContext("2d")!;
+      paint.fillStyle = "red"; paint.fillRect(0, 0, 1, 1);
+      paint.fillStyle = "blue"; paint.fillRect(0, 1, 1, 1);
+      const blob = await new Promise<Blob>((resolve) => source.toBlob((value) => resolve(value!), "image/png"));
+      const gl = document.createElement("canvas").getContext("webgl2")!;
+      const texture = gl.createTexture();
+      const framebuffer = gl.createFramebuffer();
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+      const samples: number[][] = [];
+      for (const imageOrientation of new Set(orientations)) {
+        const bitmap = await createImageBitmap(blob, { imageOrientation, colorSpaceConversion: "none" });
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmap);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) throw new Error("Texture framebuffer incomplete");
+        const pixel = new Uint8Array(4);
+        gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+        samples.push(Array.from(pixel));
+        bitmap.close();
+      }
+      gl.deleteFramebuffer(framebuffer);
+      gl.deleteTexture(texture);
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      return samples;
+    });
+    expect(sampledRows.length).toBeGreaterThan(0);
+    expect(sampledRows).toEqual(sampledRows.map(() => [255, 0, 0, 255]));
     if (tier === "low") {
       expect(requests.every((url) => url.includes("-low-colour."))).toBe(true);
     } else {
