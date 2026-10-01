@@ -97,5 +97,11 @@ test("Balanced holds every passage through five active minutes on the host GPU",
     expect.soft(report.scenes.balanced?.triangles).toBeLessThanOrEqual(productionBudgets.triangles);
     expect.soft(report.scenes.balanced?.renderTargets).toBeLessThanOrEqual(productionBudgets.renderTargets);
     expect.soft(report.scenes.balanced?.oceanDraws).toBe(productionBudgets.oceanDraws);
+    const textures = report.events.filter((event: { kind: string }) => event.kind === "landmark-texture")
+      .map((event: { detail: string }) => JSON.parse(event.detail));
+    expect.soft(textures.some((event: { action: string }) => event.action === "upload"), "Voyage prepares optional terrain textures").toBe(true);
+    expect.soft(textures.filter((event: { retained: number }) => event.retained > 2), "Only current and next terrain textures are retained").toEqual([]);
+    expect.soft(textures.filter((event: { action: string; settledStop: number | null }) =>
+      ["decode", "upload"].includes(event.action) && event.settledStop === null), "Texture preparation never starts inside a passage").toEqual([]);
   }
 });

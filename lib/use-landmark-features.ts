@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { Mesh, type BufferGeometry, type Group } from "three";
+import { Mesh, type BufferGeometry, type Group, MeshStandardMaterial, Texture } from "three";
 
 export type FeatureLibrary = {
   // In the order the placements index them.
   models: BufferGeometry[];
+  material: MeshStandardMaterial | null;
   // Per Landmark id, the record `expandFeatures` reads.
   placements: Record<string, number[]>;
 };
@@ -13,21 +14,30 @@ type FeatureRecord = { models?: string[]; placements?: Record<string, number[]> 
 
 function readLibrary(scene: Group): FeatureLibrary | null {
   let record: FeatureRecord | undefined;
+  let material: MeshStandardMaterial | null = null;
   const meshes = new Map<string, BufferGeometry>();
+  scene.updateMatrixWorld(true);
   scene.traverse((object) => {
     if (object.userData.placements) record = object.userData;
-    if (object instanceof Mesh) meshes.set(object.name, object.geometry);
+    if (object instanceof Mesh) {
+      object.geometry = object.geometry.clone().applyMatrix4(object.matrixWorld);
+      meshes.set(object.name, object.geometry);
+      if (object.material instanceof MeshStandardMaterial) { material = object.material; material.envMapIntensity = .3; material.vertexColors = true; }
+    }
   });
   const models = record?.models?.map((name) => meshes.get(name));
   if (!record?.placements || !models || models.some((model) => !model)) return null;
-  return { models: models as BufferGeometry[], placements: record.placements };
+  return { models: models as BufferGeometry[], material, placements: record.placements };
 }
 
 function disposeScene(scene: Group) {
   scene.traverse((object) => {
     if (!(object instanceof Mesh)) return;
     object.geometry.dispose();
-    object.material.dispose();
+    for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+      for (const value of Object.values(material)) if (value instanceof Texture) { value.dispose(); if (typeof ImageBitmap !== "undefined" && value.image instanceof ImageBitmap) value.image.close(); }
+      material.dispose();
+    }
   });
 }
 

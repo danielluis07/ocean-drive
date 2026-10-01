@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { assetSha256 } from "@/lib/asset-provenance";
 import manifest from "@/content/asset-manifest.json";
 import dependencies from "@/docs/third-party/dependencies.json";
@@ -8,6 +9,7 @@ import { decodePlacements, PLACEMENT_FIELDS } from "@/lib/landmark-features";
 import { gzipSync } from "node:zlib";
 import ship from "@/content/ship.json";
 import { shipBudget, shipSource } from "@/content/ship-source";
+import { productionBudgets } from "@/lib/production-budgets";
 
 export async function auditAssets() {
   const errors: string[] = [];
@@ -34,7 +36,29 @@ export async function auditAssets() {
     }
   }
   if (landmarks.features.url !== featureFile.url || !paths.has(`public${featureFile.url}`)) errors.push("Unregistered Feature file");
+  if (featureFile.source) {
+    if (!paths.has(featureFile.source.path)) errors.push("Unregistered human Feature source");
+    if (!await Bun.file(featureFile.source.proof).exists()) errors.push("Missing human Feature rights evidence");
+  }
+  for (const landmark of landmarks.landmarks) for (const tier of ["balanced", "low"] as const) {
+    const textures = landmark.textures[tier];
+    let bytes = 0;
+    for (const texture of Object.values(textures)) {
+      const path = `public${texture.url}`;
+      const asset = manifest.assets.find((entry) => entry.path === path);
+      if (!asset || asset.essential || !asset.experience) errors.push(`Invalid optional terrain texture record: ${path}`);
+      if (!await Bun.file(path).exists()) { errors.push(`Missing terrain texture: ${path}`); continue; }
+      const size = Bun.file(path).size;
+      const metadata = await sharp(await Bun.file(path).arrayBuffer()).metadata();
+      const expected = tier === "low" ? 512 : 1024;
+      if (size !== texture.bytes || texture.size !== expected || metadata.width !== expected || metadata.height !== expected) errors.push(`Terrain texture record mismatch: ${path}`);
+      bytes += size;
+    }
+    if (bytes > 150 * 1024) errors.push(`Terrain texture budget exceeded: ${landmark.id} ${tier}`);
+    if (!("colour" in textures) || (tier === "balanced" && !("normal" in textures)) || (tier === "low" && "normal" in textures)) errors.push(`Invalid terrain texture set: ${landmark.id} ${tier}`);
+  }
   let fonts = 0;
+  let authoredVisuals = 0;
   for (const asset of manifest.assets) {
     if (!["project-source", "ofl-font", "ai-generated", "open-data", "licensed-model"].includes(asset.sourceKind)) errors.push(`Unapproved source: ${asset.path}`);
     for (const field of ["creator", "source", "rights", "proof", "transformations", "retrieved"] as const) {
@@ -44,6 +68,7 @@ export async function auditAssets() {
     if (!(await Bun.file(asset.path).exists())) { errors.push(`Missing asset: ${asset.path}`); continue; }
     if (await assetSha256(asset.path) !== asset.sha256) errors.push(`Unrecorded transformation: ${asset.path}`);
     if (asset.kind === "font") fonts += Bun.file(asset.path).size;
+    if (asset.kind === "authored" && asset.experience && asset.path.startsWith("public/")) authoredVisuals += Bun.file(asset.path).size;
     if (asset.path.startsWith("public/") && asset.path.endsWith(".glb")) {
       const buffer = await Bun.file(asset.path).arrayBuffer();
       const model = inspectModel(buffer);
@@ -53,7 +78,7 @@ export async function auditAssets() {
         // The shared Feature file: its own transfer budget, and each Landmark's
         // allowance for what its placements expand to in that Landmark's draw.
         if (buffer.byteLength > featureFile.bytes) errors.push(`Feature file budget exceeded: ${buffer.byteLength} bytes`);
-        if (model.materials > 1 || model.textures) errors.push(`Invalid Feature materials/resources: ${asset.path}`);
+        if (model.materials !== 1 || model.textures > 1 || model.imageSizes.length > 1 || model.imageSizes.some(({ width, height }) => width !== featureFile.textureSize || height !== featureFile.textureSize)) errors.push(`Invalid Feature materials/resources: ${asset.path}`);
         if (buffer.byteLength !== landmarks.features.bytes) errors.push(`Feature record does not match its file: ${asset.path}`);
         const names = model.features?.models ?? [];
         const declared: Record<string, { triangles: number }> = landmarks.features.models;
@@ -99,6 +124,7 @@ export async function auditAssets() {
     }
   }
   if (fonts > 160 * 1024) errors.push("Font budget exceeded");
+  if (authoredVisuals > productionBudgets.allVisuals) errors.push("All authored visuals exceed 1.8 MiB");
   if (await assetSha256("bun.lock") !== dependencies.lockSha256) errors.push("Dependency notices require reconciliation with bun.lock");
   for (const dependency of dependencies.dependencies) {
     if (!dependency.license || /UNKNOWN|UNLICENSED/i.test(dependency.license) || !await Bun.file(dependency.proof).exists()) errors.push(`Missing dependency rights: ${dependency.name}`);

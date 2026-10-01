@@ -2,7 +2,7 @@
 // terrain rules and named Features at their real coordinates. The build decides
 // where every instance goes and records it; the scene expands those records
 // into one mesh per Landmark, so any number of models costs a single draw.
-import { BufferAttribute, BufferGeometry, Matrix4, Quaternion, Vector3 } from "three";
+import { BufferAttribute, BufferGeometry, Matrix3, Matrix4, Quaternion, Vector3 } from "three";
 import { boundsOf, insideRings, type PlanarPoint } from "@/lib/landmark-geometry";
 
 export type TerrainRange = [lowest: number, highest: number];
@@ -96,36 +96,48 @@ export function decodePlacements(record: readonly number[]): Placement[] {
   return placements;
 }
 
-// Every instance on one Landmark as a single geometry. Models are unindexed
-// and carry position and colour only, like the island, so the result takes its
-// flat normals here rather than shipping them.
+// Every instance on one Landmark as a single draw, retaining authored atlas
+// UVs and normals. Procedural models without normals receive flat shading.
 export function expandFeatures(models: readonly BufferGeometry[], record: readonly number[]) {
   const placements = decodePlacements(record).filter((placement) => models[placement.model]);
-  const vertices = placements.reduce((total, placement) => total + models[placement.model].getAttribute("position").count, 0);
+  const vertices = placements.reduce((total, placement) => total + (models[placement.model].getIndex()?.count ?? models[placement.model].getAttribute("position").count), 0);
   const positions = new Float32Array(vertices * 3);
+  const uvs = models.some((model) => model.getAttribute("uv")) ? new Float32Array(vertices * 2) : null;
+  const normals = models.every((model) => model.getAttribute("normal")) ? new Float32Array(vertices * 3) : null;
   const colours = new Uint8Array(vertices * 4);
   const matrix = new Matrix4();
   const turn = new Quaternion();
+  const normalMatrix = new Matrix3();
   const point = new Vector3();
   const up = new Vector3(0, 1, 0);
   let vertex = 0;
   for (const placement of placements) {
-    const model = models[placement.model];
+    const original = models[placement.model];
+    const model = original.index ? original.toNonIndexed() : original;
     const position = model.getAttribute("position");
     const colour = model.getAttribute("color");
     // Heading runs clockwise from north, which is -Z: the Ship's convention.
     turn.setFromAxisAngle(up, (-placement.heading * Math.PI) / 180);
     matrix.compose(point.set(...placement.position), turn, new Vector3().setScalar(placement.scale));
+    normalMatrix.getNormalMatrix(matrix);
     for (let index = 0; index < position.count; index++, vertex++) {
       point.fromBufferAttribute(position, index).applyMatrix4(matrix).toArray(positions, vertex * 3);
+      if (normals) point.fromBufferAttribute(model.getAttribute("normal"), index).applyNormalMatrix(normalMatrix).toArray(normals, vertex * 3);
+      if (uvs) {
+        const uv = model.getAttribute("uv");
+        uvs.set(uv ? [uv.getX(index), uv.getY(index)] : [0, 0], vertex * 2);
+      }
       for (let channel = 0; channel < 4; channel++) {
-        colours[vertex * 4 + channel] = Math.round(colour.getComponent(index, channel) * 255);
+        colours[vertex * 4 + channel] = colour && channel < colour.itemSize ? Math.round(colour.getComponent(index, channel) * 255) : 255;
       }
     }
+    if (model !== original) model.dispose();
   }
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(positions, 3));
   geometry.setAttribute("color", new BufferAttribute(colours, 4, true));
-  geometry.computeVertexNormals();
+  if (uvs) geometry.setAttribute("uv", new BufferAttribute(uvs, 2));
+  if (normals) geometry.setAttribute("normal", new BufferAttribute(normals, 3));
+  else geometry.computeVertexNormals();
   return geometry;
 }

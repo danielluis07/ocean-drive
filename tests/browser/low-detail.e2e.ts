@@ -12,6 +12,7 @@ for (const view of [
       await page.setViewportSize({ width: view.width, height: view.height });
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.addInitScript((state) => {
+        sessionStorage.setItem("ocean-drive:diagnostics", "enabled");
         sessionStorage.setItem("ocean-drive:voyage:v1", state);
       }, serializeVoyageState({
         ...createInitialVoyageState(),
@@ -24,6 +25,9 @@ for (const view of [
       await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-stage", "ready");
       await expect(page.locator('[data-slot="ocean-loading"]')).toBeHidden();
       await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-quality", view.tier);
+      await expect.poll(() => page.evaluate((id) => JSON.parse(window.__oceanDiagnostics!.exportJSON()).events
+        .some((event: { kind: string; detail: string }) => event.kind === "landmark-texture" &&
+          JSON.parse(event.detail).id === id && JSON.parse(event.detail).action === "upload"), stop)).toBe(true);
       await page.evaluate(() => document.fonts.ready);
       const path = testInfo.outputPath(`${view.name}-stop-0${index + 1}.png`);
       await page.screenshot({ path });

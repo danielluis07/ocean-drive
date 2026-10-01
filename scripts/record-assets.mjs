@@ -2,6 +2,7 @@ import { assetSha256 as hash } from '@/lib/asset-provenance';
 import { shipSource } from '@/content/ship-source';
 import ship from '@/content/ship.json';
 import landmarks from '@/content/landmarks.json';
+import { featureFile } from '@/content/landmark-sources';
 const fontSources = await Bun.file('docs/third-party/fonts/sources.json').json();
 const assets = [];
 const shipRights = {
@@ -26,6 +27,7 @@ const geodata = (retrieved) => ({
  proof: 'docs/third-party/open-geodata.md',
 });
 const landmarkRecords = new Map();
+if (featureFile.source) assets.push({ ...featureFile.source, kind: 'source-data', sourceKind: 'licensed-model', transformations: 'Retained human-authored Feature GLB and shared embedded atlas', essential: false, experience: false, sha256: await hash(featureFile.source.path) });
 for await (const file of new Bun.Glob('*.json').scan({cwd:'data/landmarks',onlyFiles:true})) {
  const path = `data/landmarks/${file.replaceAll('\\','/')}`;
  const record = await Bun.file(path).json();
@@ -38,6 +40,11 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  const vessel = Object.values(ship.variants).some((variant) => variant.url === url);
  const landmark = /\/landmark-(.+)-(balanced|low)\.v\d+\.glb$/.exec(path);
  const features = url === landmarks.features.url;
+ const terrain = /\/landmark-(.+)-(balanced|low)-(colour|normal)\.v\d+\.webp$/.exec(path);
+ if (terrain) {
+  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery`, essential: false, experience: true, sha256: await hash(path)});
+  continue;
+ }
  const illustrative = path.startsWith('public/images/');
  if (vessel) {
   assets.push({path, url, kind: 'authored', ...shipRights, transformations: 'Cruise ship adapted as Del Mar: rotated to -Z, broadened beam, lowered superstructure and waterline, UV-aware LOD simplification with authored Low feature protection regions, quantized vertex attributes, embedded 512px Balanced / 256px Low JPEG atlas; Low has source-mesh ambient occlusion and up-facing lighting baked into its existing atlas; one opaque material; built offline by scripts/build-ship.ts', essential: true, experience: true, sha256: await hash(path)});
@@ -45,6 +52,10 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  }
  if (landmark) {
   assets.push({path, url, kind: 'authored', ...geodata(landmarkRecords.get(landmark[1])?.coastline.retrieved), source: 'scripts/generate-landmarks.ts', transformations: `Deterministic GLB v2 export at the ${landmark[2]} tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band`, essential: true, experience: true, sha256: await hash(path)});
+  continue;
+ }
+ if (features && featureFile.source) {
+  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: "licensed-model", source: featureFile.source.source, transformations: "Human-authored Feature GLB and embedded shared atlas preserved; deterministic terrain placements added by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features) {
@@ -62,7 +73,7 @@ for (const font of fontSources) assets.push({path: font.file, kind:'font', sourc
 for (const path of ['components/voyage/travessia-mark.tsx','lib/ocean-surface.ts','lib/ocean-lighting.ts','lib/ocean-daylight.ts','lib/landmark-surf.ts','lib/landmark-material.ts']) assets.push({path, kind:'procedural', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:path, retrieved:path === 'lib/ocean-daylight.ts' ? '2026-09-20' : path === 'lib/landmark-material.ts' ? '2026-09-19' : '2026-09-15', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/project-assets.md', transformations:'Compiled by Next into same-origin HTML/application code', essential:path.includes('surface') || path.includes('daylight'), experience:true, sha256:await hash(path)});
 // The Landmark pipeline's authored configuration and the record its build
 // writes, hash-pinned so a mesh can never drift from what CI was shown.
-for (const path of ['content/landmark-sources.ts','content/landmarks.json','scripts/generate-landmarks.ts','scripts/landmark-feature-models.ts','lib/landmark-geometry.ts','lib/landmark-surface.ts','lib/landmark-features.ts']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-09-17', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/open-geodata.md', transformations:path.endsWith('.json') ? 'Written by the Landmark build from the recorded source data' : 'Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline', essential:true, experience:!path.startsWith('scripts/'), sha256:await hash(path)});
+for (const path of ['content/landmark-sources.ts','content/landmarks.json','scripts/generate-landmarks.ts','scripts/landmark-feature-models.ts','scripts/landmark-feature-source.ts','scripts/landmark-texture-bake.ts','lib/landmark-geometry.ts','lib/landmark-surface.ts','lib/landmark-features.ts']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-09-17', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/open-geodata.md', transformations:path.endsWith('.json') ? 'Written by the Landmark build from the recorded source data' : 'Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline', essential:true, experience:!path.startsWith('scripts/'), sha256:await hash(path)});
 assets.sort((a,b)=>a.path.localeCompare(b.path));
 await Bun.write('content/asset-manifest.json',JSON.stringify({schema:1, assets},null,2)+'\n');
 console.log(`Recorded ${assets.length} asset provenance entries.`);

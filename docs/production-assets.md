@@ -85,18 +85,18 @@ retained with its evidence record, bound to the served build.
 | Minimum sailable payload             |                   1.5 MiB |
 | Complete first visit                 |                     5 MiB |
 | Minimum-sailable authored visuals    |                   530 KiB |
-| All in-experience authored visuals   |                   780 KiB |
+| All in-experience authored visuals   |                   1.8 MiB |
 | Fonts                                |                   160 KiB |
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
 | Low vessel                           |  4,000 triangles; 120 KiB |
-| Landmark, High/Balanced              |  4,400 triangles; 76 KiB; |
-|                                      |     3 draws; no textures  |
+| Landmark, High/Balanced              |  15,000 triangles; 250 KiB; |
+|                                      |     3 draws; optional maps  |
 | Landmark Features, High/Balanced     |  160 instances and 3,000  |
 |                                      |  triangles per Landmark,  |
 |                                      |     in its third draw     |
-| Shared Feature file, High/Balanced   |      30 KiB; no textures  |
+| Shared Feature file, High/Balanced   |      200 KiB; one 1024 px atlas  |
 | Landmark, Low                        |  1,300 triangles; 28 KiB; |
-|                                      |     2 draws; no textures; |
+|                                      |     2 draws; 512 px colour; |
 |                                      |              no Features  |
 | Balanced visible draws               |            Fewer than 100 |
 | Balanced visible triangles           |        Fewer than 150,000 |
@@ -118,11 +118,10 @@ it, and `bun run assets:audit` re-measures the shipped GLB, checks that it still
 carries its `island` and `surf` parts, and reconciles its triangle and byte
 counts with `content/landmarks.json`. A Landmark's third draw is everything
 standing on it, expanded from the shared Feature file; the build and the audit
-both hold that file to 30 KiB and each Landmark's instances to its allowance,
-and the audit reconciles them with the same record. The two authored-visuals
-budgets each rose by 30 KiB to admit the file
-([#67](https://github.com/danielluis07/ocean-drive/issues/67)). Low never
-requests it.
+both hold that file to 200 KiB and each Landmark's instances to its allowance,
+and the audit reconciles them with the same record. The minimum-sailable budgets remain unchanged; all authored visuals allow
+1.8 MiB ([#74](https://github.com/danielluis07/ocean-drive/issues/74)). Low never
+requests the Feature file.
 
 The production gate records desktop and phone requests separately. The phone
 tab verifies Low's initial transfer and scene counts; its responses are audited
@@ -179,3 +178,5 @@ per-tier scene maxima, preparation milestones, lifecycle and context events.
 Hidden/paused time never enters active frame samples. History is bounded to 512
 events and 180 timing windows; event eviction is reported. Exported local JSON
 can be attached to the exact candidate's release dossier by its reviewer.
+
+Issue #74 adds optional baked terrain WebPs: each Balanced/High Landmark has one 1024 px colour and one 1024 px normal map within 150 KiB together; Low has one 512 px colour and no normal. Maps derive offline from recorded elevation, slope, distance inland and palette, never satellite imagery. They are non-essential in payload reports, retained for at most the current and next Landmark, and prepared while settled. Modest GPUs shed normal maps. The complete first visit remains 5 MiB. Human Feature sources and their rights evidence are retained and hash-pinned; see [landmarks.md](landmarks.md).

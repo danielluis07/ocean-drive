@@ -11,6 +11,11 @@ import { qualityEnvelope, type QualityTier, type StartingQuality } from "@/lib/o
 export type GpuClass = "modest" | "capable";
 export type StartingSource = "remembered" | "gpu-class" | "default";
 
+// Integrated GPUs keep Balanced while optional terrain normal detail is shed.
+export function landmarkNormalEnabled(gpuClass: GpuClass | null, tier: QualityTier) {
+  return tier !== "low" && gpuClass !== "modest";
+}
+
 const STORAGE_PREFIX = "ocean-drive:quality:";
 const tiers: QualityTier[] = ["low", "balanced", "high"];
 

@@ -4,7 +4,10 @@ import ship from "@/content/ship.json";
 
 export type LandmarkVariant = { url: string; triangles: number; bytes: number };
 
+export type LandmarkTextures = { colour: { url: string; bytes: number; size: number }; normal?: { url: string; bytes: number; size: number } };
+
 export type Landmark = {
+  textures: { balanced: LandmarkTextures; low: LandmarkTextures };
   id: string;
   place: string;
   span: number;

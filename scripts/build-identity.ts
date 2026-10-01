@@ -13,7 +13,7 @@ export function sourceFingerprint() {
       else {
         hash.update(child.replaceAll("\\", "/"));
         const bytes = readFileSync(child);
-        hash.update(/\.(woff2|png|glb)$/.test(child) ? bytes : bytes.toString("utf8").replaceAll("\r\n", "\n"));
+        hash.update(/\.(woff2|png|glb|webp|jpe?g)$/.test(child) ? bytes : bytes.toString("utf8").replaceAll("\r\n", "\n"));
       }
     }
   }
