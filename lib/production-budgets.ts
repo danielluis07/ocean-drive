@@ -1,12 +1,13 @@
 export const productionBudgets = {
   routeJavaScript: 200 * 1024,
   lazyThreeJavaScript: 350 * 1024,
-  minimumSailable: 1.5 * 1024 ** 2,
+  minimumSailable: 2 * 1024 ** 2,
   completeVisit: 5 * 1024 ** 2,
-  // Minimum visuals remain unchanged; optional terrain textures are non-essential.
+  // Initial visuals accommodate four richer terrain meshes plus the vessel.
+  // Optional terrain textures are non-essential.
   // Balanced and High request the shared Feature file
   // with their Landmarks. See docs/landmarks.md.
-  minimumVisuals: 530 * 1024,
+  minimumVisuals: 1.25 * 1024 ** 2,
   allVisuals: 1.8 * 1024 ** 2,
   fonts: 160 * 1024,
   drawCalls: 99,

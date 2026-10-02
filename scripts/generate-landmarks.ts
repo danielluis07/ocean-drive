@@ -327,7 +327,10 @@ for (const source of landmarkSources) {
     // The surface, its skirt and its shallows all follow from one sample
     // spacing, so the budget is met by drawing the island more coarsely until
     // it fits rather than by hand-tuning each island.
-    let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * Math.min(budget.triangles, tier === "low" ? 1200 : 4400) * 0.68));
+    // Low reserves transfer headroom for shoreline vertices; Balanced uses its
+    // expanded allowance instead of the former 4,400-triangle density target.
+    const target = tier === "low" ? Math.min(budget.triangles, 1200) : budget.triangles;
+    let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * target * 0.68));
     let island = buildIsland(source, record, spacing);
     let surf = buildShallows(island.outlines, source, spacing, tier);
     for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {

@@ -15,10 +15,10 @@
       "place": "Fernando de Noronha, Pernambuco, Brazil",
       "span": 34,
       "extent": {
-        "x": 16.931,
-        "z": 13.143
+        "x": 16.942,
+        "z": 13.232
       },
-      "radius": 17.431,
+      "radius": 17.442,
       "islands": 3,
       "summitMetres": 230,
       "surfWidth": 1.5,
@@ -30,8 +30,8 @@
       "variants": {
         "balanced": {
           "url": "/models/landmark-fernando-de-noronha-balanced.v1.glb",
-          "triangles": 4138,
-          "bytes": 80684
+          "triangles": 11844,
+          "bytes": 213664
         },
         "low": {
           "url": "/models/landmark-fernando-de-noronha-low.v1.glb",
@@ -66,10 +66,10 @@
       "place": "Ilha de Boipeba, Bahia, Brazil",
       "span": 27,
       "extent": {
-        "x": 13.044,
-        "z": 13.428
+        "x": 13.054,
+        "z": 13.463
       },
-      "radius": 13.928,
+      "radius": 13.963,
       "islands": 4,
       "summitMetres": 68,
       "surfWidth": 1.8,
@@ -81,8 +81,8 @@
       "variants": {
         "balanced": {
           "url": "/models/landmark-boipeba-balanced.v1.glb",
-          "triangles": 3898,
-          "bytes": 73980
+          "triangles": 11500,
+          "bytes": 202404
         },
         "low": {
           "url": "/models/landmark-boipeba-low.v1.glb",
@@ -117,10 +117,10 @@
       "place": "Arquipélago de Abrolhos, Bahia, Brazil",
       "span": 31,
       "extent": {
-        "x": 14.193,
-        "z": 15.465
+        "x": 14.21,
+        "z": 15.486
       },
-      "radius": 15.965,
+      "radius": 15.986,
       "islands": 6,
       "summitMetres": 39,
       "surfWidth": 1.9,
@@ -132,8 +132,8 @@
       "variants": {
         "balanced": {
           "url": "/models/landmark-abrolhos-balanced.v1.glb",
-          "triangles": 4157,
-          "bytes": 82260
+          "triangles": 11873,
+          "bytes": 215968
         },
         "low": {
           "url": "/models/landmark-abrolhos-low.v1.glb",
@@ -168,10 +168,10 @@
       "place": "Ilha Grande, Rio de Janeiro, Brazil",
       "span": 39,
       "extent": {
-        "x": 19.45,
-        "z": 10.46
+        "x": 19.459,
+        "z": 10.545
       },
-      "radius": 19.95,
+      "radius": 19.959,
       "islands": 1,
       "summitMetres": 1001,
       "surfWidth": 1.45,
@@ -183,8 +183,8 @@
       "variants": {
         "balanced": {
           "url": "/models/landmark-ilha-grande-balanced.v1.glb",
-          "triangles": 4160,
-          "bytes": 81444
+          "triangles": 11878,
+          "bytes": 214676
         },
         "low": {
           "url": "/models/landmark-ilha-grande-low.v1.glb",

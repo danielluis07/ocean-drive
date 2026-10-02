@@ -1,0 +1,22 @@
+[
+  {
+    "file": "fonts/manrope-400-800-latin.v1.woff2",
+    "creator": "The Manrope Project Authors",
+    "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap",
+    "retrieved": "2026-09-16",
+    "license": "OFL-1.1",
+    "proof": "docs/third-party/fonts/manrope-OFL.txt",
+    "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only. Variable font serves approved weights 400-800 without a duplicate request."
+  },
+  {
+    "file": "fonts/geistmono-500-latin.v1.woff2",
+    "creator": "The Geist Project Authors",
+    "source": "https://fonts.gstatic.com/s/geistmono/v6/or3yQ6H-1_WfwkMZI_qYPLs1a-t7PU0AbeEPKK5U5Ck.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@500&display=swap",
+    "retrieved": "2026-09-15",
+    "license": "OFL-1.1",
+    "proof": "docs/third-party/fonts/geistmono-OFL.txt",
+    "transformations": "Unmodified Google Fonts Latin WOFF2 distribution; local versioned filename only."
+  }
+]

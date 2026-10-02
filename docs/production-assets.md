@@ -82,9 +82,9 @@ retained with its evidence record, bound to the served build.
 | ------------------------------------ | ------------------------: |
 | Server/editorial JavaScript          |                   200 KiB |
 | Additional lazy 3D JavaScript        |                   350 KiB |
-| Minimum sailable payload             |                   1.5 MiB |
+| Minimum sailable payload             |                     2 MiB |
 | Complete first visit                 |                     5 MiB |
-| Minimum-sailable authored visuals    |                   530 KiB |
+| Minimum-sailable authored visuals    |                  1.25 MiB |
 | All in-experience authored visuals   |                   1.8 MiB |
 | Fonts                                |                   160 KiB |
 | High/Balanced vessel                 | 12,000 triangles; 250 KiB |
@@ -101,7 +101,7 @@ retained with its evidence record, bound to the served build.
 | Balanced visible draws               |            Fewer than 100 |
 | Balanced visible triangles           |        Fewer than 150,000 |
 | Ocean draws                          |               Exactly one |
-| Balanced retained off-screen targets |               At most one |
+| Balanced retained off-screen targets |               At most two |
 | Low retained off-screen targets      |                      Zero |
 
 Text, JavaScript, CSS and SVG response bodies are measured using standard gzip;

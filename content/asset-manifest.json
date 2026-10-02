@@ -41,7 +41,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "9a078494a34391c23f864f1d5593e782e4cd3b1a223a8c75a111ea43a8501faa"
+      "sha256": "7c94038db35ea56d14bce5a4cc35a5110bd559cc18d2aa8a8f4e4419118836f9"
     },
     {
       "path": "content/ship-art.ts",
@@ -627,7 +627,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "353546413c14a5cd1ae2de07a122c8f87cf6cfc9f8e1117612c30ecec21a1a90"
+      "sha256": "a3010990d89e5859da918d19096105a0deedb805ca7eab99d63de4a6fc6c9121"
     },
     {
       "path": "public/models/landmark-abrolhos-low.v1.glb",
@@ -642,7 +642,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "ddb17c3757e8f7e9fcd32d738129d39fdc1d1d6a0cfeaeccb7d3cc7d94cd661c"
+      "sha256": "d899761a52e8e603ba724ee6e99b1812b701dbf3d8190779ef26e473654840d2"
     },
     {
       "path": "public/models/landmark-boipeba-balanced.v1.glb",
@@ -657,7 +657,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "8202947cc364d7f5d114687e9712efcfc13be4c125e4c36771ec0df4a6b23be9"
+      "sha256": "07eb7affd894dcdcc797d6d0b58a0413f152919b338ee8d25f074926371e87d5"
     },
     {
       "path": "public/models/landmark-boipeba-low.v1.glb",
@@ -672,7 +672,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "baf0c2765fd203104348ceea086dcd56d1366dbcb5639f3cd350818fae4ee70d"
+      "sha256": "841a9050e220cb1eddc5a1737f76b6cd918e9710c19627aa638b056befc4bd07"
     },
     {
       "path": "public/models/landmark-features.v1.glb",
@@ -687,7 +687,7 @@
       "transformations": "Deterministic GLB v2 export of the Feature models generated in code by scripts/landmark-feature-models.ts, low-poly and vertex-coloured with no textures, and of the instance placements on each Landmark, scattered by terrain rules or projected from configured coordinates onto the Balanced surface",
       "essential": false,
       "experience": true,
-      "sha256": "4e721b459920a006c3f5cf7f61244b48869bfdf19f031b1426416b67ef9def18"
+      "sha256": "4d598929ee767739c59ac39b5e0005448860f89ad217b1f0c610f5d97cd21b61"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
@@ -702,7 +702,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "cbe31fad9039f57474e6ac5603c5232f1100287f20be6f35fcf770052d49431c"
+      "sha256": "b6633fc2243f1218d4c934ce1b336c027c7fe562d02a16494b2c8e1849b5d50e"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
@@ -717,7 +717,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "b79862495dbf897895b31b9af8900202c0087d81f2bd1902bba86e281bd552cf"
+      "sha256": "19e746b8840f662d96af507c922c0504af00828740f78747fa17a9f39a428a62"
     },
     {
       "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
@@ -732,7 +732,7 @@
       "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "8697971afb85b98860b02a0006dc9bad4b9dc098059b61940ac44dd0bcf415f3"
+      "sha256": "2d58e4a9b8fe0f85ebb18028c70975f5d4d342140226f0dfed68b47ae0312b1e"
     },
     {
       "path": "public/models/landmark-ilha-grande-low.v1.glb",
@@ -747,7 +747,7 @@
       "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "ffad00274b8ca09ccfd337003abc16a1c2f4ca60d7e6d11dcdacbfef56d9e7a7"
+      "sha256": "54381f2f3f70f137a99b8df1d2ab5ebe83a1d8a2427e7dcd22e19ceece5d39b7"
     },
     {
       "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
@@ -969,7 +969,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "99055f77d710e0b1fa62d0b98d7ee54d966f70b5399ca2324d42cb541699b8cd"
+      "sha256": "cc5b85f0992903691f8669ee839c2e90345d3dca9d63738e237fd061029d4d91"
     },
     {
       "path": "scripts/landmark-feature-models.ts",

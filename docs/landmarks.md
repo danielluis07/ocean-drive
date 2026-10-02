@@ -99,9 +99,13 @@ the next Stop. Upload is explicitly initialized before maps enter the scene.
 Eviction aborts requests, disposes GPU textures and closes decoded bitmaps.
 Forward/backward travel determines the next prefetch; missing detail never
 blocks movement. A tier or context recovery change releases the old cache.
-Modest GPUs omit the normal map while remaining on Balanced; denser meshes are
-permitted by the budgets but this foundation preserves the existing Balanced
-sampling density pending the four island reworks.
+Modest GPUs omit the normal map while remaining on Balanced. The generator
+derives sampling density from the current tier's triangle allowance, including
+the surface, skirt and shallows; the former Balanced 4,400-triangle target is removed.
+Low keeps a 1,200-triangle sampling target to leave transfer headroom for its shoreline.
+Denser meshes still sample the same recorded elevation, so finer tessellation
+does not establish new surveyed detail. See [terrain-detail-assessment.md](terrain-detail-assessment.md)
+for the quality direction and remaining work.
 
 ## Placement
 
@@ -200,7 +204,8 @@ build, on the Balanced surface.
   as the coastline and refuses a Feature that does not land on the island.
 
 The placeholder is generated in `scripts/landmark-feature-models.ts`.
-To supply human-finished models, set `featureFile.source` in
+To supply finished models, including agent-authored reconstructions from
+licensed references, set `featureFile.source` in
 `content/landmark-sources.ts` to a retained GLB under
 `data/landmarks/features/`, plus creator, source, rights, proof and retrieved
 fields. Retain the rights document at the proof path. List its named meshes in
@@ -265,8 +270,8 @@ there.
 
 The scene-wide draw-call and triangle budgets in `lib/production-budgets.ts`
 cover the four Landmarks together with the ocean and the Ship, and are
-unchanged. All authored visuals may transfer 1.8 MiB. Minimum-sailable visuals remain
-at 530 KiB, and the complete first visit stays at 5 MiB. Terrain maps and
+unchanged. All authored visuals may transfer 1.8 MiB. Minimum-sailable visuals allow
+1.25 MiB within a 2 MiB initial payload, and the complete first visit stays at 5 MiB. Terrain maps and
 Features are classified as non-essential in payload reports.
 
 ## Verification
@@ -282,7 +287,7 @@ Features are classified as non-essential in payload reports.
 - `tests/asset-bake.test.ts` checks exposed and occluded surfaces, repeatability,
   colour interpolation and the coastline fallback.
 - `tests/landmark-features.test.ts` checks scattering against terrain rules and
-  its repeatability, the placeholder Feature against its real coordinate and the
+  its repeatability, every configured Feature against its real coordinate and the
   shipped file, the placement record, the single expanded geometry, the models'
   sides, and the Feature budgets, including that Low carries nothing.
 - `tests/ocean-surface.test.ts` checks that `sampleOceanSheet` is the surface

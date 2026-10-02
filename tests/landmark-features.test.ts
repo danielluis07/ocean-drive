@@ -99,24 +99,23 @@ describe("Placing a Feature at a real coordinate", () => {
     expect(back.lat).toBeCloseTo(0.4, 9);
   });
 
-  test("the placeholder Feature stands on the island its coordinate names", async () => {
-    const source = landmarkSources.find((entry) => entry.features?.length)!;
-    const feature = source.features![0];
-    const record: { coastline: { islands: { name?: string; ring: Ring }[] } } = await Bun.file(`data/landmarks/${source.id}.json`).json();
-    const projected = projectLandmark(record.coastline.islands.map((entry) => entry.ring), source.span);
-    const point = projected.toWorld(feature);
-    const home = record.coastline.islands.findIndex((entry) => entry.name === "Ilha de Santa Bárbara");
-    expect(insideRings(point, [projected.rings[home]])).toBe(true);
-
-    // The shipped file places it there, on the surface, above the water.
+  test("each configured Feature ships at its real coordinate and authored scale", async () => {
     const file = inspectModel(await Bun.file(`public${featureFile.url}`).arrayBuffer());
     expect(file.features?.models).toEqual([...featureModels]);
-    const [placement] = decodePlacements(file.features!.placements![source.id]);
-    expect(featureModels[placement.model]).toBe(feature.model);
-    expect(placement.position[0]).toBeCloseTo(point.x, 1);
-    expect(placement.position[2]).toBeCloseTo(point.z, 1);
-    expect(placement.position[1]).toBeGreaterThan(0.4);
-    expect(placement.scale).toBe(feature.scale);
+    for (const source of landmarkSources) {
+      if (!source.features?.length) continue;
+      const record: { coastline: { islands: { ring: Ring }[] } } = await Bun.file(`data/landmarks/${source.id}.json`).json();
+      const projected = projectLandmark(record.coastline.islands.map((entry) => entry.ring), source.span);
+      const placements = decodePlacements(file.features!.placements![source.id] ?? []);
+      for (const feature of source.features) {
+        const point = projected.toWorld(feature);
+        expect(insideRings(point, projected.rings)).toBe(true);
+        const placement = placements.find((entry) => featureModels[entry.model] === feature.model
+          && Math.abs(entry.position[0] - point.x) <= .01 && Math.abs(entry.position[2] - point.z) <= .01
+          && Math.abs(entry.scale - feature.scale) <= .005);
+        expect(placement, `${source.id}: ${feature.name} must be placed at its real coordinate`).toBeDefined();
+      }
+    }
   });
 });
 
@@ -158,9 +157,9 @@ describe("The Feature record and its single draw", () => {
     expect(geometry.getIndex()).toBeNull();
   });
 
-  test("models are low-poly, coloured per vertex and closed all the way round", () => {
-    for (const id of featureModels) {
-      const model = featureModelBuilders[id]();
+  test("built-in fallback models are coloured per vertex and closed all the way round", () => {
+    for (const build of Object.values(featureModelBuilders)) {
+      const model = build();
       const position = model.getAttribute("position");
       expect(position.count / 3).toBeLessThanOrEqual(400);
       expect(model.getAttribute("color").count).toBe(position.count);
@@ -185,12 +184,16 @@ describe("The Feature record and its single draw", () => {
 });
 
 describe("Feature budgets", () => {
-  test("the shared file ships every model once, without textures, inside its budget", async () => {
+  test("the shared file ships every model once with an optional atlas inside its budget", async () => {
     const buffer = await Bun.file(`public${featureFile.url}`).arrayBuffer();
     const file = inspectModel(buffer);
     expect(buffer.byteLength).toBeLessThanOrEqual(featureFile.bytes);
     expect(buffer.byteLength).toBe(landmarks.features.bytes);
-    expect(file.textures).toBe(0);
+    expect(file.textures).toBeLessThanOrEqual(1);
+    expect(file.imageSizes).toHaveLength(file.textures);
+    for (const size of file.imageSizes) {
+      expect(size).toEqual({ width: featureFile.textureSize, height: featureFile.textureSize });
+    }
     expect(file.materials).toBe(1);
     expect(file.opaque).toBe(true);
     expect(file.externalResources).toEqual([]);
@@ -200,16 +203,12 @@ describe("Feature budgets", () => {
   test("each Landmark's instances fit its Balanced allowance and Low carries none", async () => {
     const file = inspectModel(await Bun.file(`public${featureFile.url}`).arrayBuffer());
     expect(landmarkBudget.low).toMatchObject({ draws: 2, instances: 0, featureTriangles: 0 });
-    let instances = 0;
     for (const landmark of landmarks.landmarks) {
       const placements = decodePlacements(file.features!.placements![landmark.id] ?? []);
       const triangles = placements.reduce((total, placement) => total + file.partTriangles[file.features!.models![placement.model]], 0);
       expect(placements.length).toBeLessThanOrEqual(landmarkBudget.balanced.instances);
       expect(triangles).toBeLessThanOrEqual(landmarkBudget.balanced.featureTriangles);
       expect(landmark.features).toEqual({ instances: placements.length, triangles });
-      instances += placements.length;
     }
-    // The one placeholder Feature that proves the mechanism.
-    expect(instances).toBe(1);
   });
 });

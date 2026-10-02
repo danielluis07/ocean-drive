@@ -21,8 +21,12 @@ User-facing copy is in Brazilian Portuguese.
 
 Prefer the @ alias for imports (see docs/CONVENTIONS.md)
 
-See docs/PROJECT_STRUCTURE.md for the folder layout and file placement guidance.
+# Island asset quality
 
-# Impeccable
-
-Do NOT use impeccable
+Read docs/terrain-detail-assessment.md before changing island assets. Use
+content/landmark-sources.ts and lib/production-budgets.ts as the executable
+budget sources. Placeholder counts, untextured Features and the former 4,400
+triangle target are not quality requirements. Agents may author or reconstruct
+assets from suitable licensed references; the owner need not supply models.
+Preserve provenance, loading safeguards and device validation, and judge visual
+quality using production-camera captures rather than automated checks alone.
