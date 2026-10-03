@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "candidate": "a16ac6253832c740842a3f994dabe13ce2afd9b5",
+  "build": "a16ac6253832c740842a3f994dabe13ce2afd9b5-5b26003b5277657d",
+  "startedAt": "2026-10-03T17:47:03.312Z",
+  "quality": {
+    "tier": "low",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 380.4000000022352,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 380.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 380.5,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 380.70000000298023,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 392.4000000022352,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 413.4000000022352,
+      "kind": "starting-quality",
+      "detail": "gpu-class"
+    },
+    {
+      "atMs": 429.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "low",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 429.5,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1182.1000000014901,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1183.2000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1244.1000000014901,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1250.6000000014901,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1255.6000000014901,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"fernando-de-noronha\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1257.2000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1286.1000000014901,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"fernando-de-noronha\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1290,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1701.9000000022352,
+      "kind": "warm-up",
+      "detail": "low@1"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 2750.39999999851,
+    "frames": 166,
+    "windows": [
+      {
+        "atMs": 3263.900000002235,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": 5.9256,
+        "quality": {
+          "tier": "low",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": true
+      }
+    ]
+  },
+  "scenes": {
+    "low": {
+      "drawCalls": 3,
+      "triangles": 5831,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    }
+  }
+}

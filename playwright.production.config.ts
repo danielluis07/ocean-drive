@@ -10,6 +10,14 @@ export default defineConfig({
   use: { baseURL: "http://localhost:3100", trace: "retain-on-failure" },
   projects: [
     {
+      name: "terrain-detail", testMatch: "terrain-detail.e2e.ts", timeout: 120_000,
+      expect: { timeout: 30_000 },
+      // Full-resolution Close View can overwhelm software rendering and trip
+      // the real adaptive-quality fallback during screenshot readback. Use the
+      // host GPU for art captures; software loading/budget suites stay separate.
+      use: { channel: "chrome", deviceScaleFactor: 1 },
+    },
+    {
       name: "landmark-textures",
       testMatch: "landmark-textures.e2e.ts",
       timeout: 120_000,

@@ -43,6 +43,7 @@ import {
 import { mottle, sampleElevation, shadeSurface, type ElevationGrid } from "@/lib/landmark-surface";
 import { bakeAccessibility, transferColours } from "@/scripts/asset-bake";
 import { productionBudgets } from "@/lib/production-budgets";
+import { authoredRelief, terrainPigment } from "@/scripts/terrain-treatment";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -114,7 +115,7 @@ function elevationOf(record: LandmarkRecord): ElevationGrid {
   };
 }
 
-function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: number) {
+function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: number, tier: Tier) {
   const elevation = elevationOf(record);
   const { rings, toDegrees, scale } = projectLandmark(
     record.coastline.islands.map((island) => island.ring),
@@ -122,8 +123,22 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   );
   // Drop coastline detail the camera could not resolve anyway, then triangulate
   // what is left, so the outline keeps its real shape at a fraction of the cost.
-  const outline = rings.map((ring) => simplifyRing(ring, spacing * 0.33)).filter((ring) => ring.length >= 3);
-  const surface = islandSurface(outline, spacing);
+  const detailed = !!source.terrainTreatment && tier === "balanced";
+  const outline = rings.map((ring) => simplifyRing(ring, spacing * (detailed ? .12 : .33))).filter((ring) => ring.length >= 3);
+  const elevationAt = (point: PlanarPoint) => {
+    const { lon, lat } = toDegrees(point);
+    return Math.max(0, sampleElevation(elevation, lon, lat));
+  };
+  const slopeAt = ({ x, z }: PlanarPoint) => {
+    const step = .12;
+    const rise = Math.hypot(elevationAt({ x: x + step, z }) - elevationAt({ x: x - step, z }),
+      elevationAt({ x, z: z + step }) - elevationAt({ x, z: z - step })) / (2 * step / scale);
+    return rise / Math.hypot(1, rise);
+  };
+  const surface = islandSurface(outline, spacing, detailed ? point => {
+    const slope = slopeAt(point);
+    return distanceToRings(point, outline) < 1.25 || slope > .18;
+  } : undefined);
 
   const summit = Math.max(...elevation.metres);
   const positions = new Float32Array(surface.points.length * 3);
@@ -140,7 +155,8 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
     // Behind the shoreline the land climbs to its recorded height; at the
     // shoreline it sits below the water, where the surf line covers the join.
     const seat = Math.min(1, shoreAt[index] / SHORE_RAMP);
-    const height = LOWLAND_CLEARANCE + (metresAt[index] / Math.max(summit, 1)) * source.height;
+    const height = LOWLAND_CLEARANCE + (metresAt[index] / Math.max(summit, 1)) * source.height
+      + authoredRelief(point.x, point.z, metresAt[index], slopeAt(point), shoreAt[index], source);
     positions.set([point.x, height * seat * seat - SHORE_DIP * (1 - seat), point.z], index * 3);
   }
 
@@ -157,7 +173,9 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   const normals = geometry.getAttribute("normal");
   for (let index = 0; index < surface.points.length; index++) {
     const point = surface.points[index];
-    const colour = shadeSurface(
+    const colour = source.terrainTreatment
+      ? terrainPigment(point.x, point.z, metresAt[index], slopeAt(point), shoreAt[index], summit, source).colour
+      : shadeSurface(
       {
         metres: metresAt[index],
         slope: trueSlope(normals.getY(index), relief),
@@ -302,26 +320,13 @@ const placed: Record<string, number[]> = {};
 for (const source of landmarkSources) {
   const record: LandmarkRecord = await Bun.file(`data/landmarks/${source.id}.json`).json();
   const variants: Record<string, unknown> = {};
-  const baked = await bakeLandmarkTextures(source, record.coastline.islands.map((island) => island.ring), elevationOf(record));
-  const textures: Record<string, unknown> = {};
-  for (const tier of ["balanced", "low"] as const) {
-    const entries: Record<string, unknown> = {};
-    let bytes = 0;
-    for (const [kind, buffer] of Object.entries(baked[tier])) {
-      const url = `/textures/landmark-${source.id}-${tier}-${kind}.v1.webp`;
-      await Bun.write(`public${url}`, buffer);
-      entries[kind] = { url, bytes: buffer.length, size: tier === "low" ? 512 : 1024 };
-      bytes += buffer.length;
-    }
-    if (bytes > 150 * 1024) throw new Error(`${source.id} ${tier} texture budget exceeded`);
-    textures[tier] = entries;
-  }
+  const textureBounds = boundsOf(coastline(record, source));
   let extent = { x: 0, z: 0 };
   let radius = 0;
   let islands = 0;
   let scale = 0;
   let features = { instances: 0, triangles: 0 };
-  let balancedBake: { geometry: BufferGeometry; colours: Uint8Array } | undefined;
+  let balancedBake: { geometry: BufferGeometry; colours: Uint8Array; accessibility: Float32Array } | undefined;
   for (const tier of ["balanced", "low"] satisfies Tier[]) {
     const budget = landmarkBudget[tier];
     // The surface, its skirt and its shallows all follow from one sample
@@ -331,11 +336,11 @@ for (const source of landmarkSources) {
     // expanded allowance instead of the former 4,400-triangle density target.
     const target = tier === "low" ? Math.min(budget.triangles, 1200) : budget.triangles;
     let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * target * 0.68));
-    let island = buildIsland(source, record, spacing);
+    let island = buildIsland(source, record, spacing, tier);
     let surf = buildShallows(island.outlines, source, spacing, tier);
     for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {
       spacing *= Math.sqrt((island.triangles + surf.triangles) / (budget.triangles * 0.92));
-      island = buildIsland(source, record, spacing);
+      island = buildIsland(source, record, spacing, tier);
       surf = buildShallows(island.outlines, source, spacing, tier);
     }
 
@@ -346,7 +351,7 @@ for (const source of landmarkSources) {
           island.colours[vertex * 4 + channel] = Math.round(island.colours[vertex * 4 + channel] * accessibility[vertex]);
         }
       }
-      balancedBake = { geometry: island.geometry, colours: island.colours };
+      balancedBake = { geometry: island.geometry, colours: island.colours, accessibility };
       // Instances stand on the Balanced surface, the only one they are drawn on.
       const standing = placeFeatures(source, record, island);
       if (standing.instances) placed[source.id] = standing.record;
@@ -375,8 +380,8 @@ for (const source of landmarkSources) {
     const points = merged.getAttribute("position");
     const uvs = new Uint16Array(points.count * 2);
     for (let vertex = 0; vertex < points.count; vertex++) {
-      uvs[vertex * 2] = Math.round((points.getX(vertex) - baked.bounds.minX) / (baked.bounds.maxX - baked.bounds.minX) * 65535);
-      uvs[vertex * 2 + 1] = Math.round((points.getZ(vertex) - baked.bounds.minZ) / (baked.bounds.maxZ - baked.bounds.minZ) * 65535);
+      uvs[vertex * 2] = Math.round((points.getX(vertex) - textureBounds.minX) / (textureBounds.maxX - textureBounds.minX) * 65535);
+      uvs[vertex * 2 + 1] = Math.round((points.getZ(vertex) - textureBounds.minZ) / (textureBounds.maxZ - textureBounds.minZ) * 65535);
     }
     merged.setAttribute("uv", new BufferAttribute(uvs, 2, true));
     merged.setIndex([...landIndices, ...island.skirt.indices.map((index) => index + vertices)]);
@@ -429,6 +434,20 @@ for (const source of landmarkSources) {
       `${source.id} ${tier}: ${triangles} triangles (${surf.triangles} in the shallows), ` +
         `${(glb.byteLength / 1024).toFixed(1)} KiB, ${island.outlines.length} outlines at ${spacing.toFixed(2)} units`,
     );
+  }
+  const baked = await bakeLandmarkTextures(source, record.coastline.islands.map((island) => island.ring), elevationOf(record), balancedBake);
+  const textures: Record<string, unknown> = {};
+  for (const tier of ["balanced", "low"] as const) {
+    const entries: Record<string, unknown> = {};
+    let bytes = 0;
+    for (const [kind, buffer] of Object.entries(baked[tier])) {
+      const url = `/textures/landmark-${source.id}-${tier}-${kind}.v1.webp`;
+      await Bun.write(`public${url}`, buffer);
+      entries[kind] = { url, bytes: buffer.length, size: tier === "low" ? 512 : 1024 };
+      bytes += buffer.length;
+    }
+    if (bytes > 150 * 1024) throw new Error(`${source.id} ${tier} texture budget exceeded: ${bytes} bytes`);
+    textures[tier] = entries;
   }
   manifest.push({
     id: source.id,

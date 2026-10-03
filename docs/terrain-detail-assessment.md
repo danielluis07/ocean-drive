@@ -40,7 +40,8 @@ gate entry. The production browser measurement before adjusting these caps was
 complete-visit transfer was 2,720,487 bytes, within the retained 5 MiB allowance.
 This explicitly trades additional initial transfer for richer geometry. Optional
 maps still do not gate entry. Scene counts and transfer checks are automated;
-physical-device sustained performance and art approval remain unvalidated.
+the original baseline did not establish sustained physical-device performance
+or art approval. Noronha's subsequent candidate evidence is recorded below.
 
 ## Baseline reconciliation
 
@@ -67,20 +68,23 @@ provenance claims do not transfer to the replacement assets.
 
 ## Next terrain work: Noronha first
 
-Issue #77 remains the shared terrain quality task. This reconciliation enables
-it; it does not establish that the terrain has met its visual acceptance bar.
+Issue #77 remains the shared terrain quality task. The owner approved Noronha's
+visual result on 2026-10-03. Its same-hardware desktop sailing comparison passed;
+physical-phone performance remains unvalidated. See the
+[candidate report and retained evidence](verification/issue77.md) before extending
+the treatment to the other island reworks.
 
-1. Bake actual surface detail at the target resolution. The current baker still
-   creates a 256 px field and enlarges it; 1024 px output dimensions alone are
-   insufficient. Distinguish cliffs, beach, scrub and canopy with island-specific
-   treatments rather than applying one generic noise to every surface.
-2. Preserve terrain occlusion when colour maps activate. Today occlusion is
-   stored in vertex colours, which the textured material disables. Carry depth
-   cues into the textured treatment without multiplying two complete palettes.
+1. Review Noronha's native-resolution candidate: it evaluates sand, exposed
+   rock and irregular scrub crowns independently at 1024/512 px. Other islands
+   retain the old enlarged 256 px field until approval and validation.
+2. The candidate rasterises the existing scalar mesh occlusion into linear
+   colour before encoding, preserving the same depth cues while vertex colours
+   remain an independent fallback. Review that treatment in the colour-only tiers.
 3. Spend geometry on visible coastline, cliffs and ridges. The larger allowance
    now enables denser sampling, but interpolation of the same coarse elevation
-   does not recover missing landforms. Retain sources for improved elevation
-   or authored relief and describe the latter honestly.
+   does not recover missing landforms. The candidate concentrates samples on
+   coast/steep ground and adds bounded authored relief, documented separately
+   from the unchanged survey in `docs/third-party/noronha-terrain.md`.
 4. Compare Noronha before and after at the same camera, viewport, tier and DPR:
    desktop Balanced, modest-GPU Balanced without normals, desktop Low and phone
    Low. Also preview the planned Close View framing. Natural terrain must read

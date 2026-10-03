@@ -9,6 +9,7 @@ import StopLandmark from "@/components/ocean/stop-landmark";
 import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
 import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
+import { frameTerrainPreview, terrainPreviewEnabled } from "@/lib/terrain-preview";
 import { baselineOceanFragmentShader, OCEAN_SIZE, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
@@ -85,6 +86,7 @@ function SailableScene(props: RuntimeProps) {
   };
   const fallbackPending = useRef(false);
   const [baselineWater, setBaselineWater] = useState(false);
+  const [terrainPreview] = useState(terrainPreviewEnabled);
   const baselineActive = useRef(false);
   const elapsed = useRef(0);
   const lastFrame = useRef<number | null>(null);
@@ -391,12 +393,22 @@ function SailableScene(props: RuntimeProps) {
           "YXZ",
         );
       }
-      const framing = frameRouteCamera(pose.position, size);
+      const previewLandmark = terrainPreview && motion.settledStop === 1
+        ? props.configuration.stops[1].landmark : null;
+      const framing = previewLandmark ? frameTerrainPreview(pose.position, size, previewLandmark) : frameRouteCamera(pose.position, size);
       // A cut while the scene renders on demand still needs its frame.
       if (!measuring && camera.position.distanceToSquared(cameraPosition.set(...framing.position)) > 0.001) invalidate();
       camera.position.set(...framing.position);
       camera.lookAt(...framing.target);
       if (motion.settledStop !== null) {
+        // The diagnostic preview does not own #72's Close View card layout.
+        // Keep measuring the ordinary aerial layout so phone captures cannot
+        // trigger its legitimate insufficient-space editorial fallback.
+        if (previewLandmark) {
+          const layoutFrame = frameRouteCamera(pose.position, size);
+          camera.position.set(...layoutFrame.position);
+          camera.lookAt(...layoutFrame.target);
+        }
         camera.updateMatrixWorld();
         const stop = props.configuration.stops[motion.settledStop];
         const landmark = stop.landmark;
@@ -407,6 +419,11 @@ function SailableScene(props: RuntimeProps) {
             ? projectWaterCircle(camera, { x: landmark[0], z: landmark[1] }, props.configuration.landmarks[stop.id].radius, size, projection)
             : null,
         });
+        if (previewLandmark) {
+          camera.position.set(...framing.position);
+          camera.lookAt(...framing.target);
+          camera.updateMatrixWorld();
+        }
       }
       // Owning this render makes readiness a post-render fact, not a useFrame guess.
       oceanDraws.current = 0;

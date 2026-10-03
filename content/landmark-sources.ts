@@ -7,6 +7,7 @@ import type { FeatureSource } from "@/scripts/landmark-feature-source";
 import type { StopId } from "@/content/editorial";
 import type { LandmarkPalette } from "@/lib/landmark-surface";
 import type { TerrainRange, TerrainRule } from "@/lib/landmark-features";
+import type { TerrainTreatment } from "@/scripts/terrain-treatment";
 
 export type GeographicBounds = {
   west: number;
@@ -86,6 +87,9 @@ export type LandmarkSource = {
   features?: LandmarkFeature[];
   // How the island is shaded by height and slope.
   palette: LandmarkPalette;
+  // Opt-in only after the island's own visual/device review. Noronha is the
+  // #77 benchmark; other islands retain their existing pipeline until approval.
+  terrainTreatment?: TerrainTreatment;
 };
 
 // Triangles each quality tier may spend on one Landmark, shared between the
@@ -118,6 +122,7 @@ export const landmarkSources: LandmarkSource[] = [
     beachWidth: 1.2,
     surfWidth: 1.5,
     shallowsWidth: 4.2,
+    terrainTreatment: { relief: .22, scrubScale: 5.5, rockScale: 9 },
     // Volcanic: dark basalt headlands, dry scrub, pale coral sand.
     palette: { sand: "#e8d8b4", rock: "#655e50", lowland: "#657747", highland: "#7b8050" },
   },
