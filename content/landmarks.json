@@ -15,10 +15,10 @@
       "place": "Fernando de Noronha, Pernambuco, Brazil",
       "span": 34,
       "extent": {
-        "x": 16.942,
-        "z": 13.232
+        "x": 16.982,
+        "z": 13.215
       },
-      "radius": 17.442,
+      "radius": 17.482,
       "islands": 3,
       "summitMetres": 230,
       "surfWidth": 1.5,
@@ -30,8 +30,8 @@
       "variants": {
         "balanced": {
           "url": "/models/landmark-fernando-de-noronha-balanced.v1.glb",
-          "triangles": 11844,
-          "bytes": 213664
+          "triangles": 14059,
+          "bytes": 255416
         },
         "low": {
           "url": "/models/landmark-fernando-de-noronha-low.v1.glb",
@@ -43,19 +43,19 @@
         "balanced": {
           "colour": {
             "url": "/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
-            "bytes": 29240,
+            "bytes": 22502,
             "size": 1024
           },
           "normal": {
             "url": "/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
-            "bytes": 33692,
+            "bytes": 44630,
             "size": 1024
           }
         },
         "low": {
           "colour": {
             "url": "/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
-            "bytes": 11752,
+            "bytes": 9320,
             "size": 512
           }
         }

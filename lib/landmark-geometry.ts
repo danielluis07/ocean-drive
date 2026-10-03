@@ -249,19 +249,21 @@ export function triangulate(points: PlanarPoint[]): Triangle[] {
 
 // The island surface: a shoreline-conforming point set and its triangles, with
 // the shoreline points first so the height profile can pin them to sea level.
-export function islandSurface(rings: PlanarPoint[][], spacing: number) {
-  const outlines = rings.map((ring) => resampleRing(ring, spacing));
+export function islandSurface(rings: PlanarPoint[][], spacing: number, selective?: (point: PlanarPoint) => boolean) {
+  const outlines = rings.map((ring) => resampleRing(ring, spacing * (selective ? .7 : 1)));
   const points: PlanarPoint[] = outlines.flat();
   const shoreCount = points.length;
   const bounds = boundsOf(rings);
   // Interior samples on a staggered grid, kept clear of the shoreline points so
   // the triangles along the coast stay well shaped.
-  for (let row = 0; bounds.minZ + row * spacing * 0.866 <= bounds.maxZ; row++) {
-    const z = bounds.minZ + row * spacing * 0.866;
-    for (let column = 0; bounds.minX + column * spacing <= bounds.maxX; column++) {
-      const point = { x: bounds.minX + column * spacing + (row % 2 ? spacing / 2 : 0), z };
+  const field = spacing * (selective ? .7 : 1);
+  for (let row = 0; bounds.minZ + row * field * 0.866 <= bounds.maxZ; row++) {
+    const z = bounds.minZ + row * field * 0.866;
+    for (let column = 0; bounds.minX + column * field <= bounds.maxX; column++) {
+      const point = { x: bounds.minX + column * field + (row % 2 ? field / 2 : 0), z };
       if (!insideRings(point, rings)) continue;
-      if (distanceToRings(point, rings) < spacing * 0.62) continue;
+      if (distanceToRings(point, rings) < field * 0.62) continue;
+      if (selective && (row % 2 !== 0 || column % 2 !== 0) && !selective(point)) continue;
       points.push(point);
     }
   }

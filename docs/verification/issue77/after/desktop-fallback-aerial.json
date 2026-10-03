@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "candidate": "a16ac6253832c740842a3f994dabe13ce2afd9b5",
+  "build": "a16ac6253832c740842a3f994dabe13ce2afd9b5-5b26003b5277657d",
+  "startedAt": "2026-10-03T17:47:15.916Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 405.19999999925494,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 405.19999999925494,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 405.30000000074506,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 405.5999999977648,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 419.0999999977648,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 449.30000000074506,
+      "kind": "starting-quality",
+      "detail": "default"
+    },
+    {
+      "atMs": 462.80000000074506,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 462.80000000074506,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1281.0999999977648,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1282.800000000745,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+    },
+    {
+      "atMs": 1361.199999999255,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1369.5,
+      "kind": "readiness",
+      "detail": "ready"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 2212,
+    "frames": 134,
+    "windows": [
+      {
+        "atMs": 3376.800000000745,
+        "p90Ms": 17.400000002235174,
+        "gpuP90Ms": 6.11296,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 4,
+      "triangles": 46845,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

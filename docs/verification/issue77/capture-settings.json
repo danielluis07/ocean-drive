@@ -1,0 +1,184 @@
+[
+  {
+    "phase": "before",
+    "name": "desktop-balanced-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-balanced-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-colour-only-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-colour-only-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false,
+      "wakeSamples": 2
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-fallback-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-fallback-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-low-aerial",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "desktop-low-close",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "phone-low-aerial",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "before",
+    "name": "phone-low-close",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-balanced-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-balanced-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-colour-only-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false,
+      "wakeSamples": 2
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-colour-only-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-fallback-aerial",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-fallback-close",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-low-aerial",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "desktop-low-close",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "phone-low-aerial",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  },
+  {
+    "phase": "after",
+    "name": "phone-low-close",
+    "quality": {
+      "tier": "low",
+      "dpr": 1,
+      "fallback": false
+    }
+  }
+]

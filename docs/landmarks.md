@@ -81,14 +81,20 @@ tier's budget — which is why a new island needs no more than its config entry.
 
 Terrain colour and normal textures are baked offline by
 `scripts/landmark-texture-bake.ts` from recorded elevation, its gradients,
-distance inland and the island's palette. A 256 px survey field is resampled to
-1024 px colour and normal WebPs for Balanced/High and 512 px colour for Low.
-The normal map carries authored weathering; mesh normals carry recorded relief.
+distance inland and the island's palette. Noronha opts into native-resolution
+authoring: every texel evaluates sand, basalt joints and irregular scrub crowns
+at 1024 px for Balanced/High colour and normals, and independently at 512 px for
+Low colour. The other islands retain the legacy enlarged 256 px field until
+the benchmark receives human approval and device validation. The normal map
+carries authored weathering; mesh normals carry the terrain's relief.
 No satellite imagery or runtime bake is used. Rebuilding must produce identical
 bytes. Projected X/Z UVs align both LODs with the same survey extent.
 
 Vertex colours and their existing occlusion bake remain an immediate fallback
-for missing textures. Once colour is prepared, the material disables vertex
+for missing textures. For the native treatment, the very same scalar Balanced
+accessibility bake is rasterised into each colour map using projected triangle
+barycentrics, before sRGB encoding. It is applied exactly once; no AO texture,
+extra render pass or runtime multiplication is added. Once colour is prepared, the material disables vertex
 colours rather than multiplying two terrain treatments. Procedural fragment
 grain has been removed. Textures never participate in the entry Suspense gate.
 
@@ -103,9 +109,45 @@ Modest GPUs omit the normal map while remaining on Balanced. The generator
 derives sampling density from the current tier's triangle allowance, including
 the surface, skirt and shallows; the former Balanced 4,400-triangle target is removed.
 Low keeps a 1,200-triangle sampling target to leave transfer headroom for its shoreline.
-Denser meshes still sample the same recorded elevation, so finer tessellation
-does not establish new surveyed detail. See [terrain-detail-assessment.md](terrain-detail-assessment.md)
+Noronha spends more shoreline samples on the retained coastline and more
+interior samples on coastal and steep ground, keeping flat interiors coarser.
+A bounded authored erosion signal adds at most ±0.11 world units of new form
+on existing slopes, tapering to zero at shore. This does not establish new
+surveyed detail. Its source and limits are recorded in
+[noronha-terrain.md](third-party/noronha-terrain.md). See [terrain-detail-assessment.md](terrain-detail-assessment.md)
 for the quality direction and remaining work.
+
+### Applying the benchmark to #69–#71
+
+Do not opt another island in until Noronha has human visual approval and the
+required device evidence. Boipeba, Abrolhos and Ilha Grande currently rebuild
+byte-identically through the legacy branch. When rollout is approved:
+
+1. Configure `terrainTreatment` alongside that island's palette, `shoreHeight`
+   and `beachWidth`. `relief` is the maximum peak-to-trough displacement in world
+   units; `scrubScale` and `rockScale` are world-space patch frequencies. These
+   values are artistic controls, not measurements. Review the shared masks
+   against the island's actual character; Noronha's dry scrub and high coastal
+   rock rules are not a universal vegetation/geology classification.
+2. Retain any new reference, rights evidence, masks or surveyed elevation. Record
+   every authored interpretation separately from geographic source data. Feature
+   meshes and scatter remain with the island rework; Low must read on its own.
+3. Rebuild offline twice and compare hashes, record provenance, and check all
+   per-tier and complete-visit limits. Fine shoreline sampling can become
+   transfer-bound before reaching 15,000 triangles; reduce selective density
+   rather than raising the existing budgets without evidence.
+4. Capture identical production cameras, viewport, DPR and tier: desktop
+   Balanced, modest-GPU colour-only Balanced, desktop Low and phone Low, plus
+   missing-texture fallback and Close View. Inspect the coastline and underside.
+   `terrain-detail` is the Noronha capture harness; its diagnostic opt-in uses
+   48° pitch, north bearing and half the aerial distance, without implementing
+   #72's interaction. It hides the Stop Card only for capture, outside the app.
+5. Repeat the five-active-minute sailing capture on the same physical hardware;
+   retain p90 frame intervals, GPU timing, tier/DPR and quality changes. The
+   existing target is p90 ≤20 ms in every scored Chrome window. Phone viewport
+   emulation supplies art captures, never physical-phone performance evidence.
+
+The candidate and review status are recorded in [issue77 verification](verification/issue77.md).
 
 ## Placement
 

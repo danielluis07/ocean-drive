@@ -2,7 +2,7 @@ import { assetSha256 as hash } from '@/lib/asset-provenance';
 import { shipSource } from '@/content/ship-source';
 import ship from '@/content/ship.json';
 import landmarks from '@/content/landmarks.json';
-import { featureFile } from '@/content/landmark-sources';
+import { featureFile, landmarkSources } from '@/content/landmark-sources';
 const fontSources = await Bun.file('docs/third-party/fonts/sources.json').json();
 const assets = [];
 const shipRights = {
@@ -42,7 +42,8 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  const features = url === landmarks.features.url;
  const terrain = /\/landmark-(.+)-(balanced|low)-(colour|normal)\.v\d+\.webp$/.exec(path);
  if (terrain) {
-  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; WebP encoding; no satellite imagery`, essential: false, experience: true, sha256: await hash(path)});
+  const detailed = landmarkSources.find(source => source.id === terrain[1])?.terrainTreatment;
+  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; ${detailed ? 'native 1024px Balanced / 512px Low authored sand, basalt and scrub signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md' : 'legacy 256px field resized to output dimensions'}; WebP encoding; no satellite imagery or measured land-cover claim`, essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  const illustrative = path.startsWith('public/images/');
@@ -51,7 +52,8 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
   continue;
  }
  if (landmark) {
-  assets.push({path, url, kind: 'authored', ...geodata(landmarkRecords.get(landmark[1])?.coastline.retrieved), source: 'scripts/generate-landmarks.ts', transformations: `Deterministic GLB v2 export at the ${landmark[2]} tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced slope/cliff palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band`, essential: true, experience: true, sha256: await hash(path)});
+  const detailed = landmarkSources.find(source => source.id === landmark[1])?.terrainTreatment;
+  assets.push({path, url, kind: 'authored', ...geodata(landmarkRecords.get(landmark[1])?.coastline.retrieved), source: 'scripts/generate-landmarks.ts', transformations: `Deterministic GLB v2 export at the ${landmark[2]} tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; ${detailed ? 'selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in docs/third-party/noronha-terrain.md; ' : ''}Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band`, essential: true, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features && featureFile.source) {
@@ -74,6 +76,7 @@ for (const path of ['components/voyage/travessia-mark.tsx','lib/ocean-surface.ts
 // The Landmark pipeline's authored configuration and the record its build
 // writes, hash-pinned so a mesh can never drift from what CI was shown.
 for (const path of ['content/landmark-sources.ts','content/landmarks.json','scripts/generate-landmarks.ts','scripts/landmark-feature-models.ts','scripts/landmark-feature-source.ts','scripts/landmark-texture-bake.ts','lib/landmark-geometry.ts','lib/landmark-surface.ts','lib/landmark-features.ts']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-09-17', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/open-geodata.md', transformations:path.endsWith('.json') ? 'Written by the Landmark build from the recorded source data' : 'Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline', essential:true, experience:!path.startsWith('scripts/'), sha256:await hash(path)});
+for (const path of ['scripts/terrain-treatment.ts', 'scripts/terrain-occlusion.ts', 'scripts/terrain-shore-sampler.ts', 'docs/third-party/noronha-terrain.md']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-10-03', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/noronha-terrain.md', transformations:'Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography', essential:true, experience:false, sha256:await hash(path)});
 assets.sort((a,b)=>a.path.localeCompare(b.path));
 await Bun.write('content/asset-manifest.json',JSON.stringify({schema:1, assets},null,2)+'\n');
 console.log(`Recorded ${assets.length} asset provenance entries.`);
