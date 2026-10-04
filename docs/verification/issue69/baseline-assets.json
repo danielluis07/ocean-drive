@@ -1,0 +1,110 @@
+{
+  "assets": [
+    {
+      "sha256": "a3010990d89e5859da918d19096105a0deedb805ca7eab99d63de4a6fc6c9121",
+      "path": "public/models/landmark-abrolhos-balanced.v1.glb",
+      "bytes": 215968
+    },
+    {
+      "sha256": "d899761a52e8e603ba724ee6e99b1812b701dbf3d8190779ef26e473654840d2",
+      "path": "public/models/landmark-abrolhos-low.v1.glb",
+      "bytes": 28536
+    },
+    {
+      "sha256": "07eb7affd894dcdcc797d6d0b58a0413f152919b338ee8d25f074926371e87d5",
+      "path": "public/models/landmark-boipeba-balanced.v1.glb",
+      "bytes": 202404
+    },
+    {
+      "sha256": "841a9050e220cb1eddc5a1737f76b6cd918e9710c19627aa638b056befc4bd07",
+      "path": "public/models/landmark-boipeba-low.v1.glb",
+      "bytes": 26348
+    },
+    {
+      "sha256": "4d598929ee767739c59ac39b5e0005448860f89ad217b1f0c610f5d97cd21b61",
+      "path": "public/models/landmark-features.v1.glb",
+      "bytes": 5396
+    },
+    {
+      "sha256": "882746965ab880d5c7d94d51caae23be4311804a6ac2b69be9a63ecb539cd2d5",
+      "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
+      "bytes": 255416
+    },
+    {
+      "sha256": "2091a13ff98680e86f13506a174b44fce36f38dbb4f5bd0174b3c24e7fbeaefa",
+      "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
+      "bytes": 27440
+    },
+    {
+      "sha256": "2d58e4a9b8fe0f85ebb18028c70975f5d4d342140226f0dfed68b47ae0312b1e",
+      "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
+      "bytes": 214676
+    },
+    {
+      "sha256": "54381f2f3f70f137a99b8df1d2ab5ebe83a1d8a2427e7dcd22e19ceece5d39b7",
+      "path": "public/models/landmark-ilha-grande-low.v1.glb",
+      "bytes": 28268
+    },
+    {
+      "sha256": "2661a4ab453d201ecd20ce444a5a9bb4496b66ad038112680951a4153371c34e",
+      "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
+      "bytes": 28110
+    },
+    {
+      "sha256": "db6e5362444ac6985a2859be965490e00467e96ecca304005855837cb6e17c4e",
+      "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
+      "bytes": 35058
+    },
+    {
+      "sha256": "31304ad85c418fb66638808e11ebf84daeff6dabe9d1aeed21300a9b7a9d4173",
+      "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
+      "bytes": 11470
+    },
+    {
+      "sha256": "f47876683caf3d3ab83b520e480bd5e32b6a2bc7538a953317d5a6c5a415ac26",
+      "path": "public/textures/landmark-boipeba-balanced-colour.v1.webp",
+      "bytes": 34592
+    },
+    {
+      "sha256": "e7f4598e99de5d8215a5ceacac0a5ca94809df1ebcb970cd34184beb8c85c405",
+      "path": "public/textures/landmark-boipeba-balanced-normal.v1.webp",
+      "bytes": 34636
+    },
+    {
+      "sha256": "1dcd474ef9dec18f3b5074cf8bcfdc16784887027138d08fd5951d3f650a6a1c",
+      "path": "public/textures/landmark-boipeba-low-colour.v1.webp",
+      "bytes": 14680
+    },
+    {
+      "sha256": "3ddbef464b727ae314b1743970fe3a87b585ba8b3577c9a017927be3ab58dddd",
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+      "bytes": 22502
+    },
+    {
+      "sha256": "576913f2cdd6aa79c1b73fd601e0c10646ac62bb7f1eeb06a9844a62fd93c5cf",
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+      "bytes": 44630
+    },
+    {
+      "sha256": "01f70958826deb9025d28ab95fd6b911cdf0b0e0e5aaf8bf13df10898b153e65",
+      "path": "public/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+      "bytes": 9320
+    },
+    {
+      "sha256": "6af6e914082f7f20d7b94ed618f4281405a2423a673aefde784cc2b693f3315d",
+      "path": "public/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+      "bytes": 34178
+    },
+    {
+      "sha256": "66828b3098f24197f90f12ef788151f46627386fa5323dc4917052338517b0b5",
+      "path": "public/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+      "bytes": 33142
+    },
+    {
+      "sha256": "6e54b15bc8a793583147cffdebf9228bed8692c245b25dd6595749a6b8cc404f",
+      "path": "public/textures/landmark-ilha-grande-low-colour.v1.webp",
+      "bytes": 14792
+    }
+  ],
+  "commit": "5844ec1da79fb118c373e84285b627a5e4b3e8a4"
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "path": "content/landmarks.json",
+    "bytes": 5461,
+    "sha256": "b8935d55a03c9f2d42e83b78fc250162cfb7cd3d433bf14420a94c26cbe397e3",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": null
+  },
+  {
+    "path": "data/landmarks/features/boipeba/atlas.png",
+    "bytes": 291754,
+    "sha256": "19506c5f3e82d9cc1576dceb92063a1dfbf06072d4600115409492bdf0f9d0d4",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": null
+  },
+  {
+    "path": "data/landmarks/features/boipeba/library.glb",
+    "bytes": 158584,
+    "sha256": "23c6ae0cf7e73750e2e2cfd31151016ca057e43cfdd384bba729a8f6fae2f220",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": null
+  },
+  {
+    "path": "public/models/landmark-abrolhos-balanced.v1.glb",
+    "bytes": 215968,
+    "sha256": "a3010990d89e5859da918d19096105a0deedb805ca7eab99d63de4a6fc6c9121",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-abrolhos-low.v1.glb",
+    "bytes": 28536,
+    "sha256": "d899761a52e8e603ba724ee6e99b1812b701dbf3d8190779ef26e473654840d2",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-boipeba-balanced.v1.glb",
+    "bytes": 223892,
+    "sha256": "d93391c0051daf16c69359513354820714f7d1c4f36843a4b54e60b86e17a5a3",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-boipeba-low.v1.glb",
+    "bytes": 27696,
+    "sha256": "987f97f17217a5d516f97bd4b36c1226925092242f236350190c4828b5ed8987",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-features.v1.glb",
+    "bytes": 159088,
+    "sha256": "d2ca0c01d2eae5c1a1b22056b62db88860e3c805f86c08a353b9941040c54bf1",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": false
+  },
+  {
+    "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
+    "bytes": 255416,
+    "sha256": "882746965ab880d5c7d94d51caae23be4311804a6ac2b69be9a63ecb539cd2d5",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
+    "bytes": 27440,
+    "sha256": "2091a13ff98680e86f13506a174b44fce36f38dbb4f5bd0174b3c24e7fbeaefa",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
+    "bytes": 214676,
+    "sha256": "2d58e4a9b8fe0f85ebb18028c70975f5d4d342140226f0dfed68b47ae0312b1e",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/models/landmark-ilha-grande-low.v1.glb",
+    "bytes": 28268,
+    "sha256": "54381f2f3f70f137a99b8df1d2ab5ebe83a1d8a2427e7dcd22e19ceece5d39b7",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
+    "bytes": 28110,
+    "sha256": "2661a4ab453d201ecd20ce444a5a9bb4496b66ad038112680951a4153371c34e",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
+    "bytes": 35058,
+    "sha256": "db6e5362444ac6985a2859be965490e00467e96ecca304005855837cb6e17c4e",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
+    "bytes": 11470,
+    "sha256": "31304ad85c418fb66638808e11ebf84daeff6dabe9d1aeed21300a9b7a9d4173",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-boipeba-balanced-colour.v1.webp",
+    "bytes": 32880,
+    "sha256": "65c1044d19b04708cbb814f846c18351249ce74e64b10c6a6944619d34e6ef98",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-boipeba-balanced-normal.v1.webp",
+    "bytes": 104474,
+    "sha256": "671bceaec6a2e681bb0ca1512bb64c022f8f0069ea40e434952b003893569f2c",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-boipeba-low-colour.v1.webp",
+    "bytes": 13412,
+    "sha256": "b4e2ddf30956ef656facf2511bb124f7fac471aafdaa2ecc976c1c4744d3b0b3",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+    "bytes": 22502,
+    "sha256": "3ddbef464b727ae314b1743970fe3a87b585ba8b3577c9a017927be3ab58dddd",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+    "bytes": 44630,
+    "sha256": "576913f2cdd6aa79c1b73fd601e0c10646ac62bb7f1eeb06a9844a62fd93c5cf",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+    "bytes": 9320,
+    "sha256": "01f70958826deb9025d28ab95fd6b911cdf0b0e0e5aaf8bf13df10898b153e65",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+    "bytes": 34178,
+    "sha256": "6af6e914082f7f20d7b94ed618f4281405a2423a673aefde784cc2b693f3315d",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+    "bytes": 33142,
+    "sha256": "66828b3098f24197f90f12ef788151f46627386fa5323dc4917052338517b0b5",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  },
+  {
+    "path": "public/textures/landmark-ilha-grande-low-colour.v1.webp",
+    "bytes": 14792,
+    "sha256": "6e54b15bc8a793583147cffdebf9228bed8692c245b25dd6595749a6b8cc404f",
+    "reproduced": true,
+    "unchangedFromApprovedCandidate": true
+  }
+]

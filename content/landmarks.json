@@ -2,10 +2,16 @@
   "schema": 2,
   "features": {
     "url": "/models/landmark-features.v1.glb",
-    "bytes": 5396,
+    "bytes": 159088,
     "models": {
       "placeholder": {
         "triangles": 90
+      },
+      "boipeba-coconut-palm": {
+        "triangles": 232
+      },
+      "boipeba-divino-church": {
+        "triangles": 208
       }
     }
   },
@@ -66,47 +72,47 @@
       "place": "Ilha de Boipeba, Bahia, Brazil",
       "span": 27,
       "extent": {
-        "x": 13.054,
-        "z": 13.463
+        "x": 13.053,
+        "z": 13.492
       },
-      "radius": 13.963,
+      "radius": 13.992,
       "islands": 4,
       "summitMetres": 68,
       "surfWidth": 1.8,
       "shallowsWidth": 5.6,
       "features": {
-        "instances": 0,
-        "triangles": 0
+        "instances": 13,
+        "triangles": 2992
       },
       "variants": {
         "balanced": {
           "url": "/models/landmark-boipeba-balanced.v1.glb",
-          "triangles": 11500,
-          "bytes": 202404
+          "triangles": 12336,
+          "bytes": 223892
         },
         "low": {
           "url": "/models/landmark-boipeba-low.v1.glb",
-          "triangles": 1211,
-          "bytes": 26348
+          "triangles": 1214,
+          "bytes": 27696
         }
       },
       "textures": {
         "balanced": {
           "colour": {
             "url": "/textures/landmark-boipeba-balanced-colour.v1.webp",
-            "bytes": 34592,
+            "bytes": 32880,
             "size": 1024
           },
           "normal": {
             "url": "/textures/landmark-boipeba-balanced-normal.v1.webp",
-            "bytes": 34636,
+            "bytes": 104474,
             "size": 1024
           }
         },
         "low": {
           "colour": {
             "url": "/textures/landmark-boipeba-low-colour.v1.webp",
-            "bytes": 14680,
+            "bytes": 13412,
             "size": 512
           }
         }

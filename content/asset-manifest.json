@@ -16,6 +16,20 @@
       "sha256": "41db0945c12203a9281597ddcd5806bb26d27e97530610a9e4ee3cbe972230fa"
     },
     {
+      "path": "content/landmark-close-views.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-03",
+      "rights": "Project-authored interpretation; no new surveyed geography",
+      "proof": "docs/third-party/boipeba-terrain.md",
+      "transformations": "Authored Boipeba surface interpretation and diagnostic Close View framing",
+      "essential": false,
+      "experience": false,
+      "sha256": "0477e5bc22cd07471c2989e36bcc64c89ef461599cbbae7dc4224914a7f84dcf"
+    },
+    {
       "path": "content/landmark-sources.ts",
       "kind": "pipeline",
       "sourceKind": "project-source",
@@ -27,7 +41,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "1b8536fc9bc70cb7a738fb394eb978b40966812c0812bfeb2c155c35fd9b261d"
+      "sha256": "49f57c422be7f7a3cd773fb374da935740c094115eb98935c6f5b40fc951dcd3"
     },
     {
       "path": "content/landmarks.json",
@@ -41,7 +55,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "dae34cc997a48c0ead66bb9bcd03619a4c788e6b7c093b1e878ed1fcc1b8098c"
+      "sha256": "b8935d55a03c9f2d42e83b78fc250162cfb7cd3d433bf14420a94c26cbe397e3"
     },
     {
       "path": "content/ship-art.ts",
@@ -114,6 +128,426 @@
       "sha256": "a43ad5a9e10d9749e845eff96e3169af085ccd4738d4133c14f7b88652a47608"
     },
     {
+      "path": "data/landmarks/features/boipeba/atlas.png",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-04",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
+      "essential": false,
+      "experience": false,
+      "sha256": "19506c5f3e82d9cc1576dceb92063a1dfbf06072d4600115409492bdf0f9d0d4"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/build.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-04",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
+      "essential": false,
+      "experience": false,
+      "sha256": "652320180e4562aacbaffb47a1d505a155044be01f423c28a525ae33aa606461"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/library.glb",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "retrieved": "2026-10-04",
+      "kind": "source-data",
+      "transformations": "Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations",
+      "essential": false,
+      "experience": false,
+      "sha256": "23c6ae0cf7e73750e2e2cfd31151016ca057e43cfdd384bba729a8f6fae2f220"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/README.md",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-04",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
+      "essential": false,
+      "experience": false,
+      "sha256": "3229bb08670ede9259226a6361c4d6ec80d1d2e82cc41b35b99e8db446eb4751"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/CC-BY-SA-3.0.txt",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/3.0/legalcode.txt",
+      "retrieved": "2026-10-03",
+      "rights": "Retained Creative Commons legal code accompanying the licensed works",
+      "proof": "data/landmarks/features/boipeba/references/CC-BY-SA-3.0.txt",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "3f941b3b89cf7b8370ceb83cc76d2120d471b58735d8ca60238a751a48d7f72f"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/CC-BY-SA-4.0.txt",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt",
+      "retrieved": "2026-10-04",
+      "rights": "Retained Creative Commons legal code accompanying the adapted works",
+      "proof": "data/landmarks/features/boipeba/references/CC-BY-SA-4.0.txt",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-area.osm.xml",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors",
+      "source": "https://api.openstreetmap.org/api/0.6/map?bbox=-38.9280,-13.5833,-38.9264,-13.5818 and https://api.openstreetmap.org/api/0.6/node/11373298569.json",
+      "retrieved": "2026-10-03",
+      "rights": "OpenStreetMap ODbL 1.0, attribution retained in the experience and source record",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "beedecc84d32319e0e8bea1fcafe9eb8f054ef3e8aff132df34bec8adc5b8401"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-festival.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Deputado Rosemberg",
+      "source": "https://flickr.com/photos/50931978@N02/42264178461",
+      "retrieved": "2026-10-03",
+      "rights": "Author applied Public Domain Mark on Flickr, reviewed by Wikimedia Commons; page text CC BY-SA 4.0. Rejected reference; no model or texture derived",
+      "proof": "data/landmarks/features/boipeba/references/church-festival.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "655b93bae772319c6744406fafa3a05b65271e4457e112809527a5f59284dc73"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-festival.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Deputado Rosemberg",
+      "source": "https://flickr.com/photos/50931978@N02/42264178461",
+      "retrieved": "2026-10-03",
+      "rights": "Author applied Public Domain Mark on Flickr, reviewed by Wikimedia Commons; page text CC BY-SA 4.0. Rejected reference; no model or texture derived",
+      "proof": "data/landmarks/features/boipeba/references/church-festival.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "025788213cee80c849ce7464338bc590ca1cfff4d46bea009833d3e9ca5a3c50"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-rear-aerial.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Marcio Filho / Ministério do Turismo, MTur Destinos",
+      "source": "https://www.flickr.com/photos/mturdestinos/40680269815/ and https://www.flickr.com/photos/mturdestinos/39166727470/",
+      "retrieved": "2026-10-04",
+      "rights": "Publisher applied Flickr Public Domain Mark (license ID 10); supporting rear and village references, attribution retained; no photographic pixels embedded",
+      "proof": "data/landmarks/features/boipeba/references/church-rear-aerial.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "563f22d1d78e5a0ac954f1514d2b8d0ad93a0156919282fa21483409e00ff3b5"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-rear-aerial.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Marcio Filho / Ministério do Turismo, MTur Destinos",
+      "source": "https://www.flickr.com/photos/mturdestinos/40680269815/ and https://www.flickr.com/photos/mturdestinos/39166727470/",
+      "retrieved": "2026-10-04",
+      "rights": "Publisher applied Flickr Public Domain Mark (license ID 10); supporting rear and village references, attribution retained; no photographic pixels embedded",
+      "proof": "data/landmarks/features/boipeba/references/church-rear-aerial.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "6c06c64e8d9e4704704689d91afba7eb11e0c3ba5dfcf92e6a3f5a3c9dffbd2c"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-roof-crop.json",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "INPE/OBT/DPI",
+      "source": "https://commons.wikimedia.org/wiki/File:Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff",
+      "retrieved": "2026-10-04",
+      "rights": "CC BY-SA 4.0; native-resolution grayscale reference extract, URL/hash/affine/crop transformations retained; roof proportions interpreted, no terrain or atlas pixels derived",
+      "proof": "data/landmarks/features/boipeba/references/church-roof-source.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "30a3213c9c0f8e608bebb6f947606b5876394044a49ce3b8501a6cef920b758b"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-roof-source.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "INPE/OBT/DPI",
+      "source": "https://commons.wikimedia.org/wiki/File:Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff",
+      "retrieved": "2026-10-04",
+      "rights": "CC BY-SA 4.0; native-resolution grayscale reference extract, URL/hash/affine/crop transformations retained; roof proportions interpreted, no terrain or atlas pixels derived",
+      "proof": "data/landmarks/features/boipeba/references/church-roof-source.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "dcbdf90118d920af66be6afd6b0730a4b2f9d7daf4dacee99049abbbd0e44485"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church-roof.png",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "INPE/OBT/DPI",
+      "source": "https://commons.wikimedia.org/wiki/File:Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff",
+      "retrieved": "2026-10-04",
+      "rights": "CC BY-SA 4.0; native-resolution grayscale reference extract, URL/hash/affine/crop transformations retained; roof proportions interpreted, no terrain or atlas pixels derived",
+      "proof": "data/landmarks/features/boipeba/references/church-roof-source.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "80459c54c066b13e4fbc925ce21c31d2cc0e0e5529cfc7efb146ecca4dcd810c"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Waltson Campos",
+      "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG and https://commons.wikimedia.org/wiki/File:Boca_da_Barra_em_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photographs CC BY-SA 3.0; description text CC BY-SA 4.0; church reconstruction after the front photograph under CC BY-SA 4.0, as allowed for adaptations by CC BY-SA 3.0 section 4(b); village shore is a visual reference",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "de33f70facb5f58e3e5b9bad623d9cda4860ce5d5bf563af5df5bbfc1584ab01"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Waltson Campos",
+      "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG and https://commons.wikimedia.org/wiki/File:Boca_da_Barra_em_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photographs CC BY-SA 3.0; description text CC BY-SA 4.0; church reconstruction after the front photograph under CC BY-SA 4.0, as allowed for adaptations by CC BY-SA 3.0 section 4(b); village shore is a visual reference",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "f27bc7bae6c7d50b93d7386d7dda84bbb9ce2d7fabca52f930f04063c6a3106e"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/church.wikidata.json",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Wikidata contributors",
+      "source": "https://www.wikidata.org/wiki/Special:EntityData/Q104716494.json",
+      "retrieved": "2026-10-03",
+      "rights": "Wikidata structured data under CC0",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "5201d7eb281b60e78d658462047f50efeeb3c2b7f34f871ae42ccff4db7551e6"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/morere.osm.json",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors",
+      "source": "https://api.openstreetmap.org/api/0.6/map?bbox=-38.9280,-13.5833,-38.9264,-13.5818 and https://api.openstreetmap.org/api/0.6/node/11373298569.json",
+      "retrieved": "2026-10-03",
+      "rights": "OpenStreetMap ODbL 1.0, attribution retained in the experience and source record",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "de95579d83dfae72af1e6c47eac7d6d2ac260e927506cf92826f28ee10d496f7"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/palms.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Panta LH",
+      "source": "https://commons.wikimedia.org/wiki/File:Coqueiros_de_Morer%C3%A9_-_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; retained attribution and share-alike terms",
+      "proof": "data/landmarks/features/boipeba/references/palms.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "1a97cd8fa138897d942457ccd8ec94ef079c18347982995f8ea30b728f77671a"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/palms.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Panta LH",
+      "source": "https://commons.wikimedia.org/wiki/File:Coqueiros_de_Morer%C3%A9_-_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; retained attribution and share-alike terms",
+      "proof": "data/landmarks/features/boipeba/references/palms.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "d6b05bfa1bec158a9ba7004b51d3ccdfcfe0808f04c97c62f66b01f832cf538c"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/pools.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Kayo Alvares Barboza",
+      "source": "https://commons.wikimedia.org/wiki/File:Piscinas_Naturais_de_Morer%C3%A9.jpg",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+      "proof": "data/landmarks/features/boipeba/references/pools.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "3aa04202eaedb0c14e9e20d79d46291be7e36c93107f209fb699c719a0b43735"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/pools.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Kayo Alvares Barboza",
+      "source": "https://commons.wikimedia.org/wiki/File:Piscinas_Naturais_de_Morer%C3%A9.jpg",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+      "proof": "data/landmarks/features/boipeba/references/pools.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "1706cac30b3e274d9fe2b6e6a162309977dfa2eaa47b5da2d9746883755d767d"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/shore.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Panta LH",
+      "source": "https://commons.wikimedia.org/wiki/File:Boipeba_-_praia_de_Morer%C3%A9.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+      "proof": "data/landmarks/features/boipeba/references/shore.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "556d20559b907a6a9476dedfbf72ec1c8fbae81c452004a30abe450b7b7b5654"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/shore.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Panta LH",
+      "source": "https://commons.wikimedia.org/wiki/File:Boipeba_-_praia_de_Morer%C3%A9.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+      "proof": "data/landmarks/features/boipeba/references/shore.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "27bb59cc803479481e5d2be32864fc29b77f80974f032089d74bf0b86dafeabd"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/village-aerial-east.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Marcio Filho / Ministério do Turismo, MTur Destinos",
+      "source": "https://www.flickr.com/photos/mturdestinos/40680269815/ and https://www.flickr.com/photos/mturdestinos/39166727470/",
+      "retrieved": "2026-10-04",
+      "rights": "Publisher applied Flickr Public Domain Mark (license ID 10); supporting rear and village references, attribution retained; no photographic pixels embedded",
+      "proof": "data/landmarks/features/boipeba/references/church-rear-aerial.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "f697b0bf9ec7fa94243d366f4c6806f99c1f64210286976b176f111b368d3822"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/village-aerial-east.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Marcio Filho / Ministério do Turismo, MTur Destinos",
+      "source": "https://www.flickr.com/photos/mturdestinos/40680269815/ and https://www.flickr.com/photos/mturdestinos/39166727470/",
+      "retrieved": "2026-10-04",
+      "rights": "Publisher applied Flickr Public Domain Mark (license ID 10); supporting rear and village references, attribution retained; no photographic pixels embedded",
+      "proof": "data/landmarks/features/boipeba/references/church-rear-aerial.html",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "e4f163617c6683dd878542750ff5bb78a7e81ed527b989fda177946160d65411"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/village-shore.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Waltson Campos",
+      "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG and https://commons.wikimedia.org/wiki/File:Boca_da_Barra_em_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photographs CC BY-SA 3.0; description text CC BY-SA 4.0; church reconstruction after the front photograph under CC BY-SA 4.0, as allowed for adaptations by CC BY-SA 3.0 section 4(b); village shore is a visual reference",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "c8b643ea2baa80e5dac68e06bf84c052e3c5b9f6d4908f5a441f3e7d59d1b0c0"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/references/village-shore.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Waltson Campos",
+      "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG and https://commons.wikimedia.org/wiki/File:Boca_da_Barra_em_Boipeba.JPG",
+      "retrieved": "2026-10-03",
+      "rights": "Photographs CC BY-SA 3.0; description text CC BY-SA 4.0; church reconstruction after the front photograph under CC BY-SA 4.0, as allowed for adaptations by CC BY-SA 3.0 section 4(b); village shore is a visual reference",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Retained reference/rights evidence; usage and rejected references documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "e9f518b3e7ef356e8791e9b006e82dac3c9facff8212cf20b2de764bf97c60bd"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/sources.json",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-04",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
+      "essential": false,
+      "experience": false,
+      "sha256": "5cbae76556c9729d6437f8732765b942a88d1ca8a89fc2f37f413ea309a4b1cd"
+    },
+    {
+      "path": "data/landmarks/features/boipeba/village.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-04",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
+      "essential": false,
+      "experience": false,
+      "sha256": "afabed32c2b75ed83145e6e28868fba908e7b1c0ee05e0397c07a86fe44aad9c"
+    },
+    {
       "path": "data/landmarks/fernando-de-noronha.json",
       "kind": "source-data",
       "sourceKind": "open-data",
@@ -154,6 +588,20 @@
       "essential": false,
       "experience": false,
       "sha256": "b27cc7002dc45f0dcd427acdede55a5a7b7f600c1e5c27a03138ef4a8d96d327"
+    },
+    {
+      "path": "docs/third-party/boipeba-terrain.md",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-03",
+      "rights": "Project-authored interpretation; no new surveyed geography",
+      "proof": "docs/third-party/boipeba-terrain.md",
+      "transformations": "Authored Boipeba surface interpretation and diagnostic Close View framing",
+      "essential": false,
+      "experience": false,
+      "sha256": "d568317a51a6bc09a96fe720c54b42a0f84bb3f878e7a2c4c2faa96a25fbfd3f"
     },
     {
       "path": "docs/third-party/noronha-terrain.md",
@@ -285,7 +733,7 @@
       "transformations": "Compiled by Next into same-origin HTML/application code",
       "essential": false,
       "experience": true,
-      "sha256": "10925492839f87c85d3587c80463bd7dac6da657ec5c6bba477257d657f70370"
+      "sha256": "3dc734ca2dae3cb9377300a937410e1f15cbd31e9755d6fd8349ddd9ad499105"
     },
     {
       "path": "lib/landmark-surface.ts",
@@ -668,10 +1116,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "07eb7affd894dcdcc797d6d0b58a0413f152919b338ee8d25f074926371e87d5"
+      "sha256": "d93391c0051daf16c69359513354820714f7d1c4f36843a4b54e60b86e17a5a3"
     },
     {
       "path": "public/models/landmark-boipeba-low.v1.glb",
@@ -683,25 +1131,25 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "841a9050e220cb1eddc5a1737f76b6cd918e9710c19627aa638b056befc4bd07"
+      "sha256": "987f97f17217a5d516f97bd4b36c1226925092242f236350190c4828b5ed8987"
     },
     {
       "path": "public/models/landmark-features.v1.glb",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "retrieved": "2026-10-04",
       "url": "/models/landmark-features.v1.glb",
       "kind": "authored",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors",
-      "source": "scripts/generate-landmarks.ts",
-      "retrieved": "2026-10-01",
-      "rights": "Project-authored source contribution; no imported artwork. Instance positions derive from the open geodata documented in docs/third-party/open-geodata.md",
-      "proof": "docs/third-party/project-assets.md",
-      "transformations": "Deterministic GLB v2 export of the Feature models generated in code by scripts/landmark-feature-models.ts, low-poly and vertex-coloured with no textures, and of the instance placements on each Landmark, scattered by terrain rules or projected from configured coordinates onto the Balanced surface",
+      "transformations": "Project-authored palm and Velha Boipeba church reconstructions and shared atlas from retained licensed references; existing models and placements preserved; deterministic terrain placements and named church coordinate added by scripts/generate-landmarks.ts",
       "essential": false,
       "experience": true,
-      "sha256": "4d598929ee767739c59ac39b5e0005448860f89ad217b1f0c610f5d97cd21b61"
+      "sha256": "d2ca0c01d2eae5c1a1b22056b62db88860e3c805f86c08a353b9941040c54bf1"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
@@ -713,7 +1161,7 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in docs/third-party/noronha-terrain.md; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
       "sha256": "882746965ab880d5c7d94d51caae23be4311804a6ac2b69be9a63ecb539cd2d5"
@@ -728,7 +1176,7 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in docs/third-party/noronha-terrain.md; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
       "sha256": "2091a13ff98680e86f13506a174b44fce36f38dbb4f5bd0174b3c24e7fbeaefa"
@@ -818,10 +1266,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/boipeba-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "f47876683caf3d3ab83b520e480bd5e32b6a2bc7538a953317d5a6c5a415ac26"
+      "sha256": "65c1044d19b04708cbb814f846c18351249ce74e64b10c6a6944619d34e6ef98"
     },
     {
       "path": "public/textures/landmark-boipeba-balanced-normal.v1.webp",
@@ -833,10 +1281,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/boipeba-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "e7f4598e99de5d8215a5ceacac0a5ca94809df1ebcb970cd34184beb8c85c405"
+      "sha256": "671bceaec6a2e681bb0ca1512bb64c022f8f0069ea40e434952b003893569f2c"
     },
     {
       "path": "public/textures/landmark-boipeba-low-colour.v1.webp",
@@ -848,10 +1296,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/boipeba-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "1dcd474ef9dec18f3b5074cf8bcfdc16784887027138d08fd5951d3f650a6a1c"
+      "sha256": "b4e2ddf30956ef656facf2511bb124f7fac471aafdaa2ecc976c1c4744d3b0b3"
     },
     {
       "path": "public/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
@@ -863,7 +1311,7 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low authored sand, basalt and scrub signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
       "sha256": "3ddbef464b727ae314b1743970fe3a87b585ba8b3577c9a017927be3ab58dddd"
@@ -878,7 +1326,7 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low authored sand, basalt and scrub signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
       "sha256": "576913f2cdd6aa79c1b73fd601e0c10646ac62bb7f1eeb06a9844a62fd93c5cf"
@@ -893,7 +1341,7 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low authored sand, basalt and scrub signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
       "sha256": "01f70958826deb9025d28ab95fd6b911cdf0b0e0e5aaf8bf13df10898b153e65"
@@ -983,7 +1431,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "60ab25011b0a047fd3d3d7fa83a05e6740649e788ec02def3d7e7c6e9a03b65a"
+      "sha256": "b414f9d4ff7db871cd9985f52ea61450bbe61699520849703dd6b656a2551563"
     },
     {
       "path": "scripts/landmark-feature-models.ts",
@@ -1011,7 +1459,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "a39f52c1fd7d623c297ff95d1aba2e1a1e06d82abc7b14ef36bf98e397365dd9"
+      "sha256": "68dd23ae4f1ff8b9a5abdd6eab8e9d463aed2df24a3e2f6a298350be8ec72d33"
     },
     {
       "path": "scripts/landmark-texture-bake.ts",
@@ -1081,7 +1529,7 @@
       "transformations": "Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography",
       "essential": true,
       "experience": false,
-      "sha256": "2c7b60148d59a44f7de3702f777dcfb748d1b09e6cb97771e44b280f220e5fbd"
+      "sha256": "1da199d92e39ad25fe5e990e718dff28c19e53be62d415dbda67171fa65f5ebc"
     }
   ]
 }

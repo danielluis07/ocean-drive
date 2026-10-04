@@ -44,6 +44,7 @@ import { mottle, sampleElevation, shadeSurface, type ElevationGrid } from "@/lib
 import { bakeAccessibility, transferColours } from "@/scripts/asset-bake";
 import { productionBudgets } from "@/lib/production-budgets";
 import { authoredRelief, terrainPigment } from "@/scripts/terrain-treatment";
+import { buildBoipebaFeatureLibrary } from "@/data/landmarks/features/boipeba/build";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -224,12 +225,12 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
 // The shallows band: the water around the shoreline, carrying the distance from
 // shore in its UVs so the runtime shader can fall off from turquoise to navy
 // across it and break the surf line on its shoreward side.
-function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacing: number, tier: Tier) {
+function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacing: number, tier: Tier, toWorld: ReturnType<typeof projectLandmark>["toWorld"]) {
   const { surfWidth, shallowsWidth } = source;
   const band = shoreBand(outlines, {
     // A coarser surface comes up through the water further inland, so the band
     // reaches further under it: no swell opens a gap between the two.
-    tuck: Math.max(WATERLINE + 0.1, spacing * 0.8),
+    tuck: Math.max(WATERLINE + 0.1, spacing * (source.shallowsTuck ?? 0.8)),
     surf: surfWidth,
     reach: shallowsWidth,
     shore: Math.max(spacing * 1.6, surfWidth * 0.85),
@@ -239,6 +240,8 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
   });
   const positions = new Float32Array(band.points.length * 3);
   const uvs = new Float32Array(band.points.length * 2);
+  const pools = source.reefPools?.map(pool => ({ ...pool, point: toWorld(pool) }));
+  const colours = pools?.length ? new Uint8Array(band.points.length * 3) : null;
   for (const [index, point] of band.points.entries()) {
     positions.set([point.x, 0, point.z], index * 3);
     // Both measure out from the waterline: `u` in surf widths, `v` in shallows
@@ -246,14 +249,23 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
     // run negative, and the shader holds them at 0.
     const out = band.distance[index] + WATERLINE;
     uvs.set([out / (surfWidth + WATERLINE), out / (shallowsWidth + WATERLINE)], index * 2);
+    if (colours && pools) {
+      const strength = Math.max(...pools.map(pool => {
+        const distance = Math.hypot((point.x - pool.point.x) / pool.radius[0], (point.z - pool.point.z) / pool.radius[1]);
+        return Math.max(0, 1 - distance * distance);
+      }));
+      colours.set([Math.round(strength * 255), 0, 0], index * 3);
+    }
   }
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(positions, 3));
   geometry.setAttribute("uv", new BufferAttribute(uvs, 2));
+  if (colours) geometry.setAttribute("color", new BufferAttribute(colours, 3, true));
   geometry.setIndex(band.triangles.flatMap(([a, b, c]) => [a, c, b]));
   return { geometry, triangles: band.triangles.length };
 }
 
+await buildBoipebaFeatureLibrary();
 const authored = featureFile.source ? await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize) : null;
 const models = authored?.models ?? featureModels.map((id) => {
   const build = featureModelBuilders[id];
@@ -295,6 +307,10 @@ function placeFeatures(source: LandmarkSource, record: LandmarkRecord, island: R
   const placements: Placement[] = [];
   for (const [seed, rule] of (source.scatter ?? []).entries()) {
     for (const site of scatterSites(island.outlines, rule, terrainAt, seed * 4)) {
+      if (rule.bounds) {
+        const { lon, lat } = toDegrees(site);
+        if (lon < rule.bounds.west || lon > rule.bounds.east || lat < rule.bounds.south || lat > rule.bounds.north) continue;
+      }
       const position = standing(site);
       if (position) placements.push({ model: featureModels.indexOf(rule.model), position, heading: site.heading, scale: site.scale });
     }
@@ -321,6 +337,7 @@ for (const source of landmarkSources) {
   const record: LandmarkRecord = await Bun.file(`data/landmarks/${source.id}.json`).json();
   const variants: Record<string, unknown> = {};
   const textureBounds = boundsOf(coastline(record, source));
+  const { toWorld } = projectLandmark(record.coastline.islands.map(island => island.ring), source.span);
   let extent = { x: 0, z: 0 };
   let radius = 0;
   let islands = 0;
@@ -337,11 +354,11 @@ for (const source of landmarkSources) {
     const target = tier === "low" ? Math.min(budget.triangles, 1200) : budget.triangles;
     let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * target * 0.68));
     let island = buildIsland(source, record, spacing, tier);
-    let surf = buildShallows(island.outlines, source, spacing, tier);
+    let surf = buildShallows(island.outlines, source, spacing, tier, toWorld);
     for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {
       spacing *= Math.sqrt((island.triangles + surf.triangles) / (budget.triangles * 0.92));
       island = buildIsland(source, record, spacing, tier);
-      surf = buildShallows(island.outlines, source, spacing, tier);
+      surf = buildShallows(island.outlines, source, spacing, tier, toWorld);
     }
 
     if (tier === "balanced") {

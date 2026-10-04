@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "candidate": "5844ec1da79fb118c373e84285b627a5e4b3e8a4",
+  "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-98a2c8c5f80b2574",
+  "startedAt": "2026-10-04T00:04:09.987Z",
+  "quality": {
+    "tier": "high",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 321.70000000298023,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 321.79999999701977,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 321.79999999701977,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 321.8999999985099,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 347.5,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 358.20000000298023,
+      "kind": "starting-quality",
+      "detail": "default"
+    },
+    {
+      "atMs": 371.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 371.5,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1183.5,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1185.2999999970198,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1262.2000000029802,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1280.8999999985099,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1292.7999999970198,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1706.5,
+      "kind": "warm-up",
+      "detail": "high@1"
+    },
+    {
+      "atMs": 1736.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "high",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 1736.7000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"high\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1737.7000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"high\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 2267.7999999970198,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"release\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 2268.60000000149,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"release\",\"id\":\"abrolhos\",\"retained\":0,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 2279,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 2740.39999999851,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 2751.10000000149,
+      "kind": "readiness",
+      "detail": "ready"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 30542.89999999851,
+    "frames": 1835,
+    "windows": [
+      {
+        "atMs": 4321.79999999702,
+        "p90Ms": 16.900000005960464,
+        "gpuP90Ms": 6.28256,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": true
+      },
+      {
+        "atMs": 6334.5,
+        "p90Ms": 17,
+        "gpuP90Ms": 6.16992,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 8347.20000000298,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": 6.14992,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 10360.70000000298,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": 5.9984,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 12372.70000000298,
+        "p90Ms": 17,
+        "gpuP90Ms": 6.01152,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 14385.5,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": 5.9496,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 16398.39999999851,
+        "p90Ms": 16.900000005960464,
+        "gpuP90Ms": 6.1128,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 18411.20000000298,
+        "p90Ms": 17,
+        "gpuP90Ms": 6.09296,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 20424.29999999702,
+        "p90Ms": 16.900000005960464,
+        "gpuP90Ms": 6.02304,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 22437,
+        "p90Ms": 16.900000005960464,
+        "gpuP90Ms": 6.24128,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 24449.79999999702,
+        "p90Ms": 17,
+        "gpuP90Ms": 6.02112,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 26462.39999999851,
+        "p90Ms": 16.80000000447035,
+        "gpuP90Ms": 6.49184,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 28475.20000000298,
+        "p90Ms": 16.900000005960464,
+        "gpuP90Ms": 6.47264,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 30488.29999999702,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": 6.13936,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 32500.89999999851,
+        "p90Ms": 17,
+        "gpuP90Ms": 6.59584,
+        "quality": {
+          "tier": "high",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 5,
+      "triangles": 45125,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    },
+    "high": {
+      "drawCalls": 4,
+      "triangles": 67523,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

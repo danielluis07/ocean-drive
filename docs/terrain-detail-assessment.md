@@ -95,6 +95,15 @@ the treatment to the other island reworks.
 
 ## Verification
 
+Boipeba now has a separate #69 candidate using native low-coast masks, Moreré
+reef-pool colour and textured palm reconstructions. See
+[its verification report](verification/issue69.md). The owner approved the
+terrain-and-palms visuals on 2026-10-04. The named village church now has a
+separate reconstruction using retained licensed front, roof and aerial references;
+see [village verification](verification/issue69-village.md) for its own review.
+The owner confirmed that no phone is available, so physical-phone
+validation remains explicitly unvalidated and rollout is not complete.
+
 Use Bun. After changing generated inputs, run `bun run landmarks:build` and
 `bun run assets:record`. Run `bun test`, `bun run lint`, `bun run typecheck` and
 `bun run assets:audit`; use production browser asset-art and budget checks for

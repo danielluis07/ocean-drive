@@ -27,7 +27,9 @@ const shallowsVertexShader = `
   varying vec2 fromShore;
   varying vec2 ground;
   varying vec3 waterPosition;
+  varying float reefPool;
   void main() {
+    reefPool = color.r;
     fromShore = uv;
     vec3 world = (modelMatrix * vec4(position, 1.)).xyz;
     ground = position.xz;
@@ -47,6 +49,7 @@ const shallowsFragmentShader = `
   varying vec2 fromShore;
   varying vec2 ground;
   varying vec3 waterPosition;
+  varying float reefPool;
   // Three declares this for vertex shaders only.
   uniform mat4 projectionMatrix;
   // 1 while the surf rolls, 0 when it holds still as a foam ring.
@@ -71,6 +74,10 @@ const shallowsFragmentShader = `
     // rim shows on the water.
     float shallows = (1. - depth) * (1. - depth) * (1. - smoothstep(.8, 1., shore.y));
     vec3 water = mix(mix(oceanDeep, oceanShallows, .4), oceanShallows, shallows) * (.86 + bed * .28);
+    // Localised authored reef pools, carried by the existing water mesh in both
+    // tiers. This colour signal does not claim measured seabed depth.
+    float pool = reefPool * smoothstep(.15, .5, bed) * (1. - smoothstep(.7, 1., shore.y));
+    water = mix(water, mix(oceanShallows, oceanWhite, .32), pool * .8);
     float foam = 0.;
     if (shore.x < 1.) {
       // Sets of breakers rolling shoreward, broken along the shore so the ring
@@ -91,7 +98,7 @@ const shallowsFragmentShader = `
       float wash = (1. - smoothstep(.02, .15, shore.x)) * smoothstep(.25, .7, lather);
       foam = clamp(max(breaking * .72, wash * (.35 + .3 * sets)), 0., 1.);
     }
-    gl_FragColor = vec4(oceanHaze(mix(water, oceanWhite, foam), waterPosition), clamp(shallows * .8 + foam * .72, 0., .9));
+    gl_FragColor = vec4(oceanHaze(mix(water, oceanWhite, foam), waterPosition), clamp(shallows * .8 + foam * .72 + pool * .4, 0., .9));
     // The depth of the water drawn under this fragment, so the band is never
     // hidden by a triangle of a coarse ocean grid nor left floating over one.
     vec4 onWater = projectionMatrix * viewMatrix * vec4(waterPosition.x, oceanSheet(waterPosition.xz) + ${CLEARANCE}, waterPosition.z, 1.);
@@ -102,7 +109,8 @@ const shallowsFragmentShader = `
 `;
 
 export function createShallowsMaterial(daylight: OceanDaylight) {
-  return new ShaderMaterial({
+  const material = new ShaderMaterial({
+    vertexColors: true,
     uniforms: {
       ...oceanDaylightUniforms(daylight),
       time: { value: 0 },
@@ -120,4 +128,6 @@ export function createShallowsMaterial(daylight: OceanDaylight) {
     depthWrite: false,
     side: DoubleSide,
   });
+  material.defaultAttributeValues.color = [0, 0, 0];
+  return material;
 }

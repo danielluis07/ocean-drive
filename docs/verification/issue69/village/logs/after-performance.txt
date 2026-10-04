@@ -1,0 +1,53 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 1 test using 1 worker
+
+warning: in the working copy of 'components/ocean/itinerary-sheet.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ocean/ocean-runtime.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/voyage/opening.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/asset-provenance.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-surf.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/terrain-preview.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/audit-assets.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:3868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU (5.5m)
+
+  Slow test file: [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts (5.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (5.6m)
+warning: in the working copy of 'components/ocean/itinerary-sheet.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/ocean/ocean-runtime.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/voyage/opening.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/asset-provenance.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-surf.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/terrain-preview.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/audit-assets.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

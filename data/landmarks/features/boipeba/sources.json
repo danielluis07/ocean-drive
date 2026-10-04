@@ -1,0 +1,82 @@
+[
+  {
+    "files": ["references/palms.jpg", "references/palms.html"],
+    "sourceKind": "licensed-image", "creator": "Panta LH",
+    "source": "https://commons.wikimedia.org/wiki/File:Coqueiros_de_Morer%C3%A9_-_Boipeba.JPG",
+    "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; retained attribution and share-alike terms",
+    "proof": "data/landmarks/features/boipeba/references/palms.html"
+  },
+  {
+    "files": ["references/shore.jpg", "references/shore.html"],
+    "sourceKind": "licensed-image", "creator": "Panta LH",
+    "source": "https://commons.wikimedia.org/wiki/File:Boipeba_-_praia_de_Morer%C3%A9.JPG",
+    "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+    "proof": "data/landmarks/features/boipeba/references/shore.html"
+  },
+  {
+    "files": ["references/pools.jpg", "references/pools.html"],
+    "sourceKind": "licensed-image", "creator": "Kayo Alvares Barboza",
+    "source": "https://commons.wikimedia.org/wiki/File:Piscinas_Naturais_de_Morer%C3%A9.jpg",
+    "rights": "Photograph CC BY-SA 3.0; description text CC BY-SA 4.0; visual reference only",
+    "proof": "data/landmarks/features/boipeba/references/pools.html"
+  },
+  {
+    "files": ["references/church.jpg", "references/church.html", "references/village-shore.jpg", "references/village-shore.html"],
+    "sourceKind": "licensed-image", "creator": "Waltson Campos",
+    "source": "https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG and https://commons.wikimedia.org/wiki/File:Boca_da_Barra_em_Boipeba.JPG",
+    "rights": "Photographs CC BY-SA 3.0; description text CC BY-SA 4.0; church reconstruction after the front photograph under CC BY-SA 4.0, as allowed for adaptations by CC BY-SA 3.0 section 4(b); village shore is a visual reference",
+    "proof": "data/landmarks/features/boipeba/README.md"
+  },
+  {
+    "files": ["references/church-festival.jpg", "references/church-festival.html"],
+    "sourceKind": "licensed-image", "creator": "Deputado Rosemberg",
+    "source": "https://flickr.com/photos/50931978@N02/42264178461",
+    "rights": "Author applied Public Domain Mark on Flickr, reviewed by Wikimedia Commons; page text CC BY-SA 4.0. Rejected reference; no model or texture derived",
+    "proof": "data/landmarks/features/boipeba/references/church-festival.html"
+  },
+  {
+    "files": ["references/church-area.osm.xml", "references/morere.osm.json"],
+    "sourceKind": "open-data", "creator": "OpenStreetMap contributors",
+    "source": "https://api.openstreetmap.org/api/0.6/map?bbox=-38.9280,-13.5833,-38.9264,-13.5818 and https://api.openstreetmap.org/api/0.6/node/11373298569.json",
+    "rights": "OpenStreetMap ODbL 1.0, attribution retained in the experience and source record",
+    "proof": "docs/third-party/open-geodata.md"
+  },
+  {
+    "files": ["references/church.wikidata.json"],
+    "sourceKind": "open-data", "creator": "Wikidata contributors",
+    "source": "https://www.wikidata.org/wiki/Special:EntityData/Q104716494.json",
+    "rights": "Wikidata structured data under CC0",
+    "proof": "data/landmarks/features/boipeba/README.md"
+  },
+  {
+    "files": ["references/church-rear-aerial.jpg", "references/church-rear-aerial.html", "references/village-aerial-east.jpg", "references/village-aerial-east.html"],
+    "sourceKind": "licensed-image", "creator": "Marcio Filho / Ministério do Turismo, MTur Destinos",
+    "source": "https://www.flickr.com/photos/mturdestinos/40680269815/ and https://www.flickr.com/photos/mturdestinos/39166727470/",
+    "retrieved": "2026-10-04",
+    "rights": "Publisher applied Flickr Public Domain Mark (license ID 10); supporting rear and village references, attribution retained; no photographic pixels embedded",
+    "proof": "data/landmarks/features/boipeba/references/church-rear-aerial.html"
+  },
+  {
+    "files": ["references/church-roof.png", "references/church-roof-source.html", "references/church-roof-crop.json"],
+    "sourceKind": "licensed-image", "creator": "INPE/OBT/DPI",
+    "source": "https://commons.wikimedia.org/wiki/File:Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff",
+    "retrieved": "2026-10-04",
+    "rights": "CC BY-SA 4.0; native-resolution grayscale reference extract, URL/hash/affine/crop transformations retained; roof proportions interpreted, no terrain or atlas pixels derived",
+    "proof": "data/landmarks/features/boipeba/references/church-roof-source.html"
+  },
+  {
+    "files": ["references/CC-BY-SA-4.0.txt"],
+    "sourceKind": "open-data", "creator": "Creative Commons",
+    "source": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt",
+    "retrieved": "2026-10-04",
+    "rights": "Retained Creative Commons legal code accompanying the adapted works",
+    "proof": "data/landmarks/features/boipeba/references/CC-BY-SA-4.0.txt"
+  },
+  {
+    "files": ["references/CC-BY-SA-3.0.txt"],
+    "sourceKind": "open-data", "creator": "Creative Commons",
+    "source": "https://creativecommons.org/licenses/by-sa/3.0/legalcode.txt",
+    "rights": "Retained Creative Commons legal code accompanying the licensed works",
+    "proof": "data/landmarks/features/boipeba/references/CC-BY-SA-3.0.txt"
+  }
+]

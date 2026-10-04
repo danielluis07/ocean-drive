@@ -1,4 +1,5 @@
 import ShipCredit from "@/components/voyage/ship-credit";
+import LandmarkCredit from "@/components/voyage/landmark-credit";
 import TravessiaLogo from "@/components/voyage/travessia-logo";
 import { editorialAction, editorialHeading, editorialLabel, editorialShell } from "@/components/voyage/editorial-styles";
 import { brand, stops } from "@/content/editorial";
@@ -33,6 +34,7 @@ export default function Opening() {
         <p>
           <ShipCredit />
         </p>
+        <p><LandmarkCredit /></p>
       </div>
     </header>
   );

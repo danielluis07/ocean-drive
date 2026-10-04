@@ -1,0 +1,286 @@
+{
+  "before": {
+    "phone-low-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "phone-low",
+        "tier": "low",
+        "width": 390,
+        "height": 844,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "phone-low-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "phone-low",
+        "tier": "low",
+        "width": 390,
+        "height": 844,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-low-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-low",
+        "tier": "low",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-low-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-low",
+        "tier": "low",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-fallback-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-fallback",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "none"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-fallback-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-fallback",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "none"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-colour-only-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-colour-only",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-colour-only-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-colour-only",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-balanced-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-balanced",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "all"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    },
+    "desktop-balanced-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-balanced",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "all"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": ".tmp/issue69-village/baseline"
+    }
+  },
+  "after": {
+    "phone-low-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "phone-low",
+        "tier": "low",
+        "width": 390,
+        "height": 844,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": null
+    },
+    "phone-low-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "phone-low",
+        "tier": "low",
+        "width": 390,
+        "height": 844,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": null
+    },
+    "desktop-low-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-low",
+        "tier": "low",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": null
+    },
+    "desktop-low-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-low",
+        "tier": "low",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "1",
+      "baseline": null
+    },
+    "desktop-fallback-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-fallback",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "none"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    },
+    "desktop-fallback-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-fallback",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "none"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    },
+    "desktop-colour-only-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-colour-only",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    },
+    "desktop-colour-only-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-colour-only",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "colour"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    },
+    "desktop-balanced-close": {
+      "island": "boipeba",
+      "framing": "close",
+      "view": {
+        "name": "desktop-balanced",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "all"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    },
+    "desktop-balanced-aerial": {
+      "island": "boipeba",
+      "framing": "aerial",
+      "view": {
+        "name": "desktop-balanced",
+        "tier": "balanced",
+        "width": 1280,
+        "height": 800,
+        "maps": "all"
+      },
+      "deviceDpr": 1,
+      "renderDpr": "0.9",
+      "baseline": null
+    }
+  }
+}

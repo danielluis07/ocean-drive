@@ -1,0 +1,4222 @@
+{
+  "label": "Local physical-GPU lab evidence; visual approval and clean-candidate E2 sign-off remain separate.",
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) RX Vega 10 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "browser": "ocean-voyage-chrome: 154.0.8037.93",
+  "labRendering": {
+    "headless": true,
+    "launchOptions": {},
+    "hostConditions": {
+      "displayAwake": true,
+      "nativeWindow": null
+    }
+  },
+  "host": {
+    "os": "win32 10.0.26300",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx"
+  },
+  "viewport": {
+    "width": 1522,
+    "height": 632
+  },
+  "deviceDpr": 1.25,
+  "startingTier": "balanced",
+  "start": {
+    "atMs": 7911.799999999814,
+    "activeMs": 2806.9000000003725
+  },
+  "activeMs": 324356.89999999944,
+  "windows": [
+    {
+      "atMs": 11126.5,
+      "p90Ms": 18.5,
+      "gpuP90Ms": 4.96448,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 13142,
+      "p90Ms": 18.299999999813735,
+      "gpuP90Ms": 4.86432,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 15152.699999999255,
+      "p90Ms": 18.200000000186265,
+      "gpuP90Ms": 5.61008,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 17168.099999999627,
+      "p90Ms": 18.299999999813735,
+      "gpuP90Ms": 5.31712,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 19177.599999999627,
+      "p90Ms": 17.59999999962747,
+      "gpuP90Ms": 6.56832,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 21190.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.25792,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 23203.699999999255,
+      "p90Ms": 17.200000000186265,
+      "gpuP90Ms": 7.19664,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 25216,
+      "p90Ms": 17.5,
+      "gpuP90Ms": 7.26736,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 27228.599999999627,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.37184,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 29241.699999999255,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.25728,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 31254.199999999255,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.49712,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 33267.299999999814,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.31936,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 35280.09999999963,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 7.1328,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 37292.699999999255,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 6.72464,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 39305.699999999255,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.26496,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 41318.5,
+      "p90Ms": 17.299999999813735,
+      "gpuP90Ms": 6.36768,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 43333.59999999963,
+      "p90Ms": 18.40000000037253,
+      "gpuP90Ms": 6.04944,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 45344.5,
+      "p90Ms": 17.100000000558794,
+      "gpuP90Ms": 6.68816,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 47357.199999999255,
+      "p90Ms": 17.199999999254942,
+      "gpuP90Ms": 6.68112,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 49369.799999999814,
+      "p90Ms": 17,
+      "gpuP90Ms": 6.67744,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 51382.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 6.7368,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 53395.59999999963,
+      "p90Ms": 17.100000000558794,
+      "gpuP90Ms": 6.78368,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 55408.299999999814,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 6.59664,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 57421.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 6.56288,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 59433.89999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 6.66288,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 61446.59999999963,
+      "p90Ms": 17,
+      "gpuP90Ms": 6.52928,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 63460.39999999944,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 6.76496,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 65472.39999999944,
+      "p90Ms": 17,
+      "gpuP90Ms": 6.70208,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 67485,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.18672,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 69497.59999999963,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.2608,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 71510.59999999963,
+      "p90Ms": 17.200000000186265,
+      "gpuP90Ms": 8.02416,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 73523.59999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.4264,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 75536,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.67168,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 77548.69999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.50256,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 79561.59999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.3064,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 81574.39999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.44432,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 83587.29999999981,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.30256,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 85599.89999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.13392,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 87612.69999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.124,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 89625.59999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.16192,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 91638.29999999981,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.0504,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 93651.19999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.1848,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 95664.19999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.29136,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 97676.69999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.136,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 99689.59999999963,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.11648,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 101702.69999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.67216,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 103715.19999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.9544,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 105728,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.0936,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 107741.09999999963,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.26704,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 109754,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 6.76464,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 111766.89999999944,
+      "p90Ms": 17.300000000745058,
+      "gpuP90Ms": 7.42608,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 113779.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 6.71136,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 115792.09999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.35104,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 117805.39999999944,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.13712,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 119817.69999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.59776,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 121830.69999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.43968,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 123843.5,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.10768,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 125856,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.92192,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 127868.89999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.98032,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 129881.59999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.93184,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 131894.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.06816,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 133907.2999999998,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.10976,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 135920,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.18832,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 137932.89999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.65328,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 139946.69999999925,
+      "p90Ms": 17,
+      "gpuP90Ms": 8.328,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 141959.09999999963,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.20368,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 143971.7999999998,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 7.80912,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 145984.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.51008,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 147997.09999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.34912,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 150009.59999999963,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.21168,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 152022.5,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.1504,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 154035.2999999998,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.02544,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 156048.2999999998,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.97568,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 158061.19999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.65248,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 160074.19999999925,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.5296,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 162086.5,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.80016,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 164099.2999999998,
+      "p90Ms": 16.700000000186265,
+      "gpuP90Ms": 8.12672,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 166112,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.18304,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 168125,
+      "p90Ms": 16.700000000186265,
+      "gpuP90Ms": 8.24208,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 170138.09999999963,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.23312,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 172150.5,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.28784,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 174163.39999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.52592,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 176176.09999999963,
+      "p90Ms": 16.700000000186265,
+      "gpuP90Ms": 8.1488,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 178189.19999999925,
+      "p90Ms": 17,
+      "gpuP90Ms": 10.30224,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 180202.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 9.42032,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 182214.89999999944,
+      "p90Ms": 17.5,
+      "gpuP90Ms": 10.68032,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 184228.39999999944,
+      "p90Ms": 17.300000000745058,
+      "gpuP90Ms": 10.6944,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 186240.7999999998,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 10.74048,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 188271.2999999998,
+      "p90Ms": 18,
+      "gpuP90Ms": 10.78,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 190282.5,
+      "p90Ms": 17.699999999254942,
+      "gpuP90Ms": 10.7648,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 192295.2999999998,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.5112,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 194308,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.60192,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 196320.69999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.61856,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 198333.59999999963,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.6384,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 200346.39999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.57664,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 202825.2999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.94688,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 204838,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.73792,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 206851.5,
+      "p90Ms": 18.699999999254942,
+      "gpuP90Ms": 14.99936,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 208863.59999999963,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.51216,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 210876.89999999944,
+      "p90Ms": 17.09999999962747,
+      "gpuP90Ms": 7.4864,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 212889.2999999998,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.45648,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 214902,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.33792,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 216914.89999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 6.88976,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 218927.69999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.3424,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 220940.2999999998,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.85632,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 222953,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.60224,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 224965.89999999944,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.05904,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 226978.59999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.8352,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 228991.5,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.57664,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 231004.39999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.7024,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 233017.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.50464,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 235029.89999999944,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.65824,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 237042.69999999925,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.64064,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 239055.39999999944,
+      "p90Ms": 17,
+      "gpuP90Ms": 7.34416,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 241068.39999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.6208,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 243081.09999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.60208,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 245093.7999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.8344,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 247106.7999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.42944,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 249119.5,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.52464,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 251132.2999999998,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.51024,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 253145.09999999963,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.53632,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 255158,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.712,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 257170.59999999963,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 7.70352,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 259183.69999999925,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.59712,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 261196.59999999963,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.55344,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 263209.0999999996,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.70192,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 265222.19999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.78112,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 267234.69999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 7.88208,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 269247.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.49184,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 271260.39999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.21008,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 273273.19999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.6976,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 275285.89999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.46864,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 277298.69999999925,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.50752,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 279311.5,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.43248,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 281324.5999999996,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.18064,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": true
+    },
+    {
+      "atMs": 283337.2999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.06768,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 285350.0999999996,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.23552,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 287362.7999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.17232,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 289376,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.13056,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 291388.5,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.72176,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 293401.5999999996,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.02784,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 295414,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.08816,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 297426.7999999998,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 8.1352,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 299439.7999999998,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 7.82928,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 301452.39999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.00816,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 303465.39999999944,
+      "p90Ms": 16.799999999813735,
+      "gpuP90Ms": 8.20096,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 305478,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.12016,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 307490.89999999944,
+      "p90Ms": 16.899999999441206,
+      "gpuP90Ms": 8.11904,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 309503.69999999925,
+      "p90Ms": 16.800000000745058,
+      "gpuP90Ms": 7.94864,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 311516.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.196,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 313529.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.18512,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 315542.2999999998,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.12544,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 317555.0999999996,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.22272,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 319568,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.21808,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 321580.5,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.17552,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 323593.39999999944,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.16448,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 325606.19999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.30112,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 327618.7999999998,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.30816,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 329632,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.2632,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    },
+    {
+      "atMs": 331644.69999999925,
+      "p90Ms": 16.90000000037253,
+      "gpuP90Ms": 8.19392,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      },
+      "wakeActive": false
+    }
+  ],
+  "changes": [
+    {
+      "atMs": 17071.89999999944,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 27142.299999999814,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 59192.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 69290.69999999925,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 69338,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 71420.89999999944,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 81479.19999999925,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 115712.39999999944,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 136892.19999999925,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 136928.2999999998,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 146989.69999999925,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 177468.39999999944,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 199584.69999999925,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 202845.89999999944,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 216939,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 227006.09999999963,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 268868.5999999996,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 272334.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 282392,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    }
+  ],
+  "tierChanges": [],
+  "messages": [],
+  "diagnostics": {
+    "schema": 1,
+    "candidate": "5844ec1da79fb118c373e84285b627a5e4b3e8a4",
+    "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-6a9b601f63f383e3",
+    "startedAt": "2026-10-04T19:11:33.709Z",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 0.9,
+      "fallback": false
+    },
+    "events": [
+      {
+        "atMs": 495.19999999925494,
+        "kind": "readiness",
+        "detail": "editorial-ready"
+      },
+      {
+        "atMs": 495.19999999925494,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1.25,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 495.19999999925494,
+        "kind": "readiness",
+        "detail": "checking"
+      },
+      {
+        "atMs": 495.5,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 532.6999999992549,
+        "kind": "lifecycle",
+        "detail": "visible:3d:voyage"
+      },
+      {
+        "atMs": 572.2999999998137,
+        "kind": "starting-quality",
+        "detail": "gpu-class"
+      },
+      {
+        "atMs": 595.1999999992549,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1.25,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 595.2999999998137,
+        "kind": "readiness",
+        "detail": "loading"
+      },
+      {
+        "atMs": 2639.5999999996275,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 4613.199999999255,
+        "kind": "readiness",
+        "detail": "preparing"
+      },
+      {
+        "atMs": 4636.799999999814,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 4894.699999999255,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 5080.5,
+        "kind": "readiness",
+        "detail": "frame"
+      },
+      {
+        "atMs": 5128.399999999441,
+        "kind": "readiness",
+        "detail": "ready"
+      },
+      {
+        "atMs": 5342.899999999441,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1.25,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 5477.5,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 7042.199999999255,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 17071.89999999944,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 27142.299999999814,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 59192.5,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 69290.69999999925,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 69338,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 71420.89999999944,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 73423.79999999981,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 73440.69999999925,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 73457.5,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 81479.19999999925,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 115712.39999999944,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 136892.19999999925,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 136928.2999999998,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 138987,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 138996.39999999944,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 139034.59999999963,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 139065.5,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 146989.69999999925,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 177468.39999999944,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 199584.69999999925,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 202845.89999999944,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 204888.39999999944,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 204889.2999999998,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 204922.7999999998,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 204954.89999999944,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 216939,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 227006.09999999963,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 268868.5999999996,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 270828.7999999998,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":4}"
+      },
+      {
+        "atMs": 272334.5,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "atMs": 282392,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        }
+      }
+    ],
+    "droppedEvents": 0,
+    "timing": {
+      "activeMs": 327163.7999999998,
+      "frames": 19300,
+      "windows": [
+        {
+          "atMs": 7101.299999999814,
+          "p90Ms": 20.300000000745058,
+          "gpuP90Ms": 7.36672,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 9113.699999999255,
+          "p90Ms": 23.5,
+          "gpuP90Ms": 6.36416,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 11126.5,
+          "p90Ms": 18.5,
+          "gpuP90Ms": 4.96448,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 13142,
+          "p90Ms": 18.299999999813735,
+          "gpuP90Ms": 4.86432,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 15152.699999999255,
+          "p90Ms": 18.200000000186265,
+          "gpuP90Ms": 5.61008,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 17168.099999999627,
+          "p90Ms": 18.299999999813735,
+          "gpuP90Ms": 5.31712,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 19177.599999999627,
+          "p90Ms": 17.59999999962747,
+          "gpuP90Ms": 6.56832,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 21190.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.25792,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 23203.699999999255,
+          "p90Ms": 17.200000000186265,
+          "gpuP90Ms": 7.19664,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 25216,
+          "p90Ms": 17.5,
+          "gpuP90Ms": 7.26736,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 27228.599999999627,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.37184,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 29241.699999999255,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.25728,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 31254.199999999255,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.49712,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 33267.299999999814,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.31936,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 35280.09999999963,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 7.1328,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 37292.699999999255,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 6.72464,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 39305.699999999255,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.26496,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 41318.5,
+          "p90Ms": 17.299999999813735,
+          "gpuP90Ms": 6.36768,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 43333.59999999963,
+          "p90Ms": 18.40000000037253,
+          "gpuP90Ms": 6.04944,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 45344.5,
+          "p90Ms": 17.100000000558794,
+          "gpuP90Ms": 6.68816,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 47357.199999999255,
+          "p90Ms": 17.199999999254942,
+          "gpuP90Ms": 6.68112,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 49369.799999999814,
+          "p90Ms": 17,
+          "gpuP90Ms": 6.67744,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 51382.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 6.7368,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 53395.59999999963,
+          "p90Ms": 17.100000000558794,
+          "gpuP90Ms": 6.78368,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 55408.299999999814,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 6.59664,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 57421.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 6.56288,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 59433.89999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 6.66288,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 61446.59999999963,
+          "p90Ms": 17,
+          "gpuP90Ms": 6.52928,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 63460.39999999944,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 6.76496,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 65472.39999999944,
+          "p90Ms": 17,
+          "gpuP90Ms": 6.70208,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 67485,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.18672,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 69497.59999999963,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.2608,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 71510.59999999963,
+          "p90Ms": 17.200000000186265,
+          "gpuP90Ms": 8.02416,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 73523.59999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.4264,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 75536,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.67168,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 77548.69999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.50256,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 79561.59999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.3064,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 81574.39999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.44432,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 83587.29999999981,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.30256,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 85599.89999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.13392,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 87612.69999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.124,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 89625.59999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.16192,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 91638.29999999981,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.0504,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 93651.19999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.1848,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 95664.19999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.29136,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 97676.69999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.136,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 99689.59999999963,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.11648,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 101702.69999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.67216,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 103715.19999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.9544,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 105728,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.0936,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 107741.09999999963,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.26704,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 109754,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 6.76464,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 111766.89999999944,
+          "p90Ms": 17.300000000745058,
+          "gpuP90Ms": 7.42608,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 113779.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 6.71136,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 115792.09999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.35104,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 117805.39999999944,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.13712,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 119817.69999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.59776,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 121830.69999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.43968,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 123843.5,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.10768,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 125856,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.92192,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 127868.89999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.98032,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 129881.59999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.93184,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 131894.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.06816,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 133907.2999999998,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.10976,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 135920,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.18832,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 137932.89999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.65328,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 139946.69999999925,
+          "p90Ms": 17,
+          "gpuP90Ms": 8.328,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 141959.09999999963,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.20368,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 143971.7999999998,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 7.80912,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 145984.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.51008,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 147997.09999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.34912,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 150009.59999999963,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.21168,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 152022.5,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.1504,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 154035.2999999998,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.02544,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 156048.2999999998,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.97568,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 158061.19999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.65248,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 160074.19999999925,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.5296,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 162086.5,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.80016,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 164099.2999999998,
+          "p90Ms": 16.700000000186265,
+          "gpuP90Ms": 8.12672,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 166112,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.18304,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 168125,
+          "p90Ms": 16.700000000186265,
+          "gpuP90Ms": 8.24208,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 170138.09999999963,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.23312,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 172150.5,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.28784,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 174163.39999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.52592,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 176176.09999999963,
+          "p90Ms": 16.700000000186265,
+          "gpuP90Ms": 8.1488,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 178189.19999999925,
+          "p90Ms": 17,
+          "gpuP90Ms": 10.30224,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 180202.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 9.42032,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 182214.89999999944,
+          "p90Ms": 17.5,
+          "gpuP90Ms": 10.68032,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 184228.39999999944,
+          "p90Ms": 17.300000000745058,
+          "gpuP90Ms": 10.6944,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 186240.7999999998,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 10.74048,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 188271.2999999998,
+          "p90Ms": 18,
+          "gpuP90Ms": 10.78,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 190282.5,
+          "p90Ms": 17.699999999254942,
+          "gpuP90Ms": 10.7648,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 192295.2999999998,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.5112,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 194308,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.60192,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 196320.69999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.61856,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 198333.59999999963,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.6384,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 200346.39999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.57664,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 202825.2999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.94688,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 204838,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.73792,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 206851.5,
+          "p90Ms": 18.699999999254942,
+          "gpuP90Ms": 14.99936,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 208863.59999999963,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.51216,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 210876.89999999944,
+          "p90Ms": 17.09999999962747,
+          "gpuP90Ms": 7.4864,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 212889.2999999998,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.45648,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 214902,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.33792,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 216914.89999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 6.88976,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 218927.69999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.3424,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 220940.2999999998,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.85632,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 222953,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.60224,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 224965.89999999944,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.05904,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 226978.59999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.8352,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 228991.5,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.57664,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 231004.39999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.7024,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 233017.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.50464,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 235029.89999999944,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.65824,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 237042.69999999925,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.64064,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 239055.39999999944,
+          "p90Ms": 17,
+          "gpuP90Ms": 7.34416,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 241068.39999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.6208,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 243081.09999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.60208,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 245093.7999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.8344,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 247106.7999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.42944,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 249119.5,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.52464,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 251132.2999999998,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.51024,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 253145.09999999963,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.53632,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 255158,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.712,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 257170.59999999963,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 7.70352,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 259183.69999999925,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.59712,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 261196.59999999963,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.55344,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 263209.0999999996,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.70192,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 265222.19999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.78112,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 267234.69999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 7.88208,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 269247.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.49184,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 271260.39999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.21008,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 1,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 273273.19999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.6976,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 275285.89999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.46864,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 277298.69999999925,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.50752,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 279311.5,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.43248,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 281324.5999999996,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.18064,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false,
+            "wakeSamples": 2
+          },
+          "wakeActive": true
+        },
+        {
+          "atMs": 283337.2999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.06768,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 285350.0999999996,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.23552,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 287362.7999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.17232,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 289376,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.13056,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 291388.5,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.72176,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 293401.5999999996,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.02784,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 295414,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.08816,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 297426.7999999998,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 8.1352,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 299439.7999999998,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 7.82928,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 301452.39999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.00816,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 303465.39999999944,
+          "p90Ms": 16.799999999813735,
+          "gpuP90Ms": 8.20096,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 305478,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.12016,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 307490.89999999944,
+          "p90Ms": 16.899999999441206,
+          "gpuP90Ms": 8.11904,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 309503.69999999925,
+          "p90Ms": 16.800000000745058,
+          "gpuP90Ms": 7.94864,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 311516.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.196,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 313529.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.18512,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 315542.2999999998,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.12544,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 317555.0999999996,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.22272,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 319568,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.21808,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 321580.5,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.17552,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 323593.39999999944,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.16448,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 325606.19999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.30112,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 327618.7999999998,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.30816,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 329632,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.2632,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 331644.69999999925,
+          "p90Ms": 16.90000000037253,
+          "gpuP90Ms": 8.19392,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.9,
+            "fallback": false
+          },
+          "wakeActive": false
+        }
+      ]
+    },
+    "scenes": {
+      "balanced": {
+        "drawCalls": 9,
+        "triangles": 62175,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    }
+  }
+}
