@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (244705 spike-07.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="-13.5833000" minlon="-38.9280000" maxlat="-13.5818000" maxlon="-38.9264000"/>
+ <node id="2437014907" visible="true" version="3" changeset="147712456" timestamp="2024-02-21T00:00:20Z" user="geomatha" uid="1923169" lat="-13.5829012" lon="-38.9276719">
+  <tag k="name" v="Pousada Coco Dendê"/>
+  <tag k="tourism" v="hotel"/>
+ </node>
+ <node id="2437014945" visible="true" version="2" changeset="45921928" timestamp="2017-02-08T16:11:50Z" user="SeverinGeo" uid="219668" lat="-13.5825102" lon="-38.9272361">
+  <tag k="amenity" v="place_of_worship"/>
+  <tag k="name" v="Church of the Divine Holy Spirit"/>
+  <tag k="religion" v="christian"/>
+ </node>
+ <node id="2437825218" visible="true" version="1" changeset="17578349" timestamp="2013-08-29T19:58:28Z" user="apo-gps" uid="60273" lat="-13.5825258" lon="-38.9270926">
+  <tag k="tourism" v="viewpoint"/>
+ </node>
+ <node id="2437825301" visible="true" version="3" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5806100" lon="-38.9279640">
+  <tag k="barrier" v="gate"/>
+ </node>
+ <node id="2439590814" visible="true" version="1" changeset="17593973" timestamp="2013-08-30T18:55:24Z" user="StephanWe" uid="60839" lat="-13.5824215" lon="-38.9272857">
+  <tag k="amenity" v="bar"/>
+  <tag k="name" v="Cabana Mirante do Divino"/>
+ </node>
+ <node id="2456777414" visible="true" version="3" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5834898" lon="-38.9283951"/>
+ <node id="2456777415" visible="true" version="2" changeset="45921928" timestamp="2017-02-08T16:11:53Z" user="SeverinGeo" uid="219668" lat="-13.5825895" lon="-38.9273076"/>
+ <node id="2699255327" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5817358" lon="-38.9273769"/>
+ <node id="4674977037" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5838050" lon="-38.9246990"/>
+ <node id="4674977038" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5836770" lon="-38.9247770"/>
+ <node id="4674977039" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5834710" lon="-38.9247810"/>
+ <node id="4674977040" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5833550" lon="-38.9248160"/>
+ <node id="4674977041" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5831750" lon="-38.9249610"/>
+ <node id="4674977042" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5830150" lon="-38.9250120"/>
+ <node id="4674977043" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5828990" lon="-38.9250950"/>
+ <node id="4674977044" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5828420" lon="-38.9251610"/>
+ <node id="4674977045" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5826700" lon="-38.9254700"/>
+ <node id="4674977046" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825660" lon="-38.9256220"/>
+ <node id="4674977047" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825180" lon="-38.9258270"/>
+ <node id="4674977048" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825130" lon="-38.9259430"/>
+ <node id="4674977049" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825330" lon="-38.9261390"/>
+ <node id="4674977050" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825520" lon="-38.9262070"/>
+ <node id="4674977051" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826340" lon="-38.9263194"/>
+ <node id="4674977052" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827135" lon="-38.9264475"/>
+ <node id="4674977053" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827115" lon="-38.9265206"/>
+ <node id="4674977054" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826581" lon="-38.9265668"/>
+ <node id="4674977055" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5825949" lon="-38.9265796"/>
+ <node id="4674977056" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5825290" lon="-38.9265610"/>
+ <node id="4674977057" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5824220" lon="-38.9265240"/>
+ <node id="4674977058" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5821666" lon="-38.9263791"/>
+ <node id="4674977060" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5816393" lon="-38.9274412"/>
+ <node id="4674977061" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5814907" lon="-38.9275338"/>
+ <node id="4674977062" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5811020" lon="-38.9277460"/>
+ <node id="4674977063" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5809580" lon="-38.9278170"/>
+ <node id="4674977064" visible="true" version="2" changeset="53913885" timestamp="2017-11-19T00:31:35Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5807500" lon="-38.9278840"/>
+ <node id="4674977065" visible="true" version="3" changeset="89753764" timestamp="2020-08-21T15:33:27Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5821751" lon="-38.9276606"/>
+ <node id="4674977115" visible="true" version="1" changeset="45921928" timestamp="2017-02-08T16:11:43Z" user="SeverinGeo" uid="219668" lat="-13.5833622" lon="-38.9279540"/>
+ <node id="5237262695" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5840760" lon="-38.9244230"/>
+ <node id="5237262696" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5839290" lon="-38.9245940"/>
+ <node id="5237262697" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5836200" lon="-38.9247890"/>
+ <node id="5237262698" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5816380" lon="-38.9265600"/>
+ <node id="5237262699" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5817730" lon="-38.9268110"/>
+ <node id="5237262709" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5815565" lon="-38.9260492"/>
+ <node id="5237262710" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5814633" lon="-38.9260264"/>
+ <node id="5237262711" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5814242" lon="-38.9260297"/>
+ <node id="5237262712" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5813903" lon="-38.9260787"/>
+ <node id="5237262713" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5814138" lon="-38.9261618"/>
+ <node id="5237262715" visible="true" version="1" changeset="53913885" timestamp="2017-11-19T00:31:23Z" user="erickdeoliveiraleal" uid="463504" lat="-13.5820380" lon="-38.9273870"/>
+ <node id="5237262716" visible="true" version="3" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5820552" lon="-38.9277484"/>
+ <node id="5237262717" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5820030" lon="-38.9276706"/>
+ <node id="5237262718" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5818557" lon="-38.9274265"/>
+ <node id="5237262719" visible="true" version="2" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5817931" lon="-38.9273769"/>
+ <node id="10882088574" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5842465" lon="-38.9258507"/>
+ <node id="10882088575" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5843247" lon="-38.9255771"/>
+ <node id="10882088576" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5842283" lon="-38.9253089"/>
+ <node id="10882088577" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5840119" lon="-38.9252177"/>
+ <node id="10882088578" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5837120" lon="-38.9257810"/>
+ <node id="10882088579" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5834148" lon="-38.9256737"/>
+ <node id="10882088580" visible="true" version="2" changeset="136317893" timestamp="2023-05-19T21:52:37Z" user="SeverinGeo" uid="219668" lat="-13.5838085" lon="-38.9248234"/>
+ <node id="10882088587" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5828699" lon="-38.9251748"/>
+ <node id="10882088588" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5829195" lon="-38.9253330"/>
+ <node id="10882088589" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5828491" lon="-38.9254349"/>
+ <node id="10882088590" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826978" lon="-38.9256254"/>
+ <node id="10882088591" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826405" lon="-38.9257219"/>
+ <node id="10882088592" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826952" lon="-38.9258963"/>
+ <node id="10882088593" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826770" lon="-38.9259955"/>
+ <node id="10882088594" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5825936" lon="-38.9260465"/>
+ <node id="10882088595" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5822442" lon="-38.9260250"/>
+ <node id="10882088596" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5821399" lon="-38.9259499"/>
+ <node id="10882088597" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5819756" lon="-38.9259419"/>
+ <node id="10882088598" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5818062" lon="-38.9260948"/>
+ <node id="10882088599" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5820799" lon="-38.9262477"/>
+ <node id="10882088600" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5824371" lon="-38.9263254"/>
+ <node id="10882088601" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826457" lon="-38.9262369"/>
+ <node id="10882088602" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827813" lon="-38.9262852"/>
+ <node id="10882088603" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5828517" lon="-38.9264730"/>
+ <node id="10882088604" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827396" lon="-38.9266500"/>
+ <node id="10882088605" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5828073" lon="-38.9268002"/>
+ <node id="10882088606" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827187" lon="-38.9269531"/>
+ <node id="10882088607" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5826900" lon="-38.9271355"/>
+ <node id="10882088608" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5827500" lon="-38.9273742"/>
+ <node id="10882088609" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5832427" lon="-38.9277551"/>
+ <node id="10882088610" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5834696" lon="-38.9275083"/>
+ <node id="10882088611" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5836912" lon="-38.9269638"/>
+ <node id="10882088612" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5837720" lon="-38.9266741"/>
+ <node id="10882088613" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5841852" lon="-38.9264770"/>
+ <node id="10882088614" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5821125" lon="-38.9277712"/>
+ <node id="10882088615" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5821699" lon="-38.9277416"/>
+ <node id="10882088616" visible="true" version="1" changeset="135913947" timestamp="2023-05-09T23:10:47Z" user="SeverinGeo" uid="219668" lat="-13.5813962" lon="-38.9260445"/>
+ <node id="10906420668" visible="true" version="2" changeset="158965239" timestamp="2024-11-10T12:15:41Z" user="kaartense" uid="10292935" lat="-13.5841034" lon="-38.9243872"/>
+ <node id="11647220254" visible="true" version="1" changeset="147712458" timestamp="2024-02-21T00:00:25Z" user="geomatha" uid="1923169" lat="-13.5826545" lon="-38.9269839">
+  <tag k="name" v="Casa di Barro"/>
+  <tag k="tourism" v="hostel"/>
+ </node>
+ <node id="12328532285" visible="true" version="1" changeset="158965239" timestamp="2024-11-10T12:15:41Z" user="kaartense" uid="10292935" lat="-13.5841343" lon="-38.9243603"/>
+ <way id="237810581" visible="true" version="9" changeset="158965239" timestamp="2024-11-10T12:15:41Z" user="kaartense" uid="10292935">
+  <nd ref="12328532285"/>
+  <nd ref="10906420668"/>
+  <nd ref="5237262695"/>
+  <nd ref="5237262696"/>
+  <nd ref="4674977037"/>
+  <nd ref="4674977038"/>
+  <nd ref="5237262697"/>
+  <nd ref="4674977039"/>
+  <nd ref="4674977040"/>
+  <nd ref="4674977041"/>
+  <nd ref="4674977042"/>
+  <nd ref="4674977043"/>
+  <nd ref="4674977044"/>
+  <nd ref="4674977045"/>
+  <nd ref="4674977046"/>
+  <nd ref="4674977047"/>
+  <nd ref="4674977048"/>
+  <nd ref="4674977049"/>
+  <nd ref="4674977050"/>
+  <nd ref="4674977051"/>
+  <nd ref="4674977052"/>
+  <nd ref="4674977053"/>
+  <nd ref="4674977054"/>
+  <nd ref="4674977055"/>
+  <nd ref="4674977056"/>
+  <nd ref="4674977057"/>
+  <nd ref="4674977058"/>
+  <nd ref="5237262709"/>
+  <nd ref="5237262710"/>
+  <nd ref="5237262711"/>
+  <nd ref="10882088616"/>
+  <nd ref="5237262712"/>
+  <nd ref="5237262713"/>
+  <nd ref="5237262698"/>
+  <nd ref="5237262699"/>
+  <nd ref="5237262715"/>
+  <nd ref="4674977065"/>
+  <nd ref="10882088615"/>
+  <nd ref="10882088614"/>
+  <nd ref="5237262716"/>
+  <nd ref="5237262717"/>
+  <nd ref="5237262718"/>
+  <nd ref="5237262719"/>
+  <nd ref="2699255327"/>
+  <nd ref="4674977060"/>
+  <nd ref="4674977061"/>
+  <nd ref="4674977062"/>
+  <nd ref="4674977063"/>
+  <nd ref="4674977064"/>
+  <nd ref="2437825301"/>
+  <tag k="highway" v="residential"/>
+ </way>
+ <way id="473373810" visible="true" version="1" changeset="45921928" timestamp="2017-02-08T16:11:49Z" user="SeverinGeo" uid="219668">
+  <nd ref="4674977065"/>
+  <nd ref="2456777415"/>
+  <tag k="highway" v="steps"/>
+  <tag k="incline" v="up"/>
+  <tag k="oneway" v="no"/>
+ </way>
+ <way id="473373821" visible="true" version="3" changeset="136037291" timestamp="2023-05-12T23:16:29Z" user="SeverinGeo" uid="219668">
+  <nd ref="2456777414"/>
+  <nd ref="4674977115"/>
+  <nd ref="2456777415"/>
+  <tag k="highway" v="residential"/>
+  <tag k="oneway" v="no"/>
+ </way>
+ <way id="1171015534" visible="true" version="2" changeset="136037291" timestamp="2023-05-12T23:16:29Z" user="SeverinGeo" uid="219668">
+  <nd ref="10882088580"/>
+  <nd ref="10882088579"/>
+  <nd ref="10882088578"/>
+  <nd ref="10882088577"/>
+  <nd ref="10882088576"/>
+  <nd ref="10882088575"/>
+  <nd ref="10882088574"/>
+  <nd ref="10882088613"/>
+  <nd ref="10882088612"/>
+  <nd ref="10882088611"/>
+  <nd ref="10882088610"/>
+  <nd ref="10882088609"/>
+  <nd ref="10882088608"/>
+  <nd ref="10882088607"/>
+  <nd ref="10882088606"/>
+  <nd ref="10882088605"/>
+  <nd ref="10882088604"/>
+  <nd ref="10882088603"/>
+  <nd ref="10882088602"/>
+  <nd ref="10882088601"/>
+  <nd ref="10882088600"/>
+  <nd ref="10882088599"/>
+  <nd ref="10882088598"/>
+  <nd ref="10882088597"/>
+  <nd ref="10882088596"/>
+  <nd ref="10882088595"/>
+  <nd ref="10882088594"/>
+  <nd ref="10882088593"/>
+  <nd ref="10882088592"/>
+  <nd ref="10882088591"/>
+  <nd ref="10882088590"/>
+  <nd ref="10882088589"/>
+  <nd ref="10882088588"/>
+  <nd ref="10882088587"/>
+ </way>
+ <relation id="15832010" visible="true" version="5" changeset="136317893" timestamp="2023-05-19T21:52:37Z" user="SeverinGeo" uid="219668">
+  <member type="way" ref="1171015534" role="outer"/>
+  <member type="way" ref="1172297506" role="outer"/>
+  <member type="way" ref="1174447155" role="outer"/>
+  <member type="way" ref="1174447154" role="outer"/>
+  <member type="way" ref="1171015532" role="outer"/>
+  <member type="way" ref="1174442986" role="outer"/>
+  <member type="way" ref="1173811564" role="outer"/>
+  <member type="way" ref="1171015530" role="outer"/>
+  <member type="way" ref="1171015533" role="outer"/>
+  <tag k="landuse" v="orchard"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="15848346" visible="true" version="16" changeset="143918774" timestamp="2023-11-12T00:15:32Z" user="SeverinGeo" uid="219668">
+  <member type="way" ref="1179604677" role="outer"/>
+  <member type="way" ref="1179604678" role="outer"/>
+  <member type="way" ref="1179604679" role="outer"/>
+  <member type="way" ref="1179604680" role="outer"/>
+  <member type="way" ref="1173539948" role="outer"/>
+  <member type="way" ref="1173539946" role="outer"/>
+  <member type="way" ref="1177708614" role="outer"/>
+  <member type="way" ref="1177708604" role="outer"/>
+  <member type="way" ref="1177708605" role="outer"/>
+  <member type="way" ref="1177708613" role="outer"/>
+  <member type="way" ref="1177708610" role="outer"/>
+  <member type="way" ref="1172297514" role="outer"/>
+  <member type="way" ref="1175201551" role="outer"/>
+  <member type="way" ref="1175201550" role="outer"/>
+  <member type="way" ref="1175201549" role="outer"/>
+  <member type="way" ref="1178487044" role="outer"/>
+  <member type="way" ref="1178487042" role="outer"/>
+  <member type="way" ref="1178487041" role="outer"/>
+  <member type="way" ref="1175201553" role="outer"/>
+  <member type="way" ref="1217449542" role="outer"/>
+  <member type="way" ref="1217441526" role="outer"/>
+  <member type="way" ref="1175460970" role="outer"/>
+  <member type="way" ref="1175460975" role="outer"/>
+  <member type="way" ref="1175460979" role="outer"/>
+  <member type="way" ref="1174879818" role="outer"/>
+  <member type="way" ref="1174879820" role="outer"/>
+  <member type="way" ref="1174879821" role="outer"/>
+  <member type="way" ref="1174879825" role="outer"/>
+  <member type="way" ref="1174447136" role="outer"/>
+  <member type="way" ref="1174447140" role="outer"/>
+  <member type="way" ref="1173540060" role="outer"/>
+  <member type="way" ref="1173540061" role="outer"/>
+  <member type="way" ref="1174447148" role="outer"/>
+  <member type="way" ref="1171015534" role="outer"/>
+  <member type="way" ref="1171015533" role="outer"/>
+  <member type="way" ref="264243631" role="outer"/>
+  <member type="way" ref="1172297507" role="outer"/>
+  <member type="way" ref="1172297509" role="outer"/>
+  <member type="way" ref="1172701291" role="outer"/>
+  <member type="way" ref="1222850433" role="outer"/>
+  <member type="way" ref="1222850435" role="outer"/>
+  <member type="way" ref="1173539943" role="outer"/>
+  <member type="way" ref="1222850438" role="outer"/>
+  <member type="way" ref="1173539944" role="outer"/>
+  <member type="way" ref="1222851673" role="outer"/>
+  <member type="way" ref="1222851671" role="outer"/>
+  <member type="way" ref="1172701292" role="outer"/>
+  <member type="way" ref="1222851674" role="outer"/>
+  <member type="way" ref="1173539951" role="outer"/>
+  <member type="way" ref="1173539942" role="outer"/>
+  <member type="way" ref="1173539950" role="outer"/>
+  <member type="way" ref="1172615733" role="inner"/>
+  <member type="way" ref="1172615732" role="inner"/>
+  <member type="way" ref="1172615734" role="inner"/>
+  <tag k="landuse" v="residential"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+</osm>

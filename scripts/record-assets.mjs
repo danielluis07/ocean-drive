@@ -27,7 +27,19 @@ const geodata = (retrieved) => ({
  proof: 'docs/third-party/open-geodata.md',
 });
 const landmarkRecords = new Map();
-if (featureFile.source) assets.push({ ...featureFile.source, kind: 'source-data', sourceKind: 'licensed-model', transformations: 'Retained human-authored Feature GLB and shared embedded atlas', essential: false, experience: false, sha256: await hash(featureFile.source.path) });
+if (featureFile.source) assets.push({ ...featureFile.source, kind: 'source-data', sourceKind: featureFile.source.sourceKind ?? 'licensed-model', transformations: 'Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations', essential: false, experience: false, sha256: await hash(featureFile.source.path) });
+const boipebaRoot = 'data/landmarks/features/boipeba';
+const boipebaReferences = await Bun.file(`${boipebaRoot}/sources.json`).json();
+for await (const file of new Bun.Glob('**/*').scan({cwd: boipebaRoot, onlyFiles:true})) {
+ const path = `${boipebaRoot}/${file.replaceAll('\\','/')}`;
+ if (path === featureFile.source?.path) continue;
+ const reference = boipebaReferences.find(entry => entry.files.includes(file.replaceAll('\\','/')));
+ assets.push({path, kind:'source-data', sourceKind: reference?.sourceKind ?? 'project-source',
+  creator:reference?.creator ?? 'Ocean Drive project contributors', source:reference?.source ?? `${boipebaRoot}/build.ts`,
+  retrieved:reference?.retrieved ?? (reference ? '2026-10-03' : featureFile.source.retrieved), rights:reference?.rights ?? 'Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source',
+  proof:reference?.proof ?? `${boipebaRoot}/README.md`, transformations:reference ? 'Retained reference/rights evidence; usage and rejected references documented in README.md' : 'Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model',
+  essential:false, experience:false, sha256:await hash(path)});
+}
 for await (const file of new Bun.Glob('*.json').scan({cwd:'data/landmarks',onlyFiles:true})) {
  const path = `data/landmarks/${file.replaceAll('\\','/')}`;
  const record = await Bun.file(path).json();
@@ -43,7 +55,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  const terrain = /\/landmark-(.+)-(balanced|low)-(colour|normal)\.v\d+\.webp$/.exec(path);
  if (terrain) {
   const detailed = landmarkSources.find(source => source.id === terrain[1])?.terrainTreatment;
-  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; ${detailed ? 'native 1024px Balanced / 512px Low authored sand, basalt and scrub signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/noronha-terrain.md' : 'legacy 256px field resized to output dimensions'}; WebP encoding; no satellite imagery or measured land-cover claim`, essential: false, experience: true, sha256: await hash(path)});
+  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; ${detailed ? `native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/${terrain[1] === "boipeba" ? "boipeba" : "noronha"}-terrain.md` : 'legacy 256px field resized to output dimensions'}; WebP encoding; no satellite imagery or measured land-cover claim`, essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  const illustrative = path.startsWith('public/images/');
@@ -53,11 +65,11 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  }
  if (landmark) {
   const detailed = landmarkSources.find(source => source.id === landmark[1])?.terrainTreatment;
-  assets.push({path, url, kind: 'authored', ...geodata(landmarkRecords.get(landmark[1])?.coastline.retrieved), source: 'scripts/generate-landmarks.ts', transformations: `Deterministic GLB v2 export at the ${landmark[2]} tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; ${detailed ? 'selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in docs/third-party/noronha-terrain.md; ' : ''}Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band`, essential: true, experience: true, sha256: await hash(path)});
+  assets.push({path, url, kind: 'authored', ...geodata(landmarkRecords.get(landmark[1])?.coastline.retrieved), source: 'scripts/generate-landmarks.ts', transformations: `Deterministic GLB v2 export at the ${landmark[2]} tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; ${detailed ? 'selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; ' : ''}Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band`, essential: true, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features && featureFile.source) {
-  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: "licensed-model", source: featureFile.source.source, transformations: "Human-authored Feature GLB and embedded shared atlas preserved; deterministic terrain placements added by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
+  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: featureFile.source.sourceKind ?? "licensed-model", source: featureFile.source.source, transformations: "Project-authored palm and Velha Boipeba church reconstructions and shared atlas from retained licensed references; existing models and placements preserved; deterministic terrain placements and named church coordinate added by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features) {
@@ -77,6 +89,7 @@ for (const path of ['components/voyage/travessia-mark.tsx','lib/ocean-surface.ts
 // writes, hash-pinned so a mesh can never drift from what CI was shown.
 for (const path of ['content/landmark-sources.ts','content/landmarks.json','scripts/generate-landmarks.ts','scripts/landmark-feature-models.ts','scripts/landmark-feature-source.ts','scripts/landmark-texture-bake.ts','lib/landmark-geometry.ts','lib/landmark-surface.ts','lib/landmark-features.ts']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-09-17', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/open-geodata.md', transformations:path.endsWith('.json') ? 'Written by the Landmark build from the recorded source data' : 'Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline', essential:true, experience:!path.startsWith('scripts/'), sha256:await hash(path)});
 for (const path of ['scripts/terrain-treatment.ts', 'scripts/terrain-occlusion.ts', 'scripts/terrain-shore-sampler.ts', 'docs/third-party/noronha-terrain.md']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-10-03', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/noronha-terrain.md', transformations:'Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography', essential:true, experience:false, sha256:await hash(path)});
+for (const path of ["content/landmark-close-views.ts", "docs/third-party/boipeba-terrain.md"]) assets.push({path, kind:"pipeline", sourceKind:"project-source", creator:"Ocean Drive project contributors", source:"scripts/generate-landmarks.ts", retrieved:"2026-10-03", rights:"Project-authored interpretation; no new surveyed geography", proof:"docs/third-party/boipeba-terrain.md", transformations:"Authored Boipeba surface interpretation and diagnostic Close View framing", essential:false, experience:false, sha256:await hash(path)});
 assets.sort((a,b)=>a.path.localeCompare(b.path));
 await Bun.write('content/asset-manifest.json',JSON.stringify({schema:1, assets},null,2)+'\n');
 console.log(`Recorded ${assets.length} asset provenance entries.`);

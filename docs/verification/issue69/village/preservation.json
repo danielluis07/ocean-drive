@@ -1,0 +1,66 @@
+{
+  "geometry": [
+    {
+      "model": "placeholder",
+      "attributes": [
+        {
+          "attribute": "position",
+          "preserved": true
+        },
+        {
+          "attribute": "color",
+          "preserved": true
+        },
+        {
+          "attribute": "uv",
+          "preserved": true
+        },
+        {
+          "attribute": "normal",
+          "preserved": true
+        }
+      ]
+    },
+    {
+      "model": "boipeba-coconut-palm",
+      "attributes": [
+        {
+          "attribute": "position",
+          "preserved": true
+        },
+        {
+          "attribute": "uv",
+          "preserved": true
+        },
+        {
+          "attribute": "color",
+          "preserved": true
+        },
+        {
+          "attribute": "normal",
+          "preserved": true
+        }
+      ]
+    }
+  ],
+  "placements": [
+    {
+      "id": "boipeba",
+      "preserved": true
+    },
+    {
+      "id": "abrolhos",
+      "preserved": true
+    }
+  ],
+  "palmAtlas": {
+    "region": {
+      "left": 0,
+      "top": 0,
+      "width": 768,
+      "height": 480
+    },
+    "decodedPixelsPreserved": true,
+    "sha256": "a47427b0effdf293cc81b422b9d3075851ff27a58e8a82bea494da96b258994f"
+  }
+}

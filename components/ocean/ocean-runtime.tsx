@@ -10,6 +10,7 @@ import { poseAtProgress, type ChartedRoute } from "@/lib/charted-route";
 import type { RouteMotion } from "@/lib/route-motion";
 import { CAMERA_FOV, frameRouteCamera, isPortraitViewport } from "@/lib/route-camera";
 import { frameTerrainPreview, terrainPreviewEnabled } from "@/lib/terrain-preview";
+import { landmarkCloseViews } from "@/content/landmark-close-views";
 import { baselineOceanFragmentShader, OCEAN_SIZE, oceanFragmentShader, oceanVertexShader, sampleOceanHeight } from "@/lib/ocean-surface";
 import { createOceanEnvironment } from "@/lib/ocean-lighting";
 import { CALM_WAVE_RATE, CALM_WAVE_STRENGTH, oceanDaylightUniforms, oceanFogRange, oceanSunPosition, readOceanDaylight } from "@/lib/ocean-daylight";
@@ -393,9 +394,11 @@ function SailableScene(props: RuntimeProps) {
           "YXZ",
         );
       }
-      const previewLandmark = terrainPreview && motion.settledStop === 1
-        ? props.configuration.stops[1].landmark : null;
-      const framing = previewLandmark ? frameTerrainPreview(pose.position, size, previewLandmark) : frameRouteCamera(pose.position, size);
+      const previewStop = terrainPreview && motion.settledStop !== null ? props.configuration.stops[motion.settledStop] : null;
+      const previewView = previewStop && landmarkCloseViews[previewStop.id];
+      const previewLandmark = previewView && previewStop?.landmark;
+      const framing = previewLandmark && previewView
+        ? frameTerrainPreview(pose.position, size, previewLandmark, previewView) : frameRouteCamera(pose.position, size);
       // A cut while the scene renders on demand still needs its frame.
       if (!measuring && camera.position.distanceToSquared(cameraPosition.set(...framing.position)) > 0.001) invalidate();
       camera.position.set(...framing.position);

@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "candidate": "5844ec1da79fb118c373e84285b627a5e4b3e8a4",
+  "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-55e3747d1bd6b344",
+  "startedAt": "2026-10-04T11:57:45.367Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 414.79999999981374,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 414.8999999994412,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 414.8999999994412,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 415,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 427.5,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 446.79999999981374,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 459.59999999962747,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 459.59999999962747,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1270.8999999994412,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1271.7000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1332.5999999996275,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1342.7000000001863,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1353.5,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1355.3999999994412,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1385.7000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    },
+    {
+      "atMs": 1392.7999999998137,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 2607.9000000003725,
+    "frames": 157,
+    "windows": [
+      {
+        "atMs": 3347.7999999998137,
+        "p90Ms": 17,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 4,
+      "triangles": 44286,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "before": {
+    "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-5b26003b5277657d",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) RX Vega 10 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "browser": "ocean-voyage-chrome: 154.0.8037.93",
+    "host": {
+      "os": "win32 10.0.26300",
+      "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx"
+    },
+    "viewport": {
+      "width": 1522,
+      "height": 632
+    },
+    "deviceDpr": 1.25,
+    "startingTier": "balanced",
+    "firstWindowQuality": {
+      "tier": "balanced",
+      "dpr": 0.9,
+      "fallback": false,
+      "wakeSamples": 2
+    },
+    "activeSeconds": 323.0791000000015,
+    "windows": 159,
+    "worstP90Ms": 17.100000001490116,
+    "worstGpuP90Ms": 9.1192,
+    "failingWindows": [],
+    "tiers": [
+      "balanced"
+    ],
+    "dprs": [
+      0.9
+    ],
+    "scenes": {
+      "balanced": {
+        "drawCalls": 8,
+        "triangles": 58347,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    },
+    "qualityEvents": 20,
+    "keys": [
+      "label",
+      "renderer",
+      "browser",
+      "labRendering",
+      "host",
+      "viewport",
+      "deviceDpr",
+      "startingTier",
+      "start",
+      "activeMs",
+      "windows",
+      "changes",
+      "tierChanges",
+      "messages",
+      "diagnostics"
+    ]
+  },
+  "after": {
+    "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-2b492672087bdbf1",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) RX Vega 10 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "browser": "ocean-voyage-chrome: 154.0.8037.93",
+    "host": {
+      "os": "win32 10.0.26300",
+      "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx"
+    },
+    "viewport": {
+      "width": 1522,
+      "height": 632
+    },
+    "deviceDpr": 1.25,
+    "startingTier": "balanced",
+    "firstWindowQuality": {
+      "tier": "balanced",
+      "dpr": 0.9,
+      "fallback": false,
+      "wakeSamples": 2
+    },
+    "activeSeconds": 323.59560000000005,
+    "windows": 160,
+    "worstP90Ms": 19.70000000001164,
+    "worstGpuP90Ms": 8.9232,
+    "failingWindows": [],
+    "tiers": [
+      "balanced"
+    ],
+    "dprs": [
+      0.9,
+      1
+    ],
+    "scenes": {
+      "balanced": {
+        "drawCalls": 9,
+        "triangles": 61967,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    },
+    "qualityEvents": 26,
+    "keys": [
+      "label",
+      "renderer",
+      "browser",
+      "labRendering",
+      "host",
+      "viewport",
+      "deviceDpr",
+      "startingTier",
+      "start",
+      "activeMs",
+      "windows",
+      "changes",
+      "tierChanges",
+      "messages",
+      "diagnostics"
+    ]
+  }
+}

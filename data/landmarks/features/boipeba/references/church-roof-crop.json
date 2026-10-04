@@ -1,0 +1,27 @@
+{
+  "source": "https://upload.wikimedia.org/wikipedia/commons/5/50/Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff",
+  "left": 8671,
+  "top": 1848,
+  "width": 240,
+  "height": 240,
+  "easting": 507871.8101169331,
+  "northing": 8498444.03276765,
+  "x": 8790.810116933077,
+  "y": 1967.96723235026,
+  "sourceSha256": "d06b4b3286d38aeace198731626b14bab364656806c1d6e38856ac8a4eeb766f",
+  "sourceBytes": 754099501,
+  "retrieved": "2026-10-04",
+  "projection": "EPSG:32724",
+  "affine": {
+    "left": 499081,
+    "top": 8500412,
+    "pixelWidth": 1,
+    "pixelHeight": -1
+  },
+  "coordinate": {
+    "lon": -38.9272361,
+    "lat": -13.5825102
+  },
+  "transformations": "Native-resolution 240×240 pixel extraction of the first decoded raster channel into a grayscale reference PNG. No resizing, terrain pixels or surveyed building footprint are supplied.",
+  "rights": "CC BY-SA 4.0, INPE/OBT/DPI; source rights page retained as church-roof-source.html"
+}

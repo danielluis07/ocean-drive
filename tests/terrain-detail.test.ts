@@ -8,8 +8,25 @@ import { authoredRelief, terrainMasks } from "@/scripts/terrain-treatment";
 import { rasterizeAccessibility } from "@/scripts/terrain-occlusion";
 import { createShoreSampler } from "@/scripts/terrain-shore-sampler";
 import { bakeLandmarkTextures } from "@/scripts/landmark-texture-bake";
+import { landmarkCloseViews } from "@/content/landmark-close-views";
+import { frameTerrainPreview } from "@/lib/terrain-preview";
+import { frameRouteCamera } from "@/lib/route-camera";
 
 const source = landmarkSources[0];
+test("Boipeba Close View uses its authored pitch and half aerial distance on desktop and phone", () => {
+  const view = landmarkCloseViews.boipeba!;
+  for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+    const ship = { x: -224, z: 10 };
+    const aerial = frameRouteCamera(ship, viewport);
+    const close = frameTerrainPreview(ship, viewport, [-224, -9], view);
+    const distance = (frame: typeof aerial) => Math.hypot(...frame.position.map((value, index) => value - frame.target[index]));
+    expect(distance(close) / distance(aerial)).toBeCloseTo(.5);
+    const pitch = Math.asin((close.position[1] - close.target[1]) / distance(close)) * 180 / Math.PI;
+    expect(pitch).toBeGreaterThanOrEqual(45);
+    expect(pitch).toBeLessThanOrEqual(50);
+    expect(close.target).toEqual([-224, .7, -9]);
+  }
+});
 test("accelerated shore queries preserve exact distances and inside tests across disjoint islands", () => {
   const outlines = [[{ x: 0, z: 0 }, { x: 3, z: 0 }, { x: 1, z: 2 }], [{ x: 5, z: 0 }, { x: 7, z: 1 }, { x: 5, z: 2 }]];
   // Enough retained segments to exercise both partitioning and leaf queries.
@@ -29,6 +46,17 @@ test("beaches require low, gentle coastal ground; cliffs and inland scrub remain
   expect(terrainMasks(70, .05, .1, source).rock).toBeGreaterThan(.9);
   expect(terrainMasks(2, .05, 3, source).scrub).toBe(1);
   expect(terrainMasks(70, .8, 3, source).rock).toBe(1);
+});
+
+test("Boipeba separates low estuarine vegetation from ocean beaches without volcanic cliffs", () => {
+  const boipeba = landmarkSources.find(entry => entry.id === "boipeba")!;
+  const estuary = terrainMasks(3, .05, .2, boipeba, -6);
+  const beach = terrainMasks(3, .05, .2, boipeba, 10);
+  expect(estuary.wetland).toBeGreaterThan(.9);
+  expect(estuary.beach).toBeLessThan(.1);
+  expect(beach.beach).toBeGreaterThan(.9);
+  expect(terrainMasks(30, .1, .2, boipeba, 10).rock).toBe(0);
+  expect(terrainMasks(3, .05, 4, boipeba, 10).scrub).toBe(1);
 });
 
 test("authored relief is bounded, deterministic, and leaves the recorded waterline fixed", () => {

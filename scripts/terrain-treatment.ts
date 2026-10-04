@@ -6,6 +6,8 @@ export type TerrainTreatment = {
   relief: number;
   scrubScale: number;
   rockScale: number;
+  // Authored low-coast interpretation, in projected world units and DEM metres.
+  coastal?: { oceanStart: number; oceanEnd: number; wetlandHeight: number };
 };
 
 export const smooth = (a: number, b: number, value: number) => {
@@ -30,13 +32,24 @@ function scrubCrown(x: number, z: number) {
   return crown;
 }
 
-export function terrainMasks(metres: number, slope: number, inland: number, source: LandmarkSource) {
+export function terrainMasks(metres: number, slope: number, inland: number, source: LandmarkSource, x = 0) {
+  const coastal = source.terrainTreatment?.coastal;
+  if (coastal) {
+    const ocean = smooth(coastal.oceanStart, coastal.oceanEnd, x);
+    const wetland = (1 - ocean) * (1 - smooth(coastal.wetlandHeight * .5, coastal.wetlandHeight * 1.5, metres));
+    const beach = (1 - smooth(source.beachWidth * .15, source.beachWidth, inland))
+      * (1 - smooth(source.shoreHeight, source.shoreHeight * 3, metres))
+      * (1 - smooth(.35, .6, slope)) * (1 - wetland * .94);
+    // A low estuarine bank is not a Noronha basalt cliff.
+    const rock = smooth(.5, .8, slope) * (1 - beach) * (1 - wetland);
+    return { beach, rock, scrub: (1 - beach) * (1 - rock), wetland };
+  }
   const beach = (1 - smooth(source.beachWidth * .12, source.beachWidth, inland))
     * (1 - smooth(source.shoreHeight * .4, source.shoreHeight * 2.2, metres))
     * (1 - smooth(.24, .48, slope));
   const cliff = (1 - smooth(.3, 1.2, inland)) * smooth(source.shoreHeight, source.shoreHeight * 3, metres);
   const rock = Math.max(smooth(.32, .68, slope), cliff) * (1 - beach);
-  return { beach, rock, scrub: (1 - beach) * (1 - rock) };
+  return { beach, rock, scrub: (1 - beach) * (1 - rock), wetland: 0 };
 }
 
 // Small-scale erosion is authored stylisation anchored to the retained DEM's
@@ -44,7 +57,7 @@ export function terrainMasks(metres: number, slope: number, inland: number, sour
 // a new summit. The amplitude is recorded in the island's configuration.
 export function authoredRelief(x: number, z: number, metres: number, slope: number, inland: number, source: LandmarkSource) {
   if (!source.terrainTreatment) return 0;
-  const { rock } = terrainMasks(metres, slope, inland, source);
+  const { rock } = terrainMasks(metres, slope, inland, source, x);
   const ridge = smooth(.15, .45, slope);
   const ribs = 1 - Math.abs(mottle(x * 2.8, z * 2.8) * 2 - 1);
   return source.terrainTreatment.relief * (ribs - .5) * Math.max(rock, ridge * .5) * smooth(.08, .5, inland);
@@ -55,7 +68,7 @@ export function authoredRelief(x: number, z: number, metres: number, slope: numb
 // ripples supply native 1024px detail. None is a measured land-cover mask.
 export function terrainPigment(x: number, z: number, metres: number, slope: number, inland: number, summit: number, source: LandmarkSource) {
   const treatment = source.terrainTreatment!;
-  const masks = terrainMasks(metres, slope, inland, source);
+  const masks = terrainMasks(metres, slope, inland, source, x);
   const patch = mottle(x * 1.1, z * 1.1);
   const crownLight = scrubCrown(x * treatment.scrubScale, z * treatment.scrubScale);
   const grain = mottle(x * 24, z * 24);
@@ -63,8 +76,10 @@ export function terrainPigment(x: number, z: number, metres: number, slope: numb
   const strata = Math.sin(metres * .9 + mottle(x * 3, z * 3) * 4) * .5 + .5;
   const sand = channels(source.palette.sand), rock = channels(source.palette.rock);
   const low = channels(source.palette.lowland), high = channels(source.palette.highland);
-  const dry = smooth(.25, .9, metres / summit) * .5 + patch * .35;
-  const scrubTone = .78 + crownLight * .40 + grain * .06 + patch * .12;
+  const dry = treatment.coastal ? (1 - masks.wetland) * (.5 + patch * .3)
+    : smooth(.25, .9, metres / summit) * .5 + patch * .35;
+  const scrubTone = treatment.coastal ? .78 + crownLight * .28 + grain * .05 + patch * .22
+    : .78 + crownLight * .40 + grain * .06 + patch * .12;
   const rockTone = .62 + joint * .40 + strata * .15 + grain * .12;
   const wetSand = .80 + smooth(.05, .45, inland) * .2;
   const sandTone = wetSand * (.95 + grain * .08);

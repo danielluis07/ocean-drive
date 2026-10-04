@@ -1,0 +1,118 @@
+{
+  "before": {
+    "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-2b492672087bdbf1",
+    "startedAt": "2026-10-04T18:29:38.597Z",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) RX Vega 10 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "browser": "ocean-voyage-chrome: 154.0.8037.93",
+    "host": {
+      "os": "win32 10.0.26300",
+      "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx"
+    },
+    "viewport": {
+      "width": 1522,
+      "height": 632
+    },
+    "deviceDpr": 1.25,
+    "labRendering": {
+      "headless": true,
+      "launchOptions": {},
+      "hostConditions": {
+        "displayAwake": true,
+        "nativeWindow": null
+      }
+    },
+    "startingTier": "balanced",
+    "activeMs": 323046.6000000001,
+    "scoredWindows": 159,
+    "worstWindowP90Ms": 17.200000000186265,
+    "windowsOver20Ms": 0,
+    "tierChanges": [],
+    "qualities": [
+      "balanced"
+    ],
+    "renderDprs": [
+      0.9,
+      1
+    ],
+    "worstWindowGpuP90Ms": 8.61888,
+    "sampleWindow": {
+      "atMs": 9420.799999999814,
+      "p90Ms": 16.800000000279397,
+      "gpuP90Ms": 7.86496,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    "scenes": {
+      "balanced": {
+        "drawCalls": 9,
+        "triangles": 61967,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    },
+    "errors": []
+  },
+  "after": {
+    "build": "5844ec1da79fb118c373e84285b627a5e4b3e8a4-6a9b601f63f383e3",
+    "startedAt": "2026-10-04T19:11:33.709Z",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) RX Vega 10 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "browser": "ocean-voyage-chrome: 154.0.8037.93",
+    "host": {
+      "os": "win32 10.0.26300",
+      "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx"
+    },
+    "viewport": {
+      "width": 1522,
+      "height": 632
+    },
+    "deviceDpr": 1.25,
+    "labRendering": {
+      "headless": true,
+      "launchOptions": {},
+      "hostConditions": {
+        "displayAwake": true,
+        "nativeWindow": null
+      }
+    },
+    "startingTier": "balanced",
+    "activeMs": 324356.89999999944,
+    "scoredWindows": 160,
+    "worstWindowP90Ms": 18.699999999254942,
+    "windowsOver20Ms": 0,
+    "tierChanges": [],
+    "qualities": [
+      "balanced"
+    ],
+    "renderDprs": [
+      0.9,
+      1
+    ],
+    "worstWindowGpuP90Ms": 14.99936,
+    "sampleWindow": {
+      "atMs": 11126.5,
+      "p90Ms": 18.5,
+      "gpuP90Ms": 4.96448,
+      "quality": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      },
+      "wakeActive": false
+    },
+    "scenes": {
+      "balanced": {
+        "drawCalls": 9,
+        "triangles": 62175,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    },
+    "errors": []
+  }
+}

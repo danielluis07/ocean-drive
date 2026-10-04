@@ -84,8 +84,9 @@ Terrain colour and normal textures are baked offline by
 distance inland and the island's palette. Noronha opts into native-resolution
 authoring: every texel evaluates sand, basalt joints and irregular scrub crowns
 at 1024 px for Balanced/High colour and normals, and independently at 512 px for
-Low colour. The other islands retain the legacy enlarged 256 px field until
-the benchmark receives human approval and device validation. The normal map
+Low colour. Boipeba's #69 candidate uses the same native baker with its own
+low-coast mangrove/restinga masks; Abrolhos and Ilha Grande retain the legacy
+enlarged 256 px field. The normal map
 carries authored weathering; mesh normals carry the terrain's relief.
 No satellite imagery or runtime bake is used. Rebuilding must produce identical
 bytes. Projected X/Z UVs align both LODs with the same survey extent.
@@ -119,9 +120,12 @@ for the quality direction and remaining work.
 
 ### Applying the benchmark to #69–#71
 
-Do not opt another island in until Noronha has human visual approval and the
-required device evidence. Boipeba, Abrolhos and Ilha Grande currently rebuild
-byte-identically through the legacy branch. When rollout is approved:
+Noronha has human visual approval and passing desktop evidence. Boipeba's #69
+terrain-and-palms candidate received owner visual approval on 2026-10-04;
+the subsequent village church requires separate review. Physical-phone evidence remains unavailable, as
+confirmed by the owner on 2026-10-03. This is not completed rollout. Abrolhos
+and Ilha Grande still rebuild byte-identically through the legacy branch.
+For each island candidate:
 
 1. Configure `terrainTreatment` alongside that island's palette, `shoreHeight`
    and `beachWidth`. `relief` is the maximum peak-to-trough displacement in world
@@ -139,15 +143,18 @@ byte-identically through the legacy branch. When rollout is approved:
 4. Capture identical production cameras, viewport, DPR and tier: desktop
    Balanced, modest-GPU colour-only Balanced, desktop Low and phone Low, plus
    missing-texture fallback and Close View. Inspect the coastline and underside.
-   `terrain-detail` is the Noronha capture harness; its diagnostic opt-in uses
-   48° pitch, north bearing and half the aerial distance, without implementing
+   `terrain-detail` targets Noronha by default; set `TERRAIN_ISLAND=boipeba`
+   for Boipeba. `content/landmark-close-views.ts` configures each diagnostic
+   preview's pitch, bearing, distance ratio and target height. Both currently
+   use 48° pitch, north bearing and half the aerial distance, without implementing
    #72's interaction. It hides the Stop Card only for capture, outside the app.
 5. Repeat the five-active-minute sailing capture on the same physical hardware;
    retain p90 frame intervals, GPU timing, tier/DPR and quality changes. The
    existing target is p90 ≤20 ms in every scored Chrome window. Phone viewport
    emulation supplies art captures, never physical-phone performance evidence.
 
-The candidate and review status are recorded in [issue77 verification](verification/issue77.md).
+The candidate and review status are recorded in [issue77 verification](verification/issue77.md)
+and [issue69 verification](verification/issue69.md).
 
 ## Placement
 
@@ -230,6 +237,13 @@ hold still: the same band, with a static foam ring.
 One material serves all four Landmarks, and the band is one mesh, so the
 shoreline costs one program and one draw per island.
 
+Boipeba additionally carries a scalar reef-pool signal in its existing shallows
+mesh at Moreré's retained OSM coordinate. It blends a pale, mottled water colour
+in both tiers. Other islands default the signal to zero. The extent is authored
+interpretation, not measured bathymetry; see [Boipeba provenance](third-party/boipeba-terrain.md).
+Its `shallowsTuck` is 1.6 terrain-grid steps, extending the water band beneath
+the coarse low coast to cover submerged triangles; other islands retain 0.8.
+
 ## Scatter and Features
 
 What stands on an island is described in its config entry and placed by the
@@ -238,6 +252,7 @@ build, on the Balanced surface.
 - **`scatter`** places a model wherever the terrain allows: a rule gives the
   model, the spacing of its candidate sites, a size range, and any of an
   elevation range in metres, a slope range and a range of distance inland.
+  An optional geographic `bounds` envelope restricts it to the intended habitat.
   `scatterSites` in `lib/landmark-features.ts` draws the sites from a jittered
   grid with a fixed hash, so the same record always scatters the same
   instances. This is for vegetation such as palms.
@@ -268,12 +283,21 @@ island is a single draw however many models it mixes. A GPU-instanced mesh
 would need one draw per model, which the budget below does not allow. Low never
 requests the file and draws nothing on its islands.
 
-The one placement today is a placeholder: a plain banded marker where the
-lighthouse stands on Ilha de Santa Bárbara in Abrolhos. It proves the mechanism
-end to end and stands for no real structure. The island issues replace it with
-their own models or remove it; `tests/landmark-features.test.ts` expects exactly
-one instance until they do. No vegetation is scattered yet; the rules are
-covered by unit tests, including against Ilha Grande's recorded terrain.
+The shared library retains Abrolhos's original plain banded placeholder and
+its placement, and adds Boipeba's 12 textured coconut palms (2,784 expanded
+triangles). The palms are project-authored full 3D reconstructions after a
+licensed photograph by Panta LH; source, original references, atlas and offline
+builder are under `data/landmarks/features/boipeba/`. Their CC BY-SA 3.0 credit
+appears in both presentations. The Abrolhos placeholder's vertex colours sample
+the atlas's white region. The village Feature reconstructs the real Igreja do
+Divino Espírito Santo at its retained OSM point, adding 208 triangles. Its
+solid pediment, nave, lateral volumes, roofs, bell frame, cross and footing
+use licensed front/roof references and supporting aerials. Dimensions and
+obscured detail are interpreted, not surveyed. Boipeba uses 2,992 Feature
+triangles in total. The combined atlas uses CC BY-SA 4.0 with all original
+credits retained. Low never loads this library. See
+[village verification](verification/issue69-village.md) for new art/performance
+evidence; physical-phone validation remains unavailable.
 
 ## Ready for the Close View
 

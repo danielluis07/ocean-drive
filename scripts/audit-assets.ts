@@ -60,7 +60,7 @@ export async function auditAssets() {
   let fonts = 0;
   let authoredVisuals = 0;
   for (const asset of manifest.assets) {
-    if (!["project-source", "ofl-font", "ai-generated", "open-data", "licensed-model"].includes(asset.sourceKind)) errors.push(`Unapproved source: ${asset.path}`);
+    if (!["project-source", "ofl-font", "ai-generated", "open-data", "licensed-model", "licensed-image"].includes(asset.sourceKind)) errors.push(`Unapproved source: ${asset.path}`);
     for (const field of ["creator", "source", "rights", "proof", "transformations", "retrieved"] as const) {
       if (!asset[field]) errors.push(`Missing ${field}: ${asset.path}`);
     }

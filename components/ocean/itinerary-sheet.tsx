@@ -4,6 +4,7 @@ import VoyageSheet from "@/components/ocean/voyage-sheet";
 import Itinerary from "@/components/voyage/itinerary";
 import { brand } from "@/content/editorial";
 import ShipCredit from "@/components/voyage/ship-credit";
+import LandmarkCredit from "@/components/voyage/landmark-credit";
 
 type ItinerarySheetProps = {
   open: boolean;
@@ -22,6 +23,7 @@ export default function ItinerarySheet({ open, onClose, returnFocus }: Itinerary
       <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground">{brand.disclosure}</p>
       <p className="mt-3 text-sm text-muted-foreground">{brand.dataCredit}</p>
       <p className="mt-3 text-sm text-muted-foreground"><ShipCredit /></p>
+      <p className="mt-3 text-sm text-muted-foreground"><LandmarkCredit /></p>
     </VoyageSheet>
   );
 }

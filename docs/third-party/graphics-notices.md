@@ -17,6 +17,31 @@ through `brand.dataCredit`.
 
 ## Graphics dependencies
 
+Boipeba's coconut palms are project-authored 3D reconstructions and texture
+adaptations after **Coqueiros de Moreré – Boipeba**, by **Panta LH**, under
+**CC BY-SA 3.0**. The adaptation retains that licence. Reference:
+<https://commons.wikimedia.org/wiki/File:Coqueiros_de_Morer%C3%A9_-_Boipeba.JPG>;
+licence: <https://creativecommons.org/licenses/by-sa/3.0/>. Curved trunks,
+fronds, leaflets, scale, texture crops and UVs were reconstructed or adapted.
+This credit does not imply endorsement. Original bytes, rights evidence and
+transformation records are retained in
+[the Boipeba source record](../../data/landmarks/features/boipeba/README.md).
+
+Velha Boipeba's **Igreja do Divino Espírito Santo** is a project-authored 3D
+reconstruction after **Waltson Campos**'s CC BY-SA 3.0 front photograph,
+**INPE/OBT/DPI**'s CC BY-SA 4.0 roof reference, and a supporting rear aerial by
+**Marcio Filho / Ministério do Turismo** (MTur Destinos, Flickr Public Domain
+Mark). Geometry, scale, unseen surface simplification, facade painting, roof
+courses and atlas UVs are adapted or interpreted. The church and expanded
+combined atlas use **CC BY-SA 4.0**; the original palm reconstruction retains
+CC BY-SA 3.0. Original sources, rights pages, native raster extract and its
+transformations are retained in the Boipeba source record above. Links:
+<https://commons.wikimedia.org/wiki/File:Igreja_do_Divino_Esp%C3%ADrito_Santo.JPG>,
+<https://commons.wikimedia.org/wiki/File:Boipoeba_WPM_20220520_195_130_L4_BAND43210_2m_Cont_UChar.tiff>,
+<https://www.flickr.com/photos/mturdestinos/40680269815/>;
+licence: <https://creativecommons.org/licenses/by-sa/4.0/>.
+These credits imply no endorsement. No satellite/aerial pixels enter runtime maps.
+
 The Del Mar Ship model is adapted from **Cruise ship** by **Poly by Google**,
 <https://poly.pizza/m/dgLCxDWhnZQ>, under **CC BY 3.0**
 (<https://creativecommons.org/licenses/by/3.0/>). Proportions, geometry and texture

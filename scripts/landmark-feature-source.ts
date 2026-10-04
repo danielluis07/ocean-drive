@@ -2,7 +2,7 @@ import { BufferGeometry, Mesh, type Group } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { inspectModel } from "@/lib/asset-audit";
 
-export type FeatureSource = { path: string; creator: string; source: string; rights: string; proof: string; retrieved: string };
+export type FeatureSource = { path: string; creator: string; source: string; rights: string; proof: string; retrieved: string; sourceKind?: "project-source" | "licensed-model" };
 
 // Rewrite only the JSON chunk. Keep the artist's embedded atlas and binary
 // attributes intact, while adding the pipeline's deterministic placement record.

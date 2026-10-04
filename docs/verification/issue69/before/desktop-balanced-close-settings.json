@@ -1,0 +1,14 @@
+{
+  "island": "boipeba",
+  "framing": "close",
+  "view": {
+    "name": "desktop-balanced",
+    "tier": "balanced",
+    "width": 1280,
+    "height": 800,
+    "maps": "all"
+  },
+  "deviceDpr": 1,
+  "renderDpr": "0.9",
+  "baseline": ".tmp/issue69-baseline"
+}

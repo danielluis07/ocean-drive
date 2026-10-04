@@ -7,6 +7,8 @@ import { decodePlacements, encodePlacements, expandFeatures, scatterSites, type 
 import { distanceToRings, insideRings, projectLandmark, type PlanarPoint, type Ring } from "@/lib/landmark-geometry";
 import { sampleElevation, type ElevationGrid } from "@/lib/landmark-surface";
 import { featureModelBuilders } from "@/scripts/landmark-feature-models";
+import { readFeatureSource } from "@/scripts/landmark-feature-source";
+import { villageGeometry } from "@/data/landmarks/features/boipeba/village";
 
 // A square island that climbs from its west shore to a ridge along its east
 // one: every metre east is ten metres up, and the last strip is a cliff.
@@ -184,6 +186,53 @@ describe("The Feature record and its single draw", () => {
 });
 
 describe("Feature budgets", () => {
+  test("the village church has closed building volumes, outward roof faces and bounded atlas UVs", () => {
+    const geometry = villageGeometry(), position = geometry.getAttribute("position"), uv = geometry.getAttribute("uv");
+    geometry.computeBoundingBox();
+    const bounds = geometry.boundingBox!, size = bounds.getSize(new Vector3());
+    expect(size.z).toBeGreaterThan(size.x);
+    expect(bounds.min.y).toBeLessThan(0);
+    const edges = new Map<string, number>();
+    const [a, b, c, normal] = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
+    let roofFaces = 0, frontFaces = 0, backFaces = 0;
+    for (let index = 0; index < position.count; index += 3) {
+      a.fromBufferAttribute(position, index); b.fromBufferAttribute(position, index + 1); c.fromBufferAttribute(position, index + 2);
+      normal.crossVectors(b.clone().sub(a), c.clone().sub(a));
+      expect(normal.length()).toBeGreaterThan(1e-7);
+      normal.normalize();
+      if (a.y >= .75 && b.y >= .75 && c.y >= .75 && normal.y > .5 && Math.abs(normal.x) > .1) roofFaces++;
+      if (normal.z < -.9) frontFaces++;
+      if (normal.z > .9) backFaces++;
+      const vertices = [a, b, c].map(point => point.toArray().map(value => value.toFixed(5)).join(","));
+      for (let edge = 0; edge < 3; edge++) {
+        const key = [vertices[edge], vertices[(edge + 1) % 3]].sort().join("/");
+        edges.set(key, (edges.get(key) ?? 0) + 1);
+      }
+    }
+    expect(roofFaces).toBeGreaterThanOrEqual(6);
+    expect(frontFaces).toBeGreaterThan(0); expect(backFaces).toBeGreaterThan(0);
+    expect([...edges.values()].every(count => count % 2 === 0)).toBe(true);
+    for (let i = 0; i < uv.count; i++) {
+      expect(uv.getX(i)).toBeGreaterThanOrEqual(0); expect(uv.getX(i)).toBeLessThanOrEqual(1);
+      expect(uv.getY(i)).toBeGreaterThanOrEqual(0); expect(uv.getY(i)).toBeLessThanOrEqual(1);
+    }
+    geometry.dispose();
+  });
+  test("the textured library preserves the existing Abrolhos model and its placement", async () => {
+    const library = await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize);
+    const original = featureModelBuilders.placeholder();
+    const retained = library.models.find(model => model.id === "placeholder")!.geometry;
+    // Applying the identity transform normalises -0; compare geometric values.
+    expect(Array.from(retained.getAttribute("position").array, value => value + 0))
+      .toEqual(Array.from(original.getAttribute("position").array, value => value + 0));
+    expect(Array.from(retained.getAttribute("color").array)).toEqual(Array.from(original.getAttribute("color").array));
+    const file = inspectModel(await Bun.file(`public${featureFile.url}`).arrayBuffer());
+    expect(decodePlacements(file.features!.placements!.abrolhos)).toHaveLength(1);
+    expect(landmarkSources.find(source => source.id === "abrolhos")!.features).toEqual([
+      { name: "Farol de Abrolhos", model: "placeholder", lon: -38.6942, lat: -17.9647, scale: 1 },
+    ]);
+    original.dispose(); for (const model of library.models) model.geometry.dispose();
+  });
   test("the shared file ships every model once with an optional atlas inside its budget", async () => {
     const buffer = await Bun.file(`public${featureFile.url}`).arrayBuffer();
     const file = inspectModel(buffer);

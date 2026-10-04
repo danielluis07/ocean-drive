@@ -21,7 +21,7 @@ export type GeographicBounds = {
 //
 // `placeholder` proves the mechanism and stands for no real structure: the
 // island issues replace it with their own models or remove it.
-export const featureModels = ["placeholder"] as const;
+export const featureModels = ["placeholder", "boipeba-coconut-palm", "boipeba-divino-church"] as const;
 export type FeatureModel = (typeof featureModels)[number];
 
 // Vegetation and other repeated models, placed wherever the terrain allows.
@@ -31,6 +31,8 @@ export type LandmarkScatter = TerrainRule & {
   spacing: number;
   // Smallest and largest instance, in multiples of the model's authored size.
   scale: TerrainRange;
+  // Optional geographic habitat envelope, in addition to terrain rules.
+  bounds?: GeographicBounds;
 };
 
 // A real, named place on the island, drawn larger than life at its own
@@ -81,6 +83,11 @@ export type LandmarkSource = {
   // World units from the shoreline to where the shallows have deepened to the
   // ocean's navy. An authored treatment: no depth data is recorded.
   shallowsWidth: number;
+  // Landward overlap in terrain-grid steps, for low coasts whose submerged
+  // triangles extend farther inland. Defaults to 0.8.
+  shallowsTuck?: number;
+  // Named reef-pool colour interpretation; radii are authored, not bathymetry.
+  reefPools?: { name: string; lon: number; lat: number; radius: [number, number] }[];
   // Instances scattered over the island by terrain rules. Balanced and High only.
   scatter?: LandmarkScatter[];
   // Named Features at their real coordinates. Balanced and High only.
@@ -105,7 +112,15 @@ export const landmarkBudget = {
 
 // The one file every Landmark's models and placements ship in. Low never
 // requests it.
-export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 200 * 1024, textureSize: 1024, source: null as FeatureSource | null } as const;
+export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 200 * 1024, textureSize: 1024, source: {
+  path: "data/landmarks/features/boipeba/library.glb",
+  sourceKind: "project-source",
+  creator: "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
+  source: "data/landmarks/features/boipeba/build.ts",
+  rights: "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
+  proof: "data/landmarks/features/boipeba/README.md",
+  retrieved: "2026-10-04",
+} satisfies FeatureSource } as const;
 
 export const landmarkSources: LandmarkSource[] = [
   {
@@ -135,13 +150,22 @@ export const landmarkSources: LandmarkSource[] = [
     smallestRing: 0.01,
     group: 0.25,
     span: 27,
-    height: 1.3,
-    shoreHeight: 8,
-    beachWidth: 1.5,
+    height: 1.05,
+    shoreHeight: 12,
+    beachWidth: 2,
     surfWidth: 1.8,
     shallowsWidth: 5.6,
+    shallowsTuck: 1.6,
+    terrainTreatment: { relief: .05, scrubScale: 4.2, rockScale: 7,
+      coastal: { oceanStart: 1, oceanEnd: 7, wetlandHeight: 12 } },
+    reefPools: [{ name: "Piscinas Naturais de Moreré", lon: -38.898798, lat: -13.5953085, radius: [2.6, 1.8] }],
+    scatter: [{ model: "boipeba-coconut-palm", spacing: 1.8, scale: [.7, .95],
+      elevation: [0, 25], slope: [0, .22], inland: [.8, 2.3],
+      bounds: { west: -38.929, east: -38.886, south: -13.68, north: -13.578 } }],
+    features: [{ name: "Igreja do Divino Espírito Santo — Velha Boipeba", model: "boipeba-divino-church",
+      lon: -38.9272361, lat: -13.5825102, scale: .8, heading: 210 }],
     // Low and sandy: long beaches, mangrove and restinga behind them.
-    palette: { sand: "#ecdfbe", rock: "#847a69", lowland: "#416745", highland: "#6a8050" },
+    palette: { sand: "#eee2c6", rock: "#92866d", lowland: "#365a43", highland: "#708551" },
   },
   {
     id: "abrolhos",
