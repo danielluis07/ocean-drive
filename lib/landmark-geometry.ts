@@ -249,7 +249,7 @@ export function triangulate(points: PlanarPoint[]): Triangle[] {
 
 // The island surface: a shoreline-conforming point set and its triangles, with
 // the shoreline points first so the height profile can pin them to sea level.
-export function islandSurface(rings: PlanarPoint[][], spacing: number, selective?: (point: PlanarPoint) => boolean) {
+export function islandSurface(rings: PlanarPoint[][], spacing: number, selective?: (point: PlanarPoint) => boolean, supports: readonly PlanarPoint[] = []) {
   const outlines = rings.map((ring) => resampleRing(ring, spacing * (selective ? .7 : 1)));
   const points: PlanarPoint[] = outlines.flat();
   const shoreCount = points.length;
@@ -266,6 +266,12 @@ export function islandSurface(rings: PlanarPoint[][], spacing: number, selective
       if (selective && (row % 2 !== 0 || column % 2 !== 0) && !selective(point)) continue;
       points.push(point);
     }
+  }
+  // Mapped narrow shores may need interior support closer than the ordinary
+  // grid permits. Preserve the submerged coastline and avoid duplicate/sliver
+  // sites; callers spend these vertices inside the same tier budget.
+  for (const point of supports) {
+    if (insideRings(point, rings) && points.every(other => Math.hypot(point.x - other.x, point.z - other.z) > spacing * .15)) points.push(point);
   }
   const triangles = triangulate(points).filter((triangle) =>
     insideRings(

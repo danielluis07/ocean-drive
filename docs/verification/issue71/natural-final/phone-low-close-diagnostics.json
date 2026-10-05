@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+  "startedAt": "2026-10-05T17:17:00.528Z",
+  "quality": {
+    "tier": "low",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 576.6000000014901,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 576.6000000014901,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 576.6000000014901,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 577,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 601.1000000014901,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 620.9000000022352,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 638.7000000029802,
+      "kind": "quality",
+      "detail": {
+        "tier": "low",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 638.7000000029802,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1401.9000000022352,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1478.9000000022352,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1491.2000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1504,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1512.9000000022352,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1529.1000000014901,
+      "kind": "readiness",
+      "detail": "ready"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 1812.1000000014901,
+    "frames": 109,
+    "windows": []
+  },
+  "scenes": {
+    "low": {
+      "drawCalls": 3,
+      "triangles": 5826,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    }
+  }
+}

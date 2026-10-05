@@ -6,6 +6,7 @@ import type { BufferGeometry } from "three";
 import { rasterizeAccessibility } from "@/scripts/terrain-occlusion";
 import { terrainPigment } from "@/scripts/terrain-treatment";
 import { createShoreSampler } from "@/scripts/terrain-shore-sampler";
+import { createBeachSampler } from "@/scripts/terrain-regions";
 
 type OcclusionBake = { geometry: BufferGeometry; accessibility: Float32Array };
 
@@ -18,6 +19,7 @@ export async function bakeLandmarkTextures(source: LandmarkSource, rings: Ring[]
   const bounds = boundsOf(projected.rings);
   const summit = Math.max(...elevation.metres, 1);
   const shore = createShoreSampler(projected.rings);
+  const beachAt = createBeachSampler(source, projected.toWorld);
   const height = (x: number, z: number) => {
     const { lon, lat } = projected.toDegrees({ x, z });
     return Math.max(0, sampleElevation(elevation, lon, lat));
@@ -44,7 +46,7 @@ export async function bakeLandmarkTextures(source: LandmarkSource, rings: Ring[]
         // Fixed geographical derivative support, independent of texture LOD.
         const step = .12;
         const rise = Math.hypot(height(x + step, z) - height(x - step, z), height(x, z + step) - height(x, z - step)) / (2 * step / projected.scale);
-        const pigment = terrainPigment(x, z, height(x, z), rise / Math.hypot(1, rise), inland, summit, source);
+        const pigment = terrainPigment(x, z, height(x, z), rise / Math.hypot(1, rise), inland, summit, source, beachAt({ x, z }));
         bumps[pixel] = pigment.bump;
         for (let channel = 0; channel < 3; channel++) {
           const linear = Math.min(1, Math.max(0, pigment.colour[channel] * accessibility[pixel]));

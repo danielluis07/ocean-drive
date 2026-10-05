@@ -1,0 +1,175 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 1 test using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/stop-cards.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:15088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU (5.5m)
+
+
+  1) [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 
+
+    Error: Every Chrome window must sustain p90 ≤ 20 ms
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 62[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 295028.40000000224,[39m
+    [31m+     "gpuP90Ms": 6.0128,[39m
+    [31m+     "p90Ms": 20.899999998509884,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 299055.90000000224,[39m
+    [31m+     "gpuP90Ms": 4.33104,[39m
+    [31m+     "p90Ms": 20.800000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 301062.40000000224,[39m
+    [31m+     "gpuP90Ms": 5.75904,[39m
+    [31m+     "p90Ms": 21.900000002235174,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 307113.30000000075,[39m
+    [31m+     "gpuP90Ms": 6.29072,[39m
+    [31m+     "p90Ms": 26.600000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 309114.1000000015,[39m
+    [31m+     "gpuP90Ms": 5.94784,[39m
+    [31m+     "p90Ms": 24.199999999254942,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      92 |     // that acceptance criterion into an additional Firefox performance gate.
+      93 |     if (browser.browserType().name() === "chromium") {
+    > 94 |       expect.soft(windows.filter((window: { p90Ms: number }) => window.p90Ms > 20), "Every Chrome window must sustain p90 ≤ 20 ms").toEqual([]);
+         |                                                                                                                                     ^
+      95 |     }
+      96 |     expect.soft(report.scenes.balanced?.drawCalls).toBeLessThanOrEqual(productionBudgets.drawCalls);
+      97 |     expect.soft(report.scenes.balanced?.triangles).toBeLessThanOrEqual(productionBudgets.triangles);
+        at C:\Users\bombd\ocean-drive\tests\browser\ocean-voyage.e2e.ts:94:133
+
+    attachment #1: ocean-voyage.json (application/json) ────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\ocean-voyage-json-60f1f762093dcfacd11d67b0cff19d1e0ea29c63.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: stop-0.png (image/png) ──────────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-0-png-a6200f3bdf16520ccb3d4562b433add624eb0696.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: passage-0-1.png (image/png) ─────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-0-1-png-518d925cf2b0f3d30a668e0c71782516e7a8eca6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: stop-1.png (image/png) ──────────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-1-png-2421392d7e118c09ad0ca794f53500ab2cd44963.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: passage-1-2.png (image/png) ─────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-1-2-png-5ce2a868be9c024ed1fadef6e07e3668a08aa770.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: stop-2.png (image/png) ──────────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-2-png-e6d724ed902ae4d0f897e74ea0b0a0e1f0e1a4f2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: passage-2-3.png (image/png) ─────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-2-3-png-f2c9d3a22067e3ec719fd3e9025bc1246f29e918.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: stop-3.png (image/png) ──────────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-3-png-3725040a8f7d139bb2714556da8d3077eb44b39a.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: passage-3-4.png (image/png) ─────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-3-4-png-f2b2d6e786b052029f61c6b26f2d1e120135d1d4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: stop-4.png (image/png) ─────────────────────────────────────────────────────────
+    test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-4-png-43a819841dfbae77d7858e698bcfcb524fb2533e.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\error-context.md
+
+  Slow test file: [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts (5.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/stop-cards.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

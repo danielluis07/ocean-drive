@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-8b3e9e0eed454195",
+  "startedAt": "2026-10-05T15:53:35.786Z",
+  "quality": {
+    "tier": "low",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 510.5999999977648,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 510.5999999977648,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 510.5999999977648,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 510.79999999701977,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 525.3999999985099,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 541.8999999985099,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 556.8999999985099,
+      "kind": "quality",
+      "detail": {
+        "tier": "low",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 556.8999999985099,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1290.0999999977648,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1351.699999999255,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1360.0999999977648,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1363.8999999985099,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1380.8999999985099,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 2335.2000000029802,
+    "frames": 141,
+    "windows": [
+      {
+        "atMs": 3360.199999999255,
+        "p90Ms": 16.899999998509884,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "low",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "low": {
+      "drawCalls": 4,
+      "triangles": 9449,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    }
+  }
+}

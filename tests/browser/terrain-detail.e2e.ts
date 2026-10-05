@@ -77,7 +77,8 @@ for (const view of [
           return getParameter.call(this, parameter);
         };
       }, { framing, maps: view.maps, state: serializeVoyageState({ ...createInitialVoyageState(), currentStop: island,
-        routeProgress, qualityPreference: view.tier === "low" ? "reduced-3d" : "automatic" }) });
+        routeProgress, complete: routeProgress === oceanConfiguration.stops.length - 1,
+        qualityPreference: view.tier === "low" ? "reduced-3d" : "automatic" }) });
       await page.goto("/");
       await expect(page.locator("#voyage-ocean")).toHaveAttribute("data-stage", "ready");
       await expect(page.locator('[data-slot="ocean-loading"]')).toBeHidden();

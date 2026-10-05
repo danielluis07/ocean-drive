@@ -2,7 +2,7 @@
   "schema": 2,
   "features": {
     "url": "/models/landmark-features.v1.glb",
-    "bytes": 199036,
+    "bytes": 201060,
     "models": {
       "abrolhos-lighthouse": {
         "triangles": 1368
@@ -12,6 +12,18 @@
       },
       "boipeba-divino-church": {
         "triangles": 208
+      },
+      "ilha-grande-sao-sebastiao": {
+        "triangles": 365
+      },
+      "ilha-grande-abraao-pier": {
+        "triangles": 240
+      },
+      "ilha-grande-papagaio": {
+        "triangles": 140
+      },
+      "ilha-grande-forest-canopy": {
+        "triangles": 44
       }
     }
   },
@@ -174,47 +186,47 @@
       "place": "Ilha Grande, Rio de Janeiro, Brazil",
       "span": 39,
       "extent": {
-        "x": 19.459,
-        "z": 10.545
+        "x": 19.47,
+        "z": 10.502
       },
-      "radius": 19.959,
+      "radius": 19.97,
       "islands": 1,
       "summitMetres": 1001,
       "surfWidth": 1.45,
-      "shallowsWidth": 3.6,
+      "shallowsWidth": 3.2,
       "features": {
-        "instances": 0,
-        "triangles": 0
+        "instances": 18,
+        "triangles": 1405
       },
       "variants": {
         "balanced": {
           "url": "/models/landmark-ilha-grande-balanced.v1.glb",
-          "triangles": 11878,
-          "bytes": 214676
+          "triangles": 11518,
+          "bytes": 209800
         },
         "low": {
           "url": "/models/landmark-ilha-grande-low.v1.glb",
-          "triangles": 1253,
-          "bytes": 28268
+          "triangles": 1218,
+          "bytes": 27712
         }
       },
       "textures": {
         "balanced": {
           "colour": {
             "url": "/textures/landmark-ilha-grande-balanced-colour.v1.webp",
-            "bytes": 34178,
+            "bytes": 26838,
             "size": 1024
           },
           "normal": {
             "url": "/textures/landmark-ilha-grande-balanced-normal.v1.webp",
-            "bytes": 33142,
+            "bytes": 36374,
             "size": 1024
           }
         },
         "low": {
           "colour": {
             "url": "/textures/landmark-ilha-grande-low-colour.v1.webp",
-            "bytes": 14792,
+            "bytes": 9382,
             "size": 512
           }
         }

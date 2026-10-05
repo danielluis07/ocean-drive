@@ -27,7 +27,7 @@
       "transformations": "Authored Boipeba surface interpretation and diagnostic Close View framing",
       "essential": false,
       "experience": false,
-      "sha256": "6c6e0771036b6f9f8b4af6a64c2ce6967e393292d8ce007c37127f13fc867133"
+      "sha256": "963105d85c3329301b49efbb50bfabf67fa2242111f0eeaa5cf2d8479ab4c117"
     },
     {
       "path": "content/landmark-sources.ts",
@@ -41,7 +41,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "07ebe2ad041474f6cc3aaeb1e122cb262885f90ed12a03328f8393507ba1f6cc"
+      "sha256": "950336b08e9ca6c179d601550b7925c8eacd0f041cbbe7b737a47b719094754d"
     },
     {
       "path": "content/landmarks.json",
@@ -55,7 +55,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "9f512faef6b8010a942b106ad2762945f9e158a53eda6b718e6da7bbd87eb6c8"
+      "sha256": "96f408659246863df427bcff92c96e14b5425c4c7d8766c7955147b9bdbedc15"
     },
     {
       "path": "content/ship-art.ts",
@@ -157,14 +157,14 @@
     },
     {
       "path": "data/landmarks/features/abrolhos/library.glb",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
-      "source": "data/landmarks/features/abrolhos/build.ts",
-      "rights": "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
-      "proof": "data/landmarks/features/abrolhos/README.md",
-      "retrieved": "2026-10-05",
       "kind": "source-data",
-      "transformations": "Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
       "essential": false,
       "experience": false,
       "sha256": "8a4f0013a95c1aa05a43d5d28f958acf7d53ca1a538781cb498a8c60679909d9"
@@ -758,6 +758,384 @@
       "sha256": "afabed32c2b75ed83145e6e28868fba908e7b1c0ee05e0397c07a86fe44aad9c"
     },
     {
+      "path": "data/landmarks/features/ilha-grande/atlas.png",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "5d4efc89e30a0dd05576d81b60f11007dffc08e6d70be62551491fca7aa90158"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/build.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "afafaec8f013767b558de9dc5b2647a7262b0e4ac108b00fd6fe68057f4a73b2"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/geometry.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "eaf7b44a1bf3643aec9d80ebdc9d817dffd05a2ad108fe8257ccc8fb7e0ea095"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/library.glb",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; Ilha Grande references by Fulviusbsas, LíviaBuhring, Vihgaby, José Carlos B Fialho, MBelu and Glauco Umbelino",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0; churches, lighthouse, Ilha Grande pier/peak/canopy and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "retrieved": "2026-10-05",
+      "kind": "source-data",
+      "transformations": "Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations",
+      "essential": false,
+      "experience": false,
+      "sha256": "87a9aaf80d0516167b5ad863d3137d9281229b00039ee1d346dd38550b0b013a"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/README.md",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "c4a4f9451095229126c38ff212bc1237671959cda06bbe6151d3d96a7e7184fc"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/CC-BY-SA-3.0.txt",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/3.0/legalcode and https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt",
+      "retrieved": "2026-10-05",
+      "rights": "Retained legal codes accompanying licensed reference adaptations",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "3f941b3b89cf7b8370ceb83cc76d2120d471b58735d8ca60238a751a48d7f72f"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/CC-BY-SA-4.0.txt",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/3.0/legalcode and https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt",
+      "retrieved": "2026-10-05",
+      "rights": "Retained legal codes accompanying licensed reference adaptations",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/church-front.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao5.jpg and https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao1.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); full 3D church reconstruction references; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/church-front.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "4d3460760f0a37ddbebdafd0922182de1c9d52bdce064941bf28666cffb0f57f"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/church-front.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao5.jpg and https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao1.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); full 3D church reconstruction references; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/church-front.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "683a75feb4458365a52b129781ff61786341354b54933d54cfc448f3296bc22c"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/church-side.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao5.jpg and https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao1.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); full 3D church reconstruction references; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/church-front.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "857f556fab1ab9472c6af8a44b440bd283ced1f629431c852ca890662af323bc"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/church-side.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao5.jpg and https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao1.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); full 3D church reconstruction references; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/church-front.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "240ab7e6f82ebe811b5748435a45dc89459846bc39d54fbb75cd7de12d137750"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/forest-bay.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Glauco Umbelino",
+      "source": "https://commons.wikimedia.org/wiki/File:Vila_do_Abra%C3%A3o_-_Ilha_Grande-RJ-Brasil_(1376952276).jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY 2.0 confirmed by retained Commons Flickr licence review; terrain/canopy reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/forest-bay.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "ce29daea72dd58f6ee583a058468705c1c05c963fe1ab89a0ac00e44575ab4b3"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/forest-bay.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Glauco Umbelino",
+      "source": "https://commons.wikimedia.org/wiki/File:Vila_do_Abra%C3%A3o_-_Ilha_Grande-RJ-Brasil_(1376952276).jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY 2.0 confirmed by retained Commons Flickr licence review; terrain/canopy reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/forest-bay.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "10ef6b8b8e1540546d0b831476671762ae17fc01543e473c960140d33b0f4e44"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/lopes-mendes.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-LopesMendes2.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); pale beach and forest reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/lopes-mendes.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "a323875f67f7cefdc0e43e8d336276ea7fa2eca691f03a70c45223f62d12b959"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/lopes-mendes.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Fulviusbsas",
+      "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-LopesMendes2.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "Author's public-domain dedication (PD-own); pale beach and forest reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/lopes-mendes.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "309d631863e5d62b63755e90fd730a2fab1693a90141904808356fcf0ba6416c"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/peak-profile.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "José Carlos B Fialho",
+      "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio_-_Ilha_Grande_-_RJ.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; full 3D granite reconstruction and surface-only texture crop; adaptation under CC BY-SA 4.0 per section 4(b)",
+      "proof": "data/landmarks/features/ilha-grande/references/peak-profile.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "63ed47ad850f4a490b2b6de401bfc4e8d1a97ab022422098c7a751e297e0ba7e"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/peak-profile.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "José Carlos B Fialho",
+      "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio_-_Ilha_Grande_-_RJ.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; full 3D granite reconstruction and surface-only texture crop; adaptation under CC BY-SA 4.0 per section 4(b)",
+      "proof": "data/landmarks/features/ilha-grande/references/peak-profile.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "1f2ec9482c2ecefc2beffe3fa952dc7cc9af4359fe4a27b54d6d951c4c167348"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/peak-summit.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "MBelu",
+      "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio,_Ilha_Grande.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; granite summit and reverse-slope reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/peak-summit.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "4558da796d406d2226fb68b777edf7e9e7ba1949337710c41ff4995ae6b14ed1"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/peak-summit.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "MBelu",
+      "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio,_Ilha_Grande.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; granite summit and reverse-slope reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/peak-summit.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "259c707067873e5fe2ad0ddaa641fa27d7a1dfd0eb5aa318dc61c30dc8dc9add"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/pier-deck.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Vihgaby",
+      "source": "https://commons.wikimedia.org/wiki/File:Cais_de_Ilha_Grande.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; pier deck, pilings and boarding reference; adaptation under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/pier-deck.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "42da516b2f14825f8d8a10937b8126e97fb61f6ca2fec34829b9f38522b3d2b9"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/pier-deck.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Vihgaby",
+      "source": "https://commons.wikimedia.org/wiki/File:Cais_de_Ilha_Grande.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; pier deck, pilings and boarding reference; adaptation under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/pier-deck.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "7bb797628d572c98249bb10d1f3e10449748118bd6933b6f45a9af2b521cf555"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/pier.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "LíviaBuhring",
+      "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_Pier.JPG",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; pier reconstruction reference; adaptation under CC BY-SA 4.0 per section 4(b)",
+      "proof": "data/landmarks/features/ilha-grande/references/pier.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "f7a9ddf756be0e01bed4e919249cd6d17665564b04821481aaed5f76529c15a5"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/pier.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "LíviaBuhring",
+      "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_Pier.JPG",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; pier reconstruction reference; adaptation under CC BY-SA 4.0 per section 4(b)",
+      "proof": "data/landmarks/features/ilha-grande/references/pier.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "127af181660fbc905e717cb33746606f99e5aee07e367199fe39fd7900117d6f"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/places.osm.json",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors",
+      "source": "https://overpass-api.de/api/interpreter",
+      "retrieved": "2026-10-05",
+      "rights": "ODbL 1.0; retained named peak, church, pier and beach coordinates/outlines; attribution in the experience",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "e2fc643370e3a68ae1045f1833d1c23efeb35822f2ba0c9c199d3764dfc0438e"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/village-aerial.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "LíviaBuhring",
+      "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_do_alto.JPG",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; roof, shore and canopy context; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/village-aerial.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "d363393382aec3e4a860bddbaac622d88e3d1f58b84086f21bf217333a693381"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/references/village-aerial.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "LíviaBuhring",
+      "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_do_alto.JPG",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 3.0; roof, shore and canopy context; no photographic pixels embedded",
+      "proof": "data/landmarks/features/ilha-grande/references/village-aerial.html",
+      "transformations": "Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md",
+      "essential": false,
+      "experience": false,
+      "sha256": "a451574337adad61f62b44115f059a8994813183cca9c4f1348e57870eef0a45"
+    },
+    {
+      "path": "data/landmarks/features/ilha-grande/sources.json",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
+      "transformations": "Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "2daa7d91f1a507e27c27789ec5f0ca02220124a2819ee942c0fd480f26bdb016"
+    },
+    {
       "path": "data/landmarks/fernando-de-noronha.json",
       "kind": "source-data",
       "sourceKind": "open-data",
@@ -826,6 +1204,20 @@
       "essential": false,
       "experience": false,
       "sha256": "d568317a51a6bc09a96fe720c54b42a0f84bb3f878e7a2c4c2faa96a25fbfd3f"
+    },
+    {
+      "path": "docs/third-party/ilha-grande-terrain.md",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored surface interpretation; retained OSM beach coordinates under ODbL-1.0",
+      "proof": "docs/third-party/ilha-grande-terrain.md",
+      "transformations": "Dense Atlantic canopy, steep granite ridges, mapped sandy pockets and island-specific shoreline/Close View; bounded relief distinguished from unchanged SRTM samples; floating-point CPU decode preserves quantized Feature geometry",
+      "essential": false,
+      "experience": false,
+      "sha256": "419f03190b2ccf34dfd109e26358ff83000210ecb9cb0582d46c7bcf02329f12"
     },
     {
       "path": "docs/third-party/noronha-terrain.md",
@@ -904,6 +1296,20 @@
       "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
     },
     {
+      "path": "lib/landmark-feature-geometry.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored surface interpretation; retained OSM beach coordinates under ODbL-1.0",
+      "proof": "docs/third-party/ilha-grande-terrain.md",
+      "transformations": "Dense Atlantic canopy, steep granite ridges, mapped sandy pockets and island-specific shoreline/Close View; bounded relief distinguished from unchanged SRTM samples; floating-point CPU decode preserves quantized Feature geometry",
+      "essential": false,
+      "experience": false,
+      "sha256": "08f1cc2637590192325496f3df14d43764e2cc554dc6d8267475e56003450c23"
+    },
+    {
       "path": "lib/landmark-features.ts",
       "kind": "pipeline",
       "sourceKind": "project-source",
@@ -929,7 +1335,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "d85cd3d6912f4041bb03ec70ea69ca20558f6ba3604b232725dc1fdd0205e281"
+      "sha256": "ad15d602773369e568d8b3acbb44caf9cc2457f585fff3e54792c6ad055e54db"
     },
     {
       "path": "lib/landmark-material.ts",
@@ -1363,17 +1769,17 @@
     {
       "path": "public/models/landmark-features.v1.glb",
       "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
-      "source": "data/landmarks/features/abrolhos/build.ts",
-      "rights": "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
-      "proof": "data/landmarks/features/abrolhos/README.md",
+      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; Ilha Grande references by Fulviusbsas, LíviaBuhring, Vihgaby, José Carlos B Fialho, MBelu and Glauco Umbelino",
+      "source": "data/landmarks/features/ilha-grande/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0; churches, lighthouse, Ilha Grande pier/peak/canopy and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+      "proof": "data/landmarks/features/ilha-grande/README.md",
       "retrieved": "2026-10-05",
       "url": "/models/landmark-features.v1.glb",
       "kind": "authored",
-      "transformations": "Project-authored Boipeba palm/church and Abrolhos lighthouse reconstructions with one shared atlas from retained licensed references; Boipeba attributes, occupied atlas pixels and placements preserved; named coordinates projected onto terrain by scripts/generate-landmarks.ts",
+      "transformations": "Project-authored Boipeba palm/church, Abrolhos lighthouse and Ilha Grande church/pier/granite/canopy reconstructions; one opaque shared 1024px atlas from retained licensed references; completed model attributes, occupied source PNG pixels and placements preserved; shared JPEG intentionally re-encoded quality 78 / 4:2:0; new geometry quantized through KHR_mesh_quantization; named coordinates projected onto terrain by scripts/generate-landmarks.ts",
       "essential": false,
       "experience": true,
-      "sha256": "dfa7a80c0da89a25e63ee39363c7ad10b2b6322b5851a30450628e2f371ded1d"
+      "sha256": "483789600999323c82e6a20093b57ca2cd4a8977afebeead10ff539983673991"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
@@ -1415,10 +1821,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "2d58e4a9b8fe0f85ebb18028c70975f5d4d342140226f0dfed68b47ae0312b1e"
+      "sha256": "e3e2638cac148427db4fc4b76553afa7f72eb61941e1b1147d97cbb4ef14295e"
     },
     {
       "path": "public/models/landmark-ilha-grande-low.v1.glb",
@@ -1430,10 +1836,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "54381f2f3f70f137a99b8df1d2ab5ebe83a1d8a2427e7dcd22e19ceece5d39b7"
+      "sha256": "707c5927dc2e866d662170d34fd011336ddd3a11faf91595008de65c3c395b48"
     },
     {
       "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
@@ -1580,10 +1986,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/ilha-grande-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "6af6e914082f7f20d7b94ed618f4281405a2423a673aefde784cc2b693f3315d"
+      "sha256": "05280a318334f77fbd170ad72d0bb2f8e11f1189c751defac0112028955f9779"
     },
     {
       "path": "public/textures/landmark-ilha-grande-balanced-normal.v1.webp",
@@ -1595,10 +2001,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/ilha-grande-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "66828b3098f24197f90f12ef788151f46627386fa5323dc4917052338517b0b5"
+      "sha256": "c2d900830de536a33dc240e8bfc5089c613c38bb90f1e737b6384fdd244396e8"
     },
     {
       "path": "public/textures/landmark-ilha-grande-low-colour.v1.webp",
@@ -1610,10 +2016,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/ilha-grande-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "6e54b15bc8a793583147cffdebf9228bed8692c245b25dd6595749a6b8cc404f"
+      "sha256": "44e7085d509bbe5ffac7e359f1e0c561e332286f2d3f5d8c4e9fefb17fbdd6ab"
     },
     {
       "path": "scripts/asset-bake.ts",
@@ -1655,7 +2061,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "d23e355708abdd48dae07e09f1d80fe7bb043cbfc33c105ff59f5b0dfa2f081b"
+      "sha256": "0ddc2b840b29e84216ec581b7e484b801fc85cbdd8108a14d54e18d3d198ea76"
     },
     {
       "path": "scripts/landmark-feature-models.ts",
@@ -1683,7 +2089,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "68dd23ae4f1ff8b9a5abdd6eab8e9d463aed2df24a3e2f6a298350be8ec72d33"
+      "sha256": "5d5b6d60235912028a0167ffef4507ebb0909e9d1dcdc89cccbb076fd7c613e4"
     },
     {
       "path": "scripts/landmark-texture-bake.ts",
@@ -1697,7 +2103,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "c53103e89f74e998de81ead7b35205bd857efcbc70f971f16b658862ed83cbcc"
+      "sha256": "2aee7f37ff7102ae3daa6b9b260b68a7d567074d4e557162e9c71a0770aacbd8"
     },
     {
       "path": "scripts/ship-texture-bake.ts",
@@ -1728,6 +2134,20 @@
       "sha256": "38cf7153d185f0370ac8ba6808c16b8e2e58b1c6f9e5cb42360441c59c755e81"
     },
     {
+      "path": "scripts/terrain-regions.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored surface interpretation; retained OSM beach coordinates under ODbL-1.0",
+      "proof": "docs/third-party/ilha-grande-terrain.md",
+      "transformations": "Dense Atlantic canopy, steep granite ridges, mapped sandy pockets and island-specific shoreline/Close View; bounded relief distinguished from unchanged SRTM samples; floating-point CPU decode preserves quantized Feature geometry",
+      "essential": false,
+      "experience": false,
+      "sha256": "9f15b99ad73c351154f9368b71122e7b5f94b1404f8cffb98c1e42dcab9ba728"
+    },
+    {
       "path": "scripts/terrain-shore-sampler.ts",
       "kind": "pipeline",
       "sourceKind": "project-source",
@@ -1753,7 +2173,7 @@
       "transformations": "Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography",
       "essential": true,
       "experience": false,
-      "sha256": "993e1a6ae1ab557e02b30a4ef77bea989935c8e5d27f6da866c4d68bc7ea06e5"
+      "sha256": "f1230f107f0d699ccd2148b53f1376424d3cf5758ce4ae039558c1e47d207beb"
     }
   ]
 }

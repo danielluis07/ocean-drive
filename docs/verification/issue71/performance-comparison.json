@@ -1,0 +1,77 @@
+[
+  {
+    "name": "baseline",
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-5a2e96b634f07edb",
+    "activeSeconds": 322.99569999999926,
+    "windows": 159,
+    "worstFrameP90": 16.900000002235174,
+    "worstGpuP90": 8.9656,
+    "over20": 0,
+    "tierChanges": 0,
+    "renderDprs": [
+      0.9,
+      1
+    ],
+    "wakeWindows": 30,
+    "settledWindows": 129,
+    "maxRetained": 2,
+    "preparationDuringPassage": 0,
+    "scene": {
+      "drawCalls": 9,
+      "triangles": 62175,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    },
+    "errors": []
+  },
+  {
+    "name": "failed candidate",
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+    "activeSeconds": 323.2953999999985,
+    "windows": 159,
+    "worstFrameP90": 26.600000001490116,
+    "worstGpuP90": 9.02176,
+    "over20": 5,
+    "tierChanges": 0,
+    "renderDprs": [
+      0.9,
+      1
+    ],
+    "wakeWindows": 30,
+    "settledWindows": 129,
+    "maxRetained": 2,
+    "preparationDuringPassage": 0,
+    "scene": {
+      "drawCalls": 9,
+      "triangles": 62175,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    },
+    "errors": []
+  },
+  {
+    "name": "final rerun",
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+    "activeSeconds": 323.44490000000224,
+    "windows": 159,
+    "worstFrameP90": 18,
+    "worstGpuP90": 8.79952,
+    "over20": 0,
+    "tierChanges": 0,
+    "renderDprs": [
+      0.9,
+      1
+    ],
+    "wakeWindows": 30,
+    "settledWindows": 129,
+    "maxRetained": 2,
+    "preparationDuringPassage": 0,
+    "scene": {
+      "drawCalls": 9,
+      "triangles": 62175,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    },
+    "errors": []
+  }
+]

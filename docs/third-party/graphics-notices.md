@@ -76,3 +76,21 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Ilha Grande reconstructions
+
+Ilha Grande's São Sebastião church, Abraão tourist pier, Pico do Papagaio and
+Atlantic canopy are project-authored full 3D reconstructions from licensed
+photographs. Sources include Fulviusbsas (public-domain dedication), LíviaBuhring,
+Vihgaby and José Carlos B Fialho (CC BY-SA 3.0), MBelu (CC BY-SA 4.0) and Glauco
+Umbelino (CC BY 2.0). Reference links, original files, rights-page snapshots,
+mapped coordinates, geometry interpretations and exact texture transformations
+are retained in [the Ilha Grande source record](../../data/landmarks/features/ilha-grande/README.md).
+
+The reconstructed models and combined atlas adaptation use
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The granite
+texture uses a surface-only crop from José Carlos B Fialho's photograph;
+all other new material tiles are interpreted deterministic artwork. The shared
+JPEG is re-encoded; previous model attributes, UVs and occupied source PNG
+pixels are preserved. Original palm rights remain CC BY-SA 3.0. In-experience
+credits link the creators and source pages. These credits imply no endorsement.

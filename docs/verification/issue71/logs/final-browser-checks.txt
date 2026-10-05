@@ -1,0 +1,67 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 15 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:14480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced aerial (7.1s)
+  ✓   2 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced close (7.9s)
+  ✓   3 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only aerial (5.4s)
+  ✓   4 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only close (4.8s)
+  ✓   5 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low aerial (3.6s)
+  ✓   6 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low close (4.5s)
+  ✓   7 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low aerial (3.5s)
+  ✓   8 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low close (4.1s)
+  ✓   9 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback aerial (4.8s)
+  ✓  10 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback close (4.4s)
+(node:7772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [landmark-textures] › tests\browser\landmark-textures.e2e.ts:5:7 › balanced prepares optional terrain after entry and keeps only two Landmarks (11.0s)
+  ✓  12 [landmark-textures] › tests\browser\landmark-textures.e2e.ts:5:7 › low prepares optional terrain after entry and keeps only two Landmarks (6.8s)
+  ✓  13 [landmark-textures] › tests\browser\landmark-textures.e2e.ts:86:5 › missing terrain textures never prevent entry or reaching every Stop (5.3s)
+(node:6880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [production] › tests\browser\production-assets.e2e.ts:45:5 › production requests, provenance, scene budgets and local diagnostics reconcile (55.9s)
+  ✓  15 [production] › tests\browser\production-assets.e2e.ts:249:5 › diagnostic export is absent without an explicit local opt-in (5.8s)
+
+  15 passed (2.5m)
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

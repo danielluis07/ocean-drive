@@ -1,0 +1,63 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/asset-art/low-detail",
+  "kind": "suite",
+  "status": "pass",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": true,
+  "recordedAt": "2026-10-05T16:45:57.242Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium"
+  },
+  "method": "playwright test --config playwright.production.config.ts --project asset-art tests/browser/low-detail.e2e.ts",
+  "artifacts": [
+    {
+      "path": "desktop-balanced-stop-01.png",
+      "sha256": "fb119f258f25d91bd446e49a182bf99c1191cf6f4dafdfbc5b1559c70678499f"
+    },
+    {
+      "path": "desktop-balanced-stop-02.png",
+      "sha256": "0ecefa4be9763e46902e7f243a20c2ea7dee8dd2e611eb9d12a29a06087f6e50"
+    },
+    {
+      "path": "desktop-balanced-stop-03.png",
+      "sha256": "5965b97e130e6476c3f2956c0e616cbc258680ce4a4f1c220b90eb73bcbfe35f"
+    },
+    {
+      "path": "desktop-low-stop-01.png",
+      "sha256": "7a40af08537ae792d59418f8dd3cafdeeb87ec8a67ab28b136858bb0912fe088"
+    },
+    {
+      "path": "desktop-low-stop-02.png",
+      "sha256": "7477059ec4ee6a470ee8fe1dff121df137273932996b1410b4c4a87417cb2d0b"
+    },
+    {
+      "path": "desktop-low-stop-03.png",
+      "sha256": "83cf01faee99905ce08fd9b3ee886e377a54a51cc3ec8b8915de7cf71631c3a6"
+    },
+    {
+      "path": "phone-low-stop-01.png",
+      "sha256": "36a38141eabfdfc72d93ebb9686d82a777c5b774759b2329e651b693d679733a"
+    },
+    {
+      "path": "phone-low-stop-02.png",
+      "sha256": "0012775bdc28ee066413d858455715def5db02cb3b9ba8750670c389df0f87b6"
+    },
+    {
+      "path": "phone-low-stop-03.png",
+      "sha256": "439e09a0fccb04c1e5dfd289eb67e712b47fc1da9c780c04c7a839c0d53639a4"
+    }
+  ],
+  "notes": [
+    "Cleanup retains nine unchanged-island captures from the original twelve-case passing suite. Superseded Ilha Grande images were removed; final Stop 04 captures are retained in ../asset-art/."
+  ],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-e837004d1a69255e"
+}

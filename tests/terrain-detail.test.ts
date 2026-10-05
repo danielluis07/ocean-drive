@@ -13,7 +13,7 @@ import { frameTerrainPreview } from "@/lib/terrain-preview";
 import { frameRouteCamera } from "@/lib/route-camera";
 
 const source = landmarkSources[0];
-for (const island of ["boipeba", "abrolhos"] as const) test(`${island} Close View uses its authored pitch and half aerial distance on desktop and phone`, () => {
+for (const island of ["boipeba", "abrolhos", "ilha-grande"] as const) test(`${island} Close View uses its authored pitch and half aerial distance on desktop and phone`, () => {
   const view = landmarkCloseViews[island]!;
   for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
     const ship = { x: -224, z: 10 };

@@ -10,6 +10,8 @@ export type TerrainTreatment = {
   coastal?: { oceanStart: number; oceanEnd: number; wetlandHeight: number };
   // Low exposed rock tables with thin grass, without raised scrub crowns.
   bareTables?: boolean;
+  // Dense Atlantic canopy and high granite outcrops; height is in DEM metres.
+  forest?: { canopyCoverage: number; ridgeHeight: number };
   // Tier-specific fraction of the triangle sampling cap, leaving byte headroom.
   samplingRatio?: { balanced?: number; low?: number };
 };
@@ -36,7 +38,18 @@ function scrubCrown(x: number, z: number) {
   return crown;
 }
 
-export function terrainMasks(metres: number, slope: number, inland: number, source: LandmarkSource, x = 0) {
+export function terrainMasks(metres: number, slope: number, inland: number, source: LandmarkSource, x = 0, beachAllowance = 0) {
+  const forest = source.terrainTreatment?.forest;
+  if (forest) {
+    const beach = beachAllowance * (1 - smooth(source.beachWidth * .2, source.beachWidth, inland))
+      * (1 - smooth(source.shoreHeight * 3, source.shoreHeight * 7, metres))
+      * (1 - smooth(.55, .8, slope));
+    const ridge = smooth(forest.ridgeHeight, forest.ridgeHeight * 1.6, metres);
+    // Forest keeps its soil on ordinary hillsides. Granite emerges on steep
+    // high ridges and small shore faces instead of Noronha's broad dry cliffs.
+    const rock = smooth(.42, .7, slope) * Math.max(ridge, (1 - smooth(.1, .7, inland)) * .35) * (1 - beach);
+    return { beach, rock, scrub: 1 - beach - rock, wetland: 0 };
+  }
   if (source.terrainTreatment?.bareTables) {
     const beach = (1 - smooth(source.beachWidth * .15, source.beachWidth, inland))
       * (1 - smooth(source.shoreHeight * .3, source.shoreHeight * 2, metres))
@@ -77,9 +90,9 @@ export function authoredRelief(x: number, z: number, metres: number, slope: numb
 // Each texel evaluates these world-space signals directly. Broad scrub crowns
 // remain readable in the 512px colour-only tier; smaller rock joints and sandy
 // ripples supply native 1024px detail. None is a measured land-cover mask.
-export function terrainPigment(x: number, z: number, metres: number, slope: number, inland: number, summit: number, source: LandmarkSource) {
+export function terrainPigment(x: number, z: number, metres: number, slope: number, inland: number, summit: number, source: LandmarkSource, beachAllowance = 0) {
   const treatment = source.terrainTreatment!;
-  const masks = terrainMasks(metres, slope, inland, source, x);
+  const masks = terrainMasks(metres, slope, inland, source, x, beachAllowance);
   const patch = mottle(x * 1.1, z * 1.1);
   const crownLight = treatment.bareTables ? 0 : scrubCrown(x * treatment.scrubScale, z * treatment.scrubScale);
   const grain = mottle(x * 24, z * 24);
@@ -94,6 +107,18 @@ export function terrainPigment(x: number, z: number, metres: number, slope: numb
   const rockTone = .62 + joint * .40 + strata * .15 + grain * .12;
   const wetSand = .80 + smooth(.05, .45, inland) * .2;
   const sandTone = wetSand * (.95 + grain * .08);
+  if (treatment.forest) {
+    const coverage = treatment.forest.canopyCoverage;
+    const crown = Math.max(crownLight, scrubCrown(x * treatment.scrubScale + .47, z * treatment.scrubScale + .31) * coverage);
+    const canopyTone = .72 + crown * .40 + patch * .15 + grain * .025;
+    const climb = smooth(.35, .95, metres / summit) * .28 + patch * .12;
+    const weathering = .68 + joint * .24 + mottle(x * 3, z * 7) * .21 + grain * .06;
+    return {
+      colour: low.map((value, channel) => (value + (high[channel] - value) * climb) * canopyTone * masks.scrub
+        + rock[channel] * weathering * masks.rock + sand[channel] * sandTone * masks.beach),
+      bump: masks.scrub * crown * .010 + masks.rock * joint * .017 + masks.beach * grain * .001,
+    };
+  }
   if (treatment.bareTables) {
     const grass = masks.scrub * smooth(.25, .65, patch);
     const bare = 1 - masks.beach - grass;

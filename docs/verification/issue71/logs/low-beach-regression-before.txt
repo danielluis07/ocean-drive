@@ -1,0 +1,23 @@
+bun test v1.4.2 (744846f84)
+
+tests\ilha-grande-landmark.test.ts:
+169 |         if (position.getY(index) > .395 && sandAt(point) > .4 && distanceToRings(point, projection.rings) < .6) visibleSandVertices++;
+170 |       }
+171 |     }
+172 |     object.geometry.dispose();
+173 |   });
+174 |   expect(visibleSandVertices).toBeGreaterThanOrEqual(4);
+                                    ^
+error: expect(received).toBeGreaterThanOrEqual(expected)
+
+Expected: >= 4
+Received: 0
+
+      at <anonymous> (C:\Users\bombd\ocean-drive\tests\ilha-grande-landmark.test.ts:174:31)
+(fail) Low supports the mapped Lopes Mendes strip above the swell without Feature geometry [16.05ms]
+
+ 0 pass
+ 5 filtered out
+ 1 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [261.00ms]

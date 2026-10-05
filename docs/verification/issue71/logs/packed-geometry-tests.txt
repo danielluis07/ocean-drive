@@ -1,0 +1,13 @@
+bun test v1.4.2 (744846f84)
+
+tests\ilha-grande-landmark.test.ts:
+(pass) Ilha Grande keeps forest on ordinary coastal hills and reserves granite for steep ridges [0.85ms]
+(pass) Lopes Mendes mask follows retained mapped beach points and leaves inland forest unsanded [0.40ms]
+(pass) Ilha Grande library preserves completed models and all previously occupied atlas pixels [403.67ms]
+(pass) packed Ilha Grande reconstructions retain volumetric sides, footings, valid normals and atlas coordinates [19.34ms]
+(pass) the mapped pier deck clears the swell while its pilings reach below water [11.91ms]
+
+ 5 pass
+ 0 fail
+ 12765 expect() calls
+Ran 5 tests across 1 file. [589.00ms]

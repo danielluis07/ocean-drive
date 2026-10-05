@@ -1,0 +1,78 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 4 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:17348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (24.5s)
+  ✓  2 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › small landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (23.7s)
+  ✘  3 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (14.4s)
+(node:17172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › narrow portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (24.6s)
+
+
+  1) [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical 
+
+    Error: locator.evaluate: AbortError: The user aborted a request.
+
+      192 |       await expect(stopCard(page)).toBeVisible();
+      193 |       // Measure where the card rests, not a frame of its slide in.
+    > 194 |       await stopCard(page).evaluate((card) => Promise.all(card.getAnimations().map((animation) => animation.finished)));
+          |                            ^
+      195 |       const { ship, landmark, card, chrome } = await stageBoxes(page);
+      196 |       const state = `${viewport.name} · Stop 0${stop}`;
+      197 |       expect(card.left, state).toBeGreaterThanOrEqual(0);
+        at C:\Users\bombd\ocean-drive\tests\browser\stop-cards.e2e.ts:194:28
+
+    Error Context: test-results\stop-cards.e2e.ts-portrait-32175-its-Landmark-and-the-chrome-stop-card-placement\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\stop-cards.e2e.ts-portrait-32175-its-Landmark-and-the-chrome-stop-card-placement\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\stop-cards.e2e.ts-portrait-32175-its-Landmark-and-the-chrome-stop-card-placement\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical 
+  3 passed (1.6m)
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

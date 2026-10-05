@@ -1,0 +1,10 @@
+bun test v1.4.2 (744846f84)
+
+tests\ilha-grande-landmark.test.ts:
+(pass) Low supports the mapped Lopes Mendes strip above the swell without Feature geometry [170.92ms]
+
+ 1 pass
+ 5 filtered out
+ 0 fail
+ 2 expect() calls
+Ran 1 test across 1 file. [1.84s]

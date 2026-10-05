@@ -1,0 +1,32 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/stop-card-placement/stop-cards",
+  "kind": "suite",
+  "status": "fail",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": false,
+  "recordedAt": "2026-10-05T17:27:39.076Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium (chrome)"
+  },
+  "method": "playwright test --config .tmp/issue71-card-placement.config.ts --project stop-card-placement tests/browser/stop-cards.e2e.ts",
+  "artifacts": [
+    {
+      "path": "portrait_phone_Stop_Card-0-error-context.md",
+      "sha256": "ba56c7a270243515b7e3bf15fec172cf20d8b983013632e4d1263bc6ca971ea3"
+    }
+  ],
+  "notes": [
+    "failed: portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome",
+    "Cleanup removes bulky Playwright trace archives. Failed outcomes, error contexts and failure logs remain retained."
+  ],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f"
+}

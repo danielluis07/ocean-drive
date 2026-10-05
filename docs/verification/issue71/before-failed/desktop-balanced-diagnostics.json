@@ -1,0 +1,295 @@
+{
+  "schema": 1,
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-5a2e96b634f07edb",
+  "startedAt": "2026-10-05T15:28:34.116Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 556.2000000029802,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 556.2000000029802,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 556.2000000029802,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 556.4000000022352,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 569.2000000029802,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 593.6000000014901,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 607,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 607,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 2274.400000002235,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+    },
+    {
+      "atMs": 3038.10000000149,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 3062,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+    },
+    {
+      "atMs": 3153.5,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+    },
+    {
+      "atMs": 3423.60000000149,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 3433.7000000029802,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 3598,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    },
+    {
+      "atMs": 13659.800000000745,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 30192.099999997765,
+    "frames": 1810,
+    "windows": [
+      {
+        "atMs": 5454.5,
+        "p90Ms": 17.399999998509884,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 7466.900000002235,
+        "p90Ms": 17.300000000745058,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 9480.10000000149,
+        "p90Ms": 17,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 11492.20000000298,
+        "p90Ms": 17,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 13505.10000000149,
+        "p90Ms": 17.100000001490116,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 15517.800000000745,
+        "p90Ms": 17.100000001490116,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 17530.5,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 19543.5,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 21556.60000000149,
+        "p90Ms": 17.199999999254942,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 23568.900000002235,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 25582.300000000745,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 27595,
+        "p90Ms": 17.200000002980232,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 29608,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 31620.5,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      },
+      {
+        "atMs": 33633.300000000745,
+        "p90Ms": 17.199999999254942,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 2,
+      "triangles": 32786,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

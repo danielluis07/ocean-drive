@@ -1,6 +1,7 @@
 import { BufferGeometry, Mesh, type Group } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { inspectModel } from "@/lib/asset-audit";
+import { transformFeatureGeometry } from "@/lib/landmark-feature-geometry";
 
 export type FeatureSource = { path: string; creator: string; source: string; rights: string; proof: string; retrieved: string; sourceKind?: "project-source" | "licensed-model" };
 
@@ -59,7 +60,9 @@ export async function readFeatureSource(source: FeatureSource, names: readonly s
   asset.scene.traverse((object) => {
     if (!(object instanceof Mesh)) return;
     if (geometries.has(object.name)) throw new Error(`Duplicate Feature model: ${object.name}`);
-    const geometry = (object.geometry.index ? object.geometry.toNonIndexed() : object.geometry.clone()).applyMatrix4(object.matrixWorld);
+    const transformed = transformFeatureGeometry(object.geometry, object.matrixWorld);
+    const geometry = transformed.index ? transformed.toNonIndexed() : transformed;
+    if (geometry !== transformed) transformed.dispose();
     if (model.textures && !geometry.getAttribute("uv")) throw new Error(`Feature model missing atlas UVs: ${object.name}`);
     geometries.set(object.name, geometry);
   });

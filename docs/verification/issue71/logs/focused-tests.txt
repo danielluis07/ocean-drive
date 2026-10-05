@@ -1,0 +1,57 @@
+bun test v1.4.2 (744846f84)
+
+tests\ilha-grande-landmark.test.ts:
+(pass) Ilha Grande keeps forest on ordinary coastal hills and reserves granite for steep ridges [2.00ms]
+(pass) Lopes Mendes mask follows retained mapped beach points and leaves inland forest unsanded [0.70ms]
+(pass) Ilha Grande library preserves completed models and all previously occupied atlas pixels [405.31ms]
+116 |   for (const { id, geometry } of library.models) {
+117 |     if (!id.startsWith("ilha-grande-")) { geometry.dispose(); continue; }
+118 |     const position = geometry.getAttribute("position"), normal = geometry.getAttribute("normal"), uv = geometry.getAttribute("uv");
+119 |     geometry.computeBoundingBox();
+120 |     const bounds = geometry.boundingBox!, size = bounds.getSize(new Vector3());
+121 |     expect(Math.min(size.x, size.y, size.z)).toBeGreaterThan(.5);
+                                                   ^
+error: expect(received).toBeGreaterThan(expected)
+
+Expected: > 0.5
+Received: 0
+
+      at <anonymous> (C:\Users\bombd\ocean-drive\tests\ilha-grande-landmark.test.ts:121:46)
+(fail) packed Ilha Grande reconstructions retain volumetric sides, footings, valid normals and atlas coordinates [14.41ms]
+(pass) the mapped pier deck clears the swell while its pilings reach below water [11.04ms]
+
+tests\landmark-features.test.ts:
+(pass) Scattering instances by terrain > every instance stands on land that satisfies its rule [3.03ms]
+(pass) Scattering instances by terrain > a rule the terrain never satisfies places nothing, and an open rule covers the land [1.32ms]
+(pass) Scattering instances by terrain > the same rule always scatters the same sites, and a seed moves them [1.20ms]
+(pass) Scattering instances by terrain > sites keep their distance instead of lining up or crowding [2.25ms]
+(pass) Scattering instances by terrain > the rules read a real island's recorded terrain [487.13ms]
+(pass) Placing a Feature at a real coordinate > a coordinate projects to the world point its degrees came from [0.54ms]
+(pass) Placing a Feature at a real coordinate > each configured Feature ships at its real coordinate and authored scale [18.67ms]
+(pass) The Feature record and its single draw > placements survive their whole-number record [0.33ms]
+(pass) The Feature record and its single draw > every instance of every model expands into one geometry [1.68ms]
+(pass) The Feature record and its single draw > built-in fallback models are coloured per vertex and closed all the way round [2.70ms]
+(pass) Feature budgets > the village church has closed building volumes, outward roof faces and bounded atlas UVs [9.35ms]
+(pass) Feature budgets > the shared file ships every model once with an optional atlas inside its budget [2.23ms]
+(pass) Feature budgets > each Landmark's instances fit its Balanced allowance and Low carries none [2.31ms]
+
+tests\terrain-detail.test.ts:
+(pass) boipeba Close View uses its authored pitch and half aerial distance on desktop and phone [0.59ms]
+(pass) abrolhos Close View uses its authored pitch and half aerial distance on desktop and phone [0.07ms]
+(pass) ilha-grande Close View uses its authored pitch and half aerial distance on desktop and phone [0.05ms]
+(pass) accelerated shore queries preserve exact distances and inside tests across disjoint islands [6.72ms]
+(pass) beaches require low, gentle coastal ground; cliffs and inland scrub remain separate [0.33ms]
+(pass) Boipeba separates low estuarine vegetation from ocean beaches without volcanic cliffs [0.33ms]
+(pass) authored relief is bounded, deterministic, and leaves the recorded waterline fixed [1.28ms]
+(pass) selective sampling spends additional interior vertices in the requested relief region [84.90ms]
+(pass) texture accessibility interpolates the scalar mesh bake in projected X/Z, leaving uncovered texels neutral [0.77ms]
+(pass) colour-only maps replace the palette once; removing them restores vertex fallback [0.44ms]
+(pass) native baking retains sub-256 detail and transfers linear occlusion to both tiers [10636.87ms]
+
+1 tests failed:
+(fail) packed Ilha Grande reconstructions retain volumetric sides, footings, valid normals and atlas coordinates [14.41ms]
+
+ 28 pass
+ 1 fail
+ 9634 expect() calls
+Ran 29 tests across 3 files. [11.95s]

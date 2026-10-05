@@ -1,0 +1,31 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/ocean-voyage-chrome/ocean-voyage",
+  "kind": "suite",
+  "status": "pass",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": true,
+  "recordedAt": "2026-10-05T17:52:05.259Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium (chrome)"
+  },
+  "method": "playwright test --config playwright.production.config.ts --project ocean-voyage-chrome tests/browser/ocean-voyage.e2e.ts",
+  "artifacts": [
+    {
+      "path": "../after-performance.json",
+      "sha256": "65b263f44a8da3b2f75c2fa67936e40792e1d237b9455caad6144593e49d577d"
+    }
+  ],
+  "notes": [
+    "Cleanup removes redundant sailing screenshots and duplicate JSON. All scored windows and runtime diagnostics remain byte-identical in the canonical artifact."
+  ],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f"
+}

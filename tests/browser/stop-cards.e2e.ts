@@ -191,7 +191,11 @@ for (const viewport of viewports) {
       await expect(stopCard(page)).toHaveAttribute("data-visible", "true");
       await expect(stopCard(page)).toBeVisible();
       // Measure where the card rests, not a frame of its slide in.
-      await stopCard(page).evaluate((card) => Promise.all(card.getAnimations().map((animation) => animation.finished)));
+      // A state change can replace an entry transition and reject its old
+      // finished promise. Observe the current animations until they settle.
+      await expect.poll(() => stopCard(page).evaluate((card) =>
+        card.getAnimations().some((animation) => animation.playState === "running"),
+      )).toBe(false);
       const { ship, landmark, card, chrome } = await stageBoxes(page);
       const state = `${viewport.name} · Stop 0${stop}`;
       expect(card.left, state).toBeGreaterThanOrEqual(0);

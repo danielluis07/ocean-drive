@@ -1,0 +1,457 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 2 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/stop-cards.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:15164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+baseline {"windows":29,"worstP90":29.600000001490116,"worstGpuP90":10.76304,"dprs":[0.9]}
+  ✘  1 [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: baseline (1.2m)
+(node:17092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+candidate {"windows":29,"worstP90":49.5,"worstGpuP90":10.7296,"dprs":[0.9]}
+  ✘  2 [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: candidate (1.2m)
+
+
+  1) [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: baseline 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 134[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 26421.199999999255,[39m
+    [31m+     "gpuP90Ms": 10.7088,[39m
+    [31m+     "p90Ms": 22.300000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 28434.300000000745,[39m
+    [31m+     "gpuP90Ms": 10.74304,[39m
+    [31m+     "p90Ms": 20.5,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 30448,[39m
+    [31m+     "gpuP90Ms": 10.73904,[39m
+    [31m+     "p90Ms": 23.300000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 32457,[39m
+    [31m+     "gpuP90Ms": 10.73808,[39m
+    [31m+     "p90Ms": 22.699999999254942,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 34473.300000000745,[39m
+    [31m+     "gpuP90Ms": 10.71552,[39m
+    [31m+     "p90Ms": 21.800000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 50592.900000002235,[39m
+    [31m+     "gpuP90Ms": 10.70064,[39m
+    [31m+     "p90Ms": 27.099999997764826,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 52605.10000000149,[39m
+    [31m+     "gpuP90Ms": 10.68944,[39m
+    [31m+     "p90Ms": 20.399999998509884,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 60676.5,[39m
+    [31m+     "gpuP90Ms": 10.72512,[39m
+    [31m+     "p90Ms": 29.600000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 62689.900000002235,[39m
+    [31m+     "gpuP90Ms": 10.7072,[39m
+    [31m+     "p90Ms": 23.600000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 64704.300000000745,[39m
+    [31m+     "gpuP90Ms": 10.73424,[39m
+    [31m+     "p90Ms": 27.699999999254942,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 66714.5,[39m
+    [31m+     "gpuP90Ms": 10.70432,[39m
+    [31m+     "p90Ms": 20.399999998509884,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      30 |     await info.attach(`${assets}-probe.json`,{path,contentType:'application/json'});
+      31 |     console.log(assets,JSON.stringify({windows:windows.length,worstP90:Math.max(...windows.map((window:{p90Ms:number})=>window.p90Ms)),worstGpuP90:Math.max(...windows.map((window:{gpuP90Ms:number})=>window.gpuP90Ms)),dprs:[...new Set(windows.map((window:{quality:{dpr:number}})=>window.quality.dpr))]}));
+    > 32 |     expect(windows.filter((window:{p90Ms:number})=>window.p90Ms>20)).toEqual([]);
+         |                                                                      ^
+      33 |   });
+      34 | }
+      35 |
+        at C:\Users\bombd\ocean-drive\.tmp\issue71-perf-probe.e2e.ts:32:70
+
+    attachment #1: baseline-probe.json (application/json) ──────────────────────────────────────────
+    test-results\issue71-perf-probe.e2e.ts--733c3-Arrival-diagnostic-baseline-issue71-perf-probe\attachments\baseline-probe-json-9b54a507f6e59bcb749d36dd0936b6be55cafb68.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\issue71-perf-probe.e2e.ts--733c3-Arrival-diagnostic-baseline-issue71-perf-probe\error-context.md
+
+  2) [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: candidate 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 218[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 23674.300000000745,[39m
+    [31m+     "gpuP90Ms": 10.6896,[39m
+    [31m+     "p90Ms": 20.799999997019768,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 25693.39999999851,[39m
+    [31m+     "gpuP90Ms": 10.67616,[39m
+    [31m+     "p90Ms": 21.100000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 27708.39999999851,[39m
+    [31m+     "gpuP90Ms": 10.7144,[39m
+    [31m+     "p90Ms": 23,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 29711.699999999255,[39m
+    [31m+     "gpuP90Ms": 10.7296,[39m
+    [31m+     "p90Ms": 28.899999998509884,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 31717.10000000149,[39m
+    [31m+     "gpuP90Ms": 10.72528,[39m
+    [31m+     "p90Ms": 22.800000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 33726.699999999255,[39m
+    [31m+     "gpuP90Ms": 10.70448,[39m
+    [31m+     "p90Ms": 23.099999997764826,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 35731.39999999851,[39m
+    [31m+     "gpuP90Ms": 10.68176,[39m
+    [31m+     "p90Ms": 20.300000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 37745.10000000149,[39m
+    [31m+     "gpuP90Ms": 10.69536,[39m
+    [31m+     "p90Ms": 20.099999997764826,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 39759.699999999255,[39m
+    [31m+     "gpuP90Ms": 10.6632,[39m
+    [31m+     "p90Ms": 22.399999998509884,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 41762.39999999851,[39m
+    [31m+     "gpuP90Ms": 10.66272,[39m
+    [31m+     "p90Ms": 20.300000000745058,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 45778.60000000149,[39m
+    [31m+     "gpuP90Ms": 10.68784,[39m
+    [31m+     "p90Ms": 20.199999999254942,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 55863.89999999851,[39m
+    [31m+     "gpuP90Ms": 10.69024,[39m
+    [31m+     "p90Ms": 27.199999999254942,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 57884.39999999851,[39m
+    [31m+     "gpuP90Ms": 10.69248,[39m
+    [31m+     "p90Ms": 33.600000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 59890.800000000745,[39m
+    [31m+     "gpuP90Ms": 10.71312,[39m
+    [31m+     "p90Ms": 24,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 61908.199999999255,[39m
+    [31m+     "gpuP90Ms": 10.71072,[39m
+    [31m+     "p90Ms": 42.600000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 63921.699999999255,[39m
+    [31m+     "gpuP90Ms": 10.7232,[39m
+    [31m+     "p90Ms": 39.29999999701977,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 65954.69999999925,[39m
+    [31m+     "gpuP90Ms": 10.71776,[39m
+    [31m+     "p90Ms": 49.5,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 67957.89999999851,[39m
+    [31m+     "gpuP90Ms": 10.67376,[39m
+    [31m+     "p90Ms": 49.100000001490116,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      30 |     await info.attach(`${assets}-probe.json`,{path,contentType:'application/json'});
+      31 |     console.log(assets,JSON.stringify({windows:windows.length,worstP90:Math.max(...windows.map((window:{p90Ms:number})=>window.p90Ms)),worstGpuP90:Math.max(...windows.map((window:{gpuP90Ms:number})=>window.gpuP90Ms)),dprs:[...new Set(windows.map((window:{quality:{dpr:number}})=>window.quality.dpr))]}));
+    > 32 |     expect(windows.filter((window:{p90Ms:number})=>window.p90Ms>20)).toEqual([]);
+         |                                                                      ^
+      33 |   });
+      34 | }
+      35 |
+        at C:\Users\bombd\ocean-drive\.tmp\issue71-perf-probe.e2e.ts:32:70
+
+    attachment #1: candidate-probe.json (application/json) ─────────────────────────────────────────
+    test-results\issue71-perf-probe.e2e.ts--f4368-rrival-diagnostic-candidate-issue71-perf-probe\attachments\candidate-probe-json-e79765851448268099b759ecbdb89d29672c9aa9.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\issue71-perf-probe.e2e.ts--f4368-rrival-diagnostic-candidate-issue71-perf-probe\error-context.md
+
+  2 failed
+    [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: baseline 
+    [issue71-perf-probe] › .tmp\issue71-perf-probe.e2e.ts:7:7 › Settled Arrival diagnostic: candidate 
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/landmark-geometry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/stop-cards.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
