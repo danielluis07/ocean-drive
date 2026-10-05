@@ -7,7 +7,6 @@ import { decodePlacements, encodePlacements, expandFeatures, scatterSites, type 
 import { distanceToRings, insideRings, projectLandmark, type PlanarPoint, type Ring } from "@/lib/landmark-geometry";
 import { sampleElevation, type ElevationGrid } from "@/lib/landmark-surface";
 import { featureModelBuilders } from "@/scripts/landmark-feature-models";
-import { readFeatureSource } from "@/scripts/landmark-feature-source";
 import { villageGeometry } from "@/data/landmarks/features/boipeba/village";
 
 // A square island that climbs from its west shore to a ridge along its east
@@ -217,21 +216,6 @@ describe("Feature budgets", () => {
       expect(uv.getY(i)).toBeGreaterThanOrEqual(0); expect(uv.getY(i)).toBeLessThanOrEqual(1);
     }
     geometry.dispose();
-  });
-  test("the textured library preserves the existing Abrolhos model and its placement", async () => {
-    const library = await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize);
-    const original = featureModelBuilders.placeholder();
-    const retained = library.models.find(model => model.id === "placeholder")!.geometry;
-    // Applying the identity transform normalises -0; compare geometric values.
-    expect(Array.from(retained.getAttribute("position").array, value => value + 0))
-      .toEqual(Array.from(original.getAttribute("position").array, value => value + 0));
-    expect(Array.from(retained.getAttribute("color").array)).toEqual(Array.from(original.getAttribute("color").array));
-    const file = inspectModel(await Bun.file(`public${featureFile.url}`).arrayBuffer());
-    expect(decodePlacements(file.features!.placements!.abrolhos)).toHaveLength(1);
-    expect(landmarkSources.find(source => source.id === "abrolhos")!.features).toEqual([
-      { name: "Farol de Abrolhos", model: "placeholder", lon: -38.6942, lat: -17.9647, scale: 1 },
-    ]);
-    original.dispose(); for (const model of library.models) model.geometry.dispose();
   });
   test("the shared file ships every model once with an optional atlas inside its budget", async () => {
     const buffer = await Bun.file(`public${featureFile.url}`).arrayBuffer();

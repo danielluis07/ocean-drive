@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "candidate": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04",
+  "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+  "startedAt": "2026-10-05T11:54:37.553Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false,
+    "wakeSamples": 2
+  },
+  "events": [
+    {
+      "atMs": 354.1000000005588,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 354.1000000005588,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 354.1000000005588,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 354.40000000037253,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 376.80000000074506,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 396.80000000074506,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 408,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 408,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1235.6000000005588,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1237.7000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1306.2000000001863,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1322.300000000745,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1334.2000000001863,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1426.1000000005588,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 2716.600000000559,
+    "frames": 163,
+    "windows": [
+      {
+        "atMs": 3332.7000000001863,
+        "p90Ms": 17,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 5,
+      "triangles": 45741,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

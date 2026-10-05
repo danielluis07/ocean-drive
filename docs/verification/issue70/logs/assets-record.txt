@@ -1,0 +1,2 @@
+$ bun scripts/record-assets.mjs
+Recorded 122 asset provenance entries.

@@ -104,6 +104,13 @@ see [village verification](verification/issue69-village.md) for its own review.
 The owner confirmed that no phone is available, so physical-phone
 validation remains explicitly unvalidated and rollout is not complete.
 
+Abrolhos now has a separate #70 candidate with bare rock-table masks, thin
+grass, broad reef shallows and a licensed-reference lighthouse reconstruction.
+See [its verification report](verification/issue70.md). The other islands'
+terrain and Boipeba's models/placements are preserved. The owner approved the
+final visuals on 2026-10-05. Desktop timing and physical-phone evidence remain
+open; failed baseline and candidate desktop runs are retained.
+
 Use Bun. After changing generated inputs, run `bun run landmarks:build` and
 `bun run assets:record`. Run `bun test`, `bun run lint`, `bun run typecheck` and
 `bun run assets:audit`; use production browser asset-art and budget checks for

@@ -1,0 +1,2 @@
+$ bun scripts/audit-assets.ts
+Asset provenance verified: 122 records; dependency lock and retained notices match.

@@ -1,0 +1,27 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 1 test using 1 worker
+
+Resolving dependencies
+fatal: unable to access 'https://C//Users/bombd/ocean-drive/node_modules/playwright/lib/common/process.js/': Could not resolve host: C
+error: git failed with exit code 128
+ssh: Could not resolve hostname c: Name or service not known
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+error: git failed with exit code 128
+error: "git clone" for "@C:/Users/bombd/ocean-drive/node_modules/playwright/lib/common/process.js" failed
+Resolved, downloaded and extracted [1]
+error: InstallFailed cloning repository for @C:/Users/bombd/ocean-drive/node_modules/playwright/lib/common/process.js
+error: Invalid dependency name "@C:/Users/bombd/ocean-drive/node_modules/playwright/lib/common/process.js"
+error: @C:/Users/bombd/ocean-drive/node_modules/playwright/lib/common/process.js failed to resolve
+  ✘  1 [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:0 › Balanced holds every passage through five active minutes on the host GPU (0ms)
+
+
+  1) [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:0 › Balanced holds every passage through five active minutes on the host GPU 
+
+    Error: worker process exited unexpectedly (code=1, signal=null)
+
+  1 failed
+    [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:0 › Balanced holds every passage through five active minutes on the host GPU 

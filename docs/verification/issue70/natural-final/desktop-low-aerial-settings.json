@@ -1,0 +1,15 @@
+{
+  "island": "abrolhos",
+  "framing": "aerial",
+  "view": {
+    "name": "desktop-low",
+    "tier": "low",
+    "width": 1280,
+    "height": 800,
+    "maps": "colour"
+  },
+  "deviceDpr": 1,
+  "renderDpr": "1",
+  "baseline": null,
+  "featuresHidden": true
+}

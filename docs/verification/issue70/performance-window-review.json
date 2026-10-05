@@ -1,0 +1,698 @@
+[
+  {
+    "set": "before-performance",
+    "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-6a9b601f63f383e3",
+    "failed": [
+      {
+        "seconds": 176.7,
+        "p90Ms": 28.399999999906868,
+        "gpuP90Ms": 10.7488,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 200.8,
+        "p90Ms": 22.399999999906868,
+        "gpuP90Ms": 16.312,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 202.8,
+        "p90Ms": 32,
+        "gpuP90Ms": 16.19168,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 204.8,
+        "p90Ms": 36.4000000001397,
+        "gpuP90Ms": 15.70816,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 206.8,
+        "p90Ms": 33,
+        "gpuP90Ms": 13.48256,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 208.8,
+        "p90Ms": 25,
+        "gpuP90Ms": 10.94224,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 210.9,
+        "p90Ms": 26.899999999906868,
+        "gpuP90Ms": 10.95088,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 212.9,
+        "p90Ms": 20.199999999953434,
+        "gpuP90Ms": 10.98768,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      }
+    ],
+    "events": [],
+    "eventKinds": [
+      "readiness",
+      "quality",
+      "lifecycle",
+      "starting-quality",
+      "landmark-texture"
+    ],
+    "messages": []
+  },
+  {
+    "set": "before-performance-clean",
+    "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-4b686337f9bdb708",
+    "failed": [
+      {
+        "seconds": 79.1,
+        "p90Ms": 20.699999999720603,
+        "gpuP90Ms": 10.47696,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 183.8,
+        "p90Ms": 20.100000000093132,
+        "gpuP90Ms": 10.73792,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 187.8,
+        "p90Ms": 20.299999999813735,
+        "gpuP90Ms": 10.71536,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 189.9,
+        "p90Ms": 26.899999999906868,
+        "gpuP90Ms": 10.74592,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 193.9,
+        "p90Ms": 20.200000000186265,
+        "gpuP90Ms": 11.92768,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 196.2,
+        "p90Ms": 28,
+        "gpuP90Ms": 13.48512,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 198.2,
+        "p90Ms": 25.899999999906868,
+        "gpuP90Ms": 13.8552,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 200.5,
+        "p90Ms": 340,
+        "gpuP90Ms": 14.43808,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 202.6,
+        "p90Ms": 32.6999999997206,
+        "gpuP90Ms": 15.936,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 204.6,
+        "p90Ms": 35.40000000037253,
+        "gpuP90Ms": 16.356,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 206.6,
+        "p90Ms": 32.89999999990687,
+        "gpuP90Ms": 15.912,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 208.6,
+        "p90Ms": 27.199999999720603,
+        "gpuP90Ms": 15.04864,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 210.6,
+        "p90Ms": 21.299999999813735,
+        "gpuP90Ms": 12.36848,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      }
+    ],
+    "events": [],
+    "eventKinds": [
+      "readiness",
+      "quality",
+      "lifecycle",
+      "starting-quality",
+      "landmark-texture"
+    ],
+    "messages": []
+  },
+  {
+    "set": "after-performance",
+    "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+    "failed": [
+      {
+        "seconds": 112.1,
+        "p90Ms": 23.700000000186265,
+        "gpuP90Ms": 10.4832,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 116.1,
+        "p90Ms": 24.100000000558794,
+        "gpuP90Ms": 10.48288,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 134.6,
+        "p90Ms": 29.5,
+        "gpuP90Ms": 16.16896,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 136.6,
+        "p90Ms": 22.100000000558794,
+        "gpuP90Ms": 15.85504,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 138.7,
+        "p90Ms": 23.800000000745058,
+        "gpuP90Ms": 14.86832,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 140.7,
+        "p90Ms": 21.399999999441206,
+        "gpuP90Ms": 13.92032,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 186.9,
+        "p90Ms": 22.200000000186265,
+        "gpuP90Ms": 10.67472,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 201,
+        "p90Ms": 24.200000000186265,
+        "gpuP90Ms": 16.01424,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 205.1,
+        "p90Ms": 28.09999999962747,
+        "gpuP90Ms": 15.98016,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 207.1,
+        "p90Ms": 25.899999999441206,
+        "gpuP90Ms": 14.31984,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      }
+    ],
+    "events": [],
+    "eventKinds": [
+      "readiness",
+      "quality",
+      "lifecycle",
+      "starting-quality",
+      "landmark-texture"
+    ],
+    "messages": []
+  },
+  {
+    "set": "after-performance-repeat",
+    "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+    "failed": [
+      {
+        "seconds": 205,
+        "p90Ms": 28.200000000186265,
+        "gpuP90Ms": 15.87904,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 233.2,
+        "p90Ms": 20.59999999962747,
+        "gpuP90Ms": 11.1368,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 239.2,
+        "p90Ms": 22.200000000186265,
+        "gpuP90Ms": 11.13712,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 245.2,
+        "p90Ms": 38.5,
+        "gpuP90Ms": 11.10448,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 247.3,
+        "p90Ms": 27,
+        "gpuP90Ms": 7.45648,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 249.3,
+        "p90Ms": 26.300000000745058,
+        "gpuP90Ms": 8.68848,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 251.3,
+        "p90Ms": 33,
+        "gpuP90Ms": 8.33152,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 253.3,
+        "p90Ms": 24.59999999962747,
+        "gpuP90Ms": 7.12128,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 255.3,
+        "p90Ms": 31.100000000558794,
+        "gpuP90Ms": 7.412,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 257.3,
+        "p90Ms": 26.700000000186265,
+        "gpuP90Ms": 7.35536,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 259.4,
+        "p90Ms": 30,
+        "gpuP90Ms": 7.56224,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 261.7,
+        "p90Ms": 31.700000000186265,
+        "gpuP90Ms": 7.86464,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 263.7,
+        "p90Ms": 36.5,
+        "gpuP90Ms": 10.10192,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 269.7,
+        "p90Ms": 26.700000000186265,
+        "gpuP90Ms": 9.41312,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 271.7,
+        "p90Ms": 34.09999999962747,
+        "gpuP90Ms": 9.3688,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 273.8,
+        "p90Ms": 29.600000000558794,
+        "gpuP90Ms": 8.5992,
+        "wakeActive": true,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 275.8,
+        "p90Ms": 34.90000000037253,
+        "gpuP90Ms": 7.41552,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 295.9,
+        "p90Ms": 21.300000000745058,
+        "gpuP90Ms": 10.6784,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 307.9,
+        "p90Ms": 21.09999999962747,
+        "gpuP90Ms": 10.67376,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 310,
+        "p90Ms": 21.200000000186265,
+        "gpuP90Ms": 10.68448,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 312,
+        "p90Ms": 20.90000000037253,
+        "gpuP90Ms": 10.7032,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      },
+      {
+        "seconds": 314,
+        "p90Ms": 20.90000000037253,
+        "gpuP90Ms": 10.69136,
+        "wakeActive": false,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        }
+      }
+    ],
+    "events": [],
+    "eventKinds": [
+      "readiness",
+      "quality",
+      "lifecycle",
+      "starting-quality",
+      "landmark-texture"
+    ],
+    "messages": []
+  }
+]

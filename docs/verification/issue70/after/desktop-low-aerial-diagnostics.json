@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "candidate": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04",
+  "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+  "startedAt": "2026-10-05T11:54:21.277Z",
+  "quality": {
+    "tier": "low",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 376,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 376,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 376,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 376.20000000018626,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 391,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 410.20000000018626,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 425,
+      "kind": "quality",
+      "detail": {
+        "tier": "low",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 425,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1178.1000000005588,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1179.2000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1491.800000000745,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1512.6000000005588,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1519.9000000003725,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1523.9000000003725,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1526.6000000005588,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1535.2000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1551.7000000001863,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"low\",\"generation\":0,\"settledStop\":3}"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 1677.7000000001863,
+    "frames": 102,
+    "windows": []
+  },
+  "scenes": {
+    "low": {
+      "drawCalls": 4,
+      "triangles": 9420,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    }
+  }
+}

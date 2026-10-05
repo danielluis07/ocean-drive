@@ -1,0 +1,32 @@
+[
+  {
+    "path": "public/models/landmark-abrolhos-balanced.v1.glb",
+    "bytes": 211408,
+    "sha256": "47d205645aa06b3fcb43e8386a16c39afa108f6a630f00cae822ca293d6be455"
+  },
+  {
+    "path": "public/models/landmark-abrolhos-low.v1.glb",
+    "bytes": 27376,
+    "sha256": "0fcd5446bdc43353913121b2827693cf658ee3f6423d2ef723c1b3e70eb0116b"
+  },
+  {
+    "path": "public/models/landmark-features.v1.glb",
+    "bytes": 199036,
+    "sha256": "dfa7a80c0da89a25e63ee39363c7ad10b2b6322b5851a30450628e2f371ded1d"
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
+    "bytes": 7728,
+    "sha256": "c6a0bea35f527dbcf71acfa3ab7732611adc5786b37a14533bf457438043f6fb"
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
+    "bytes": 9270,
+    "sha256": "048c2e9a4f5a2cd1eecdadd0eceeffa0e824c534c1a82c487ff16c9a3bc728ce"
+  },
+  {
+    "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
+    "bytes": 3106,
+    "sha256": "c803c330db2f53eaa611bdca9ce2c1e3198940e3be74ca59175dd9da5cf0a285"
+  }
+]

@@ -1,0 +1,74 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 5 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › desktop: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (1.2m)
+  ✘  2 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (30.1s)
+(node:21036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › small landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (29.0s)
+  ✓  4 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (36.2s)
+  ✓  5 [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › narrow portrait phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical (38.8s)
+
+
+  1) [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical 
+
+    [31mTest timeout of 30000ms exceeded while setting up "context".[39m
+
+    Error: browser.newContext: Test ended.
+    Browser logs:
+
+    <launching> C:\Users\bombd\AppData\Local\ms-playwright\chromium_headless_shell-1208\chrome-headless-shell-win64\chrome-headless-shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-angle=swiftshader --enable-unsafe-swiftshader --user-data-dir=C:\Users\bombd\AppData\Local\Temp\playwright_chromiumdev_profile-5HDBxh --remote-debugging-pipe --no-startup-window
+    <launched> pid=20784
+    [pid=20784][err] [1005/090345.098:INFO:CONSOLE:1] "THREE.WebGLRenderer: KHR_parallel_shader_compile extension not supported.", source: http://localhost:3100/_next/static/chunks/1deyonr-kwf04.js (1)
+    [pid=20784] <gracefully close start>
+    [pid=20784] <kill>
+    [pid=20784] <will force kill>
+    [pid=20784] taskkill stdout: ÊXITO: o processo com PID 12312 (processo filho de PID 20784) foi finalizado.
+    ÊXITO: o processo com PID 8776 (processo filho de PID 20784) foi finalizado.
+    ÊXITO: o processo com PID 20784 (processo filho de PID 932) foi finalizado.
+
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    .tmp\issue70-final-cards\stop-cards.e2e.ts-landscap-3b1d4-its-Landmark-and-the-chrome-stop-card-placement\trace.zip
+    Usage:
+
+        npx playwright show-trace .tmp\issue70-final-cards\stop-cards.e2e.ts-landscap-3b1d4-its-Landmark-and-the-chrome-stop-card-placement\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [stop-card-placement] › tests\browser\stop-cards.e2e.ts:182:7 › landscape phone: Stop Cards sit beside the Ship, clear of it, its Landmark, and the chrome @critical 
+  4 passed (4.3m)
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

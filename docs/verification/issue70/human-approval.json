@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-05T12:22:40Z",
+  "approver": "Project owner, in this Codex conversation",
+  "response": "Approve these visuals",
+  "productionBuild": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+  "candidateHashes": "candidate-assets.json",
+  "scope": "Final Abrolhos visual candidate; required desktop Balanced, desktop Low and phone Low asset-art captures, plus Balanced Close View",
+  "reviewedCaptures": [
+    "asset-art/desktop-balanced-stop-03.png",
+    "asset-art/desktop-low-stop-03.png",
+    "asset-art/phone-low-stop-03.png",
+    "after/desktop-balanced-close.png"
+  ],
+  "desktopPerformance": "Nonpassing in both isolated final-candidate runs; see issue70.md",
+  "physicalPhone": "Unvalidated; visual emulation is not device evidence"
+}

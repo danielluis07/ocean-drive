@@ -13,8 +13,8 @@ import { frameTerrainPreview } from "@/lib/terrain-preview";
 import { frameRouteCamera } from "@/lib/route-camera";
 
 const source = landmarkSources[0];
-test("Boipeba Close View uses its authored pitch and half aerial distance on desktop and phone", () => {
-  const view = landmarkCloseViews.boipeba!;
+for (const island of ["boipeba", "abrolhos"] as const) test(`${island} Close View uses its authored pitch and half aerial distance on desktop and phone`, () => {
+  const view = landmarkCloseViews[island]!;
   for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
     const ship = { x: -224, z: 10 };
     const aerial = frameRouteCamera(ship, viewport);
@@ -24,7 +24,7 @@ test("Boipeba Close View uses its authored pitch and half aerial distance on des
     const pitch = Math.asin((close.position[1] - close.target[1]) / distance(close)) * 180 / Math.PI;
     expect(pitch).toBeGreaterThanOrEqual(45);
     expect(pitch).toBeLessThanOrEqual(50);
-    expect(close.target).toEqual([-224, .7, -9]);
+    expect(close.target).toEqual([-224, view.targetHeight, -9]);
   }
 });
 test("accelerated shore queries preserve exact distances and inside tests across disjoint islands", () => {

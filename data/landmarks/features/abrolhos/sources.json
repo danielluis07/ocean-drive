@@ -1,0 +1,37 @@
+[
+  {
+    "files": ["references/lighthouse-front.jpg", "references/lighthouse-front.html"],
+    "sourceKind": "licensed-image", "creator": "Munique Bassoli",
+    "source": "https://commons.wikimedia.org/wiki/File:Farol_da_Ilha_de_Santa_B%C3%A1rbara.jpg",
+    "retrieved": "2026-10-05", "rights": "CC BY-SA 4.0; lighthouse reconstruction reference; no photographic pixels embedded",
+    "proof": "data/landmarks/features/abrolhos/references/lighthouse-front.html"
+  },
+  {
+    "files": ["references/lighthouse-side.jpg", "references/lighthouse-side.html"],
+    "sourceKind": "licensed-image", "creator": "Alicedaraujo",
+    "source": "https://commons.wikimedia.org/wiki/File:Farol_de_Abrolhos.jpg",
+    "retrieved": "2026-10-05", "rights": "CC BY-SA 4.0; lighthouse and cliff reconstruction reference; no photographic pixels embedded",
+    "proof": "data/landmarks/features/abrolhos/references/lighthouse-side.html"
+  },
+  {
+    "files": ["references/island-aerial.jpg", "references/island-aerial.html"],
+    "sourceKind": "licensed-image", "creator": "Gabi Carrera / Marinha do Brasil",
+    "source": "https://commons.wikimedia.org/wiki/File:Abrolhos_-_Ilha_de_Santa_B%C3%A1rbara_BA_(52114916684).jpg",
+    "retrieved": "2026-10-05", "rights": "CC BY-SA 2.0; oblique shore reference; adaptations under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+    "proof": "data/landmarks/features/abrolhos/references/island-aerial.html"
+  },
+  {
+    "files": ["references/lighthouse.osm.json"],
+    "sourceKind": "open-data", "creator": "OpenStreetMap contributors",
+    "source": "https://api.openstreetmap.org/api/0.6/node/1181469524.json",
+    "retrieved": "2026-10-05", "rights": "ODbL 1.0; lighthouse mapped coordinate; attribution retained in the experience",
+    "proof": "docs/third-party/open-geodata.md"
+  },
+  {
+    "files": ["references/CC-BY-SA-4.0.txt", "references/CC-BY-SA-2.0.html"],
+    "sourceKind": "open-data", "creator": "Creative Commons",
+    "source": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt and https://creativecommons.org/licenses/by-sa/2.0/legalcode.en",
+    "retrieved": "2026-10-05", "rights": "Retained Creative Commons legal codes accompanying licensed references and adaptations",
+    "proof": "data/landmarks/features/abrolhos/README.md"
+  }
+]

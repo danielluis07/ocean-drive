@@ -1,0 +1,9 @@
+{
+  "files": 23,
+  "differences": [],
+  "identical": true,
+  "builds": [
+    "transfer-fit-build-one.txt",
+    "transfer-fit-build-two.txt"
+  ]
+}

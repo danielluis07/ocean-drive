@@ -46,6 +46,18 @@ for await (const file of new Bun.Glob('*.json').scan({cwd:'data/landmarks',onlyF
  landmarkRecords.set(record.id, record);
  assets.push({path, kind: 'source-data', ...geodata(record.coastline.retrieved), transformations: 'Coastline ways chained into closed island rings, filtered by winding, size and neighbourhood, and rounded to six decimals; terrarium elevation tiles decoded to metres and resampled to one square grid over those rings', essential: false, experience: false, sha256: await hash(path)});
 }
+const abrolhosRoot = 'data/landmarks/features/abrolhos';
+const abrolhosReferences = await Bun.file(`${abrolhosRoot}/sources.json`).json();
+for await (const file of new Bun.Glob('**/*').scan({cwd:abrolhosRoot,onlyFiles:true})) {
+ const relative = file.replaceAll('\\','/'), path = `${abrolhosRoot}/${relative}`;
+ if (path === featureFile.source?.path) continue;
+ const reference = abrolhosReferences.find(entry => entry.files.includes(relative));
+ assets.push({path, kind:'source-data', sourceKind:reference?.sourceKind ?? 'project-source',
+  creator:reference?.creator ?? 'Ocean Drive project contributors', source:reference?.source ?? `${abrolhosRoot}/build.ts`,
+  retrieved:reference?.retrieved ?? '2026-10-05', rights:reference?.rights ?? 'Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences',
+  proof:reference?.proof ?? `${abrolhosRoot}/README.md`, transformations:reference ? 'Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node' : 'Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation',
+  essential:false, experience:false, sha256:await hash(path)});
+}
 for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true})) {
  const path = `public/${file.replaceAll('\\','/')}`;
  const url = '/'+file.replaceAll('\\','/');
@@ -55,7 +67,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
  const terrain = /\/landmark-(.+)-(balanced|low)-(colour|normal)\.v\d+\.webp$/.exec(path);
  if (terrain) {
   const detailed = landmarkSources.find(source => source.id === terrain[1])?.terrainTreatment;
-  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; ${detailed ? `native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/${terrain[1] === "boipeba" ? "boipeba" : "noronha"}-terrain.md` : 'legacy 256px field resized to output dimensions'}; WebP encoding; no satellite imagery or measured land-cover claim`, essential: false, experience: true, sha256: await hash(path)});
+  assets.push({path, url, kind: "authored", ...geodata(landmarkRecords.get(terrain[1])?.coastline.retrieved), source: "scripts/landmark-texture-bake.ts", transformations: `Deterministic offline ${terrain[2]} ${terrain[3]} terrain bake from recorded elevation, slope, distance inland and authored palette; ${detailed ? `native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/${terrain[1] === "fernando-de-noronha" ? "noronha" : terrain[1]}-terrain.md` : 'legacy 256px field resized to output dimensions'}; WebP encoding; no satellite imagery or measured land-cover claim`, essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  const illustrative = path.startsWith('public/images/');
@@ -69,7 +81,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
   continue;
  }
  if (features && featureFile.source) {
-  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: featureFile.source.sourceKind ?? "licensed-model", source: featureFile.source.source, transformations: "Project-authored palm and Velha Boipeba church reconstructions and shared atlas from retained licensed references; existing models and placements preserved; deterministic terrain placements and named church coordinate added by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
+  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: featureFile.source.sourceKind ?? "licensed-model", source: featureFile.source.source, transformations: "Project-authored Boipeba palm/church and Abrolhos lighthouse reconstructions with one shared atlas from retained licensed references; Boipeba attributes, occupied atlas pixels and placements preserved; named coordinates projected onto terrain by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features) {
@@ -90,6 +102,7 @@ for (const path of ['components/voyage/travessia-mark.tsx','lib/ocean-surface.ts
 for (const path of ['content/landmark-sources.ts','content/landmarks.json','scripts/generate-landmarks.ts','scripts/landmark-feature-models.ts','scripts/landmark-feature-source.ts','scripts/landmark-texture-bake.ts','lib/landmark-geometry.ts','lib/landmark-surface.ts','lib/landmark-features.ts']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-09-17', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/open-geodata.md', transformations:path.endsWith('.json') ? 'Written by the Landmark build from the recorded source data' : 'Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline', essential:true, experience:!path.startsWith('scripts/'), sha256:await hash(path)});
 for (const path of ['scripts/terrain-treatment.ts', 'scripts/terrain-occlusion.ts', 'scripts/terrain-shore-sampler.ts', 'docs/third-party/noronha-terrain.md']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-10-03', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/noronha-terrain.md', transformations:'Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography', essential:true, experience:false, sha256:await hash(path)});
 for (const path of ["content/landmark-close-views.ts", "docs/third-party/boipeba-terrain.md"]) assets.push({path, kind:"pipeline", sourceKind:"project-source", creator:"Ocean Drive project contributors", source:"scripts/generate-landmarks.ts", retrieved:"2026-10-03", rights:"Project-authored interpretation; no new surveyed geography", proof:"docs/third-party/boipeba-terrain.md", transformations:"Authored Boipeba surface interpretation and diagnostic Close View framing", essential:false, experience:false, sha256:await hash(path)});
+assets.push({path:"docs/third-party/abrolhos-terrain.md", kind:"pipeline", sourceKind:"project-source", creator:"Ocean Drive project contributors", source:"scripts/generate-landmarks.ts", retrieved:"2026-10-05", rights:"Project-authored interpretation; no new surveyed geography", proof:"docs/third-party/abrolhos-terrain.md", transformations:"Bare rock tables, thin grass, narrow beach pockets, broad reef shallows and configured Close View; native terrain and unchanged geographic inputs", essential:false, experience:false, sha256:await hash("docs/third-party/abrolhos-terrain.md")});
 assets.sort((a,b)=>a.path.localeCompare(b.path));
 await Bun.write('content/asset-manifest.json',JSON.stringify({schema:1, assets},null,2)+'\n');
 console.log(`Recorded ${assets.length} asset provenance entries.`);

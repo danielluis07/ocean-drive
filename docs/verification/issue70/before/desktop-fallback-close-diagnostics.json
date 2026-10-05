@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "candidate": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04",
+  "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-4b686337f9bdb708",
+  "startedAt": "2026-10-05T11:11:14.831Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 418.19999999995343,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 418.19999999995343,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 418.19999999995343,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 418.30000000004657,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 434.10000000009313,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 450.5,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 464.69999999995343,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 464.69999999995343,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1274,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1275.5,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1357.1000000000931,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1370.1000000000931,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1384.3000000000466,
+      "kind": "readiness",
+      "detail": "ready"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 3049.6999999999534,
+    "frames": 183,
+    "windows": [
+      {
+        "atMs": 3384.5,
+        "p90Ms": 16.9000000001397,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 5,
+      "triangles": 44749,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

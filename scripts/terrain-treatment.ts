@@ -8,6 +8,10 @@ export type TerrainTreatment = {
   rockScale: number;
   // Authored low-coast interpretation, in projected world units and DEM metres.
   coastal?: { oceanStart: number; oceanEnd: number; wetlandHeight: number };
+  // Low exposed rock tables with thin grass, without raised scrub crowns.
+  bareTables?: boolean;
+  // Tier-specific fraction of the triangle sampling cap, leaving byte headroom.
+  samplingRatio?: { balanced?: number; low?: number };
 };
 
 export const smooth = (a: number, b: number, value: number) => {
@@ -33,6 +37,13 @@ function scrubCrown(x: number, z: number) {
 }
 
 export function terrainMasks(metres: number, slope: number, inland: number, source: LandmarkSource, x = 0) {
+  if (source.terrainTreatment?.bareTables) {
+    const beach = (1 - smooth(source.beachWidth * .15, source.beachWidth, inland))
+      * (1 - smooth(source.shoreHeight * .3, source.shoreHeight * 2, metres))
+      * (1 - smooth(.12, .25, slope)) * .16;
+    const grass = smooth(.15, .8, inland) * (1 - smooth(.13, .4, slope)) * .24;
+    return { beach, rock: (1 - beach) * (1 - grass), scrub: (1 - beach) * grass, wetland: 0 };
+  }
   const coastal = source.terrainTreatment?.coastal;
   if (coastal) {
     const ocean = smooth(coastal.oceanStart, coastal.oceanEnd, x);
@@ -70,7 +81,7 @@ export function terrainPigment(x: number, z: number, metres: number, slope: numb
   const treatment = source.terrainTreatment!;
   const masks = terrainMasks(metres, slope, inland, source, x);
   const patch = mottle(x * 1.1, z * 1.1);
-  const crownLight = scrubCrown(x * treatment.scrubScale, z * treatment.scrubScale);
+  const crownLight = treatment.bareTables ? 0 : scrubCrown(x * treatment.scrubScale, z * treatment.scrubScale);
   const grain = mottle(x * 24, z * 24);
   const joint = smooth(.40, .55, mottle(x * treatment.rockScale, z * treatment.rockScale * .45));
   const strata = Math.sin(metres * .9 + mottle(x * 3, z * 3) * 4) * .5 + .5;
@@ -83,6 +94,17 @@ export function terrainPigment(x: number, z: number, metres: number, slope: numb
   const rockTone = .62 + joint * .40 + strata * .15 + grain * .12;
   const wetSand = .80 + smooth(.05, .45, inland) * .2;
   const sandTone = wetSand * (.95 + grain * .08);
+  if (treatment.bareTables) {
+    const grass = masks.scrub * smooth(.25, .65, patch);
+    const bare = 1 - masks.beach - grass;
+    const weathering = .76 + joint * .18 + strata * .12 + grain * .08;
+    const grassTone = .9 + patch * .16 + grain * .04;
+    return {
+      colour: low.map((value, channel) => (value + (high[channel] - value) * dry) * grassTone * grass
+        + rock[channel] * weathering * bare + sand[channel] * sandTone * masks.beach),
+      bump: bare * (joint * .011 + strata * .004) + grass * grain * .0015,
+    };
+  }
   const colour = low.map((value, channel) =>
     (value + (high[channel] - value) * dry) * scrubTone * masks.scrub
     + rock[channel] * rockTone * masks.rock + sand[channel] * sandTone * masks.beach);

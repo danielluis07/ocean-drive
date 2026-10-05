@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "candidate": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04",
+  "build": "4f4a24f2bf92fb391dba92ebf0e8f928931e0b04-01122ab15a29fe51",
+  "startedAt": "2026-10-05T12:02:32.524Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false,
+    "wakeSamples": 2
+  },
+  "events": [
+    {
+      "atMs": 367,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 367,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 367,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 367.09999999962747,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 379.79999999981374,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 394.59999999962747,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 406.79999999981374,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 406.79999999981374,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1225,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1226.2999999998137,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1294.7999999998137,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1301.199999999255,
+      "kind": "readiness",
+      "detail": "frame"
+    },
+    {
+      "atMs": 1326,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1327.5999999996275,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1330.3999999994412,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1388.5999999996275,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1399.699999999255,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+    },
+    {
+      "atMs": 1475.5,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false,
+        "wakeSamples": 2
+      }
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 3086.5,
+    "frames": 182,
+    "windows": [
+      {
+        "atMs": 3329.2999999998137,
+        "p90Ms": 17.700000000186265,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "balanced",
+          "dpr": 0.9,
+          "fallback": false,
+          "wakeSamples": 2
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 4,
+      "triangles": 44373,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

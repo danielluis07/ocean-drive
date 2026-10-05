@@ -1,0 +1,23 @@
+$ bun scripts/generate-landmarks.ts
+fernando-de-noronha balanced: 14059 triangles (507 in the shallows), 249.4 KiB, 3 outlines at 0.22 units
+fernando-de-noronha low: 1223 triangles (365 in the shallows), 26.8 KiB, 3 outlines at 0.82 units
+boipeba balanced: 12336 triangles (449 in the shallows), 218.6 KiB, 4 outlines at 0.31 units
+boipeba low: 1214 triangles (261 in the shallows), 27.0 KiB, 4 outlines at 1.16 units
+abrolhos balanced: 13996 triangles (747 in the shallows), 246.5 KiB, 6 outlines at 0.17 units
+abrolhos low: 1198 triangles (533 in the shallows), 26.7 KiB, 6 outlines at 0.64 units
+ilha-grande balanced: 11878 triangles (562 in the shallows), 209.6 KiB, 1 outlines at 0.27 units
+ilha-grande low: 1253 triangles (306 in the shallows), 27.6 KiB, 1 outlines at 1.04 units
+Features: 3 models, 14 instances, 194.4 KiB
+Recorded 4 Landmarks in content/landmarks.json.
+527 | // vessel. Optional textures remain outside the minimum-sailable budget.
+528 | let authoredBytes = 0;
+529 | for (const directory of ["public/models", "public/textures"]) {
+530 |   for await (const path of new Bun.Glob("**/*").scan({ cwd: directory, onlyFiles: true })) authoredBytes += Bun.file(`${directory}/${path}`).size;
+531 | }
+532 | if (authoredBytes > productionBudgets.allVisuals) throw new Error("All authored model/texture visuals exceed 1.8 MiB");
+                                                                  ^
+error: All authored model/texture visuals exceed 1.8 MiB
+      at C:\Users\bombd\ocean-drive\scripts\generate-landmarks.ts:532:61
+
+Bun v1.4.2 (Windows x64)
+error: script "landmarks:build" exited with code 1

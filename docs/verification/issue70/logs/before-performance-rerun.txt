@@ -1,0 +1,175 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 1 test using 1 worker
+
+(node:13128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU (5.5m)
+
+
+  1) [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 
+
+    Error: Every Chrome window must sustain p90 ≤ 20 ms
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 98[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 182504.5,[39m
+    [31m+     "gpuP90Ms": 10.7488,[39m
+    [31m+     "p90Ms": 28.399999999906868,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 206648.69999999995,[39m
+    [31m+     "gpuP90Ms": 16.312,[39m
+    [31m+     "p90Ms": 22.399999999906868,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 208654.5,[39m
+    [31m+     "gpuP90Ms": 16.19168,[39m
+    [31m+     "p90Ms": 32,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 210671.59999999986,[39m
+    [31m+     "gpuP90Ms": 15.70816,[39m
+    [31m+     "p90Ms": 36.4000000001397,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 212674.09999999986,[39m
+    [31m+     "gpuP90Ms": 13.48256,[39m
+    [31m+     "p90Ms": 33,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 214691.7999999998,[39m
+    [31m+     "gpuP90Ms": 10.94224,[39m
+    [31m+     "p90Ms": 25,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 216702.3999999999,[39m
+    [31m+     "gpuP90Ms": 10.95088,[39m
+    [31m+     "p90Ms": 26.899999999906868,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 218712.3999999999,[39m
+    [31m+     "gpuP90Ms": 10.98768,[39m
+    [31m+     "p90Ms": 20.199999999953434,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      92 |     // that acceptance criterion into an additional Firefox performance gate.
+      93 |     if (browser.browserType().name() === "chromium") {
+    > 94 |       expect.soft(windows.filter((window: { p90Ms: number }) => window.p90Ms > 20), "Every Chrome window must sustain p90 ≤ 20 ms").toEqual([]);
+         |                                                                                                                                     ^
+      95 |     }
+      96 |     expect.soft(report.scenes.balanced?.drawCalls).toBeLessThanOrEqual(productionBudgets.drawCalls);
+      97 |     expect.soft(report.scenes.balanced?.triangles).toBeLessThanOrEqual(productionBudgets.triangles);
+        at C:\Users\bombd\ocean-drive\tests\browser\ocean-voyage.e2e.ts:94:133
+
+    attachment #1: ocean-voyage.json (application/json) ────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\ocean-voyage-json-18a43b9d6404ebf3b5ca660d579d1dca974c3410.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: stop-0.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-0-png-518225a4d51a6a9f52a0b4370928433901eef0bf.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: passage-0-1.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-0-1-png-60e9cf4fab1604c89a858e95c4700f586cabb762.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: stop-1.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-1-png-df496df9912d7af0728d6a15f48600e8292c7f57.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: passage-1-2.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-1-2-png-b74d5bfdff2fa09e46ba3008f340b8130d781234.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: stop-2.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-2-png-48fbe263cc2fd93d026fa9b719cbd9bd8dfa414a.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: passage-2-3.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-2-3-png-d8bcf65665a5e08b40e8b0c6552601253c1f9e36.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: stop-3.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-3-png-3c88bf461d01029c9c07e4e107f13811ca484ea6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: passage-3-4.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-3-4-png-293db6fccfac9d42254b27efa7e4f1292a466860.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: stop-4.png (image/png) ─────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-4-png-f77b92eb935e3ea7f69e2223d8bd25f81f31b25b.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .tmp\issue70-before-performance\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\error-context.md
+
+  Slow test file: [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts (5.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 

@@ -1,0 +1,38 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 10 tests using 1 worker
+
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:7724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced aerial (5.5s)
+  ✓   2 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced close (4.7s)
+  ✓   3 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only aerial (3.7s)
+  ✓   4 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only close (4.3s)
+  ✓   5 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low aerial (3.4s)
+  ✓   6 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low close (4.2s)
+  ✓   7 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low aerial (3.8s)
+  ✓   8 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low close (4.0s)
+  ✓   9 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback aerial (4.1s)
+  ✓  10 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback close (4.3s)
+
+  10 passed (48.0s)
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

@@ -1,0 +1,22 @@
+[
+  {
+    "path": "data/landmarks/features/boipeba/atlas.png",
+    "sha256": "19506c5f3e82d9cc1576dceb92063a1dfbf06072d4600115409492bdf0f9d0d4"
+  },
+  {
+    "path": "data/landmarks/features/boipeba/library.glb",
+    "sha256": "23c6ae0cf7e73750e2e2cfd31151016ca057e43cfdd384bba729a8f6fae2f220"
+  },
+  {
+    "path": "data/landmarks/features/abrolhos/atlas.png",
+    "sha256": "51f0b4a8b5755eccfe49804cff03af1294260d09712c0c128cf56796e653dbd5"
+  },
+  {
+    "path": "data/landmarks/features/abrolhos/library.glb",
+    "sha256": "8a4f0013a95c1aa05a43d5d28f958acf7d53ca1a538781cb498a8c60679909d9"
+  },
+  {
+    "path": "data/landmarks/abrolhos.json",
+    "sha256": "4dc85303f53081c7ef52ee431a41b49aa1902877518a0ef6a1738cb78f7893cd"
+  }
+]

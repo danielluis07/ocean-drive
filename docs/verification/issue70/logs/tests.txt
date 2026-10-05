@@ -1,0 +1,311 @@
+bun test v1.4.2 (744846f84)
+
+tests\abrolhos-landmark.test.ts:
+(pass) lighthouse bands sample black and white paint in glTF's top-origin atlas space [54.34ms]
+(pass) Abrolhos remains predominantly exposed rock with thin grass and little beach [3.22ms]
+(pass) lighthouse has an all-round body, roof, footing and valid shared-atlas UVs [22.57ms]
+(pass) Abrolhos addition preserves Boipeba model attributes and occupied atlas pixels [282.73ms]
+
+tests\acceptance-matrix.test.ts:
+(pass) Production Acceptance Matrix > every row is complete, uniquely identified, and backed by evidence [0.54ms]
+(pass) Production Acceptance Matrix > every automated check is one the workflow actually records [10.57ms]
+(pass) Production Acceptance Matrix > only the cosmetic visual-direction row can be waived [0.23ms]
+(pass) Production Acceptance Matrix > the rows cover every area the Travessia release must prove [0.77ms]
+(pass) Production Acceptance Matrix > without evidence no row passes, so the real matrix can never certify itself [2.68ms]
+(pass) Production Acceptance Matrix > checklists and the evidence template cover every manual capture point [2.19ms]
+(pass) Production Acceptance Matrix > docs/acceptance-matrix.md is generated from the matrix [2.70ms]
+
+tests\asset-bake.test.ts:
+(pass) an exposed plane remains unoccluded and a nearby ceiling darkens it deterministically [9.45ms]
+(pass) surface projection interpolates Balanced colours and clamps a coastline miss [1.80ms]
+
+tests\asset-change-check.test.ts:
+(pass) asset regeneration includes sources, outputs, helpers and toolchain changes [0.57ms]
+(pass) editorial, UI and documentation changes do not rebuild model assets [0.16ms]
+
+tests\charted-route.test.ts:
+(pass) Charted Route progress mapping > the route is charted through Stops 00 to 04 in order [0.12ms]
+(pass) Charted Route progress mapping > whole-number progress places the Ship exactly at each Stop's anchorage [0.36ms]
+(pass) Charted Route progress mapping > progress is clamped to the route, so the Ship cannot leave either end [0.08ms]
+(pass) Charted Route progress mapping > the path is continuous and evenly paced between Stops [0.66ms]
+(pass) Charted Route progress mapping > the Ship's heading follows the direction of travel along the path [0.37ms]
+(pass) Stop selection > nearest Stop to progress 0.49 is 0 [0.06ms]
+(pass) Stop selection > nearest Stop to progress 0.5 is 1
+(pass) Stop selection > nearest Stop to progress 2.2 is 2
+(pass) Stop selection > nearest Stop to progress 3.7 is 4
+(pass) Stop selection > nearest Stop to progress -1 is 0
+(pass) Stop selection > nearest Stop to progress 9 is 4
+(pass) Stop selection > from progress 0, direction 1 moves to Stop 1 [0.09ms]
+(pass) Stop selection > from progress 1, direction 1 moves to Stop 2
+(pass) Stop selection > from progress 1, direction -1 moves to Stop 0
+(pass) Stop selection > from progress 1.4, direction 1 moves to Stop 2
+(pass) Stop selection > from progress 1.4, direction -1 moves to Stop 1
+(pass) Stop selection > from progress 1.9, direction 1 moves to Stop 2
+(pass) Stop selection > from progress 1.9999999, direction 1 moves to Stop 3
+(pass) Stop selection > from progress 4, direction 1 moves to Stop 4
+(pass) Stop selection > from progress 0, direction -1 moves to Stop 0
+
+tests\fiber-clock.test.ts:
+(pass) creating the real Fiber root does not construct deprecated THREE.Clock [7.74ms]
+(pass) Fiber timing preserves seconds, stop/start, and elapsed-time resets across frame modes [0.89ms]
+
+tests\gpu-timer.test.ts:
+(pass) no extension means no timer, so the controller keeps frame intervals [0.52ms]
+(pass) results are read back oldest first, one per poll, in milliseconds [0.43ms]
+(pass) a full ring skips timing instead of waiting on the GPU [0.13ms]
+(pass) a disjoint event discards every result in flight [0.12ms]
+(pass) reset discards measurements from before a pause, and dispose releases the ring [0.13ms]
+
+tests\lab-vitals.test.ts:
+(pass) Lab Core Web Vitals > p75 is the nearest-rank observed value and refuses missing measurements [0.55ms]
+(pass) Lab Core Web Vitals > CLS is the largest session window and ignores shifts right after input [0.29ms]
+(pass) Lab Core Web Vitals > INP takes each interaction's longest event and ignores one outlier per fifty [0.44ms]
+(pass) Lab Core Web Vitals > fast interactions fall back to the first input, and none at all is no measurement [0.14ms]
+(pass) Lab Core Web Vitals > thresholds are inclusive and too few runs fail the evidence itself [0.43ms]
+(pass) Lab Core Web Vitals > software rasterizers are recognised, hardware renderers are not [0.15ms]
+
+tests\landmark-feature-source.test.ts:
+(pass) human Feature geometry retains indexed atlas UVs and authored normals in one draw [1.28ms]
+(pass) adding deterministic placement metadata preserves the artist's binary chunk [1.78ms]
+(pass) the offline importer accepts a textured human GLB without decoding its atlas [24.19ms]
+
+tests\landmark-features.test.ts:
+(pass) Scattering instances by terrain > every instance stands on land that satisfies its rule [2.77ms]
+(pass) Scattering instances by terrain > a rule the terrain never satisfies places nothing, and an open rule covers the land [1.32ms]
+(pass) Scattering instances by terrain > the same rule always scatters the same sites, and a seed moves them [0.92ms]
+(pass) Scattering instances by terrain > sites keep their distance instead of lining up or crowding [1.79ms]
+(pass) Scattering instances by terrain > the rules read a real island's recorded terrain [437.72ms]
+(pass) Placing a Feature at a real coordinate > a coordinate projects to the world point its degrees came from [0.33ms]
+(pass) Placing a Feature at a real coordinate > each configured Feature ships at its real coordinate and authored scale [16.31ms]
+(pass) The Feature record and its single draw > placements survive their whole-number record [0.23ms]
+(pass) The Feature record and its single draw > every instance of every model expands into one geometry [0.89ms]
+(pass) The Feature record and its single draw > built-in fallback models are coloured per vertex and closed all the way round [2.09ms]
+(pass) Feature budgets > the village church has closed building volumes, outward roof faces and bounded atlas UVs [5.50ms]
+(pass) Feature budgets > the shared file ships every model once with an optional atlas inside its budget [1.12ms]
+(pass) Feature budgets > each Landmark's instances fit its Balanced allowance and Low carries none [1.26ms]
+
+tests\landmark-geometry.test.ts:
+(pass) Landmark coastline conversion > OSM island rings, drawn with the land on their left, have positive area [0.12ms]
+(pass) Landmark coastline conversion > projection keeps north up and scales the longest axis to the span [0.11ms]
+(pass) Landmark coastline conversion > the fixtures are wound as projected island rings are [0.11ms]
+(pass) Landmark coastline conversion > simplification keeps a ring closed, wound the same way, and within tolerance [0.45ms]
+(pass) Landmark coastline conversion > resampling walks the shoreline at an even spacing [0.11ms]
+(pass) Landmark triangulation > Delaunay covers a convex point set without overlap [0.66ms]
+(pass) Landmark triangulation > an island surface follows its coast and never spans the water in a cove [4.86ms]
+(pass) Landmark triangulation > the surf band grows outward without folding back across the island [5.39ms]
+(pass) Landmark shallows band > every point carries its true distance from the nearest shore of any island [0.62ms]
+(pass) Landmark shallows band > the water out to the band's reach is covered once, coves and channels included [15.94ms]
+(pass) Landmark shallows band > the sheet stops under the land's edge and past its reach [1.17ms]
+(pass) Landmark shading > low, flat ground at the waterline is sand [0.60ms]
+(pass) Landmark shading > steep ground is bare rock, even at the shore [0.16ms]
+(pass) Landmark shading > gentle slopes above the beach carry vegetation [0.10ms]
+(pass) Landmark shading > low inland ground stays vegetated instead of becoming an island-wide beach [0.11ms]
+(pass) Landmark shading > elevation is sampled bilinearly between recorded metres [0.81ms]
+
+tests\landmark-placement.test.ts:
+(pass) Landmark placement in Voyage Waters > every island Stop has a built Landmark and every Landmark is placed [0.12ms]
+(pass) Landmark placement in Voyage Waters > the Ship passes beside each Landmark and never through one [508.43ms]
+(pass) Landmark placement in Voyage Waters > desktop: the settled Ship sees the whole island, clear of the Stop Card [3.95ms]
+(pass) Landmark placement in Voyage Waters > landscape phone: the settled Ship sees the whole island, clear of the Stop Card [0.59ms]
+(pass) Landmark placement in Voyage Waters > small landscape phone: the settled Ship sees the whole island, clear of the Stop Card [0.38ms]
+(pass) Landmark placement in Voyage Waters > portrait phone: the settled Ship sees the whole island, clear of the Stop Card [0.22ms]
+(pass) Landmark placement in Voyage Waters > narrow portrait phone: the settled Ship sees the whole island, clear of the Stop Card [0.11ms]
+
+tests\landmark-textures.test.ts:
+(pass) optional Landmark texture preparation > late bytes wait through passages, upload only settled, and eviction closes bitmaps [12.74ms]
+(pass) optional Landmark texture preparation > failed requests leave the island usable without textures [3.01ms]
+(pass) shipped terrain maps match their actual dimensions, size and tier allowances [22.85ms]
+
+tests\ocean-quality.test.ts:
+(pass) three slow active windows remove effects before lowering DPR [3.04ms]
+(pass) quality needs ten active fast seconds to promote and ten seconds between changes [2.27ms]
+(pass) continued pressure drops effects one tier at a time, then steps Low's DPR down [3.96ms]
+(pass) interruptions discard loading, paused, reading, and hidden timing evidence [2.12ms]
+(pass) reduced 3D blocks promotions but cannot block sustained Low fallback during cooldown [4.06ms]
+(pass) p90 ignores isolated spikes, requires consecutive bad windows, and honors strict thresholds [4.77ms]
+(pass) automatic can reach High, text freezes measurements, and quality never exceeds raw DPR [6.05ms]
+(pass) the laptop safety net sheds wake work before a missed-vsync window and restores it at 60 Hz [3.49ms]
+(pass) untimed laptop pressure sheds wake, then DPR, then tier if even those cannot hold [3.46ms]
+(pass) a laptop keeps Balanced through moderate passage wake pressure (GPU time %s) [3.92ms]
+(pass) a laptop keeps Balanced through moderate passage wake pressure (GPU time %s) [3.56ms]
+(pass) passage protection still demotes a laptop that is slow after the wake expires [5.29ms]
+(pass) severe passage pressure retains tier demotion and unusable Low fallback [1.95ms]
+(pass) a pause discards passage protection with its partial timing window [2.50ms]
+(pass) laptop safety steps reserve compositing time before a slow window accumulates [1.25ms]
+(pass) missed laptop frames can shed compositing pixels even with cheap timed ocean draws [0.50ms]
+(pass) a laptop sheds one small extra DPR step before changing tier [0.34ms]
+(pass) laptop DPR recovery predicts the next rung and restores resolution in reverse order [5.28ms]
+(pass) isolated GPU stalls and suspensions cannot accumulate laptop safety-net pressure [0.72ms]
+(pass) untimed laptop resolution recovery requires a full minute of stable cadence [7.63ms]
+(pass) timed laptop DPR recovery must have headroom for the larger drawing buffer [4.35ms]
+(pass) the integrated-laptop ceiling preserves Balanced through settled headroom and recovery [19.56ms]
+(pass) 60 Hz vsync recovers the previous tier and DPR after sustained pressure [1.44ms]
+(pass) 60 Hz missed vsyncs do not earn promotions or oscillate tiers [23.94ms]
+(pass) 120 Hz vsync recovers the previous tier and DPR after sustained pressure [2.17ms]
+(pass) 120 Hz missed vsyncs do not earn promotions or oscillate tiers [19.97ms]
+(pass) 144 Hz vsync recovers the previous tier and DPR after sustained pressure [0.93ms]
+(pass) 144 Hz missed vsyncs do not earn promotions or oscillate tiers [20.58ms]
+(pass) 60 Hz recovery tolerates vsync jitter and isolated stalls [0.76ms]
+(pass) GPU time near the vsync budget sheds effects even while frames still hold vsync [0.35ms]
+(pass) main-thread stalls do not downgrade when the GPU has headroom [1.04ms]
+(pass) GPU budgets use sustained display cadence rather than early callbacks in a jittery window [1.04ms]
+(pass) GPU timing decides headroom when available, even at steady 60 Hz vsync [1.50ms]
+(pass) on fast displays the GPU budget is the most vsyncs that fit 20 ms [0.91ms]
+(pass) windows with too few GPU samples fall back to frame intervals [0.23ms]
+(pass) without GPU timing every decision matches the frame-interval path [21.63ms]
+(pass) warm-up callback jitter cannot downgrade a GPU that fits Balanced at 60 Hz [0.43ms]
+(pass) a starting quality replaces the device defaults, still capped at raw DPR [0.13ms]
+(pass) the warm-up keeps a GPU on the tier its passages can hold [0.27ms]
+(pass) the warm-up starts a capable desktop on High without ten seconds of fast frames [0.17ms]
+(pass) a passage over budget in the warm-up drops effects before the Visitor sails, keeping sharpness [0.15ms]
+(pass) without GPU timing, too few samples, or automatic quality, the warm-up changes nothing [0.21ms]
+(pass) warm-up frames never count as live windows, and its move starts no cooldown [0.47ms]
+(pass) a tier counts as settled after fifteen active seconds without an automatic change [1.07ms]
+(pass) sustained Low jank still opens text even when the GPU looks idle [0.24ms]
+
+tests\ocean-surface.test.ts:
+(pass) reduced-motion buoyancy lowers displacement and vertical speed across the route [6.36ms]
+(pass) high: the ocean sheet is the surface the water's grid draws [73.20ms]
+(pass) balanced: the ocean sheet is the surface the water's grid draws [27.32ms]
+(pass) low: the ocean sheet is the surface the water's grid draws [3.80ms]
+
+tests\production-assets.test.ts:
+(pass) production vessel variants preserve the same footprint within the approved geometry and material budgets [15.01ms]
+(pass) every island Landmark stays within its tier's triangle, transfer, draw and texture budgets [5.58ms]
+(pass) every production asset has matching bytes, retained rights evidence and an approved source [212.89ms]
+
+tests\production-budgets.test.ts:
+(pass) budget gates reject missing evidence, excess transfer and inclusive scene limits [0.33ms]
+
+tests\release-dossier.test.ts:
+(pass) Release Dossier evaluation > without evidence every row is Unvalidated and the candidate is blocked [0.60ms]
+(pass) Release Dossier evaluation > every row Pass makes the candidate release-ready [0.88ms]
+(pass) Release Dossier evaluation > a row passes only when every check passes; a missing check leaves it Unvalidated and a failed one fails it [0.56ms]
+(pass) Release Dossier evaluation > evidence for another candidate, stale evidence, and future evidence never count [0.58ms]
+(pass) Release Dossier evaluation > a date-only manual record from the commit's own day counts [0.13ms]
+(pass) Release Dossier evaluation > manual evidence needs a tester, environment, method, and at least one evidence item [0.20ms]
+(pass) Release Dossier evaluation > problems found while locating evidence keep it from counting [0.16ms]
+(pass) Release Dossier evaluation > the latest acceptable record decides, and earlier records stay in the history [0.33ms]
+(pass) Release Dossier evaluation > an approved waiver excuses a recorded Fail on a cosmetic row [0.54ms]
+(pass) Release Dossier evaluation > a waiver never bypasses a nonwaivable row, missing evidence, or its own missing fields [0.62ms]
+(pass) Release Dossier evaluation > evidence naming nothing in the matrix is rejected [0.28ms]
+(pass) Release Dossier evaluation > a dossier needs a full candidate commit id [0.11ms]
+(pass) Locating evidence > an automated record's artifacts must still exist and match their hashes [6.72ms]
+(pass) Locating evidence > a dirty tree, a partial run, or a stale build makes automated evidence unverifiable [0.34ms]
+(pass) Locating evidence > a cited JSON file that names another candidate is a mismatch; URLs are accepted as locators [1.93ms]
+(pass) Locating evidence > untouched template records are not evidence [1.63ms]
+
+tests\route-camera.test.ts:
+(pass) desktop landscape: the camera looks down at 75–85° [0.11ms]
+(pass) phone landscape: the camera looks down at 75–85° [0.01ms]
+(pass) phone portrait: the camera looks down at 75–85°
+(pass) narrow portrait: the camera looks down at 75–85°
+(pass) desktop landscape: the Ship is framed on screen with room beside it for a Stop Card [0.31ms]
+(pass) phone landscape: the Ship is framed on screen with room beside it for a Stop Card [0.02ms]
+(pass) phone portrait: the Ship is framed on screen with room beside it for a Stop Card
+(pass) narrow portrait: the Ship is framed on screen with room beside it for a Stop Card [0.01ms]
+(pass) the camera follows the Ship without turning with it [0.25ms]
+
+tests\route-motion.test.ts:
+(pass) Following the Visitor's input > continuous scrolling moves the Ship smoothly without jumping to a Stop [0.98ms]
+(pass) Following the Visitor's input > a single notch moves the Ship a short way and the move ends with the scrolling [0.95ms]
+(pass) Following the Visitor's input > a whole passage under way keeps an unhurried pace [0.54ms]
+(pass) Following the Visitor's input > scrolling cannot carry the Ship past either end of the route [0.15ms]
+(pass) Following the Visitor's input > a stalled frame never jumps the Ship across the route [0.18ms]
+(pass) Docking and open water > a nudge away from a Stop leaves the Ship where the Visitor put it [0.27ms]
+(pass) Docking and open water > a nudge smaller than the cling leaves the Ship at the Stop it was resting at [0.25ms]
+(pass) Docking and open water > stopping within reach ahead of a Stop carries the Ship into it [0.31ms]
+(pass) Docking and open water > after scrolling 0.4 Stops into open water, the Ship rests there [0.88ms]
+(pass) Docking and open water > after scrolling 0.5 Stops into open water, the Ship rests there [0.57ms]
+(pass) Docking and open water > after scrolling 0.7 Stops into open water, the Ship rests there [0.30ms]
+(pass) Docking and open water > the Ship never turns back to a Stop the Visitor has left behind [0.26ms]
+(pass) Docking and open water > the Ship keeps its course while input continues within the settle delay [0.07ms]
+(pass) Calling at every Stop > one long gesture sails one passage and the Ship holds at the Stop [0.53ms]
+(pass) Calling at every Stop > the Ship sails on once the gesture has ended [0.30ms]
+(pass) Calling at every Stop > repeated taps before the Ship arrives never skip a Stop [0.62ms]
+(pass) Calling at every Stop > a chosen chapter is the one passage the Visitor may skip [0.89ms]
+(pass) Calling at every Stop > reduced motion still cuts one Stop at a time [0.12ms]
+(pass) Held keys > holding a key sails freely and letting go leaves the Ship in open water [0.53ms]
+(pass) Held keys > letting go of a held key within reach of a Stop docks there [0.39ms]
+(pass) Held keys > a tap goes to the adjacent Stop from where the key was pressed [0.34ms]
+(pass) Held keys > a hold that has started sailing never also steps [0.09ms]
+(pass) Stop-to-Stop navigation > each step moves exactly one Stop, in either direction [1.62ms]
+(pass) Stop-to-Stop navigation > a step sails its passage rather than cutting across it [0.20ms]
+(pass) Stop-to-Stop navigation > a step from between Stops goes to the next Stop in that direction [0.08ms]
+(pass) Stop-to-Stop navigation > go to Stop sails there, or cuts there immediately [3.82ms]
+(pass) Stop-to-Stop navigation > a chosen chapter far along the route still arrives promptly [0.20ms]
+(pass) Stop-to-Stop navigation > reduced motion cuts between Stops instead of sailing or resting in open water [0.19ms]
+
+tests\ship-wake.test.ts:
+(pass) Ship wake > resting placement leaves no disturbed water at any tier [1.01ms]
+(pass) Ship wake > Low retains a short fading trail and reduced-motion placement clears even a nearby cut [1.33ms]
+(pass) Ship wake > the water answers a sudden start with inertia and a burst of thrust [0.51ms]
+(pass) Ship wake > the trail stays where the Ship sailed and ages after it stops [1.93ms]
+(pass) Ship wake > the disturbed water box covers the trail and its spreading arms [0.51ms]
+(pass) Ship wake > a forgotten trail leaves no water behind and the next frame places the Ship afresh [0.59ms]
+(pass) Ship wake > a cut leaves no wake behind [0.35ms]
+(pass) Ship wake > the course and rate of turn follow the direction of travel [0.41ms]
+(pass) the warm-up's full cruise history compresses straight spans astern of the Ship [1.17ms]
+(pass) wake field > high holds the heaviest wake whole, in any direction and as it ages [13.38ms]
+(pass) wake field > balanced holds the heaviest wake whole, in any direction and as it ages [6.87ms]
+(pass) wake field > the field snaps to whole texels, so the ranking holds still in the water [1.26ms]
+(pass) wake field > water larger than the field keeps the stretch around the Ship [0.19ms]
+
+tests\stage-layout.test.ts:
+(pass) the Stop Card goes below the Ship only on portrait viewports, matching the camera [0.90ms]
+(pass) sub-pixel changes do not rewrite the layout [0.25ms]
+(pass) the layout is written as rounded custom properties and a card side [0.38ms]
+
+tests\starting-tier.test.ts:
+(pass) the renderer string sorts obvious GPUs into a coarse class, and nothing else [0.55ms]
+(pass) the debug extension is asked only when the plain renderer string is masked [0.34ms]
+(pass) storage keys hash the renderer with the screen and DPR, never carrying the string itself [0.30ms]
+(pass) a remembered quality round-trips, and anything malformed is ignored [0.39ms]
+(pass) storage that throws, on access or on use, degrades to no memory [0.66ms]
+(pass) promotion requires credible GPU headroom above Balanced [0.09ms]
+(pass) a remembered result outranks the GPU class, which outranks today's defaults [0.22ms]
+
+tests\terrain-detail.test.ts:
+(pass) boipeba Close View uses its authored pitch and half aerial distance on desktop and phone [0.70ms]
+(pass) abrolhos Close View uses its authored pitch and half aerial distance on desktop and phone [0.05ms]
+(pass) accelerated shore queries preserve exact distances and inside tests across disjoint islands [14.61ms]
+(pass) beaches require low, gentle coastal ground; cliffs and inland scrub remain separate [5.02ms]
+(pass) Boipeba separates low estuarine vegetation from ocean beaches without volcanic cliffs [1.09ms]
+(pass) authored relief is bounded, deterministic, and leaves the recorded waterline fixed [1.04ms]
+(pass) selective sampling spends additional interior vertices in the requested relief region [90.73ms]
+(pass) texture accessibility interpolates the scalar mesh bake in projected X/Z, leaving uncovered texels neutral [0.75ms]
+(pass) colour-only maps replace the palette once; removing them restores vertex fallback [0.48ms]
+(pass) native baking retains sub-256 detail and transfers linear occlusion to both tiers [10422.87ms]
+
+tests\voyage-state.test.ts:
+(pass) Voyage transitions > every Stop is reachable from the start, in any order [0.30ms]
+(pass) Voyage transitions > arriving at a Stop records the Ship's place on the route [0.05ms]
+(pass) Voyage transitions > reaching the Arrival completes the Voyage regardless of Visited Stops [0.07ms]
+(pass) Voyage transitions > opening a Stop Account records a Visited Stop once, without moving the Ship [0.11ms]
+(pass) Voyage transitions > route progress is clamped to the route and ignores invalid values [0.09ms]
+(pass) Voyage transitions > restart clears the Voyage but keeps the visit's presentation and 3D lock [0.15ms]
+(pass) Voyage transitions > one context restoration preserves the Voyage and a second loss locks 3D across restart and reload [0.71ms]
+(pass) Voyage transitions > 3D cannot be entered while unavailable [0.08ms]
+(pass) Voyage State persistence > round-trips the current Stop, Visited Stops, completion, and route place [0.44ms]
+(pass) Voyage State persistence > is tab-scoped under one versioned key [0.07ms]
+(pass) Voyage State persistence > rejects malformed JSON safely [0.09ms]
+(pass) Voyage State persistence > rejects incompatible version safely [0.02ms]
+(pass) Voyage State persistence > rejects incomplete shape safely [0.02ms]
+(pass) Voyage State persistence > rejects unknown Stop safely [0.01ms]
+(pass) Voyage State persistence > rejects duplicate Visited Stops safely [0.02ms]
+(pass) Voyage State persistence > rejects off-route progress safely [0.01ms]
+(pass) Voyage State persistence > rejects an Arrival without completion safely [0.09ms]
+(pass) Voyage State persistence > rejects legacy Expedition State safely [0.02ms]
+(pass) Voyage State persistence > remains usable when storage reads and writes throw [0.26ms]
+
+tests\wake-trail.test.ts:
+(pass) straight cruise reduces to its endpoints without changing linear age and forces [0.27ms]
+(pass) a bend, reversal, or force and birth discontinuity survives simplification [0.45ms]
+(pass) gentle curvature cannot accumulate into a shortcut [0.20ms]
+(pass) expiry retains the original adjacent samples at the live/spent boundary [0.08ms]
+(pass) empty, singleton and duplicate samples are safe and reuse the output [0.17ms]
+
+ 253 pass
+ 0 fail
+ 141648 expect() calls
+Ran 253 tests across 26 files. [13.06s]

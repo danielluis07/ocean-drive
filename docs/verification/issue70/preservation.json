@@ -1,0 +1,60 @@
+{
+  "unchangedOtherVisuals": true,
+  "boipebaPlacementsByteIdentical": true,
+  "boipebaTerrainAndSource": "Preserved; full model/atlas attribute checks passed in tests/abrolhos-landmark.test.ts",
+  "abrolhos": {
+    "id": "abrolhos",
+    "place": "Arquipélago de Abrolhos, Bahia, Brazil",
+    "bounds": {
+      "west": -38.76,
+      "south": -18.02,
+      "east": -38.66,
+      "north": -17.92
+    },
+    "elevationZoom": 15,
+    "elevationGrid": 192,
+    "smallestRing": 0.01,
+    "group": 4,
+    "span": 31,
+    "height": 1.55,
+    "shoreHeight": 1.5,
+    "beachWidth": 0.18,
+    "surfWidth": 0.95,
+    "shallowsWidth": 6.8,
+    "terrainTreatment": {
+      "relief": 0.09,
+      "scrubScale": 3.2,
+      "rockScale": 9,
+      "bareTables": true,
+      "samplingRatio": {
+        "balanced": 0.8,
+        "low": 0.97
+      }
+    },
+    "features": [
+      {
+        "name": "Farol de Abrolhos",
+        "model": "abrolhos-lighthouse",
+        "lon": -38.694069,
+        "lat": -17.9648083,
+        "scale": 1
+      }
+    ],
+    "palette": {
+      "sand": "#e0d2af",
+      "rock": "#847c67",
+      "lowland": "#8a885c",
+      "highland": "#979061"
+    }
+  },
+  "beforeModels": [
+    "placeholder",
+    "boipeba-coconut-palm",
+    "boipeba-divino-church"
+  ],
+  "afterModels": [
+    "abrolhos-lighthouse",
+    "boipeba-coconut-palm",
+    "boipeba-divino-church"
+  ]
+}

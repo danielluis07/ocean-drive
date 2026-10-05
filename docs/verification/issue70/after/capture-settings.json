@@ -1,0 +1,152 @@
+[
+  {
+    "island": "abrolhos",
+    "framing": "aerial",
+    "view": {
+      "name": "desktop-balanced",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "all"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "close",
+    "view": {
+      "name": "desktop-balanced",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "all"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "aerial",
+    "view": {
+      "name": "desktop-colour-only",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "close",
+    "view": {
+      "name": "desktop-colour-only",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "aerial",
+    "view": {
+      "name": "desktop-fallback",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "none"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "close",
+    "view": {
+      "name": "desktop-fallback",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "none"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "aerial",
+    "view": {
+      "name": "desktop-low",
+      "tier": "low",
+      "width": 1280,
+      "height": 800,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "1",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "close",
+    "view": {
+      "name": "desktop-low",
+      "tier": "low",
+      "width": 1280,
+      "height": 800,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "1",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "aerial",
+    "view": {
+      "name": "phone-low",
+      "tier": "low",
+      "width": 390,
+      "height": 844,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "1",
+    "baseline": null,
+    "featuresHidden": false
+  },
+  {
+    "island": "abrolhos",
+    "framing": "close",
+    "view": {
+      "name": "phone-low",
+      "tier": "low",
+      "width": 390,
+      "height": 844,
+      "maps": "colour"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "1",
+    "baseline": null,
+    "featuresHidden": false
+  }
+]

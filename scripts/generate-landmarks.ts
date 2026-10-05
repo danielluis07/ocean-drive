@@ -45,6 +45,7 @@ import { bakeAccessibility, transferColours } from "@/scripts/asset-bake";
 import { productionBudgets } from "@/lib/production-budgets";
 import { authoredRelief, terrainPigment } from "@/scripts/terrain-treatment";
 import { buildBoipebaFeatureLibrary } from "@/data/landmarks/features/boipeba/build";
+import { buildAbrolhosFeatureLibrary } from "@/data/landmarks/features/abrolhos/build";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -266,6 +267,7 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
 }
 
 await buildBoipebaFeatureLibrary();
+await buildAbrolhosFeatureLibrary();
 const authored = featureFile.source ? await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize) : null;
 const models = authored?.models ?? featureModels.map((id) => {
   const build = featureModelBuilders[id];
@@ -351,12 +353,13 @@ for (const source of landmarkSources) {
     // it fits rather than by hand-tuning each island.
     // Low reserves transfer headroom for shoreline vertices; Balanced uses its
     // expanded allowance instead of the former 4,400-triangle density target.
-    const target = tier === "low" ? Math.min(budget.triangles, 1200) : budget.triangles;
+    const samplingLimit = budget.triangles * (source.terrainTreatment?.samplingRatio?.[tier] ?? 1);
+    const target = tier === "low" ? Math.min(budget.triangles, 1200) : samplingLimit;
     let spacing = Math.sqrt(polygonArea(coastline(record, source)) / (0.433 * target * 0.68));
     let island = buildIsland(source, record, spacing, tier);
     let surf = buildShallows(island.outlines, source, spacing, tier, toWorld);
-    for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > budget.triangles; attempt++) {
-      spacing *= Math.sqrt((island.triangles + surf.triangles) / (budget.triangles * 0.92));
+    for (let attempt = 0; attempt < 8 && island.triangles + surf.triangles > samplingLimit; attempt++) {
+      spacing *= Math.sqrt((island.triangles + surf.triangles) / (samplingLimit * 0.92));
       island = buildIsland(source, record, spacing, tier);
       surf = buildShallows(island.outlines, source, spacing, tier, toWorld);
     }
