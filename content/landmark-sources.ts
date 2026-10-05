@@ -19,9 +19,8 @@ export type GeographicBounds = {
 // The models the build generates in code, in `scripts/landmark-feature-models.ts`,
 // and ships once in the shared Feature file for every Landmark to place.
 //
-// `placeholder` proves the mechanism and stands for no real structure: the
-// island issues replace it with their own models or remove it.
-export const featureModels = ["placeholder", "boipeba-coconut-palm", "boipeba-divino-church"] as const;
+// Abrolhos replaces the former placeholder in slot zero. Boipeba keeps its slots.
+export const featureModels = ["abrolhos-lighthouse", "boipeba-coconut-palm", "boipeba-divino-church"] as const;
 export type FeatureModel = (typeof featureModels)[number];
 
 // Vegetation and other repeated models, placed wherever the terrain allows.
@@ -113,13 +112,13 @@ export const landmarkBudget = {
 // The one file every Landmark's models and placements ship in. Low never
 // requests it.
 export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 200 * 1024, textureSize: 1024, source: {
-  path: "data/landmarks/features/boipeba/library.glb",
+  path: "data/landmarks/features/abrolhos/library.glb",
   sourceKind: "project-source",
-  creator: "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
-  source: "data/landmarks/features/boipeba/build.ts",
-  rights: "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
-  proof: "data/landmarks/features/boipeba/README.md",
-  retrieved: "2026-10-04",
+  creator: "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
+  source: "data/landmarks/features/abrolhos/build.ts",
+  rights: "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+  proof: "data/landmarks/features/abrolhos/README.md",
+  retrieved: "2026-10-05",
 } satisfies FeatureSource } as const;
 
 export const landmarkSources: LandmarkSource[] = [
@@ -176,16 +175,17 @@ export const landmarkSources: LandmarkSource[] = [
     smallestRing: 0.01,
     group: 4,
     span: 31,
-    height: 2.5,
-    shoreHeight: 3,
-    beachWidth: 0.65,
-    surfWidth: 1.9,
-    shallowsWidth: 6,
-    // The lighthouse on Ilha de Santa Bárbara, standing in as the placeholder
-    // Feature until the Abrolhos issue models it.
-    features: [{ name: "Farol de Abrolhos", model: "placeholder", lon: -38.6942, lat: -17.9647, scale: 1 }],
+    height: 1.55,
+    shoreHeight: 1.5,
+    beachWidth: 0.18,
+    surfWidth: 0.95,
+    shallowsWidth: 6.8,
+    terrainTreatment: { relief: .09, scrubScale: 3.2, rockScale: 9, bareTables: true,
+      samplingRatio: { balanced: .80, low: .97 } },
+    // Retained OSM lighthouse node 1181469524 on Ilha de Santa Bárbara.
+    features: [{ name: "Farol de Abrolhos", model: "abrolhos-lighthouse", lon: -38.694069, lat: -17.9648083, scale: 1 }],
     // Reef-fringed basalt tables: bare rock, thin grass, almost no beach.
-    palette: { sand: "#e0d2af", rock: "#54504a", lowland: "#8d9260", highland: "#7a8156" },
+    palette: { sand: "#e0d2af", rock: "#847c67", lowland: "#8a885c", highland: "#979061" },
   },
   {
     id: "ilha-grande",

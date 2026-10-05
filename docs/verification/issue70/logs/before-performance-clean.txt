@@ -1,0 +1,237 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 1 test using 1 worker
+
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+(node:14584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU (5.6m)
+
+
+  1) [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 
+
+    Error: Every Chrome window must sustain p90 ≤ 20 ms
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 158[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 85941.09999999986,[39m
+    [31m+     "gpuP90Ms": 10.47696,[39m
+    [31m+     "p90Ms": 20.699999999720603,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 190599.40000000014,[39m
+    [31m+     "gpuP90Ms": 10.73792,[39m
+    [31m+     "p90Ms": 20.100000000093132,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 194626.40000000014,[39m
+    [31m+     "gpuP90Ms": 10.71536,[39m
+    [31m+     "p90Ms": 20.299999999813735,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 196643.40000000014,[39m
+    [31m+     "gpuP90Ms": 10.74592,[39m
+    [31m+     "p90Ms": 26.899999999906868,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": false,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 200654.19999999995,[39m
+    [31m+     "gpuP90Ms": 11.92768,[39m
+    [31m+     "p90Ms": 20.200000000186265,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 202960.19999999995,[39m
+    [31m+     "gpuP90Ms": 13.48512,[39m
+    [31m+     "p90Ms": 28,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 205000.19999999995,[39m
+    [31m+     "gpuP90Ms": 13.8552,[39m
+    [31m+     "p90Ms": 25.899999999906868,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 207334.90000000014,[39m
+    [31m+     "gpuP90Ms": 14.43808,[39m
+    [31m+     "p90Ms": 340,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 209358.80000000005,[39m
+    [31m+     "gpuP90Ms": 15.936,[39m
+    [31m+     "p90Ms": 32.6999999997206,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 211383.69999999995,[39m
+    [31m+     "gpuP90Ms": 16.356,[39m
+    [31m+     "p90Ms": 35.40000000037253,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 213402.09999999986,[39m
+    [31m+     "gpuP90Ms": 15.912,[39m
+    [31m+     "p90Ms": 32.89999999990687,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 215404.09999999986,[39m
+    [31m+     "gpuP90Ms": 15.04864,[39m
+    [31m+     "p90Ms": 27.199999999720603,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+   Object {[39m
+    [31m+     "atMs": 217405.30000000005,[39m
+    [31m+     "gpuP90Ms": 12.36848,[39m
+    [31m+     "p90Ms": 21.299999999813735,[39m
+    [31m+     "quality": Object {[39m
+    [31m+       "dpr": 0.9,[39m
+    [31m+       "fallback": false,[39m
+    [31m+       "tier": "balanced",[39m
+    [31m+       "wakeSamples": 2,[39m
+    [31m+     },[39m
+    [31m+     "wakeActive": true,[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      92 |     // that acceptance criterion into an additional Firefox performance gate.
+      93 |     if (browser.browserType().name() === "chromium") {
+    > 94 |       expect.soft(windows.filter((window: { p90Ms: number }) => window.p90Ms > 20), "Every Chrome window must sustain p90 ≤ 20 ms").toEqual([]);
+         |                                                                                                                                     ^
+      95 |     }
+      96 |     expect.soft(report.scenes.balanced?.drawCalls).toBeLessThanOrEqual(productionBudgets.drawCalls);
+      97 |     expect.soft(report.scenes.balanced?.triangles).toBeLessThanOrEqual(productionBudgets.triangles);
+        at C:\Users\bombd\ocean-drive\tests\browser\ocean-voyage.e2e.ts:94:133
+
+    attachment #1: ocean-voyage.json (application/json) ────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\ocean-voyage-json-515a610eaca5ef5430d7ce6d79834fe29ab0e5d4.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: stop-0.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-0-png-7bad3a6621b716bd6c28aaa87eaf6772f576006a.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: passage-0-1.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-0-1-png-4fad76fcc68bf3d2f55959c2a0fb6ad58a3ae7fc.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: stop-1.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-1-png-915241dc5ca6226eddf6728069531178681d85f7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: passage-1-2.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-1-2-png-90a836227c137b80234e3ab49c2cfbe03989c8e1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: stop-2.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-2-png-6589491cf875efa49f892f1c94f111c498fe9eef.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: passage-2-3.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-2-3-png-ebc672de7df8c046a3d033213b16d660a8baf53f.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: stop-3.png (image/png) ──────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-3-png-325dabac74a610e996a736b1f5af9f3db1478430.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: passage-3-4.png (image/png) ─────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\passage-3-4-png-44b6dacc589b1e90a6e8a07f4886acfa2981762a.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: stop-4.png (image/png) ─────────────────────────────────────────────────────────
+    .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\attachments\stop-4-png-679baad3281bf4d72ae87f42311d750c34421516.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .tmp\issue70-before-performance-clean\ocean-voyage.e2e.ts-Balanc-eee52-ive-minutes-on-the-host-GPU-ocean-voyage-chrome\error-context.md
+
+  Slow test file: [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts (5.6m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    [ocean-voyage-chrome] › tests\browser\ocean-voyage.e2e.ts:8:5 › Balanced holds every passage through five active minutes on the host GPU 
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it

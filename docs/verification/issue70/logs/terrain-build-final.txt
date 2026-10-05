@@ -1,0 +1,18 @@
+$ bun scripts/generate-landmarks.ts
+fernando-de-noronha balanced: 14059 triangles (507 in the shallows), 249.4 KiB, 3 outlines at 0.22 units
+fernando-de-noronha low: 1223 triangles (365 in the shallows), 26.8 KiB, 3 outlines at 0.82 units
+boipeba balanced: 12336 triangles (449 in the shallows), 218.6 KiB, 4 outlines at 0.31 units
+boipeba low: 1214 triangles (261 in the shallows), 27.0 KiB, 4 outlines at 1.16 units
+abrolhos balanced: 13996 triangles (747 in the shallows), 246.5 KiB, 6 outlines at 0.17 units
+429 |     const url = `/models/landmark-${source.id}-${tier}.v1.glb`;
+430 |     await Bun.write(`public${url}`, glb);
+431 |     const triangles = island.triangles + surf.triangles;
+432 |     variants[tier] = { url, triangles, bytes: glb.byteLength };
+433 |     if (triangles > landmarkBudget[tier].triangles || glb.byteLength > landmarkBudget[tier].bytes)
+434 |       throw new Error(
+                      ^
+error: abrolhos low exceeds its budget: 1288 triangles, 29180 bytes
+      at C:\Users\bombd\ocean-drive\scripts\generate-landmarks.ts:434:17
+
+Bun v1.4.2 (Windows x64)
+error: script "landmarks:build" exited with code 1

@@ -27,7 +27,7 @@
       "transformations": "Authored Boipeba surface interpretation and diagnostic Close View framing",
       "essential": false,
       "experience": false,
-      "sha256": "0477e5bc22cd07471c2989e36bcc64c89ef461599cbbae7dc4224914a7f84dcf"
+      "sha256": "6c6e0771036b6f9f8b4af6a64c2ce6967e393292d8ce007c37127f13fc867133"
     },
     {
       "path": "content/landmark-sources.ts",
@@ -41,7 +41,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": true,
-      "sha256": "49f57c422be7f7a3cd773fb374da935740c094115eb98935c6f5b40fc951dcd3"
+      "sha256": "07ebe2ad041474f6cc3aaeb1e122cb262885f90ed12a03328f8393507ba1f6cc"
     },
     {
       "path": "content/landmarks.json",
@@ -55,7 +55,7 @@
       "transformations": "Written by the Landmark build from the recorded source data",
       "essential": true,
       "experience": true,
-      "sha256": "b8935d55a03c9f2d42e83b78fc250162cfb7cd3d433bf14420a94c26cbe397e3"
+      "sha256": "9f512faef6b8010a942b106ad2762945f9e158a53eda6b718e6da7bbd87eb6c8"
     },
     {
       "path": "content/ship-art.ts",
@@ -128,12 +128,222 @@
       "sha256": "a43ad5a9e10d9749e845eff96e3169af085ccd4738d4133c14f7b88652a47608"
     },
     {
+      "path": "data/landmarks/features/abrolhos/atlas.png",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "51f0b4a8b5755eccfe49804cff03af1294260d09712c0c128cf56796e653dbd5"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/build.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "901fbea685354e5b23a14ebbeddb47c173353de6564ba23cc5f3aea81f2a033a"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/library.glb",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "retrieved": "2026-10-05",
+      "kind": "source-data",
+      "transformations": "Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations",
+      "essential": false,
+      "experience": false,
+      "sha256": "8a4f0013a95c1aa05a43d5d28f958acf7d53ca1a538781cb498a8c60679909d9"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/lighthouse.ts",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "54d3a16aac14bf92201bd85ef1f86a606ba94701369344cb47ea6ed8b8b38b32"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/README.md",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "c8936b5375194e68b5f3c4f7dc7dd0ef7254edbe4885f6232a64a28484cec805"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/CC-BY-SA-2.0.html",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt and https://creativecommons.org/licenses/by-sa/2.0/legalcode.en",
+      "retrieved": "2026-10-05",
+      "rights": "Retained Creative Commons legal codes accompanying licensed references and adaptations",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "a90434ea9f88eb5c29eec63113a9902ac116be6f9c2061dc1fa66283610557b2"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/CC-BY-SA-4.0.txt",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "Creative Commons",
+      "source": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt and https://creativecommons.org/licenses/by-sa/2.0/legalcode.en",
+      "retrieved": "2026-10-05",
+      "rights": "Retained Creative Commons legal codes accompanying licensed references and adaptations",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/island-aerial.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Gabi Carrera / Marinha do Brasil",
+      "source": "https://commons.wikimedia.org/wiki/File:Abrolhos_-_Ilha_de_Santa_B%C3%A1rbara_BA_(52114916684).jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 2.0; oblique shore reference; adaptations under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/island-aerial.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "f8b83559fded0c27d1b37d4a7e379ff9f7977dab04904d72185d59f7cdec2d81"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/island-aerial.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Gabi Carrera / Marinha do Brasil",
+      "source": "https://commons.wikimedia.org/wiki/File:Abrolhos_-_Ilha_de_Santa_B%C3%A1rbara_BA_(52114916684).jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 2.0; oblique shore reference; adaptations under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/island-aerial.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "f90b3d58697c03fd199df3e1f8465357fc08f2a6f06840b4307996167fcbd3d4"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/lighthouse-front.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Munique Bassoli",
+      "source": "https://commons.wikimedia.org/wiki/File:Farol_da_Ilha_de_Santa_B%C3%A1rbara.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; lighthouse reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/lighthouse-front.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "afba511fdae5955f66e2c0d8f06caa2d943598c5c00c5395893841a301c82bb2"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/lighthouse-front.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Munique Bassoli",
+      "source": "https://commons.wikimedia.org/wiki/File:Farol_da_Ilha_de_Santa_B%C3%A1rbara.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; lighthouse reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/lighthouse-front.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "3ad0df9a4c1c63a1846b446600ab8f3aff4c0d849254f97376a89da96ae4fd9b"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/lighthouse-side.html",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Alicedaraujo",
+      "source": "https://commons.wikimedia.org/wiki/File:Farol_de_Abrolhos.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; lighthouse and cliff reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/lighthouse-side.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "6194c0ba3c0f4e56de2bd0a8eb97124abb20b278556248233dd684bc38c02a9c"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/lighthouse-side.jpg",
+      "kind": "source-data",
+      "sourceKind": "licensed-image",
+      "creator": "Alicedaraujo",
+      "source": "https://commons.wikimedia.org/wiki/File:Farol_de_Abrolhos.jpg",
+      "retrieved": "2026-10-05",
+      "rights": "CC BY-SA 4.0; lighthouse and cliff reconstruction reference; no photographic pixels embedded",
+      "proof": "data/landmarks/features/abrolhos/references/lighthouse-side.html",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "aab47987a2f4f051eb405b18e486619124f50288afe1cad4f1362414ed32761f"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/references/lighthouse.osm.json",
+      "kind": "source-data",
+      "sourceKind": "open-data",
+      "creator": "OpenStreetMap contributors",
+      "source": "https://api.openstreetmap.org/api/0.6/node/1181469524.json",
+      "retrieved": "2026-10-05",
+      "rights": "ODbL 1.0; lighthouse mapped coordinate; attribution retained in the experience",
+      "proof": "docs/third-party/open-geodata.md",
+      "transformations": "Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node",
+      "essential": false,
+      "experience": false,
+      "sha256": "a20bf13f729e818c6dff7400789fe58b3fd3f1ebeafc9d9b67663090b9d8d179"
+    },
+    {
+      "path": "data/landmarks/features/abrolhos/sources.json",
+      "kind": "source-data",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored lighthouse and shared atlas adaptation under CC BY-SA 4.0, after Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; retained Boipeba assets keep their recorded licences",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "transformations": "Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation",
+      "essential": false,
+      "experience": false,
+      "sha256": "0d1733d2de79ecff3207453da2361323dfc832dd3c631c92736eafeecda0a0f5"
+    },
+    {
       "path": "data/landmarks/features/boipeba/atlas.png",
       "kind": "source-data",
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
       "source": "data/landmarks/features/boipeba/build.ts",
-      "retrieved": "2026-10-04",
+      "retrieved": "2026-10-05",
       "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
       "proof": "data/landmarks/features/boipeba/README.md",
       "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
@@ -147,7 +357,7 @@
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
       "source": "data/landmarks/features/boipeba/build.ts",
-      "retrieved": "2026-10-04",
+      "retrieved": "2026-10-05",
       "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
       "proof": "data/landmarks/features/boipeba/README.md",
       "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
@@ -157,14 +367,14 @@
     },
     {
       "path": "data/landmarks/features/boipeba/library.glb",
-      "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
-      "source": "data/landmarks/features/boipeba/build.ts",
-      "rights": "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
-      "proof": "data/landmarks/features/boipeba/README.md",
-      "retrieved": "2026-10-04",
       "kind": "source-data",
-      "transformations": "Retained project-authored reconstruction from licensed references, existing model preserved, one shared embedded atlas; see source proof for tools, UVs and texture transformations",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "data/landmarks/features/boipeba/build.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
+      "proof": "data/landmarks/features/boipeba/README.md",
+      "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
       "essential": false,
       "experience": false,
       "sha256": "23c6ae0cf7e73750e2e2cfd31151016ca057e43cfdd384bba729a8f6fae2f220"
@@ -175,7 +385,7 @@
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
       "source": "data/landmarks/features/boipeba/build.ts",
-      "retrieved": "2026-10-04",
+      "retrieved": "2026-10-05",
       "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
       "proof": "data/landmarks/features/boipeba/README.md",
       "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
@@ -525,7 +735,7 @@
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
       "source": "data/landmarks/features/boipeba/build.ts",
-      "retrieved": "2026-10-04",
+      "retrieved": "2026-10-05",
       "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
       "proof": "data/landmarks/features/boipeba/README.md",
       "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
@@ -539,7 +749,7 @@
       "sourceKind": "project-source",
       "creator": "Ocean Drive project contributors",
       "source": "data/landmarks/features/boipeba/build.ts",
-      "retrieved": "2026-10-04",
+      "retrieved": "2026-10-05",
       "rights": "Palm reconstruction under CC BY-SA 3.0, after Panta LH; church and combined atlas adaptation under CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; pre-existing placeholder remains project source",
       "proof": "data/landmarks/features/boipeba/README.md",
       "transformations": "Reproducible offline source, shared atlas or reconstruction/provenance record; no AI-generated model",
@@ -588,6 +798,20 @@
       "essential": false,
       "experience": false,
       "sha256": "b27cc7002dc45f0dcd427acdede55a5a7b7f600c1e5c27a03138ef4a8d96d327"
+    },
+    {
+      "path": "docs/third-party/abrolhos-terrain.md",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/generate-landmarks.ts",
+      "retrieved": "2026-10-05",
+      "rights": "Project-authored interpretation; no new surveyed geography",
+      "proof": "docs/third-party/abrolhos-terrain.md",
+      "transformations": "Bare rock tables, thin grass, narrow beach pockets, broad reef shallows and configured Close View; native terrain and unchanged geographic inputs",
+      "essential": false,
+      "experience": false,
+      "sha256": "c58a30a58b88c2f77994bf888f6d010dac3ae1709f8475f8d9770325a59de209"
     },
     {
       "path": "docs/third-party/boipeba-terrain.md",
@@ -1086,10 +1310,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the balanced tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "a3010990d89e5859da918d19096105a0deedb805ca7eab99d63de4a6fc6c9121"
+      "sha256": "47d205645aa06b3fcb43e8386a16c39afa108f6a630f00cae822ca293d6be455"
     },
     {
       "path": "public/models/landmark-abrolhos-low.v1.glb",
@@ -1101,10 +1325,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
+      "transformations": "Deterministic GLB v2 export at the low tier: recorded coastline rings projected, scaled and simplified, triangulated, lifted by the recorded elevation grid, raised above the swell; selective Balanced coastline/slope sampling and bounded project-authored erosion relief (not surveyed detail), documented in the island terrain provenance; Balanced surface palette and 24-ray ambient occlusion baked into vertex colours and transferred to Low by surface projection; with a skirt and a shallows band",
       "essential": true,
       "experience": true,
-      "sha256": "d899761a52e8e603ba724ee6e99b1812b701dbf3d8190779ef26e473654840d2"
+      "sha256": "0fcd5446bdc43353913121b2827693cf658ee3f6423d2ef723c1b3e70eb0116b"
     },
     {
       "path": "public/models/landmark-boipeba-balanced.v1.glb",
@@ -1139,17 +1363,17 @@
     {
       "path": "public/models/landmark-features.v1.glb",
       "sourceKind": "project-source",
-      "creator": "Ocean Drive project contributors; references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur",
-      "source": "data/landmarks/features/boipeba/build.ts",
-      "rights": "Palm reconstruction: CC BY-SA 3.0, after Panta LH; church reconstruction and combined atlas: CC BY-SA 4.0, after Waltson Campos, INPE and Marcio Filho/MTur; retained Abrolhos placeholder remains project source",
-      "proof": "data/landmarks/features/boipeba/README.md",
-      "retrieved": "2026-10-04",
+      "creator": "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
+      "source": "data/landmarks/features/abrolhos/build.ts",
+      "rights": "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+      "proof": "data/landmarks/features/abrolhos/README.md",
+      "retrieved": "2026-10-05",
       "url": "/models/landmark-features.v1.glb",
       "kind": "authored",
-      "transformations": "Project-authored palm and Velha Boipeba church reconstructions and shared atlas from retained licensed references; existing models and placements preserved; deterministic terrain placements and named church coordinate added by scripts/generate-landmarks.ts",
+      "transformations": "Project-authored Boipeba palm/church and Abrolhos lighthouse reconstructions with one shared atlas from retained licensed references; Boipeba attributes, occupied atlas pixels and placements preserved; named coordinates projected onto terrain by scripts/generate-landmarks.ts",
       "essential": false,
       "experience": true,
-      "sha256": "d2ca0c01d2eae5c1a1b22056b62db88860e3c805f86c08a353b9941040c54bf1"
+      "sha256": "dfa7a80c0da89a25e63ee39363c7ad10b2b6322b5851a30450628e2f371ded1d"
     },
     {
       "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
@@ -1221,10 +1445,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/abrolhos-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "2661a4ab453d201ecd20ce444a5a9bb4496b66ad038112680951a4153371c34e"
+      "sha256": "c6a0bea35f527dbcf71acfa3ab7732611adc5786b37a14533bf457438043f6fb"
     },
     {
       "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
@@ -1236,10 +1460,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline balanced normal terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/abrolhos-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "db6e5362444ac6985a2859be965490e00467e96ecca304005855837cb6e17c4e"
+      "sha256": "048c2e9a4f5a2cd1eecdadd0eceeffa0e824c534c1a82c487ff16c9a3bc728ce"
     },
     {
       "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
@@ -1251,10 +1475,10 @@
       "retrieved": "2026-09-17",
       "rights": "Coastline © OpenStreetMap contributors under ODbL-1.0, attributed in the experience and in docs/third-party/graphics-notices.md; SRTM elevation is a U.S. Government work in the public domain",
       "proof": "docs/third-party/open-geodata.md",
-      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; legacy 256px field resized to output dimensions; WebP encoding; no satellite imagery or measured land-cover claim",
+      "transformations": "Deterministic offline low colour terrain bake from recorded elevation, slope, distance inland and authored palette; native 1024px Balanced / 512px Low island-specific sand, rock and vegetation signals; same mesh accessibility rasterised into colour once; authored weathering normals; see docs/third-party/abrolhos-terrain.md; WebP encoding; no satellite imagery or measured land-cover claim",
       "essential": false,
       "experience": true,
-      "sha256": "31304ad85c418fb66638808e11ebf84daeff6dabe9d1aeed21300a9b7a9d4173"
+      "sha256": "c803c330db2f53eaa611bdca9ce2c1e3198940e3be74ca59175dd9da5cf0a285"
     },
     {
       "path": "public/textures/landmark-boipeba-balanced-colour.v1.webp",
@@ -1431,7 +1655,7 @@
       "transformations": "Authored geometry, surface palette, Feature models and placement, and offline Balanced-to-Low bake pipeline",
       "essential": true,
       "experience": false,
-      "sha256": "b414f9d4ff7db871cd9985f52ea61450bbe61699520849703dd6b656a2551563"
+      "sha256": "d23e355708abdd48dae07e09f1d80fe7bb043cbfc33c105ff59f5b0dfa2f081b"
     },
     {
       "path": "scripts/landmark-feature-models.ts",
@@ -1529,7 +1753,7 @@
       "transformations": "Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography",
       "essential": true,
       "experience": false,
-      "sha256": "1da199d92e39ad25fe5e990e718dff28c19e53be62d415dbda67171fa65f5ebc"
+      "sha256": "993e1a6ae1ab557e02b30a4ef77bea989935c8e5d27f6da866c4d68bc7ea06e5"
     }
   ]
 }

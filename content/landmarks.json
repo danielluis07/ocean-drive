@@ -2,10 +2,10 @@
   "schema": 2,
   "features": {
     "url": "/models/landmark-features.v1.glb",
-    "bytes": 159088,
+    "bytes": 199036,
     "models": {
-      "placeholder": {
-        "triangles": 90
+      "abrolhos-lighthouse": {
+        "triangles": 1368
       },
       "boipeba-coconut-palm": {
         "triangles": 232
@@ -123,47 +123,47 @@
       "place": "Arquipélago de Abrolhos, Bahia, Brazil",
       "span": 31,
       "extent": {
-        "x": 14.21,
-        "z": 15.486
+        "x": 14.205,
+        "z": 15.48
       },
-      "radius": 15.986,
+      "radius": 15.98,
       "islands": 6,
       "summitMetres": 39,
-      "surfWidth": 1.9,
-      "shallowsWidth": 6,
+      "surfWidth": 0.95,
+      "shallowsWidth": 6.8,
       "features": {
         "instances": 1,
-        "triangles": 90
+        "triangles": 1368
       },
       "variants": {
         "balanced": {
           "url": "/models/landmark-abrolhos-balanced.v1.glb",
-          "triangles": 11873,
-          "bytes": 215968
+          "triangles": 11587,
+          "bytes": 211408
         },
         "low": {
           "url": "/models/landmark-abrolhos-low.v1.glb",
-          "triangles": 1248,
-          "bytes": 28536
+          "triangles": 1198,
+          "bytes": 27376
         }
       },
       "textures": {
         "balanced": {
           "colour": {
             "url": "/textures/landmark-abrolhos-balanced-colour.v1.webp",
-            "bytes": 28110,
+            "bytes": 7728,
             "size": 1024
           },
           "normal": {
             "url": "/textures/landmark-abrolhos-balanced-normal.v1.webp",
-            "bytes": 35058,
+            "bytes": 9270,
             "size": 1024
           }
         },
         "low": {
           "colour": {
             "url": "/textures/landmark-abrolhos-low-colour.v1.webp",
-            "bytes": 11470,
+            "bytes": 3106,
             "size": 512
           }
         }

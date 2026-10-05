@@ -1,0 +1,38 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 2 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:17332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [production] › tests\browser\production-assets.e2e.ts:45:5 › production requests, provenance, scene budgets and local diagnostics reconcile (43.1s)
+  ✓  2 [production] › tests\browser\production-assets.e2e.ts:249:5 › diagnostic export is absent without an explicit local opt-in (2.5s)
+
+  2 passed (51.1s)
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/landmark-features.test.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

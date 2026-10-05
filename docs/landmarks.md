@@ -85,8 +85,9 @@ distance inland and the island's palette. Noronha opts into native-resolution
 authoring: every texel evaluates sand, basalt joints and irregular scrub crowns
 at 1024 px for Balanced/High colour and normals, and independently at 512 px for
 Low colour. Boipeba's #69 candidate uses the same native baker with its own
-low-coast mangrove/restinga masks; Abrolhos and Ilha Grande retain the legacy
-enlarged 256 px field. The normal map
+low-coast mangrove/restinga masks. Abrolhos's #70 candidate uses exposed rock
+tables and thin grass without raised scrub crowns; Ilha Grande retains the
+legacy enlarged 256 px field. The normal map
 carries authored weathering; mesh normals carry the terrain's relief.
 No satellite imagery or runtime bake is used. Rebuilding must produce identical
 bytes. Projected X/Z UVs align both LODs with the same survey extent.
@@ -124,7 +125,9 @@ Noronha has human visual approval and passing desktop evidence. Boipeba's #69
 terrain-and-palms candidate received owner visual approval on 2026-10-04;
 the subsequent village church requires separate review. Physical-phone evidence remains unavailable, as
 confirmed by the owner on 2026-10-03. This is not completed rollout. Abrolhos
-and Ilha Grande still rebuild byte-identically through the legacy branch.
+has a separate #70 candidate with rocky terrain and a reconstructed lighthouse,
+with owner visual approval on 2026-10-05. Desktop timing and physical-phone
+evidence remain open. Ilha Grande retains the legacy branch.
 For each island candidate:
 
 1. Configure `terrainTreatment` alongside that island's palette, `shoreHeight`
@@ -144,8 +147,9 @@ For each island candidate:
    Balanced, modest-GPU colour-only Balanced, desktop Low and phone Low, plus
    missing-texture fallback and Close View. Inspect the coastline and underside.
    `terrain-detail` targets Noronha by default; set `TERRAIN_ISLAND=boipeba`
-   for Boipeba. `content/landmark-close-views.ts` configures each diagnostic
-   preview's pitch, bearing, distance ratio and target height. Both currently
+   for Boipeba or `TERRAIN_ISLAND=abrolhos` for Abrolhos. Set
+   `TERRAIN_HIDE_FEATURES=1` for terrain-only review. `content/landmark-close-views.ts` configures each diagnostic
+   preview's pitch, bearing, distance ratio and target height. All three currently
    use 48° pitch, north bearing and half the aerial distance, without implementing
    #72's interaction. It hides the Stop Card only for capture, outside the app.
 5. Repeat the five-active-minute sailing capture on the same physical hardware;
@@ -283,13 +287,11 @@ island is a single draw however many models it mixes. A GPU-instanced mesh
 would need one draw per model, which the budget below does not allow. Low never
 requests the file and draws nothing on its islands.
 
-The shared library retains Abrolhos's original plain banded placeholder and
-its placement, and adds Boipeba's 12 textured coconut palms (2,784 expanded
+The shared library includes Boipeba's 12 textured coconut palms (2,784 expanded
 triangles). The palms are project-authored full 3D reconstructions after a
 licensed photograph by Panta LH; source, original references, atlas and offline
 builder are under `data/landmarks/features/boipeba/`. Their CC BY-SA 3.0 credit
-appears in both presentations. The Abrolhos placeholder's vertex colours sample
-the atlas's white region. The village Feature reconstructs the real Igreja do
+appears in both presentations. The village Feature reconstructs the real Igreja do
 Divino Espírito Santo at its retained OSM point, adding 208 triangles. Its
 solid pediment, nave, lateral volumes, roofs, bell frame, cross and footing
 use licensed front/roof references and supporting aerials. Dimensions and
@@ -298,6 +300,20 @@ triangles in total. The combined atlas uses CC BY-SA 4.0 with all original
 credits retained. Low never loads this library. See
 [village verification](verification/issue69-village.md) for new art/performance
 evidence; physical-phone validation remains unavailable.
+
+Abrolhos replaces the former placeholder with a full 3D lighthouse reconstruction
+at retained OSM node 1181469524. Its bands, two galleries, opaque lantern, dome,
+railings and footing use licensed photographs retained under
+`data/landmarks/features/abrolhos/`. It occupies model slot zero, preserving
+Boipeba's model indices, attributes, occupied atlas pixels and placements.
+The new model adds 1,368 expanded triangles and uses unused regions of the same
+1024px atlas; compact normals use `KHR_mesh_quantization` without a decoder.
+The candidate's natural terrain uses exposed rocky tables, thin grass, very
+narrow beach pockets and broad reef shallows in both tiers. See
+[terrain provenance](third-party/abrolhos-terrain.md) and
+[issue70 verification](verification/issue70.md) for retained art and device evidence.
+The owner approved this final visual candidate on 2026-10-05. Desktop sailing
+timing and physical-phone validation remain open.
 
 ## Ready for the Close View
 

@@ -1,0 +1,9 @@
+import { defineConfig } from "@playwright/test";
+import production from "@/playwright.production.config";
+export default defineConfig({
+  ...production,
+  testDir: "../tests/browser",
+  reporter: [["list"], ["../tests/browser/evidence-reporter.ts", { build: true }]],
+  projects: [{ name: "stop-card-placement", testMatch: "stop-cards.e2e.ts",
+    use: { launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] } } }],
+});

@@ -12,4 +12,5 @@ export type LandmarkCloseView = {
 export const landmarkCloseViews: Partial<Record<StopId, LandmarkCloseView>> = {
   "fernando-de-noronha": { pitch: 48, bearing: 0, distance: .5, targetHeight: 1 },
   boipeba: { pitch: 48, bearing: 0, distance: .5, targetHeight: .7 },
+  abrolhos: { pitch: 48, bearing: 0, distance: .5, targetHeight: .8 },
 };

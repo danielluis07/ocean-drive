@@ -3,6 +3,8 @@ import { createInitialVoyageState, serializeVoyageState } from "@/lib/voyage-sta
 import { readFile, writeFile } from "node:fs/promises";
 import { oceanConfiguration } from "@/lib/ocean-config";
 import { deviceKey } from "@/lib/starting-tier";
+import { featureSourceRecord } from "@/scripts/landmark-feature-source";
+import { inspectModel } from "@/lib/asset-audit";
 
 const stop = oceanConfiguration.stops.find(entry => entry.id === (process.env.TERRAIN_ISLAND ?? "fernando-de-noronha"));
 if (!stop?.landmark) throw new Error("TERRAIN_ISLAND must name an island Stop");
@@ -38,6 +40,14 @@ for (const view of [
         await route.fulfill({ body: await readFile(`${baseline}${path}`), contentType: path.endsWith(".glb") ? "model/gltf-binary" : "image/webp" });
       });
       if (view.maps === "none") await page.route("**/textures/landmark-*.webp", route => route.fulfill({ status: 404, body: "capture without optional map" }));
+      if (process.env.TERRAIN_HIDE_FEATURES === "1") await page.route("**/models/landmark-features.v1.glb", async route => {
+        const bytes = await readFile("public/models/landmark-features.v1.glb");
+        const buffer = new Uint8Array(bytes).buffer;
+        const features = inspectModel(buffer).features!;
+        await route.fulfill({ body: Buffer.from(featureSourceRecord(buffer, {
+          models: features.models, placements: { ...features.placements, [island]: [] },
+        })), contentType: "model/gltf-binary" });
+      });
       const renderer = view.maps === "colour" ? "Intel UHD Graphics 620" : "generic capture renderer";
       const screen = await page.evaluate(() => ({ width: window.screen.width, height: window.screen.height }));
       const renderDpr = view.tier === "balanced" ? .9 : 1;
@@ -76,7 +86,7 @@ for (const view of [
       const settingsPath = testInfo.outputPath("capture-settings.json");
       await writeFile(settingsPath, JSON.stringify({ island, framing, view, deviceDpr: 1,
         renderDpr: await page.locator("#voyage-ocean").getAttribute("data-dpr"),
-        baseline: process.env.TERRAIN_BASELINE ?? null }, null, 2));
+        baseline: process.env.TERRAIN_BASELINE ?? null, featuresHidden: process.env.TERRAIN_HIDE_FEATURES === "1" }, null, 2));
       await testInfo.attach("capture-settings", { path: settingsPath, contentType: "application/json" });
       if (view.maps !== "none") await expect.poll(() => page.evaluate(id => JSON.parse(window.__oceanDiagnostics!.exportJSON()).events
         .some((event: { kind: string; detail: string }) => event.kind === "landmark-texture" &&
