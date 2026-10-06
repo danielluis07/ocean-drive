@@ -10,10 +10,24 @@ import { gzipSync } from "node:zlib";
 import ship from "@/content/ship.json";
 import { shipBudget, shipSource } from "@/content/ship-source";
 import { productionBudgets } from "@/lib/production-budgets";
+import { earthApproach } from "@/content/earth-approach";
 
 export async function auditAssets() {
   const errors: string[] = [];
   const paths = new Set(manifest.assets.map((asset) => asset.path));
+  let approachOptionalBytes = 0;
+  for (const level of earthApproach.levels) {
+    const path = `public${level.url}`;
+    const record = manifest.assets.find(asset => asset.path === path);
+    if (!record || record.sourceKind !== "open-data" || record.essential !== level.essential || !record.experience) errors.push(`Invalid NASA Approach record: ${path}`);
+    if (!await Bun.file(path).exists()) { errors.push(`Missing Approach image: ${path}`); continue; }
+    const metadata = await sharp(await Bun.file(path).arrayBuffer()).metadata();
+    if (metadata.width !== level.size || metadata.height !== level.size) errors.push(`Approach native resolution mismatch: ${path}`);
+    if (!level.essential) approachOptionalBytes += Bun.file(path).size;
+    else if (Bun.file(path).size > earthApproach.essentialBytes) errors.push(`Essential Approach globe exceeds 450 KiB: ${path}`);
+  }
+  if (approachOptionalBytes > earthApproach.optionalBytes) errors.push(`Optional Approach images exceed 250 KiB: ${approachOptionalBytes}`);
+  if (paths.has("public/images/earth-intro.v1.webp") || await Bun.file("public/images/earth-intro.v1.webp").exists()) errors.push("Retired AI Earth image remains");
   if (paths.size !== manifest.assets.length) errors.push("Duplicate asset records");
   for (const path of [shipSource.path, "content/ship.json", "content/ship-source.ts", "scripts/build-ship.ts", "docs/third-party/ship/source.html", "docs/third-party/ship/CC-BY-3.0.txt", ...Object.values(ship.variants).map((variant) => `public${variant.url}`)]) {
     if (!paths.has(path)) errors.push(`Unregistered Ship asset or source: ${path}`);

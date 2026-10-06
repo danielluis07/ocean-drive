@@ -6,6 +6,14 @@ They do not replace the complete application dependency audit in issue #29.
 
 ## Landmark source data
 
+The Approach Earth imagery is adapted from **NASA Blue Marble (2002)**,
+NASA Goddard Space Flight Center; Reto Stöckli and Robert Simmon. NASA U.S.
+Government imagery is public domain; no endorsement implied. The globe has
+NASA's cloud composite; closer crops are cloud-free. Orthographic projection,
+atmosphere, navy grading and the deep-water hand-off are project transformations.
+Sources, retained usage evidence and offline reproduction are recorded in
+[nasa-blue-marble.md](nasa-blue-marble.md).
+
 - Coastlines: © OpenStreetMap contributors, made available under the Open
   Database License (ODbL) 1.0.
 - Elevation data: SRTM courtesy of the U.S. Geological Survey, retrieved from

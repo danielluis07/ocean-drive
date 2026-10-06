@@ -1,4 +1,6 @@
 # Preserve retained upstream snapshots and evidence bytes used by SHA-256 records.
+data/earth/*.html -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+data/earth/*.html -diff
 data/landmarks/features/ilha-grande/references/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 data/landmarks/features/ilha-grande/references/*.html -diff
 docs/verification/issue71/** -text whitespace=cr-at-eol

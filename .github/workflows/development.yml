@@ -36,6 +36,7 @@ jobs:
         run: |
           bun run assets:ship
           bun run landmarks:build
+          bun run earth:build
           bun run evidence tree ci/reproducible-assets
       - run: bun run typecheck
       - run: bun run lint

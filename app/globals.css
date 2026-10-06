@@ -14,6 +14,8 @@
   --ocean-950: #071019;
   --ocean-050: #f4f7f8;
   --shallows-400: #2fb6b2;
+  /* Graded NASA Approach water; calibrated to the opening ocean camera. */
+  --approach-water: #091828;
   --coral-500: #ff6b4a;
   --surface-ink: #0b1b22;
   --surface-neutral-100: #eef2f3;

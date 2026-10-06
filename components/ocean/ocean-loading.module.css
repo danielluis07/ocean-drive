@@ -1,4 +1,5 @@
 .overlay {
+  --earth: min(94vw, 76svh, 56rem);
   opacity: 0;
   visibility: hidden;
   transition: opacity 480ms ease, visibility 0s linear 480ms;
@@ -10,28 +11,116 @@
   transition: none;
 }
 
-/* The ocean fades in over the last third of the descent, before the Earth
-   image is magnified far enough to soften. */
 .overlay[data-reveal="true"] {
   transition: opacity 800ms ease 1600ms, visibility 0s linear 2400ms;
 }
 
-.planet {
-  /* The rendered Earth's width, matching the image's width class. */
-  --earth: min(94vw, 76svh, 56rem);
-  transform: scale(1);
-  /* Just offshore of the northeastern tip of Brazil, toward Fernando de
-     Noronha: 49.5% across and 47.5% down the Earth image. */
-  transform-origin: calc(50% - var(--earth) * 0.005) calc(50% - var(--earth) * 0.025);
-  transition: transform 2400ms cubic-bezier(0.55, 0.05, 0.45, 1);
+.image {
+  width: var(--earth);
 }
 
-.earth {
-  mask-image: radial-gradient(circle closest-side, #000 93%, transparent 100%);
+.layer[data-level="atlantic"],
+.layer[data-level="water"] {
+  opacity: 0;
 }
 
-.overlay[data-reveal="true"] .planet {
-  transform: scale(14);
+.layer[data-level="atlantic"] .image {
+  width: calc(var(--earth) / 3);
+  transform-origin: bottom left;
+  mask-image: linear-gradient(to bottom, transparent, #000 25%), linear-gradient(to right, #000 85%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Keep the cropped continent attached to the left/bottom viewport edges. A
+   circular crop would fade its inland boundary into water like a false island.
+   The descent pans offshore as this cloud-free coastal view grows. */
+.layer[data-level="atlantic"] {
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.layer[data-level="water"] .image {
+  width: calc(var(--earth) / 14);
+  mask-image: radial-gradient(circle closest-side, #000 85%, transparent 100%);
+}
+
+/* Each image stops before its native pixels are exceeded at DPR 2. The outgoing
+   layer holds its last sharp scale after its cross-fade finishes. */
+.overlay[data-reveal="true"][data-descent="nested"] {
+  animation: water-background 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="globe"] {
+  animation: globe-fade 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="globe"] .image {
+  animation: globe-zoom 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="atlantic"] {
+  animation: atlantic-fade 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="atlantic"] .image {
+  animation: atlantic-zoom 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="water"] {
+  animation: water-fade 2400ms linear both;
+}
+
+.overlay[data-reveal="true"][data-descent="nested"] .layer[data-level="water"] .image {
+  animation: water-zoom 2400ms linear both;
+}
+
+@keyframes globe-zoom {
+  0% { transform: scale(1); }
+  36%, 100% { transform: scale(2.2); }
+}
+
+@keyframes atlantic-zoom {
+  0% { transform: scale(1); }
+  36% { transform: scale(2.2); }
+  68%, 100% { transform: scale(6.8); }
+}
+
+@keyframes water-zoom {
+  0% { transform: scale(1); }
+  36% { transform: scale(2.2); }
+  68% { transform: scale(6.8); }
+  100% { transform: scale(30); }
+}
+
+@keyframes globe-fade {
+  0%, 24% { opacity: 1; }
+  36%, 100% { opacity: 0; }
+}
+
+@keyframes atlantic-fade {
+  0%, 24% { opacity: 0; }
+  36%, 56% { opacity: 1; }
+  68%, 100% { opacity: 0; }
+}
+
+@keyframes water-fade {
+  0%, 56% { opacity: 0; }
+  68%, 100% { opacity: 1; }
+}
+
+@keyframes water-background {
+  0%, 24% { background-color: var(--background); }
+  36%, 100% { background-color: var(--approach-water); }
+}
+
+/* Optional downloads never hold the descent. A later load cannot change it. */
+.overlay[data-reveal="true"][data-descent="fallback"] {
+  transition: opacity 800ms ease 400ms, visibility 0s linear 1200ms;
+}
+
+.overlay[data-reveal="true"][data-descent="fallback"] .layer[data-level="globe"] .image {
+  transform: scale(2);
+  transition: transform 1200ms ease;
 }
 
 .chrome {
@@ -44,13 +133,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .overlay,
-  .planet,
-  .chrome {
-    transition-delay: 0s !important;
+  .overlay[data-reveal="true"] {
+    animation: none;
+    transition: opacity 480ms ease, visibility 0s linear 480ms;
   }
 
-  .overlay[data-reveal="true"] .planet {
-    transform: none;
+  .overlay[data-reveal="true"] .layer,
+  .overlay[data-reveal="true"] .layer .image {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
