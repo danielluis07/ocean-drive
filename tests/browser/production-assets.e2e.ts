@@ -215,7 +215,9 @@ test("production requests, provenance, scene budgets and local diagnostics recon
         (request) => !route.some((initial) => initial.path === request.path),
       ),
     ),
-    minimumSailable: sum(minimum),
+    // Keep optional transfers in the complete visit and the initial-transfer
+    // report, while measuring the minimum with the ledger's essential flags.
+    minimumSailable: sum(minimum.filter(request => request.essential)),
     completeVisit: sum(complete),
     minimumVisuals: sum(visuals(minimum, true)),
     allVisuals: sum(visuals(complete)),
@@ -223,7 +225,7 @@ test("production requests, provenance, scene budgets and local diagnostics recon
     ...(diagnostics.scenes.balanced as SceneCounts),
   };
   const phoneMeasurements = {
-    minimumSailable: sum(phoneVisit),
+    minimumSailable: sum(phoneVisit.filter(request => request.essential)),
     minimumVisuals: sum(visuals(phoneVisit, true)),
     ...(phoneDiagnostics.scenes.low as SceneCounts),
   };
@@ -232,10 +234,14 @@ test("production requests, provenance, scene budgets and local diagnostics recon
   expect(phoneDiagnostics.scenes.low.renderTargets).toBe(0);
   expect([...complete, ...phoneVisit].filter((request) => request.path.startsWith("/textures/landmark-"))
     .every((request) => !request.essential)).toBe(true);
+  for (const visit of [complete, phoneVisit]) {
+    expect(visit.find(request => request.path === "/images/earth-globe.v1.webp")?.essential).toBe(true);
+    for (const level of ["atlantic", "water"]) expect(visit.find(request => request.path === `/images/earth-${level}.v1.webp`)?.essential).toBe(false);
+  }
   const reportPath = testInfo.outputPath("production-budget-report.json");
   await writeFile(
     reportPath,
-    JSON.stringify({ measurements, requests: complete, phone: { measurements: phoneMeasurements, requests: phoneVisit }, diagnostics: { desktop: diagnostics, phone: phoneDiagnostics } }, null, 2),
+    JSON.stringify({ measurements, initialTransfer: sum(minimum), requests: complete, phone: { measurements: phoneMeasurements, initialTransfer: sum(phoneVisit), requests: phoneVisit }, diagnostics: { desktop: diagnostics, phone: phoneDiagnostics } }, null, 2),
   );
   await testInfo.attach("production-budget-report", {
     path: reportPath,

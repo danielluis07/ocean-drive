@@ -30,13 +30,14 @@ bun install --frozen-lockfile
 bun run assets:ship
 bun run landmarks:build
 bun run assets:identity
+bun run earth:build
 bun run assets:audit
 ```
 
 Generation uses code/vector masters, the retained licensed Ship glTF and font
 bytes, and recorded coastline/elevation data under `data/`, with no network requests.
-`bun run landmarks:fetch` is the one command that reaches an outside service; it
-is a maintenance step that re-records `data/landmarks/`, and its output is
+`bun run landmarks:fetch` and `bun run earth:fetch` reach outside services; each
+is a maintenance step that re-records `data/landmarks/` or `data/earth/`, and its output is
 committed and reviewed like any other asset change. The Ship GLBs retain their
 shared footprint, waterline origin and -Z bow. High uses the Balanced GLB. Both
 have one opaque material and one embedded texture, with no animation or skin.
@@ -111,6 +112,12 @@ limits are additionally checked with gzip. Request bodies are hashed against the
 ledger, including Next's renamed font outputs. Next-generated JS/CSS and the
 server HTML are classified as application output; all requests must stay on the
 application origin. Missing measurements fail rather than counting as zero.
+The minimum-sailable payload sums the manifest's essential responses, including
+the Approach globe. Optional transfers remain in the complete-visit total;
+`initialTransfer` separately records all bytes received before readiness on both
+desktop and phone, even when optional imagery or terrain arrives during startup.
+The complete visit still counts every response against 5 MiB.
+
 Scene counts come from actual renderer draws and retained target disposal events,
 with per-tier maxima spanning rendered states; they are not estimates from JSX.
 Each Landmark's budget is enforced twice: the build refuses to write a mesh over
@@ -152,6 +159,16 @@ thermal/frame behavior, rights/editorial review and release approval still requi
 candidate-bound human evidence (rows B–F and R of the
 [Production Acceptance Matrix](acceptance-matrix.md)). No deployment or
 physical-device pass is implied by this gate.
+
+The Approach's three photographic WebPs derive from retained public-domain NASA
+Blue Marble surface and cloud maps (`data/earth/`), with an offline projection
+and grading build. Only `earth-globe.v1.webp` is essential and preloaded; the
+cloud-free Atlantic and open-water levels are non-essential, with a combined
+250 KiB ceiling enforced by the build and audit. Their full transfer bytes enter
+the first-visit payload budgets. Photographic imagery retains its existing
+separate classification from authored 3D visuals. See
+[NASA provenance](third-party/nasa-blue-marble.md) for source credits and exact
+transformations. Next's resizing is disabled for these native 4096 px images.
 
 ## Local diagnostic export
 

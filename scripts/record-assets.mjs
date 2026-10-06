@@ -3,8 +3,22 @@ import { shipSource } from '@/content/ship-source';
 import ship from '@/content/ship.json';
 import landmarks from '@/content/landmarks.json';
 import { featureFile, landmarkSources } from '@/content/landmark-sources';
+import { earthApproach } from '@/content/earth-approach';
 const fontSources = await Bun.file('docs/third-party/fonts/sources.json').json();
 const assets = [];
+const earthRights = {
+ sourceKind: 'open-data', creator: 'NASA Goddard Space Flight Center; Reto Stöckli; Robert Simmon',
+ source: 'https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/',
+ retrieved: '2026-10-06', rights: 'NASA U.S. Government imagery, public domain; retained NASA media usage guidelines; no endorsement implied',
+ proof: 'docs/third-party/nasa-blue-marble.md',
+};
+for await (const file of new Bun.Glob('*').scan({cwd:'data/earth',onlyFiles:true})) {
+ const path = `data/earth/${file}`;
+ assets.push({path, kind:'source-data', ...earthRights, transformations:'Retained upstream surface/cloud bytes, source/usage page snapshots or SHA-256 maintenance ledger', essential:false, experience:false, sha256:await hash(path)});
+}
+for (const path of ['content/earth-approach.ts','scripts/build-earth.ts','scripts/fetch-earth-sources.ts','docs/third-party/nasa-blue-marble.md']) {
+ assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/build-earth.ts', retrieved:earthRights.retrieved, rights:'Project-authored orthographic projection and grading of public-domain NASA imagery', proof:earthRights.proof, transformations:'Reproducible offline nested crops; authored atmosphere, navy grading and deep-water hand-off; network confined to maintenance fetch', essential:false, experience:false, sha256:await hash(path)});
+}
 const shipRights = {
  sourceKind: 'licensed-model', creator: shipSource.creator, source: shipSource.url,
  retrieved: shipSource.retrieved, rights: 'CC-BY-3.0: commercial use, adaptation and redistribution with attribution and retained licence; source mesh and texture by Poly by Google', proof: shipSource.proof,
@@ -101,8 +115,12 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
   continue;
  }
  if (illustrative) {
-  const earthIntro = path === 'public/images/earth-intro.v1.webp';
-  assets.push({path, url, kind: 'photographic-image', sourceKind: 'ai-generated', creator: 'OpenAI GPT Image, commissioned by the project owner', source: 'OpenAI built-in image generation', retrieved: '2026-09-21', rights: "Generated under the project owner's OpenAI account; usage rights per OpenAI's terms for commissioned output", proof: 'docs/third-party/ai-generated-images.md', transformations: earthIntro ? 'AI-generated 1254×1254 PNG re-encoded as WebP with Sharp at quality 90; no crop or other edits' : 'AI-generated PNG resized and cropped to 960×720 then re-encoded as WebP with Sharp; no other edits', essential: false, experience: true, sha256: await hash(path)});
+  const earth = earthApproach.levels.find(level => level.url === url);
+  if (earth) {
+   assets.push({path, url, kind:'photographic-image', ...earthRights, transformations:`Offline orthographic projection centred at 30 W / 4 S; nested crop ${earth.crop}; native ${earth.size}px WebP; ${earth.id === 'globe' ? 'NASA cloud composite and authored atmosphere rim' : 'cloud-free surface'}; authored navy grading and plain deep-water centre on the close level; no AI imagery`, essential:earth.essential, experience:true, sha256:await hash(path)});
+   continue;
+  }
+  assets.push({path, url, kind: 'photographic-image', sourceKind: 'ai-generated', creator: 'OpenAI GPT Image, commissioned by the project owner', source: 'OpenAI built-in image generation', retrieved: '2026-09-21', rights: "Generated under the project owner's OpenAI account; usage rights per OpenAI's terms for commissioned output", proof: 'docs/third-party/ai-generated-images.md', transformations: 'AI-generated PNG resized and cropped to 960×720 then re-encoded as WebP with Sharp; no other edits', essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  assets.push({path, url, kind: 'authored', sourceKind: 'project-source', creator: 'Ocean Drive project contributors', source: 'scripts/generate-identity.mjs', retrieved: '2026-09-15', rights: 'Project-authored source contribution; no imported artwork', proof: 'docs/third-party/project-assets.md', transformations: 'Deterministic SVG paths and Sharp PNG rasterization', essential: false, experience: false, sha256: await hash(path)});

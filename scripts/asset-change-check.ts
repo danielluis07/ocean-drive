@@ -2,6 +2,7 @@ import { appendFileSync } from "node:fs";
 
 // Conservative: dependency/runtime changes can alter binary encoder output too.
 export function affectsGeneratedAssets(path: string) {
+  if (/^(data\/earth\/|public\/images\/earth-[^/]+\.webp$|content\/earth-approach\.ts$|scripts\/(build-earth|fetch-earth-sources)\.ts$)/.test(path)) return true;
   return /^(data\/(ship|landmarks)\/|public\/(models|textures)\/|content\/(ship|landmark)[^/]*\.(ts|json)$|scripts\/(build-ship|generate-landmarks|landmark-feature-models|landmark-feature-source|landmark-texture-bake|asset-bake|ship-texture-bake|asset-change-check)\.ts$|lib\/landmark-(geometry|surface|features)\.ts$|package\.json$|bun\.lock$|tsconfig\.json$|\.github\/workflows\/)/.test(path);
 }
 

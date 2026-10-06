@@ -1,0 +1,28 @@
+{
+  "build": "09fbe7f31d8ee6d5067a927092dfecf703be74c4-4c8fc8d658403aff",
+  "measurements": {
+    "routeJavaScript": 198407,
+    "lazyThreeJavaScript": 264026,
+    "minimumSailable": 2009186,
+    "completeVisit": 3306696,
+    "minimumVisuals": 1084152,
+    "allVisuals": 1633120,
+    "fonts": 34952,
+    "drawCalls": 5,
+    "triangles": 48114,
+    "oceanDraws": 1,
+    "renderTargets": 2
+  },
+  "initialTransfer": 2559036,
+  "phone": {
+    "measurements": {
+      "minimumSailable": 1156254,
+      "minimumVisuals": 231220,
+      "drawCalls": 2,
+      "triangles": 8222,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    },
+    "initialTransfer": 1375444
+  }
+}

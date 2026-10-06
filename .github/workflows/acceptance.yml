@@ -33,6 +33,7 @@ jobs:
         run: |
           bun run assets:ship
           bun run landmarks:build
+          bun run earth:build
       - run: bun run evidence tree ci/reproducible-assets
         if: ${{ !cancelled() }}
       - run: bun run evidence run ci/typecheck -- bun run typecheck
