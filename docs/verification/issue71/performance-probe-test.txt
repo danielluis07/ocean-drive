@@ -1,0 +1,34 @@
+import { expect } from '@playwright/test';
+import { test } from '@/tests/browser/physical-gpu-fixture';
+import { createInitialVoyageState, serializeVoyageState } from '@/lib/voyage-state';
+import { readFile, writeFile } from 'node:fs/promises';
+
+for (const assets of ['baseline','candidate'] as const) {
+  test(`Settled Arrival diagnostic: ${assets}`,async({page,browser,physicalHost},info)=>{
+    test.setTimeout(120000);
+    if(assets==='baseline') await page.route(/\/(?:models|textures)\/(?:landmark-ilha-grande-.*|landmark-features\.v1\.glb)$/,async route=>{
+      const path=new URL(route.request().url()).pathname;
+      await route.fulfill({body:await readFile(`.tmp/issue71-baseline/public${path}`),contentType:path.endsWith('.glb')?'model/gltf-binary':'image/webp'});
+    });
+    await page.addInitScript(state=>{
+      sessionStorage.setItem('ocean-drive:diagnostics','enabled');
+      sessionStorage.setItem('ocean-drive:voyage:v1',state);
+    },serializeVoyageState({...createInitialVoyageState(),currentStop:'ilha-grande',routeProgress:4,complete:true}));
+    await page.goto('/');
+    const ocean=page.locator('#voyage-ocean');
+    await expect(ocean).toHaveAttribute('data-stage','ready',{timeout:60000});
+    await expect(ocean).toHaveAttribute('data-settled-stop','4');
+    await expect(page.locator('[data-slot="ocean-loading"]')).toBeHidden();
+    await page.bringToFront();
+    const start=await page.evaluate(()=>performance.now());
+    await page.waitForTimeout(60000);
+    const diagnostics=await page.evaluate(()=>JSON.parse(window.__oceanDiagnostics!.exportJSON()));
+    const windows=diagnostics.timing.windows.filter((window:{atMs:number})=>window.atMs>=start+2000);
+    const result={purpose:'Diagnostic settled-only comparison; not five-minute acceptance evidence',assets,browser:browser.version(),physicalHost,viewport:page.viewportSize(),deviceDpr:await page.evaluate(()=>devicePixelRatio),start,windows,diagnostics};
+    const path=info.outputPath(`${assets}-probe.json`);
+    await writeFile(path,JSON.stringify(result,null,2));
+    await info.attach(`${assets}-probe.json`,{path,contentType:'application/json'});
+    console.log(assets,JSON.stringify({windows:windows.length,worstP90:Math.max(...windows.map((window:{p90Ms:number})=>window.p90Ms)),worstGpuP90:Math.max(...windows.map((window:{gpuP90Ms:number})=>window.gpuP90Ms)),dprs:[...new Set(windows.map((window:{quality:{dpr:number}})=>window.quality.dpr))]}));
+    expect(windows.filter((window:{p90Ms:number})=>window.p90Ms>20)).toEqual([]);
+  });
+}

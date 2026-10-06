@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-8b3e9e0eed454195",
+  "startedAt": "2026-10-05T15:53:30.795Z",
+  "quality": {
+    "tier": "low",
+    "dpr": 1,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 509,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 509,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 509,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 509.19999999925494,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 523.5,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 541.1999999992549,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 554.5999999977648,
+      "kind": "quality",
+      "detail": {
+        "tier": "low",
+        "dpr": 1,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 554.5999999977648,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1289.5999999977648,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1366.7999999970198,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 1376.5,
+      "kind": "readiness",
+      "detail": "ready"
+    },
+    {
+      "atMs": 1379.8999999985099,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 1396.199999999255,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":4}"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 3036.199999999255,
+    "frames": 182,
+    "windows": [
+      {
+        "atMs": 3374.39999999851,
+        "p90Ms": 17.099999997764826,
+        "gpuP90Ms": null,
+        "quality": {
+          "tier": "low",
+          "dpr": 1,
+          "fallback": false
+        },
+        "wakeActive": false
+      }
+    ]
+  },
+  "scenes": {
+    "low": {
+      "drawCalls": 4,
+      "triangles": 9449,
+      "oceanDraws": 1,
+      "renderTargets": 0
+    }
+  }
+}

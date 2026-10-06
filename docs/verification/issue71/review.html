@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ilha Grande · issue 71 visual review</title>
+<style>
+  body { margin: 0; padding: 24px; color: #edf3f0; background: #09151d; font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 1280px; margin: auto; }
+  h1 { font-size: 24px; margin: 0; }
+  p { color: #bdc9c9; }
+  a { color: #bbdfd0; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 20px 0; }
+  select, input { font: inherit; }
+  select { padding: 6px; color: inherit; background: #17313b; border: 1px solid #657c83; border-radius: 4px; }
+  .compare { position: relative; max-width: 1280px; margin: auto; --split: 50%; }
+  .compare.phone { max-width: 390px; }
+  img { display: block; width: 100%; height: auto; }
+  #after { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--split)) 0 0); }
+  .line { position: absolute; top: 0; bottom: 0; left: var(--split); width: 2px; background: white; pointer-events: none; }
+  .caption { display: flex; justify-content: space-between; color: #bdc9c9; }
+  .approval { margin: 32px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  figure { margin: 0; }
+  @media(max-width: 640px) { body { padding: 16px; } .approval { grid-template-columns: 1fr; } }
+</style>
+<main>
+<h1>Ilha Grande · issue #71</h1>
+<p>Matched production cameras, viewport, tier and render DPR. Move the divider to compare the retained baseline with the candidate. The owner approved the final visuals on 2026-10-05. Physical-phone performance remains unvalidated.</p>
+<div class="controls">
+  <label>View <select id="view">
+    <option value="desktop-balanced">Desktop Balanced · colour + normal</option>
+    <option value="desktop-colour-only">Desktop Balanced · colour only</option>
+    <option value="desktop-low">Desktop Low</option>
+    <option value="phone-low">Phone Low</option>
+    <option value="desktop-fallback">Desktop Balanced · missing textures</option>
+  </select></label>
+  <label>Camera <select id="framing"><option value="aerial">Aerial</option><option value="close">Close View · 48° / half distance</option></select></label>
+  <label><input type="checkbox" id="natural"> Show candidate terrain without Features</label>
+  <label>Divider <input id="divider" type="range" min="0" max="100" value="50"></label>
+</div>
+<div class="compare" id="compare">
+  <img id="before" src="before/desktop-balanced-aerial.png" alt="Retained baseline">
+  <img id="after" src="final/desktop-balanced-aerial.png" alt="Final candidate">
+  <span class="line"></span>
+</div>
+<div class="caption"><span>Candidate on the left</span><span>Baseline on the right</span></div>
+<p><a id="beforeLink" href="before/desktop-balanced-aerial.png">Open baseline</a> · <a id="afterLink" href="final/desktop-balanced-aerial.png">Open candidate</a> · <a href="../issue71.md">Verification report</a></p>
+<p>The required ordinary Stop 04 asset-art captures:</p>
+<div class="approval">
+  <figure><a href="asset-art/desktop-balanced-stop-04.png"><img src="asset-art/desktop-balanced-stop-04.png" alt="Desktop Balanced Stop 04"></a><figcaption>Desktop Balanced</figcaption></figure>
+  <figure><a href="asset-art/desktop-low-stop-04.png"><img src="asset-art/desktop-low-stop-04.png" alt="Desktop Low Stop 04"></a><figcaption>Desktop Low</figcaption></figure>
+  <figure><a href="asset-art/phone-low-stop-04.png"><img src="asset-art/phone-low-stop-04.png" alt="Phone Low Stop 04"></a><figcaption>Phone Low</figcaption></figure>
+</div>
+</main>
+<script>
+const byId = id => document.getElementById(id);
+function update() {
+  const view = byId('view').value, framing = byId('framing').value;
+  const before = `before/${view}-${framing}.png`;
+  const after = `${byId('natural').checked ? 'natural-final' : 'final'}/${view}-${framing}.png`;
+  byId('before').src = byId('beforeLink').href = before;
+  byId('after').src = byId('afterLink').href = after;
+  byId('compare').classList.toggle('phone', view === 'phone-low');
+  byId('compare').style.setProperty('--split', byId('divider').value + '%');
+}
+for (const id of ['view', 'framing', 'natural', 'divider']) byId(id).addEventListener('input', update);
+update();
+</script>
+</html>

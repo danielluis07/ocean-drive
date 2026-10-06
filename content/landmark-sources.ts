@@ -20,7 +20,8 @@ export type GeographicBounds = {
 // and ships once in the shared Feature file for every Landmark to place.
 //
 // Abrolhos replaces the former placeholder in slot zero. Boipeba keeps its slots.
-export const featureModels = ["abrolhos-lighthouse", "boipeba-coconut-palm", "boipeba-divino-church"] as const;
+export const featureModels = ["abrolhos-lighthouse", "boipeba-coconut-palm", "boipeba-divino-church",
+  "ilha-grande-sao-sebastiao", "ilha-grande-abraao-pier", "ilha-grande-papagaio", "ilha-grande-forest-canopy"] as const;
 export type FeatureModel = (typeof featureModels)[number];
 
 // Vegetation and other repeated models, placed wherever the terrain allows.
@@ -45,6 +46,9 @@ export type LandmarkFeature = {
   scale: number;
   // Degrees clockwise from north the model's front faces.
   heading?: number;
+  // Coast-supported decks may stand above the submerged shoreline ramp.
+  // Preserve the mapped X/Z anchor; footings must reach into the terrain/water.
+  minimumSeat?: number;
 };
 
 export type LandmarkSource = {
@@ -85,6 +89,11 @@ export type LandmarkSource = {
   // Landward overlap in terrain-grid steps, for low coasts whose submerged
   // triangles extend farther inland. Defaults to 0.8.
   shallowsTuck?: number;
+  // World units of landward waterline transition; defaults to the shared .5.
+  shoreRamp?: number;
+  // Named sandy shores from retained mapped outlines. Width is display
+  // interpretation in world units, not a measured land-cover survey.
+  beaches?: { name: string; path: [lon: number, lat: number][]; width: number; supportLow?: boolean }[];
   // Named reef-pool colour interpretation; radii are authored, not bathymetry.
   reefPools?: { name: string; lon: number; lat: number; radius: [number, number] }[];
   // Instances scattered over the island by terrain rules. Balanced and High only.
@@ -112,12 +121,12 @@ export const landmarkBudget = {
 // The one file every Landmark's models and placements ship in. Low never
 // requests it.
 export const featureFile = { url: "/models/landmark-features.v1.glb", bytes: 200 * 1024, textureSize: 1024, source: {
-  path: "data/landmarks/features/abrolhos/library.glb",
+  path: "data/landmarks/features/ilha-grande/library.glb",
   sourceKind: "project-source",
-  creator: "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil",
-  source: "data/landmarks/features/abrolhos/build.ts",
-  rights: "Palm reconstruction: CC BY-SA 3.0; church, lighthouse and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
-  proof: "data/landmarks/features/abrolhos/README.md",
+  creator: "Ocean Drive project contributors; Boipeba references by Panta LH, Waltson Campos, INPE and Marcio Filho/MTur; Abrolhos references by Munique Bassoli, Alicedaraujo and Gabi Carrera / Marinha do Brasil; Ilha Grande references by Fulviusbsas, LíviaBuhring, Vihgaby, José Carlos B Fialho, MBelu and Glauco Umbelino",
+  source: "data/landmarks/features/ilha-grande/build.ts",
+  rights: "Palm reconstruction: CC BY-SA 3.0; churches, lighthouse, Ilha Grande pier/peak/canopy and shared atlas: CC BY-SA 4.0, adapted from retained licensed references; see source records for attribution",
+  proof: "data/landmarks/features/ilha-grande/README.md",
   retrieved: "2026-10-05",
 } satisfies FeatureSource } as const;
 
@@ -197,11 +206,46 @@ export const landmarkSources: LandmarkSource[] = [
     group: 0.2,
     span: 39,
     height: 4.3,
-    shoreHeight: 14,
-    beachWidth: 0.9,
+    shoreRamp: .08,
+    shoreHeight: 18,
+    beachWidth: .9,
     surfWidth: 1.45,
-    shallowsWidth: 3.6,
+    shallowsWidth: 3.2,
+    terrainTreatment: { relief: .16, scrubScale: 4.8, rockScale: 7,
+      forest: { canopyCoverage: .96, ridgeHeight: 420 },
+      samplingRatio: { balanced: .80, low: .97 } },
+    scatter: [{ model: "ilha-grande-forest-canopy", spacing: 3.8, scale: [.65, .95],
+      elevation: [0, 820], slope: [0, .46], inland: [.55, 12] }],
+    // Retained OSM nodes and the tourist pier's landward footprint vertex.
+    features: [
+      { name: "Igreja de São Sebastião — Vila do Abraão", model: "ilha-grande-sao-sebastiao",
+        lon: -44.1684089, lat: -23.140259, scale: .5, heading: 45 },
+      { name: "Cais turístico do Abraão", model: "ilha-grande-abraao-pier",
+        lon: -44.1680091, lat: -23.1399026, scale: .6, heading: 225, minimumSeat: .44 },
+      { name: "Pico do Papagaio", model: "ilha-grande-papagaio",
+        lon: -44.1968058, lat: -23.1550619, scale: .9, heading: 90 },
+    ],
+    // Sea-facing paths selected from retained OSM beach outlines; broadened
+    // for production-camera readability without moving the coastline.
+    beaches: [
+      { name: "Praia de Lopes Mendes", width: .85, supportLow: true, path: [
+        [-44.1402179,-23.1668836],[-44.1369966,-23.1670834],[-44.1325468,-23.1683262],
+        [-44.1293496,-23.169966],[-44.1260102,-23.172454],[-44.1237921,-23.1750234],
+        [-44.1232288,-23.1765768],[-44.1225261,-23.1792299],
+      ] },
+      { name: "Praia do Abraão", width: .35, path: [
+        [-44.1700191,-23.1365481],[-44.1700987,-23.1371748],[-44.1696191,-23.137803],
+        [-44.1683268,-23.139202],[-44.1672721,-23.1402977],[-44.1657671,-23.1414192],
+      ] },
+      { name: "Praia de Dois Rios", width: .42, path: [
+        [-44.1907936,-23.1894055],[-44.18965,-23.189309],[-44.1898067,-23.1873654],
+        [-44.1891506,-23.1842345],[-44.186395,-23.1812161],[-44.1848123,-23.1799968],
+      ] },
+      { name: "Praia do Aventureiro", width: .38, path: [
+        [-44.3174993,-23.185551],[-44.3183059,-23.1879582],[-44.3182538,-23.188489],[-44.3182329,-23.1901738],
+      ] },
+    ],
     // Atlantic forest to the waterline, with granite showing on the ridges.
-    palette: { sand: "#e5d5b6", rock: "#6f675e", lowland: "#365d3d", highland: "#60774c" },
+    palette: { sand: "#f1ead8", rock: "#8c8d80", lowland: "#2f593c", highland: "#4f713f" },
   },
 ];

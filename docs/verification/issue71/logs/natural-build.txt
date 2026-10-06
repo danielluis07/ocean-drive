@@ -1,0 +1,21 @@
+$ bun scripts/generate-landmarks.ts
+fernando-de-noronha balanced: 14059 triangles (507 in the shallows), 249.4 KiB, 3 outlines at 0.22 units
+fernando-de-noronha low: 1223 triangles (365 in the shallows), 26.8 KiB, 3 outlines at 0.82 units
+boipeba balanced: 12336 triangles (449 in the shallows), 218.6 KiB, 4 outlines at 0.31 units
+boipeba low: 1214 triangles (261 in the shallows), 27.0 KiB, 4 outlines at 1.16 units
+abrolhos balanced: 11587 triangles (745 in the shallows), 206.5 KiB, 6 outlines at 0.19 units
+abrolhos low: 1198 triangles (533 in the shallows), 26.7 KiB, 6 outlines at 0.64 units
+ilha-grande balanced: 12636 triangles (573 in the shallows), 223.4 KiB, 1 outlines at 0.36 units
+ilha-grande low: 1227 triangles (315 in the shallows), 27.2 KiB, 1 outlines at 1.06 units
+466 |       const url = `/textures/landmark-${source.id}-${tier}-${kind}.v1.webp`;
+467 |       await Bun.write(`public${url}`, buffer);
+468 |       entries[kind] = { url, bytes: buffer.length, size: tier === "low" ? 512 : 1024 };
+469 |       bytes += buffer.length;
+470 |     }
+471 |     if (bytes > 150 * 1024) throw new Error(`${source.id} ${tier} texture budget exceeded: ${bytes} bytes`);
+                                            ^
+error: ilha-grande balanced texture budget exceeded: 153972 bytes
+      at C:\Users\bombd\ocean-drive\scripts\generate-landmarks.ts:471:39
+
+Bun v1.4.2 (Windows x64)
+error: script "landmarks:build" exited with code 1

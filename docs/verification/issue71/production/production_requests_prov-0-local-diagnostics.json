@@ -1,0 +1,414 @@
+{
+  "desktop": {
+    "schema": 1,
+    "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+    "startedAt": "2026-10-05T17:11:36.247Z",
+    "quality": {
+      "tier": "balanced",
+      "dpr": 0.5,
+      "fallback": false
+    },
+    "events": [
+      {
+        "atMs": 364.4000000022352,
+        "kind": "readiness",
+        "detail": "editorial-ready"
+      },
+      {
+        "atMs": 364.4000000022352,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1.25,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 364.4000000022352,
+        "kind": "readiness",
+        "detail": "checking"
+      },
+      {
+        "atMs": 364.69999999925494,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 558.1999999992549,
+        "kind": "lifecycle",
+        "detail": "visible:3d:voyage"
+      },
+      {
+        "atMs": 585.8000000007451,
+        "kind": "starting-quality",
+        "detail": "default"
+      },
+      {
+        "atMs": 610.5,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 0.5,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 610.5,
+        "kind": "readiness",
+        "detail": "loading"
+      },
+      {
+        "atMs": 1745.1000000014901,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 1972.4000000022352,
+        "kind": "readiness",
+        "detail": "preparing"
+      },
+      {
+        "atMs": 2018.4000000022352,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 2021.5,
+        "kind": "readiness",
+        "detail": "ready"
+      },
+      {
+        "atMs": 2076.900000002235,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 568,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 706,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 1552,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"boipeba\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":1}"
+      },
+      {
+        "atMs": 4059,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 11979,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 11981,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 14569,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 14685,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"abrolhos\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":2}"
+      },
+      {
+        "atMs": 23192,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"boipeba\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 23195,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 23250,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 23385,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":2,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":3}"
+      },
+      {
+        "atMs": 32323,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"abrolhos\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":4}"
+      },
+      {
+        "atMs": 33472,
+        "kind": "lifecycle",
+        "detail": "visible:3d:voyage"
+      },
+      {
+        "atMs": 39255,
+        "kind": "context",
+        "detail": "lost"
+      },
+      {
+        "atMs": 39257,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"ilha-grande\",\"retained\":0,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":4}"
+      },
+      {
+        "atMs": 39336,
+        "kind": "readiness",
+        "detail": "preparing"
+      },
+      {
+        "atMs": 39337,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 39376,
+        "kind": "context",
+        "detail": "restored"
+      },
+      {
+        "atMs": 39456,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"balanced\",\"generation\":1,\"settledStop\":4}"
+      },
+      {
+        "atMs": 39466,
+        "kind": "readiness",
+        "detail": "frame"
+      },
+      {
+        "atMs": 39472,
+        "kind": "readiness",
+        "detail": "ready"
+      },
+      {
+        "atMs": 39472,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"balanced\",\"generation\":1,\"settledStop\":4}"
+      },
+      {
+        "atMs": 39504,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"balanced\",\"generation\":1,\"settledStop\":4}"
+      }
+    ],
+    "droppedEvents": 0,
+    "timing": {
+      "activeMs": 8026.39999999851,
+      "frames": 271,
+      "windows": [
+        {
+          "atMs": 4047.300000000745,
+          "p90Ms": 206.10000000149012,
+          "gpuP90Ms": 88.1417,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 569,
+          "p90Ms": 175.90000000223517,
+          "gpuP90Ms": 96.4684,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 2576,
+          "p90Ms": 16,
+          "gpuP90Ms": 86.3241,
+          "quality": {
+            "tier": "balanced",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        }
+      ]
+    },
+    "scenes": {
+      "balanced": {
+        "drawCalls": 5,
+        "triangles": 48114,
+        "oceanDraws": 1,
+        "renderTargets": 2
+      }
+    }
+  },
+  "phone": {
+    "schema": 1,
+    "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+    "startedAt": "2026-10-05T17:12:24.930Z",
+    "quality": {
+      "tier": "low",
+      "dpr": 0.5,
+      "fallback": true
+    },
+    "events": [
+      {
+        "atMs": 43090,
+        "kind": "readiness",
+        "detail": "editorial-ready"
+      },
+      {
+        "atMs": 43090,
+        "kind": "quality",
+        "detail": {
+          "tier": "balanced",
+          "dpr": 1.25,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 43090,
+        "kind": "readiness",
+        "detail": "checking"
+      },
+      {
+        "atMs": 43091,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 43124,
+        "kind": "lifecycle",
+        "detail": "visible:3d:voyage"
+      },
+      {
+        "atMs": 43164,
+        "kind": "starting-quality",
+        "detail": "default"
+      },
+      {
+        "atMs": 43203,
+        "kind": "quality",
+        "detail": {
+          "tier": "low",
+          "dpr": 0.5,
+          "fallback": false
+        }
+      },
+      {
+        "atMs": 43203,
+        "kind": "readiness",
+        "detail": "loading"
+      },
+      {
+        "atMs": 44497,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"retain\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 44891,
+        "kind": "readiness",
+        "detail": "preparing"
+      },
+      {
+        "atMs": 44899,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"decode\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 44958,
+        "kind": "readiness",
+        "detail": "ready"
+      },
+      {
+        "atMs": 44980,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"upload\",\"id\":\"fernando-de-noronha\",\"retained\":1,\"tier\":\"low\",\"generation\":0,\"settledStop\":0}"
+      },
+      {
+        "atMs": 50977,
+        "kind": "quality",
+        "detail": {
+          "tier": "low",
+          "dpr": 0.5,
+          "fallback": true
+        }
+      },
+      {
+        "atMs": 50977,
+        "kind": "failure",
+        "detail": "unusable-quality"
+      },
+      {
+        "atMs": 51128,
+        "kind": "lifecycle",
+        "detail": "visible:editorial:voyage"
+      },
+      {
+        "atMs": 51133,
+        "kind": "landmark-texture",
+        "detail": "{\"action\":\"release\",\"id\":\"fernando-de-noronha\",\"retained\":0,\"tier\":\"low\",\"generation\":0,\"settledStop\":0}"
+      }
+    ],
+    "droppedEvents": 0,
+    "timing": {
+      "activeMs": 6023,
+      "frames": 254,
+      "windows": [
+        {
+          "atMs": 46953,
+          "p90Ms": 34,
+          "gpuP90Ms": 53.3087,
+          "quality": {
+            "tier": "low",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 48961,
+          "p90Ms": 46,
+          "gpuP90Ms": 29.5557,
+          "quality": {
+            "tier": "low",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        },
+        {
+          "atMs": 50976,
+          "p90Ms": 49,
+          "gpuP90Ms": 24.3859,
+          "quality": {
+            "tier": "low",
+            "dpr": 0.5,
+            "fallback": false
+          },
+          "wakeActive": false
+        }
+      ]
+    },
+    "scenes": {
+      "low": {
+        "drawCalls": 2,
+        "triangles": 8222,
+        "oceanDraws": 1,
+        "renderTargets": 0
+      }
+    }
+  }
+}

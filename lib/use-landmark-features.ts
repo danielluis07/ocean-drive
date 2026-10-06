@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Mesh, type BufferGeometry, type Group, MeshStandardMaterial, Texture } from "three";
+import { transformFeatureGeometry } from "@/lib/landmark-feature-geometry";
 
 export type FeatureLibrary = {
   // In the order the placements index them.
@@ -20,7 +21,9 @@ function readLibrary(scene: Group): FeatureLibrary | null {
   scene.traverse((object) => {
     if (object.userData.placements) record = object.userData;
     if (object instanceof Mesh) {
-      object.geometry = object.geometry.clone().applyMatrix4(object.matrixWorld);
+      const original = object.geometry;
+      object.geometry = transformFeatureGeometry(original, object.matrixWorld);
+      original.dispose();
       meshes.set(object.name, object.geometry);
       if (object.material instanceof MeshStandardMaterial) { material = object.material; material.envMapIntensity = .3; material.vertexColors = true; }
     }

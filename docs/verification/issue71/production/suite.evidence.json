@@ -1,0 +1,33 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/production/production-assets",
+  "kind": "suite",
+  "status": "pass",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": true,
+  "recordedAt": "2026-10-05T17:12:40.996Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium"
+  },
+  "method": "playwright test --config playwright.production.config.ts --project production tests/browser/production-assets.e2e.ts",
+  "artifacts": [
+    {
+      "path": "production_requests_prov-0-local-diagnostics.json",
+      "sha256": "4f9be1004d297af53f71b707eed8831d152382fa5980b8c3ba173fc4f741a615"
+    },
+    {
+      "path": "production-budget-report.json",
+      "sha256": "6b0e6817a5875773e59e906fd5afa9892b21b77e7720d84f6056db292eee827f"
+    }
+  ],
+  "notes": [],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f"
+}

@@ -1,0 +1,104 @@
+[WebServer] $ bun --bun next start --port "3100"
+
+Running 12 tests using 1 worker
+
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it
+(node:3576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced aerial (7.6s)
+  ✓   2 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-balanced close (5.4s)
+  ✓   3 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only aerial (8.7s)
+  ✓   4 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-colour-only close (8.2s)
+  ✓   5 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low aerial (3.9s)
+  ✓   6 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-low close (5.5s)
+  ✓   7 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low aerial (3.7s)
+  ✓   8 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › phone-low close (3.9s)
+  ✓   9 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback aerial (7.2s)
+  ✓  10 [terrain-detail] › tests\browser\terrain-detail.e2e.ts:32:9 › desktop-fallback close (6.3s)
+(node:6232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  11 [production] › tests\browser\production-assets.e2e.ts:45:5 › production requests, provenance, scene budgets and local diagnostics reconcile (48.5s)
+(node:2116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [production] › tests\browser\production-assets.e2e.ts:249:5 › diagnostic export is absent without an explicit local opt-in (3.0s)
+
+
+  1) [production] › tests\browser\production-assets.e2e.ts:45:5 › production requests, provenance, scene budgets and local diagnostics reconcile 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "minimumSailable: 2105477 exceeds 2097152",[39m
+    [31m+ ][39m
+
+      242 |     contentType: "application/json",
+      243 |   });
+    > 244 |   expect(checkBudgets(measurements)).toEqual([]);
+          |                                      ^
+      245 |   expect(phoneMeasurements.minimumSailable).toBeLessThanOrEqual(productionBudgets.minimumSailable);
+      246 |   expect(phoneMeasurements.minimumVisuals).toBeLessThanOrEqual(productionBudgets.minimumVisuals);
+      247 | });
+        at C:\Users\bombd\ocean-drive\tests\browser\production-assets.e2e.ts:244:38
+
+    attachment #1: local-diagnostics (application/json) ────────────────────────────────────────────
+    test-results\production-assets.e2e.ts-p-fb62a-local-diagnostics-reconcile-production\attachments\local-diagnostics-d81eae3fe3874d949851bbdb522e0e9cdd6b36e2.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: production-budget-report (application/json) ─────────────────────────────────────
+    test-results\production-assets.e2e.ts-p-fb62a-local-diagnostics-reconcile-production\attachments\production-budget-report-3ffea01832af30253229b65f7c6574486a88f4a0.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\production-assets.e2e.ts-p-fb62a-local-diagnostics-reconcile-production\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\production-assets.e2e.ts-p-fb62a-local-diagnostics-reconcile-production\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\production-assets.e2e.ts-p-fb62a-local-diagnostics-reconcile-production\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [production] › tests\browser\production-assets.e2e.ts:45:5 › production requests, provenance, scene budgets and local diagnostics reconcile 
+  11 passed (2.1m)
+warning: in the working copy of 'components/voyage/landmark-credit.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/asset-manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-close-views.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmark-sources.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'content/landmarks.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/landmarks.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/terrain-detail-assessment.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/third-party/graphics-notices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/use-landmark-features.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/generate-landmarks.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-feature-source.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/landmark-texture-bake.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/record-assets.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/terrain-treatment.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/browser/terrain-detail.e2e.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/terrain-detail.test.ts', LF will be replaced by CRLF the next time Git touches it

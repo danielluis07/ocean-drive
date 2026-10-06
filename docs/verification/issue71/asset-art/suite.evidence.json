@@ -1,0 +1,37 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/asset-art/low-detail",
+  "kind": "suite",
+  "status": "pass",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": false,
+  "recordedAt": "2026-10-05T17:13:40.916Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium"
+  },
+  "method": "playwright test --config playwright.production.config.ts --project asset-art tests/browser/low-detail.e2e.ts",
+  "artifacts": [
+    {
+      "path": "desktop-balanced-stop-04.png",
+      "sha256": "8b8ba4f19b1d9b189468afcfb2786cde78eb6c70f0bae647a2784e18b3b259d1"
+    },
+    {
+      "path": "desktop-low-stop-04.png",
+      "sha256": "5df73f95a2d956ba7aadc5c79d125dc8502261ee8994f128f47780f03d8455e5"
+    },
+    {
+      "path": "phone-low-stop-04.png",
+      "sha256": "5ad6c9ea7015680ab91f0de331fbb28125d4fa99846265e6862aecea5cfc5645"
+    }
+  ],
+  "notes": [],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f"
+}

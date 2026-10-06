@@ -86,8 +86,9 @@ authoring: every texel evaluates sand, basalt joints and irregular scrub crowns
 at 1024 px for Balanced/High colour and normals, and independently at 512 px for
 Low colour. Boipeba's #69 candidate uses the same native baker with its own
 low-coast mangrove/restinga masks. Abrolhos's #70 candidate uses exposed rock
-tables and thin grass without raised scrub crowns; Ilha Grande retains the
-legacy enlarged 256 px field. The normal map
+tables and thin grass without raised scrub crowns. Ilha Grande's #71 candidate
+uses dense Atlantic canopy, granite on steep ridges and pale mapped beach
+pockets, including Lopes Mendes. All four now use the native baker. The normal map
 carries authored weathering; mesh normals carry the terrain's relief.
 No satellite imagery or runtime bake is used. Rebuilding must produce identical
 bytes. Projected X/Z UVs align both LODs with the same survey extent.
@@ -127,11 +128,23 @@ the subsequent village church requires separate review. Physical-phone evidence 
 confirmed by the owner on 2026-10-03. This is not completed rollout. Abrolhos
 has a separate #70 candidate with rocky terrain and a reconstructed lighthouse,
 with owner visual approval on 2026-10-05. Desktop timing and physical-phone
-evidence remain open. Ilha Grande retains the legacy branch.
+evidence remain open. Ilha Grande has a separate #71 candidate with owner visual
+approval on 2026-10-05; physical-phone validation remains pending. See
+[its verification report](verification/issue71.md).
+Ilha Grande's unchanged candidate passes the desktop sailing rerun (159 scored
+windows, worst frame p90 18.0 ms). The report retains an earlier failed full run
+and failed settled-only probes of both original and candidate assets; their
+cadence variation remains documented.
 For each island candidate:
 
 1. Configure `terrainTreatment` alongside that island's palette, `shoreHeight`
-   and `beachWidth`. `relief` is the maximum peak-to-trough displacement in world
+   and `beachWidth`. Optional `shoreRamp` controls the compressed waterline
+   transition; the shallows waterline follows the same ratio. Named `beaches`
+   use retained geographic paths, with display widths interpreted for readability.
+   A beach's optional `supportLow` adds a few landward samples under its sand;
+   those count against Low's existing limits and retain the same elevation field
+   and submerged coastline. Ilha Grande uses this for Lopes Mendes.
+   `relief` is the maximum peak-to-trough displacement in world
    units; `scrubScale` and `rockScale` are world-space patch frequencies. These
    values are artistic controls, not measurements. Review the shared masks
    against the island's actual character; Noronha's dry scrub and high coastal
@@ -147,10 +160,12 @@ For each island candidate:
    Balanced, modest-GPU colour-only Balanced, desktop Low and phone Low, plus
    missing-texture fallback and Close View. Inspect the coastline and underside.
    `terrain-detail` targets Noronha by default; set `TERRAIN_ISLAND=boipeba`
-   for Boipeba or `TERRAIN_ISLAND=abrolhos` for Abrolhos. Set
+   for Boipeba, `TERRAIN_ISLAND=abrolhos` for Abrolhos or
+   `TERRAIN_ISLAND=ilha-grande` for Ilha Grande. Set
    `TERRAIN_HIDE_FEATURES=1` for terrain-only review. `content/landmark-close-views.ts` configures each diagnostic
-   preview's pitch, bearing, distance ratio and target height. All three currently
-   use 48° pitch, north bearing and half the aerial distance, without implementing
+   preview's pitch, bearing, distance ratio and target height. All four currently
+   use 48° pitch and half the aerial distance; Ilha Grande looks west from its
+   eastern shore at bearing 270°. This does not implement
    #72's interaction. It hides the Stop Card only for capture, outside the app.
 5. Repeat the five-active-minute sailing capture on the same physical hardware;
    retain p90 frame intervals, GPU timing, tier/DPR and quality changes. The
@@ -314,6 +329,27 @@ narrow beach pockets and broad reef shallows in both tiers. See
 [issue70 verification](verification/issue70.md) for retained art and device evidence.
 The owner approved this final visual candidate on 2026-10-05. Desktop sailing
 timing and physical-phone validation remain open.
+
+Ilha Grande appends four separately named textured reconstructions: the Igreja
+de São Sebastião representing Vila do Abraão, its mapped tourist pier, Pico do
+Papagaio and volumetric Atlantic canopy crowns. Licensed front/side/aerial and
+summit references, rights evidence, OSM coordinates, source geometry and the
+offline builder are retained under `data/landmarks/features/ilha-grande/`.
+No invented village houses are added. Lopes Mendes is the long pale strip in
+the terrain itself, so Low retains it without loading Features.
+
+The three named models and 15 terrain-rule crowns use 1,405 expanded triangles
+in one draw. The pier's mapped landward anchor stays fixed; `minimumSeat` raises
+its deck above the swell while its pilings extend below water. New positions
+use `KHR_mesh_quantization`; both build and runtime convert packed positions to
+floating point before applying the node scale. Earlier model attributes, order,
+UVs, occupied source PNG pixels and placement arrays are preserved. The shared
+1024px JPEG is intentionally re-encoded at quality 78 with 4:2:0 chroma to fit
+the unchanged 200 KiB limit; all-island asset-art regression is required.
+See [terrain provenance](third-party/ilha-grande-terrain.md) and
+[issue71 verification](verification/issue71.md). The owner approved its final
+visuals on 2026-10-05. Physical-phone validation remains pending; viewport
+captures do not complete rollout.
 
 ## Ready for the Close View
 

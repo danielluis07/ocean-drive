@@ -1,0 +1,9 @@
+import { defineConfig } from '@playwright/test';
+import production from '@/playwright.production.config';
+export default defineConfig({
+  ...production,
+  testDir: '.',
+  reporter: [['list'], ['../tests/browser/evidence-reporter.ts', {build:true}]],
+  projects: [{name:'issue71-perf-probe',testMatch:'issue71-perf-probe.e2e.ts',
+    use:{channel:'chrome',viewport:{width:1522,height:632},deviceScaleFactor:1.25,trace:'off'}}],
+});

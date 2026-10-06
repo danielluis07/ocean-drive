@@ -1,0 +1,18 @@
+[
+  {
+    "island": "ilha-grande",
+    "framing": "close",
+    "view": {
+      "name": "desktop-balanced",
+      "tier": "balanced",
+      "width": 1280,
+      "height": 800,
+      "maps": "all"
+    },
+    "deviceDpr": 1,
+    "renderDpr": "0.9",
+    "baseline": null,
+    "featuresHidden": true,
+    "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-31b94cad8cba2e7c"
+  }
+]

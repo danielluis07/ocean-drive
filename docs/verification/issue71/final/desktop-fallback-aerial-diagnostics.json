@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f",
+  "startedAt": "2026-10-05T17:10:55.175Z",
+  "quality": {
+    "tier": "balanced",
+    "dpr": 0.9,
+    "fallback": false
+  },
+  "events": [
+    {
+      "atMs": 344,
+      "kind": "readiness",
+      "detail": "editorial-ready"
+    },
+    {
+      "atMs": 344,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 1.25,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 344,
+      "kind": "readiness",
+      "detail": "checking"
+    },
+    {
+      "atMs": 344.20000000298023,
+      "kind": "lifecycle",
+      "detail": "visible:editorial:voyage"
+    },
+    {
+      "atMs": 374.70000000298023,
+      "kind": "lifecycle",
+      "detail": "visible:3d:voyage"
+    },
+    {
+      "atMs": 389.1000000014901,
+      "kind": "starting-quality",
+      "detail": "remembered"
+    },
+    {
+      "atMs": 400.70000000298023,
+      "kind": "quality",
+      "detail": {
+        "tier": "balanced",
+        "dpr": 0.9,
+        "fallback": false
+      }
+    },
+    {
+      "atMs": 400.70000000298023,
+      "kind": "readiness",
+      "detail": "loading"
+    },
+    {
+      "atMs": 1990.2000000029802,
+      "kind": "landmark-texture",
+      "detail": "{\"action\":\"retain\",\"id\":\"ilha-grande\",\"retained\":1,\"tier\":\"balanced\",\"generation\":0,\"settledStop\":4}"
+    },
+    {
+      "atMs": 2769.400000002235,
+      "kind": "readiness",
+      "detail": "preparing"
+    },
+    {
+      "atMs": 3106.900000002235,
+      "kind": "readiness",
+      "detail": "ready"
+    }
+  ],
+  "droppedEvents": 0,
+  "timing": {
+    "activeMs": 1345.9000000022352,
+    "frames": 82,
+    "windows": []
+  },
+  "scenes": {
+    "balanced": {
+      "drawCalls": 5,
+      "triangles": 45709,
+      "oceanDraws": 1,
+      "renderTargets": 2
+    }
+  }
+}

@@ -118,3 +118,17 @@ visual candidates. A second offline build must reproduce the generated files.
 Record measured payload, scene counts and device performance for the exact
 candidate. New physical-device performance is unvalidated until measured;
 historical #74 evidence does not certify a denser mesh or new texture treatment.
+
+Ilha Grande's #71 candidate adds native Atlantic forest, steep granite ridges,
+mapped Lopes Mendes/Abraão/Dois Rios/Aventureiro sand and licensed-reference
+church, tourist pier, summit and canopy reconstructions. The completed islands'
+terrain and Feature placements remain preserved; the shared JPEG re-encoding
+requires all-island art regression. See [issue71 verification](verification/issue71.md)
+for matched cameras, offline reproducibility and exact-candidate evidence.
+The owner approved the final visuals on 2026-10-05. Physical-phone validation
+remains pending.
+The unchanged desktop candidate passes a five-minute sailing rerun: 159 scored
+windows, worst frame p90 18.0 ms, no tier changes. Earlier failed full-route and
+settled-only captures remain in the report, including cadence misses with the
+original assets. This passing rerun does not erase that variation or complete
+physical-device rollout.

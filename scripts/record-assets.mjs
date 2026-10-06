@@ -58,6 +58,18 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:abrolhosRoot,onlyFiles:t
   proof:reference?.proof ?? `${abrolhosRoot}/README.md`, transformations:reference ? 'Retained licensed reference and rights evidence; no photographic pixels embedded; coordinates from retained OSM node' : 'Reproducible offline reconstruction, atlas and provenance; Boipeba attributes and occupied atlas pixels preserved; no AI generation',
   essential:false, experience:false, sha256:await hash(path)});
 }
+const ilhaGrandeRoot = 'data/landmarks/features/ilha-grande';
+const ilhaGrandeReferences = await Bun.file(`${ilhaGrandeRoot}/sources.json`).json();
+for await (const file of new Bun.Glob('**/*').scan({cwd:ilhaGrandeRoot,onlyFiles:true})) {
+ const relative = file.replaceAll('\\','/'), path = `${ilhaGrandeRoot}/${relative}`;
+ if (path === featureFile.source?.path) continue;
+ const reference = ilhaGrandeReferences.find(entry => entry.files.includes(relative));
+ assets.push({path, kind:'source-data', sourceKind:reference?.sourceKind ?? 'project-source',
+  creator:reference?.creator ?? 'Ocean Drive project contributors', source:reference?.source ?? `${ilhaGrandeRoot}/build.ts`,
+  retrieved:reference?.retrieved ?? '2026-10-05', rights:reference?.rights ?? 'Project-authored Ilha Grande church, pier, granite summit, canopy and shared atlas adaptation under CC BY-SA 4.0; completed models keep their recorded licences',
+  proof:reference?.proof ?? `${ilhaGrandeRoot}/README.md`, transformations:reference ? 'Retained licensed reference, rights evidence or mapped OSM coordinates; granite surface crop and reconstructed geometry documented in README.md' : 'Reproducible offline full 3D reconstruction, quantized appended geometry and atlas; previous attributes and occupied PNG pixels preserved; shared JPEG re-encoded at quality 78 / 4:2:0; no AI generation',
+  essential:false, experience:false, sha256:await hash(path)});
+}
 for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true})) {
  const path = `public/${file.replaceAll('\\','/')}`;
  const url = '/'+file.replaceAll('\\','/');
@@ -81,7 +93,7 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true}
   continue;
  }
  if (features && featureFile.source) {
-  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: featureFile.source.sourceKind ?? "licensed-model", source: featureFile.source.source, transformations: "Project-authored Boipeba palm/church and Abrolhos lighthouse reconstructions with one shared atlas from retained licensed references; Boipeba attributes, occupied atlas pixels and placements preserved; named coordinates projected onto terrain by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
+  assets.push({...featureFile.source, path, url, kind: "authored", sourceKind: featureFile.source.sourceKind ?? "licensed-model", source: featureFile.source.source, transformations: "Project-authored Boipeba palm/church, Abrolhos lighthouse and Ilha Grande church/pier/granite/canopy reconstructions; one opaque shared 1024px atlas from retained licensed references; completed model attributes, occupied source PNG pixels and placements preserved; shared JPEG intentionally re-encoded quality 78 / 4:2:0; new geometry quantized through KHR_mesh_quantization; named coordinates projected onto terrain by scripts/generate-landmarks.ts", essential: false, experience: true, sha256: await hash(path)});
   continue;
  }
  if (features) {
@@ -103,6 +115,7 @@ for (const path of ['content/landmark-sources.ts','content/landmarks.json','scri
 for (const path of ['scripts/terrain-treatment.ts', 'scripts/terrain-occlusion.ts', 'scripts/terrain-shore-sampler.ts', 'docs/third-party/noronha-terrain.md']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-10-03', rights:'Project-authored source contribution; no imported artwork', proof:'docs/third-party/noronha-terrain.md', transformations:'Retained deterministic authored surface/relief, scalar accessibility rasterisation and exact coastline queries; no new surveyed geography', essential:true, experience:false, sha256:await hash(path)});
 for (const path of ["content/landmark-close-views.ts", "docs/third-party/boipeba-terrain.md"]) assets.push({path, kind:"pipeline", sourceKind:"project-source", creator:"Ocean Drive project contributors", source:"scripts/generate-landmarks.ts", retrieved:"2026-10-03", rights:"Project-authored interpretation; no new surveyed geography", proof:"docs/third-party/boipeba-terrain.md", transformations:"Authored Boipeba surface interpretation and diagnostic Close View framing", essential:false, experience:false, sha256:await hash(path)});
 assets.push({path:"docs/third-party/abrolhos-terrain.md", kind:"pipeline", sourceKind:"project-source", creator:"Ocean Drive project contributors", source:"scripts/generate-landmarks.ts", retrieved:"2026-10-05", rights:"Project-authored interpretation; no new surveyed geography", proof:"docs/third-party/abrolhos-terrain.md", transformations:"Bare rock tables, thin grass, narrow beach pockets, broad reef shallows and configured Close View; native terrain and unchanged geographic inputs", essential:false, experience:false, sha256:await hash("docs/third-party/abrolhos-terrain.md")});
+for (const path of ['lib/landmark-feature-geometry.ts', 'scripts/terrain-regions.ts', 'docs/third-party/ilha-grande-terrain.md']) assets.push({path, kind:'pipeline', sourceKind:'project-source', creator:'Ocean Drive project contributors', source:'scripts/generate-landmarks.ts', retrieved:'2026-10-05', rights:'Project-authored surface interpretation; retained OSM beach coordinates under ODbL-1.0', proof:'docs/third-party/ilha-grande-terrain.md', transformations:'Dense Atlantic canopy, steep granite ridges, mapped sandy pockets and island-specific shoreline/Close View; bounded relief distinguished from unchanged SRTM samples; floating-point CPU decode preserves quantized Feature geometry', essential:false, experience:false, sha256:await hash(path)});
 assets.sort((a,b)=>a.path.localeCompare(b.path));
 await Bun.write('content/asset-manifest.json',JSON.stringify({schema:1, assets},null,2)+'\n');
 console.log(`Recorded ${assets.length} asset provenance entries.`);

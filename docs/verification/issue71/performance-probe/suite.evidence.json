@@ -1,0 +1,44 @@
+{
+  "schema": "travessia.evidence/1",
+  "check": "e2e/issue71-perf-probe/issue71-perf-probe",
+  "kind": "suite",
+  "status": "fail",
+  "candidate": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "treeClean": false,
+  "complete": true,
+  "recordedAt": "2026-10-05T17:44:19.691Z",
+  "tester": "Automated · local run by danielluis07",
+  "environment": {
+    "host": "local",
+    "os": "win32 10.0.26300 x64",
+    "cpu": "AMD Ryzen 7 3700U with Radeon Vega Mobile Gfx × 8",
+    "memory": "6 GiB",
+    "runtime": "Node 23.9.0",
+    "playwright": "1.58.2",
+    "browser": "chromium (chrome)"
+  },
+  "method": "playwright test --config .tmp/issue71-perf-probe.config.ts --project issue71-perf-probe .tmp/issue71-perf-probe.e2e.ts",
+  "artifacts": [
+    {
+      "path": "Settled_Arrival_diagnost-0-baseline-probe.json",
+      "sha256": "0a961db275756fd63c3853321776a8ba32b066828a136cb6c5d93c4516345388"
+    },
+    {
+      "path": "Settled_Arrival_diagnost-1-error-context.md",
+      "sha256": "394b197c5050417c82f8e5d45bef4d60e7efb638b86334a891f0b8be64d1db20"
+    },
+    {
+      "path": "Settled_Arrival_diagnost-0-candidate-probe.json",
+      "sha256": "0af086dbb9a8d6caa83c991273ce5462e4cbc4d53bb9d02b49a61768d4b1a445"
+    },
+    {
+      "path": "Settled_Arrival_diagnost-1-error-context.md",
+      "sha256": "394b197c5050417c82f8e5d45bef4d60e7efb638b86334a891f0b8be64d1db20"
+    }
+  ],
+  "notes": [
+    "failed: Settled Arrival diagnostic: baseline",
+    "failed: Settled Arrival diagnostic: candidate"
+  ],
+  "build": "dd071b39181c4833f3818a3953f6d76347eb6cff-88f06287423a1c3f"
+}

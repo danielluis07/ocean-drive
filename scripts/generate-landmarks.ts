@@ -46,6 +46,8 @@ import { productionBudgets } from "@/lib/production-budgets";
 import { authoredRelief, terrainPigment } from "@/scripts/terrain-treatment";
 import { buildBoipebaFeatureLibrary } from "@/data/landmarks/features/boipeba/build";
 import { buildAbrolhosFeatureLibrary } from "@/data/landmarks/features/abrolhos/build";
+import { buildIlhaGrandeFeatureLibrary } from "@/data/landmarks/features/ilha-grande/build";
+import { createBeachSampler, beachSupportPoints } from "@/scripts/terrain-regions";
 
 // GLTFExporter writes a Blob through FileReader, which Bun does not provide.
 globalThis.FileReader = class {
@@ -119,13 +121,14 @@ function elevationOf(record: LandmarkRecord): ElevationGrid {
 
 function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: number, tier: Tier) {
   const elevation = elevationOf(record);
-  const { rings, toDegrees, scale } = projectLandmark(
+  const { rings, toDegrees, toWorld, scale } = projectLandmark(
     record.coastline.islands.map((island) => island.ring),
     source.span,
   );
   // Drop coastline detail the camera could not resolve anyway, then triangulate
   // what is left, so the outline keeps its real shape at a fraction of the cost.
   const detailed = !!source.terrainTreatment && tier === "balanced";
+  const beachAt = createBeachSampler(source, toWorld);
   const outline = rings.map((ring) => simplifyRing(ring, spacing * (detailed ? .12 : .33))).filter((ring) => ring.length >= 3);
   const elevationAt = (point: PlanarPoint) => {
     const { lon, lat } = toDegrees(point);
@@ -140,7 +143,7 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   const surface = islandSurface(outline, spacing, detailed ? point => {
     const slope = slopeAt(point);
     return distanceToRings(point, outline) < 1.25 || slope > .18;
-  } : undefined);
+  } : undefined, tier === "low" ? beachSupportPoints(source, toWorld, outline, spacing) : []);
 
   const summit = Math.max(...elevation.metres);
   const positions = new Float32Array(surface.points.length * 3);
@@ -156,7 +159,7 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
     const point = surface.points[index];
     // Behind the shoreline the land climbs to its recorded height; at the
     // shoreline it sits below the water, where the surf line covers the join.
-    const seat = Math.min(1, shoreAt[index] / SHORE_RAMP);
+    const seat = Math.min(1, shoreAt[index] / (source.shoreRamp ?? SHORE_RAMP));
     const height = LOWLAND_CLEARANCE + (metresAt[index] / Math.max(summit, 1)) * source.height
       + authoredRelief(point.x, point.z, metresAt[index], slopeAt(point), shoreAt[index], source);
     positions.set([point.x, height * seat * seat - SHORE_DIP * (1 - seat), point.z], index * 3);
@@ -176,7 +179,7 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
   for (let index = 0; index < surface.points.length; index++) {
     const point = surface.points[index];
     const colour = source.terrainTreatment
-      ? terrainPigment(point.x, point.z, metresAt[index], slopeAt(point), shoreAt[index], summit, source).colour
+      ? terrainPigment(point.x, point.z, metresAt[index], slopeAt(point), shoreAt[index], summit, source, beachAt(point)).colour
       : shadeSurface(
       {
         metres: metresAt[index],
@@ -228,10 +231,11 @@ function buildIsland(source: LandmarkSource, record: LandmarkRecord, spacing: nu
 // across it and break the surf line on its shoreward side.
 function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacing: number, tier: Tier, toWorld: ReturnType<typeof projectLandmark>["toWorld"]) {
   const { surfWidth, shallowsWidth } = source;
+  const waterline = WATERLINE * (source.shoreRamp ?? SHORE_RAMP) / SHORE_RAMP;
   const band = shoreBand(outlines, {
     // A coarser surface comes up through the water further inland, so the band
     // reaches further under it: no swell opens a gap between the two.
-    tuck: Math.max(WATERLINE + 0.1, spacing * (source.shallowsTuck ?? 0.8)),
+    tuck: Math.max(waterline + 0.1, spacing * (source.shallowsTuck ?? 0.8)),
     surf: surfWidth,
     reach: shallowsWidth,
     shore: Math.max(spacing * 1.6, surfWidth * 0.85),
@@ -248,8 +252,8 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
     // Both measure out from the waterline: `u` in surf widths, `v` in shallows
     // widths, so each reaches 1 where its own line ends. Under the land they
     // run negative, and the shader holds them at 0.
-    const out = band.distance[index] + WATERLINE;
-    uvs.set([out / (surfWidth + WATERLINE), out / (shallowsWidth + WATERLINE)], index * 2);
+    const out = band.distance[index] + waterline;
+    uvs.set([out / (surfWidth + waterline), out / (shallowsWidth + waterline)], index * 2);
     if (colours && pools) {
       const strength = Math.max(...pools.map(pool => {
         const distance = Math.hypot((point.x - pool.point.x) / pool.radius[0], (point.z - pool.point.z) / pool.radius[1]);
@@ -268,6 +272,7 @@ function buildShallows(outlines: PlanarPoint[][], source: LandmarkSource, spacin
 
 await buildBoipebaFeatureLibrary();
 await buildAbrolhosFeatureLibrary();
+await buildIlhaGrandeFeatureLibrary();
 const authored = featureFile.source ? await readFeatureSource(featureFile.source, featureModels, featureFile.bytes, featureFile.textureSize) : null;
 const models = authored?.models ?? featureModels.map((id) => {
   const build = featureModelBuilders[id];
@@ -321,6 +326,7 @@ function placeFeatures(source: LandmarkSource, record: LandmarkRecord, island: R
     const point = toWorld(feature);
     const position = insideRings(point, island.outlines) ? standing(point) : null;
     if (!position) throw new Error(`${feature.name} does not stand on ${source.id}: check its coordinates`);
+    if (feature.minimumSeat !== undefined) position[1] = Math.max(position[1], feature.minimumSeat);
     placements.push({ model: featureModels.indexOf(feature.model), position, heading: feature.heading ?? 0, scale: feature.scale });
   }
   surface.material.dispose();

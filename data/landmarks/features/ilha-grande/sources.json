@@ -1,0 +1,100 @@
+[
+  {
+    "files": [
+      "references/church-front.jpg",
+      "references/church-front.html",
+      "references/church-side.jpg",
+      "references/church-side.html"
+    ],
+    "sourceKind": "licensed-image",
+    "creator": "Fulviusbsas",
+    "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao5.jpg and https://commons.wikimedia.org/wiki/File:IlhaGrande-Abraao1.jpg",
+    "retrieved": "2026-10-05",
+    "rights": "Author's public-domain dedication (PD-own); full 3D church reconstruction references; no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/church-front.html"
+  },
+  {
+    "files": ["references/pier.jpg", "references/pier.html"],
+    "sourceKind": "licensed-image",
+    "creator": "LíviaBuhring",
+    "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_Pier.JPG",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY-SA 3.0; pier reconstruction reference; adaptation under CC BY-SA 4.0 per section 4(b)",
+    "proof": "data/landmarks/features/ilha-grande/references/pier.html"
+  },
+  {
+    "files": ["references/pier-deck.jpg", "references/pier-deck.html"],
+    "sourceKind": "licensed-image",
+    "creator": "Vihgaby",
+    "source": "https://commons.wikimedia.org/wiki/File:Cais_de_Ilha_Grande.jpg",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY-SA 3.0; pier deck, pilings and boarding reference; adaptation under CC BY-SA 4.0 per section 4(b); no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/pier-deck.html"
+  },
+  {
+    "files": ["references/peak-profile.jpg", "references/peak-profile.html"],
+    "sourceKind": "licensed-image",
+    "creator": "José Carlos B Fialho",
+    "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio_-_Ilha_Grande_-_RJ.jpg",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY-SA 3.0; full 3D granite reconstruction and surface-only texture crop; adaptation under CC BY-SA 4.0 per section 4(b)",
+    "proof": "data/landmarks/features/ilha-grande/references/peak-profile.html"
+  },
+  {
+    "files": ["references/peak-summit.jpg", "references/peak-summit.html"],
+    "sourceKind": "licensed-image",
+    "creator": "MBelu",
+    "source": "https://commons.wikimedia.org/wiki/File:Pico_do_Papagaio,_Ilha_Grande.jpg",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY-SA 4.0; granite summit and reverse-slope reconstruction reference; no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/peak-summit.html"
+  },
+  {
+    "files": ["references/forest-bay.jpg", "references/forest-bay.html"],
+    "sourceKind": "licensed-image",
+    "creator": "Glauco Umbelino",
+    "source": "https://commons.wikimedia.org/wiki/File:Vila_do_Abra%C3%A3o_-_Ilha_Grande-RJ-Brasil_(1376952276).jpg",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY 2.0 confirmed by retained Commons Flickr licence review; terrain/canopy reconstruction reference; no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/forest-bay.html"
+  },
+  {
+    "files": [
+      "references/village-aerial.jpg",
+      "references/village-aerial.html"
+    ],
+    "sourceKind": "licensed-image",
+    "creator": "LíviaBuhring",
+    "source": "https://commons.wikimedia.org/wiki/File:Ilha_Grande_do_alto.JPG",
+    "retrieved": "2026-10-05",
+    "rights": "CC BY-SA 3.0; roof, shore and canopy context; no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/village-aerial.html"
+  },
+  {
+    "files": ["references/lopes-mendes.jpg", "references/lopes-mendes.html"],
+    "sourceKind": "licensed-image",
+    "creator": "Fulviusbsas",
+    "source": "https://commons.wikimedia.org/wiki/File:IlhaGrande-LopesMendes2.jpg",
+    "retrieved": "2026-10-05",
+    "rights": "Author's public-domain dedication (PD-own); pale beach and forest reference; no photographic pixels embedded",
+    "proof": "data/landmarks/features/ilha-grande/references/lopes-mendes.html"
+  },
+  {
+    "files": ["references/places.osm.json"],
+    "sourceKind": "open-data",
+    "creator": "OpenStreetMap contributors",
+    "source": "https://overpass-api.de/api/interpreter",
+    "retrieved": "2026-10-05",
+    "rights": "ODbL 1.0; retained named peak, church, pier and beach coordinates/outlines; attribution in the experience",
+    "proof": "docs/third-party/open-geodata.md"
+  },
+  {
+    "files": ["references/CC-BY-SA-3.0.txt", "references/CC-BY-SA-4.0.txt"],
+    "sourceKind": "open-data",
+    "creator": "Creative Commons",
+    "source": "https://creativecommons.org/licenses/by-sa/3.0/legalcode and https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt",
+    "retrieved": "2026-10-05",
+    "rights": "Retained legal codes accompanying licensed reference adaptations",
+    "proof": "data/landmarks/features/ilha-grande/README.md"
+  }
+]

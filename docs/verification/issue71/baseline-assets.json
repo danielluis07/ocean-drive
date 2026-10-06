@@ -1,0 +1,120 @@
+{
+  "commit": "dd071b39181c4833f3818a3953f6d76347eb6cff",
+  "assets": [
+    {
+      "path": "public/models/del-mar-balanced.v1.glb",
+      "bytes": 183636,
+      "sha256": "6689e33b632e7480594a882d6359039d8c458c3ca1eb68066998688c116c1e5d"
+    },
+    {
+      "path": "public/models/del-mar-low.v1.glb",
+      "bytes": 120996,
+      "sha256": "7e3764ab230b25d64d2d234b0fc0918f2e1e6be1e0a0f612f03e5c34095b72d9"
+    },
+    {
+      "path": "public/models/landmark-abrolhos-balanced.v1.glb",
+      "bytes": 211408,
+      "sha256": "47d205645aa06b3fcb43e8386a16c39afa108f6a630f00cae822ca293d6be455"
+    },
+    {
+      "path": "public/models/landmark-abrolhos-low.v1.glb",
+      "bytes": 27376,
+      "sha256": "0fcd5446bdc43353913121b2827693cf658ee3f6423d2ef723c1b3e70eb0116b"
+    },
+    {
+      "path": "public/models/landmark-boipeba-balanced.v1.glb",
+      "bytes": 223892,
+      "sha256": "d93391c0051daf16c69359513354820714f7d1c4f36843a4b54e60b86e17a5a3"
+    },
+    {
+      "path": "public/models/landmark-boipeba-low.v1.glb",
+      "bytes": 27696,
+      "sha256": "987f97f17217a5d516f97bd4b36c1226925092242f236350190c4828b5ed8987"
+    },
+    {
+      "path": "public/models/landmark-features.v1.glb",
+      "bytes": 199036,
+      "sha256": "dfa7a80c0da89a25e63ee39363c7ad10b2b6322b5851a30450628e2f371ded1d"
+    },
+    {
+      "path": "public/models/landmark-fernando-de-noronha-balanced.v1.glb",
+      "bytes": 255416,
+      "sha256": "882746965ab880d5c7d94d51caae23be4311804a6ac2b69be9a63ecb539cd2d5"
+    },
+    {
+      "path": "public/models/landmark-fernando-de-noronha-low.v1.glb",
+      "bytes": 27440,
+      "sha256": "2091a13ff98680e86f13506a174b44fce36f38dbb4f5bd0174b3c24e7fbeaefa"
+    },
+    {
+      "path": "public/models/landmark-ilha-grande-balanced.v1.glb",
+      "bytes": 214676,
+      "sha256": "2d58e4a9b8fe0f85ebb18028c70975f5d4d342140226f0dfed68b47ae0312b1e"
+    },
+    {
+      "path": "public/models/landmark-ilha-grande-low.v1.glb",
+      "bytes": 28268,
+      "sha256": "54381f2f3f70f137a99b8df1d2ab5ebe83a1d8a2427e7dcd22e19ceece5d39b7"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-balanced-colour.v1.webp",
+      "bytes": 7728,
+      "sha256": "c6a0bea35f527dbcf71acfa3ab7732611adc5786b37a14533bf457438043f6fb"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-balanced-normal.v1.webp",
+      "bytes": 9270,
+      "sha256": "048c2e9a4f5a2cd1eecdadd0eceeffa0e824c534c1a82c487ff16c9a3bc728ce"
+    },
+    {
+      "path": "public/textures/landmark-abrolhos-low-colour.v1.webp",
+      "bytes": 3106,
+      "sha256": "c803c330db2f53eaa611bdca9ce2c1e3198940e3be74ca59175dd9da5cf0a285"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-balanced-colour.v1.webp",
+      "bytes": 32880,
+      "sha256": "65c1044d19b04708cbb814f846c18351249ce74e64b10c6a6944619d34e6ef98"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-balanced-normal.v1.webp",
+      "bytes": 104474,
+      "sha256": "671bceaec6a2e681bb0ca1512bb64c022f8f0069ea40e434952b003893569f2c"
+    },
+    {
+      "path": "public/textures/landmark-boipeba-low-colour.v1.webp",
+      "bytes": 13412,
+      "sha256": "b4e2ddf30956ef656facf2511bb124f7fac471aafdaa2ecc976c1c4744d3b0b3"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-colour.v1.webp",
+      "bytes": 22502,
+      "sha256": "3ddbef464b727ae314b1743970fe3a87b585ba8b3577c9a017927be3ab58dddd"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-balanced-normal.v1.webp",
+      "bytes": 44630,
+      "sha256": "576913f2cdd6aa79c1b73fd601e0c10646ac62bb7f1eeb06a9844a62fd93c5cf"
+    },
+    {
+      "path": "public/textures/landmark-fernando-de-noronha-low-colour.v1.webp",
+      "bytes": 9320,
+      "sha256": "01f70958826deb9025d28ab95fd6b911cdf0b0e0e5aaf8bf13df10898b153e65"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-balanced-colour.v1.webp",
+      "bytes": 34178,
+      "sha256": "6af6e914082f7f20d7b94ed618f4281405a2423a673aefde784cc2b693f3315d"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-balanced-normal.v1.webp",
+      "bytes": 33142,
+      "sha256": "66828b3098f24197f90f12ef788151f46627386fa5323dc4917052338517b0b5"
+    },
+    {
+      "path": "public/textures/landmark-ilha-grande-low-colour.v1.webp",
+      "bytes": 14792,
+      "sha256": "6e54b15bc8a793583147cffdebf9228bed8692c245b25dd6595749a6b8cc404f"
+    }
+  ]
+}
