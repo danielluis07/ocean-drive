@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useVoyage } from "@/providers/voyage-provider";
 import { Volume2, VolumeX } from "lucide-react";
 import TravessiaLogo from "@/components/voyage/travessia-logo";
 
@@ -12,8 +12,7 @@ export const oceanControl =
 // “Capítulos”) and the “Modo leitura” link below. The Stop Card sits between
 // them in focus order.
 export default function VoyageChrome({ chaptersOpen, onChapters }: { chaptersOpen: boolean; onChapters: () => void }) {
-  // The ambient loop is wired to this toggle in #42; sound stays off by default.
-  const [sound, setSound] = useState(false);
+  const { soundEnabled: sound, toggleSound } = useVoyage();
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pl-[max(1rem,env(safe-area-inset-left))]">
       <h1 className="sr-only">Travessia — O Brasil visto do mar.</h1>
@@ -21,8 +20,9 @@ export default function VoyageChrome({ chaptersOpen, onChapters }: { chaptersOpe
         type="button"
         className={`${oceanControl} w-11`}
         aria-pressed={sound}
-        aria-label="Som ambiente"
-        onClick={() => setSound((current) => !current)}>
+        aria-label={sound ? "Som ligado" : "Som desligado"}
+        title={sound ? "Som ligado" : "Som desligado"}
+        onClick={toggleSound}>
         {sound ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
       </button>
       <span className="absolute left-1/2 -translate-x-1/2 text-sm text-shadow-sm text-shadow-background/60">

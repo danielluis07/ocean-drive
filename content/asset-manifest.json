@@ -1276,6 +1276,20 @@
       "sha256": "c58a30a58b88c2f77994bf888f6d010dac3ae1709f8475f8d9770325a59de209"
     },
     {
+      "path": "docs/third-party/ambient-sound.md",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ambient-sound.ts",
+      "retrieved": "2026-10-06",
+      "rights": "Original procedural audio dedicated to the public domain under CC0-1.0; generator remains project source",
+      "proof": "docs/third-party/ambient-sound.md",
+      "transformations": "Original deterministic circular noise filtering and periodic engine harmonics; no imported samples",
+      "essential": false,
+      "experience": false,
+      "sha256": "071ba776edc605b4fb746c2507d2b22b1f73a2d889c11eb60e45a62531c731cf"
+    },
+    {
       "path": "docs/third-party/boipeba-terrain.md",
       "kind": "pipeline",
       "sourceKind": "project-source",
@@ -1518,6 +1532,21 @@
       "essential": true,
       "experience": true,
       "sha256": "943c07ac697fafe8f2cbcfa0c98ebe3c76b6b5671b4045730166e05a754ae4fd"
+    },
+    {
+      "path": "public/audio/ocean-engine.v1.wav",
+      "url": "/audio/ocean-engine.v1.wav",
+      "kind": "audio",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ambient-sound.ts",
+      "retrieved": "2026-10-06",
+      "rights": "Original procedural audio dedicated to the public domain under CC0-1.0; generator remains project source",
+      "proof": "docs/third-party/ambient-sound.md",
+      "transformations": "12-second seamless mono 12 kHz 16-bit PCM loop; quiet ocean wash and distant engine; playback gain 0.22",
+      "essential": false,
+      "experience": true,
+      "sha256": "7e937e3f470098722d5b3641bcd702c709093d9200ee65403e8f66bff43a7378"
     },
     {
       "path": "public/identity/apple-touch-icon.v1.png",
@@ -2162,6 +2191,20 @@
       "essential": true,
       "experience": false,
       "sha256": "9f6cfb4bf1944fb153c6f1adf44a24c5c02cb6c45209cf7422053e8dca0ec336"
+    },
+    {
+      "path": "scripts/build-ambient-sound.ts",
+      "kind": "pipeline",
+      "sourceKind": "project-source",
+      "creator": "Ocean Drive project contributors",
+      "source": "scripts/build-ambient-sound.ts",
+      "retrieved": "2026-10-06",
+      "rights": "Original procedural audio dedicated to the public domain under CC0-1.0; generator remains project source",
+      "proof": "docs/third-party/ambient-sound.md",
+      "transformations": "Original deterministic circular noise filtering and periodic engine harmonics; no imported samples",
+      "essential": false,
+      "experience": false,
+      "sha256": "784030111e97446c0482f513a12fcc07f65b3ad4b3e24a433b1f765161e45281"
     },
     {
       "path": "scripts/build-earth.ts",

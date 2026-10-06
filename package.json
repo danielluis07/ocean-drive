@@ -14,6 +14,7 @@
     "landmarks:fetch": "bun scripts/fetch-landmark-sources.ts",
     "landmarks:build": "bun scripts/generate-landmarks.ts",
     "assets:identity": "bun scripts/generate-identity.mjs",
+    "assets:sound": "bun scripts/build-ambient-sound.ts",
     "earth:fetch": "bun scripts/fetch-earth-sources.ts",
     "earth:build": "bun scripts/build-earth.ts",
     "assets:record": "bun scripts/record-assets.mjs",

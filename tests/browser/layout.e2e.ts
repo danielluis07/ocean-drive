@@ -75,7 +75,7 @@ for (const checkpoint of checkpoints) {
     await page.setViewportSize({ width: checkpoint.width, height: checkpoint.height });
     await enterOcean(page);
     await expectNoOverflowOrClipping(page, "ocean opening");
-    await expectReachable(page.getByRole("button", { name: "Som ambiente" }), "sound toggle");
+    await expectReachable(page.getByRole("button", { name: "Som desligado" }), "sound toggle");
     await expectReachable(page.getByRole("button", { name: "Capítulos", exact: true }), "chapters");
     await expectReachable(readingModeLink(page), "reading mode");
     await readingModeLink(page).click();
