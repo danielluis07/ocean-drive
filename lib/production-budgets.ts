@@ -1,3 +1,6 @@
+// Optional audio transfer, measured separately from the silent voyage budgets.
+export const ambientSoundBudget = 320 * 1024;
+
 export const productionBudgets = {
   routeJavaScript: 200 * 1024,
   lazyThreeJavaScript: 350 * 1024,

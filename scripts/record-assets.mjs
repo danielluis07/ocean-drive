@@ -6,6 +6,8 @@ import { featureFile, landmarkSources } from '@/content/landmark-sources';
 import { earthApproach } from '@/content/earth-approach';
 const fontSources = await Bun.file('docs/third-party/fonts/sources.json').json();
 const assets = [];
+const audioRights = { sourceKind: 'project-source', creator: 'Ocean Drive project contributors', source: 'scripts/build-ambient-sound.ts', retrieved: '2026-10-06', rights: 'Original procedural audio dedicated to the public domain under CC0-1.0; generator remains project source', proof: 'docs/third-party/ambient-sound.md' };
+for (const path of ['scripts/build-ambient-sound.ts', 'docs/third-party/ambient-sound.md']) assets.push({path, kind:'pipeline', ...audioRights, transformations:'Original deterministic circular noise filtering and periodic engine harmonics; no imported samples', essential:false, experience:false, sha256:await hash(path)});
 const earthRights = {
  sourceKind: 'open-data', creator: 'NASA Goddard Space Flight Center; Reto Stöckli; Robert Simmon',
  source: 'https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/',
@@ -87,6 +89,10 @@ for await (const file of new Bun.Glob('**/*').scan({cwd:ilhaGrandeRoot,onlyFiles
 for await (const file of new Bun.Glob('**/*').scan({cwd:'public',onlyFiles:true})) {
  const path = `public/${file.replaceAll('\\','/')}`;
  const url = '/'+file.replaceAll('\\','/');
+ if (url === '/audio/ocean-engine.v1.wav') {
+  assets.push({path, url, kind:'audio', ...audioRights, transformations:'12-second seamless mono 12 kHz 16-bit PCM loop; quiet ocean wash and distant engine; playback gain 0.22', essential:false, experience:true, sha256:await hash(path)});
+  continue;
+ }
  const vessel = Object.values(ship.variants).some((variant) => variant.url === url);
  const landmark = /\/landmark-(.+)-(balanced|low)\.v\d+\.glb$/.exec(path);
  const features = url === landmarks.features.url;

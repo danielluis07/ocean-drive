@@ -6,12 +6,15 @@ import { createChartedRoute, type ChartedRoute } from "@/lib/charted-route";
 import { oceanConfiguration } from "@/lib/ocean-config";
 import { createRouteMotion, type RouteMotion } from "@/lib/route-motion";
 import { createInitialVoyageState, stopIndex, transitionVoyage, type VoyageState } from "@/lib/voyage-state";
+import { useAmbientSound } from "@/lib/use-ambient-sound";
 
 // The white Sheets read over the paused ocean: the settled Stop's Stop Account,
 // the “Capítulos” menu, and the Arrival's complete itinerary.
 export type VoyageSheet = "account" | "chapters" | "itinerary";
 
 type VoyageContextValue = {
+  soundEnabled: boolean;
+  toggleSound: () => void;
   voyage: VoyageState;
   setVoyage: Dispatch<SetStateAction<VoyageState>>;
   enhanced: boolean;
@@ -62,6 +65,7 @@ export function VoyageProvider({ children }: { children: ReactNode }) {
       setAnnouncement(text);
     });
   }, []);
+  const sound = useAmbientSound(enhanced && voyage.presentation === "three-dimensional", announce);
   const goToStop = useCallback((stop: StopId) => {
     const sailing = presentation.current === "three-dimensional";
     route.goTo(stopIndex(stop), { cut: !sailing });
@@ -75,7 +79,7 @@ export function VoyageProvider({ children }: { children: ReactNode }) {
     announce("Viagem reiniciada. De volta ao início.");
   }, [route, announce]);
   return (
-    <VoyageContext value={{ voyage, setVoyage, enhanced, setEnhanced, sheet, setSheet, chartedRoute, route, goToStop, restartVoyage, announcement, announce }}>
+    <VoyageContext value={{ ...sound, voyage, setVoyage, enhanced, setEnhanced, sheet, setSheet, chartedRoute, route, goToStop, restartVoyage, announcement, announce }}>
       {children}
     </VoyageContext>
   );

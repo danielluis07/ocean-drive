@@ -9,12 +9,15 @@ import { decodePlacements, PLACEMENT_FIELDS } from "@/lib/landmark-features";
 import { gzipSync } from "node:zlib";
 import ship from "@/content/ship.json";
 import { shipBudget, shipSource } from "@/content/ship-source";
-import { productionBudgets } from "@/lib/production-budgets";
+import { ambientSoundBudget, productionBudgets } from "@/lib/production-budgets";
 import { earthApproach } from "@/content/earth-approach";
 
 export async function auditAssets() {
   const errors: string[] = [];
   const paths = new Set(manifest.assets.map((asset) => asset.path));
+  const audio = manifest.assets.find(asset => asset.path === "public/audio/ocean-engine.v1.wav");
+  if (!audio || audio.kind !== "audio" || audio.essential || !audio.experience) errors.push("Invalid ambient audio provenance");
+  if (Bun.file("public/audio/ocean-engine.v1.wav").size > ambientSoundBudget) errors.push("Ambient audio exceeds transfer budget");
   let approachOptionalBytes = 0;
   for (const level of earthApproach.levels) {
     const path = `public${level.url}`;
